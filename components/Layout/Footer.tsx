@@ -104,7 +104,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
                 <em
                   style={{
                     fontStyle: 'italic',
-                    color: 'rgba(255,255,255,0.2)',
+                    color: '#8c8c96',
                     fontWeight: 400,
                   }}
                 >

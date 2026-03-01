@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, memo } from "react";
+import { motion } from "framer-motion";
 
 // ─── Font loader (runs once) ──────────────────────────────────────────────────
 if (typeof document !== "undefined" && !document.getElementById("avl-fonts")) {
@@ -266,40 +267,19 @@ const ArdenoPhase = memo<PhaseProps>(({ exiting, flashRed, progress }) => (
       </div>
     </div>
 
-    {/* Progress bar — full width, pinned to very bottom */}
-    <div
-      style={{
-        position: "absolute",
-        bottom: 0,
-        left: 0,
-        right: 0,
-        width: "100%",
-        height: 3,
-        background: "rgba(255,51,1,0.08)",
-        opacity: 0,
-        animation: "avl-fadeInSimple 0.8s ease 0.5s forwards",
-        overflow: "hidden",
-      }}
-    >
-      <div
-        style={{
-          height: "100%",
-          background: "linear-gradient(90deg, rgba(255,51,1,0.5) 0%, #ff3301 60%, #ff6633 100%)",
-          transformOrigin: "left",
-          transform: `scaleX(${progress / 100})`,
-          transition: "transform 0.12s linear",
-          boxShadow: "0 0 12px rgba(255,51,1,0.7), 0 0 24px rgba(255,51,1,0.3)",
-        }}
+    {/* Progress bar */}
+    <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 2, background: "rgba(255,51,1,0.1)" }}>
+      <motion.div
+        style={{ height: "100%", background: "linear-gradient(90deg, #ff3301, #ff6633)", transformOrigin: "left", boxShadow: "0 0 12px rgba(255,51,1,0.8), 0 0 24px rgba(255,51,1,0.4)" }}
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: 2.5, ease: [0.16, 1, 0.3, 1] }}
       />
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          width: 40,
-          height: "100%",
-          background: "linear-gradient(90deg, transparent, rgba(255,140,80,0.8), transparent)",
-          animation: "avl-shimmerSlide 1.8s ease-in-out 0.6s infinite",
-        }}
+      <motion.div
+        style={{ position: "absolute", top: "50%", transform: "translateY(-50%)", width: 6, height: 6, borderRadius: "50%", background: "#ff6633", boxShadow: "0 0 8px rgba(255,51,1,1), 0 0 16px rgba(255,51,1,0.6)" }}
+        initial={{ left: "0%" }}
+        animate={{ left: "100%" }}
+        transition={{ duration: 2.5, ease: [0.16, 1, 0.3, 1] }}
       />
     </div>
 

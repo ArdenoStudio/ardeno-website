@@ -734,7 +734,7 @@ export const Process: React.FC = () => {
             We don't just{" "}
             <em
               className="not-italic"
-              style={{ color: "rgba(255,255,255,0.2)", fontWeight: 300 }}
+              style={{ color: "#8c8c96", fontWeight: 300 }}
             >
               build.
             </em>
@@ -743,7 +743,7 @@ export const Process: React.FC = () => {
             <span className="relative inline-block">
               <em
                 className="not-italic"
-                style={{ color: "rgba(255,255,255,0.2)", fontWeight: 300 }}
+                style={{ color: "#8c8c96", fontWeight: 300 }}
               >
                 success.
               </em>

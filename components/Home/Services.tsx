@@ -32,11 +32,7 @@ const SERVICES: Service[] = [
     title: "Premium Web Design",
     description:
       "Bespoke UI/UX design that captures your brand essence. We don't use templates; we build digital masterpieces.",
-    detail: `Every pixel is intentional. We begin with a deep discovery phase — understanding your audience, your competitors, and what makes your brand irreplaceable. From there we move into wireframes, moodboards, and high-fidelity prototypes crafted in Figma.
-
-Our design philosophy is rooted in restraint and precision. We don't chase trends — we build timeless visual systems that grow with your brand. Typography, colour, motion, and layout are treated as a unified language, not isolated decisions.
-
-The result is a digital presence that feels unmistakably yours: elevated, confident, and impossible to ignore.`,
+    detail: `Every pixel is intentional. We begin with a deep discovery phase — understanding your audience, your competitors, and what makes your brand irreplaceable.`,
     deliverables: [
       "Brand visual system",
       "Figma design files",
@@ -56,11 +52,7 @@ The result is a digital presence that feels unmistakably yours: elevated, confid
     title: "Creative Development",
     description:
       "Fluid animations, WebGL interactions, and rock-solid code. Performance meets artistry on every build.",
-    detail: `We write code the way designers think — with intention, creativity, and obsessive attention to detail. Our stack is modern and battle-tested: React, Next.js, TypeScript, and Framer Motion for buttery-smooth interactions.
-
-Where most agencies stop at "functional", we push into experiential. WebGL scenes, custom GLSL shaders, scroll-driven storytelling, and physics-based micro-interactions — these are the moments that make visitors stop and say "wow".
-
-Every site we build scores 95+ on Lighthouse. Performance is not an afterthought; it's baked into every architectural decision from day one.`,
+    detail: `We write code the way designers think — with intention, creativity, and obsessive attention to detail. Our stack is modern and battle-tested: React, Next.js, TypeScript, and Framer Motion for buttery-smooth interactions.`,
     deliverables: [
       "Next.js / React codebase",
       "WebGL / Three.js scenes",
@@ -79,11 +71,7 @@ Every site we build scores 95+ on Lighthouse. Performance is not an afterthought
     title: "Conversion Strategy",
     description:
       "Beautiful websites that sell. We use data-driven layouts to turn visitors into high-value clients.",
-    detail: `A website that doesn't convert is just an expensive brochure. We treat every layout decision as a hypothesis — informed by heatmaps, session recordings, and conversion data from hundreds of projects.
-
-We architect user journeys that guide visitors from curiosity to conviction. Strategic placement of social proof, persuasive microcopy, friction-reducing form design, and clear hierarchy — these aren't nice-to-haves, they're the difference between a 1% and a 6% conversion rate.
-
-We define KPIs upfront, instrument analytics on launch, and provide a 30-day post-launch optimisation pass to ensure the numbers move in the right direction.`,
+    detail: `A website that doesn't convert is just an expensive brochure. We treat every layout decision as a hypothesis — informed by heatmaps, session recordings, and conversion data from hundreds of projects.`,
     deliverables: [
       "CRO audit & roadmap",
       "Analytics instrumentation",
@@ -103,11 +91,7 @@ We define KPIs upfront, instrument analytics on launch, and provide a 30-day pos
     title: "Mobile First",
     description:
       "Seamless experiences across all devices. Your site will look stunning on a 4K monitor and an iPhone.",
-    detail: `More than 60% of web traffic is mobile — yet most agencies design on desktop and "adapt" to mobile as an afterthought. We flip that entirely. Every layout, every interaction, every touch target is considered for the smallest screen first, then progressively enhanced for larger viewports.
-
-We test on real devices across iOS and Android throughout the build — not just browser simulators. Swipe gestures, haptic-friendly tap areas, adaptive typography, and performance-optimised assets ensure the experience feels native, not ported.
-
-Your site will feel at home on a $300 Android handset just as much as a 5K Retina display.`,
+    detail: `More than 60% of web traffic is mobile — yet most agencies design on desktop and "adapt" to mobile as an afterthought. We flip that entirely.`,
     deliverables: [
       "Mobile-first responsive layout",
       "Real-device QA",
@@ -151,7 +135,7 @@ const Modal: React.FC<{ service: Service; onClose: () => void }> = ({
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4 sm:p-8"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -171,27 +155,20 @@ const Modal: React.FC<{ service: Service; onClose: () => void }> = ({
       />
 
       <motion.div
-        className="relative z-10 w-full max-w-[520px] rounded-2xl overflow-hidden flex flex-col max-h-[90svh]"
+        className="relative z-10 w-full max-w-[520px] rounded-2xl overflow-hidden flex flex-col"
         initial={{ opacity: 0, scale: 0.95, y: 30 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.97, y: 12 }}
         transition={{ duration: 0.4, ease: EASE }}
         style={{
+          maxHeight: "85vh",
+          overflowY: "auto",
           background: "#0c0c0e",
-          boxShadow:
-            "0 48px 96px -24px rgba(0,0,0,0.95), 0 0 0 1px rgba(255,255,255,0.07)",
+          boxShadow: "0 48px 96px -24px rgba(0,0,0,0.95), 0 0 0 1px rgba(255,255,255,0.07)",
         }}
       >
-        {/* Top red accent line */}
-        <div
-          className="absolute top-0 left-0 right-0 h-px"
-          style={{
-            background:
-              "linear-gradient(90deg, transparent, rgba(229,9,20,0.5) 40%, rgba(229,9,20,0.5) 60%, transparent)",
-          }}
-        />
 
-        <div className="relative z-10 p-7 sm:p-9 overflow-y-auto">
+        <div className="relative z-10 pt-4 pb-5 px-4 sm:px-6">
           {/* ── Header ── */}
           <div className="flex items-start justify-between mb-6">
             <div className="flex items-center gap-4">
@@ -240,13 +217,13 @@ const Modal: React.FC<{ service: Service; onClose: () => void }> = ({
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: EASE, delay: 0.1 }}
-            className="text-[15px] text-zinc-200 leading-[1.7] mb-5"
-            style={{ fontFamily: FONT_BODY }}
+            className="text-zinc-200 mb-3"
+            style={{ fontSize: 13, lineHeight: 1.75, fontFamily: FONT_BODY }}
           >
             {paragraphs[0]}
           </motion.p>
 
-          <div className="h-px bg-white/[0.06] mb-5" />
+          <div className="h-px bg-white/[0.06]" style={{ marginTop: 0, marginBottom: 12 }} />
 
           {/* ── Detail paragraphs (2 & 3, smaller) ── */}
           <motion.div
@@ -268,7 +245,8 @@ const Modal: React.FC<{ service: Service; onClose: () => void }> = ({
                   transition: { duration: 0.42, ease: EASE },
                 },
               }}
-              className="mt-6 pt-5 border-t border-white/[0.06]"
+              className="border-t border-white/[0.06]"
+              style={{ marginTop: 12, paddingTop: 12 }}
             >
               <span
                 className="text-[10px] tracking-[0.25em] uppercase text-zinc-600 mb-4 block"
@@ -276,7 +254,7 @@ const Modal: React.FC<{ service: Service; onClose: () => void }> = ({
               >
                 What you get
               </span>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 12 }}>
+              <div className="grid grid-cols-2 gap-1.5" style={{ marginTop: 12 }}>
                 {service.deliverables.map((item) => (
                   <div key={item} style={{
                     padding: "10px 14px",
@@ -663,8 +641,8 @@ export const Services: React.FC = () => {
           >
             Everything you need to{" "}
             <em
-              className="not-italic text-zinc-500"
-              style={{ fontWeight: 300 }}
+              className="not-italic"
+              style={{ fontWeight: 300, color: "#8c8c96" }}
             >
               dominate
             </em>{" "}

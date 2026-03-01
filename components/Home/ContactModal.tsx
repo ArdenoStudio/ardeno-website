@@ -203,7 +203,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                                                 className="text-3xl md:text-4xl text-white leading-none tracking-[-0.02em]"
                                                 style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
                                             >
-                                                Let's build
+                                                Let's <span style={{ color: "#8c8c96" }}>build</span>
                                                 <br />
                                                 <span className="italic text-zinc-400 font-light">something great</span>
                                             </h2>
