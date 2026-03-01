@@ -471,38 +471,35 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                 <div className="h-px bg-white/[0.05] mb-6" />
                 <a
                   href="/client-portal/"
-                  className="w-full flex items-center justify-center gap-2 rounded-full text-[10px] font-semibold tracking-[0.2em] uppercase text-white/80 py-3 mb-3 transition-all duration-300"
+                  className="w-full flex items-center justify-center gap-2 rounded-full py-3 mb-3"
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.1)",
+                    fontSize: 11,
+                    fontWeight: 600,
+                    letterSpacing: "0.08em",
+                    color: "#fff",
+                    background: "transparent",
+                    border: "1px solid rgba(255,255,255,0.12)",
                   }}
                 >
-                  Client Portal
-                  <svg width="8" height="8" viewBox="0 0 10 10" fill="none">
-                    <path d="M1 9L9 1M9 1H3M9 1V7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  PORTAL <ArrowUpRight size={13} />
                 </a>
                 <motion.button
                   onClick={() => { setMobileOpen(false); onOpenModal(); }}
-                  className="w-full flex items-center justify-center gap-2 rounded-full text-[10px] font-semibold tracking-[0.2em] uppercase text-white py-3.5"
+                  className="w-full flex items-center justify-center gap-2 rounded-full py-3"
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
-                    background: "rgba(229,9,20,0.9)",
-                    border: "1px solid rgba(229,9,20,0.4)",
-                    boxShadow: "0 8px 24px rgba(229,9,20,0.25)",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: "0.08em",
+                    color: "#fff",
+                    background: "#E50914",
+                    border: "1px solid rgba(229,9,20,0.6)",
+                    boxShadow: "0 4px 12px rgba(229,9,20,0.25)",
                   }}
-                  whileHover={{ scale: 1.02, boxShadow: "0 0 36px rgba(229,9,20,0.45)", background: "rgba(255,20,32,1)" }}
                   whileTap={{ scale: 0.97 }}
-                  transition={{ duration: 0.2 }}
                 >
-                  Let&apos;s Talk
-                  <motion.svg
-                    width="10" height="10" viewBox="0 0 10 10" fill="none"
-                    className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"
-                  >
-                    <path d="M1 9L9 1M9 1H3M9 1V7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </motion.svg>
+                  LET&apos;S TALK <ArrowUpRight size={13} />
                 </motion.button>
               </motion.div>
             </motion.div>

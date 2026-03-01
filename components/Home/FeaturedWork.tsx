@@ -103,7 +103,8 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="fixed inset-0 z-[9000] flex items-end sm:items-center justify-center"
+      className="fixed inset-0 z-[9000]"
+      style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
     >
       <motion.div
         className="absolute inset-0 bg-black/75 backdrop-blur-md"
@@ -115,11 +116,21 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 50, scale: 0.97 }}
         transition={{ duration: 0.55, ease: EXPO }}
-        className="relative z-10 w-full max-w-2xl mx-4 mb-4 sm:mb-0 rounded-3xl overflow-hidden"
-        style={{ background: "#0c0c0e", border: "1px solid rgba(255,255,255,0.07)" }}
+        className="relative z-10"
+        style={{
+          background: "#0c0c0e",
+          border: "1px solid rgba(255,255,255,0.07)",
+          width: "92vw",
+          maxWidth: 480,
+          maxHeight: "88vh",
+          overflowY: "auto",
+          borderRadius: 20,
+          marginTop: "auto",
+          marginBottom: "auto",
+        }}
       >
         {/* Image */}
-        <div className="relative overflow-hidden" style={{ height: 300 }}>
+        <div className="relative overflow-hidden" style={{ aspectRatio: window.innerWidth < 640 ? "16/10" : "3/4" }}>
           <motion.img
             src={project.image} alt={project.title}
             width={800} height={300}
@@ -162,7 +173,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
             <motion.h2
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, ease: EXPO, delay: 0.12 }}
-              className="text-white leading-none tracking-[-0.025em]"
+              className="text-2xl sm:text-4xl text-white leading-none tracking-[-0.025em]"
               style={{ fontSize: "clamp(1.9rem,4vw,3rem)", fontFamily: "'Instrument Serif', Georgia, serif", fontWeight: 400, textShadow: "0 2px 20px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,1)" }}
             >
               {project.title}
@@ -171,7 +182,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
         </div>
 
         {/* Body */}
-        <div className="px-8 py-7">
+        <div className="p-4 sm:p-6">
           <motion.div
             initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
             transition={{ duration: 0.7, ease: EXPO, delay: 0.18 }}
@@ -188,7 +199,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
           </motion.p>
 
           <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap" style={{ flexWrap: "wrap", gap: 8 }}>
               {project.tags.map((tag) => (
                 <span
                   key={tag}

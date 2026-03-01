@@ -653,40 +653,45 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: headlineDelay + 1.6, ease: EASE }}
-              className="flex items-center gap-10 mt-8 pt-6 border-t border-white/[0.07]"
-              style={{ fontFamily: FONT_B }}
+              style={{
+                fontFamily: FONT_B,
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr",
+                width: "100%",
+                gap: 8,
+                marginTop: 32,
+                paddingTop: 24,
+                borderTop: "1px solid rgba(255,255,255,0.07)",
+              }}
             >
-              {[["∞", "Revisions"], ["100%", "Custom Built"], ["Weekly", "Portal Updates"]].map(([num, label], i, arr) => (
-                <React.Fragment key={label}>
-                  <div className="flex flex-col gap-0.5 items-center">
-                    {num === "∞" ? (
-                      <motion.span
-                        className="text-[26px] font-bold tracking-tight"
-                        animate={{
-                          textShadow: [
-                            "0 0 8px rgba(229,9,20,0)",
-                            "0 0 16px rgba(229,9,20,0.9), 0 0 32px rgba(229,9,20,0.4)",
-                            "0 0 8px rgba(229,9,20,0)",
-                          ],
-                          color: ["#ffffff", "#E50914", "#ffffff"],
-                        }}
-                        transition={{
-                          duration: 2.5,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                          repeatDelay: 1,
-                        }}
-                        style={{ display: "inline-block", fontSize: "48px", lineHeight: 1 }}
-                      >
-                        ∞
-                      </motion.span>
-                    ) : (
-                      <span className="text-[26px] font-bold text-white tracking-tight">{num}</span>
-                    )}
-                    <span className="text-[10px] text-zinc-400 tracking-[0.15em] uppercase">{label}</span>
-                  </div>
-                  {i < arr.length - 1 && <div className="h-8 w-px bg-white/[0.06]" />}
-                </React.Fragment>
+              {[["∞", "Revisions"], ["100%", "Custom Built"], ["Weekly", "Portal Updates"]].map(([num, label]) => (
+                <div key={label} className="flex flex-col gap-0.5 items-center">
+                  {num === "∞" ? (
+                    <motion.span
+                      className="text-[26px] font-bold tracking-tight"
+                      animate={{
+                        textShadow: [
+                          "0 0 8px rgba(229,9,20,0)",
+                          "0 0 16px rgba(229,9,20,0.9), 0 0 32px rgba(229,9,20,0.4)",
+                          "0 0 8px rgba(229,9,20,0)",
+                        ],
+                        color: ["#ffffff", "#E50914", "#ffffff"],
+                      }}
+                      transition={{
+                        duration: 2.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        repeatDelay: 1,
+                      }}
+                      style={{ display: "inline-block", fontSize: "48px", lineHeight: 1 }}
+                    >
+                      ∞
+                    </motion.span>
+                  ) : (
+                    <span className="text-[26px] font-bold text-white tracking-tight">{num}</span>
+                  )}
+                  <span className="text-[10px] text-zinc-400 tracking-[0.15em] uppercase">{label}</span>
+                </div>
               ))}
             </motion.div>
           </div>
