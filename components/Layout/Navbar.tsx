@@ -240,7 +240,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
               <motion.button
                 onMouseEnter={() => setPortalHov(true)}
                 onMouseLeave={() => setPortalHov(false)}
-                onClick={() => { window.open('https://glittering-valkyrie-ea5fc9.netlify.app', '_blank'); }}
+                onClick={() => { window.open('https://ardeno-client-portal.netlify.app', '_blank'); }}
                 style={{
                   position: "relative",
                   overflow: "hidden",
@@ -470,7 +470,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
               >
                 <div className="h-px bg-white/[0.05] mb-6" />
                 <a
-                  href="https://glittering-valkyrie-ea5fc9.netlify.app"
+                  href="https://ardeno-client-portal.netlify.app"
                   className="w-full flex items-center justify-center gap-2 rounded-full py-3 mb-3"
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
