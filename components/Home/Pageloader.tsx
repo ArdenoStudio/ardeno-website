@@ -238,7 +238,7 @@ const ArdenoPhase = memo<PhaseProps>(({ exiting, flashRed, progress }) => (
         </div>
 
         {/* Wordmark */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
           <StaggerWord
             text="ARDENO"
             baseDelay={0.6}
