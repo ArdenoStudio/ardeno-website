@@ -6,20 +6,16 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Work', href: '#work' },
   { label: 'Services', href: '#services' },
   { label: 'Process', href: '#process' },
+  { label: 'About', href: '/about' },
   { label: 'Contact', href: '#contact' },
 ];
 
 // --- INTRO CONFIGURATION ---
 export const INTRO_CONFIG = {
-  // Timing (ms)
-  DURATION_LOADER: 1475,   // how long GIF plays
-  DURATION_PAUSE: 1500,     // pause before moving
-  DURATION_MOVE: 1000,     // move duration
-
-  // Safety Failsafe (ms)
+  DURATION_LOADER: 1475,
+  DURATION_PAUSE: 1500,
+  DURATION_MOVE: 1000,
   SAFETY_BUFFER: 1500,
-
-  // REAL ASSETS (FROM /public FOLDER)
   ASSETS: {
     LOADER_GIF: '/ardent-loader.gif',
     STATIC_LOGO: '/ardent-logo.png',
@@ -95,7 +91,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Marketing Director',
     company: 'Odel Luxury',
     quote:
-      'Ardent Studio didn’t just build a website; they elevated our entire brand perception. The attention to detail is world-class.',
+      "Ardent Studio didn't just build a website; they elevated our entire brand perception. The attention to detail is world-class.",
     avatar: 'https://picsum.photos/100/100?random=10',
   },
   {

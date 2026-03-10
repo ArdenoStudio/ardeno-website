@@ -3,14 +3,35 @@ import { Navbar } from './components/Layout/Navbar';
 import { Hero } from './components/Home/Hero';
 import { PageLoader } from './components/Home/Pageloader';
 import { DocsPage } from './components/Docs/DocsPage';
+import CookieBanner from './components/UI/CookieBanner';
+import { trackUtmParams } from './components/UI/trackUtm';
+import ArdenoAIWidget from './components/AI/ArdenoAIWidget';
 
 // ─── Lazy-loaded below-fold sections ─────────────────────────────────────────
-const FeaturedWork = lazy(() => import('./components/Home/FeaturedWork').then(m => ({ default: m.FeaturedWork })));
-const Services = lazy(() => import('./components/Home/Services').then(m => ({ default: m.Services })));
-const Process = lazy(() => import('./components/Home/Process').then(m => ({ default: m.Process })));
-const Testimonials = lazy(() => import('./components/Home/Testimonials').then(m => ({ default: m.Testimonials })));
-const Footer = lazy(() => import('./components/Layout/Footer').then(m => ({ default: m.Footer })));
-const ContactModal = lazy(() => import('./components/Home/ContactModal').then(m => ({ default: m.ContactModal })));
+const FeaturedWork = lazy(() =>
+  import('./components/Home/FeaturedWork').then(m => ({ default: m.FeaturedWork }))
+);
+const Services = lazy(() =>
+  import('./components/Home/Services').then(m => ({ default: m.Services }))
+);
+const Process = lazy(() =>
+  import('./components/Home/Process').then(m => ({ default: m.Process }))
+);
+const Testimonials = lazy(() =>
+  import('./components/Home/Testimonials').then(m => ({ default: m.Testimonials }))
+);
+const Footer = lazy(() =>
+  import('./components/Layout/Footer').then(m => ({ default: m.Footer }))
+);
+const ContactModal = lazy(() =>
+  import('./components/Home/ContactModal').then(m => ({ default: m.ContactModal }))
+);
+const AboutPage = lazy(() =>
+  import('./components/About/AboutPage').then(m => ({ default: m.AboutPage }))
+);
+const FAQPage = lazy(() =>
+  import('./components/FAQ/FAQPage').then(m => ({ default: m.FAQPage }))
+);
 
 // Pre-fetch lazy chunks before they're needed
 const preloadChunks = () => {
@@ -22,23 +43,31 @@ const preloadChunks = () => {
   import('./components/Home/ContactModal');
 };
 
-// ─── Simple path-based router (no external library needed) ─────────────────
-const getRoute = () => {
+// ─── Simple path-based router ────────────────────────────────────────────────
+type Route = 'home' | 'docs' | 'about' | 'faq';
+
+const getRoute = (): Route => {
   const p = window.location.pathname;
   if (p.startsWith('/docs')) return 'docs';
+  if (p.startsWith('/about')) return 'about';
+  if (p.startsWith('/faq')) return 'faq';
   return 'home';
 };
 
 const App: React.FC = () => {
   const [loaded, setLoaded] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
-  const [route, setRoute] = useState<'home' | 'docs'>(getRoute);
+  const [route, setRoute] = useState<Route>(getRoute);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
-  // Listen for popstate (browser back/fwd) and custom docs:exit event
+  useEffect(() => {
+    trackUtmParams();
+  }, []);
+
   useEffect(() => {
     const onPopState = () => setRoute(getRoute());
-    const onDocsExit = (e: any) => {
+
+    const onDocsExit = (e: CustomEvent<{ hash?: string }>) => {
       const hash = e.detail?.hash || '';
       window.history.pushState({}, '', hash ? '/' + hash : '/');
       setRoute('home');
@@ -47,72 +76,79 @@ const App: React.FC = () => {
         setTimeout(() => {
           const el = document.getElementById(hash.replace('#', ''));
           if (el) {
-            const offset = 80; // Match NAV_HEIGHT
+            const offset = 80;
             const bodyRect = document.body.getBoundingClientRect().top;
             const elementRect = el.getBoundingClientRect().top;
-            const elementPosition = elementRect - bodyRect;
-            const offsetPosition = elementPosition - offset;
+            const offsetPosition = elementRect - bodyRect - offset;
             window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
           }
-        }, 500); // Wait longer for lazy-loaded sections to mount
+        }, 500);
       }
     };
+
     window.addEventListener('popstate', onPopState);
-    window.addEventListener('docs:exit', onDocsExit);
+    window.addEventListener('docs:exit', onDocsExit as EventListener);
     return () => {
       window.removeEventListener('popstate', onPopState);
-      window.removeEventListener('docs:exit', onDocsExit);
+      window.removeEventListener('docs:exit', onDocsExit as EventListener);
     };
   }, []);
 
-  // Navigate to /docs
-  const goToDocs = () => {
-    window.history.pushState({}, '', '/docs');
-    setRoute('docs');
-  };
-
-  // Begin downloading lazy chunks when user is 300px above the fold
   useEffect(() => {
     if (route !== 'home') return;
     const el = sentinelRef.current;
     if (!el) return;
     const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          preloadChunks();
-          io.disconnect();
-        }
-      },
+      ([entry]) => { if (entry.isIntersecting) { preloadChunks(); io.disconnect(); } },
       { rootMargin: '300px' }
     );
     io.observe(el);
     return () => io.disconnect();
   }, [route]);
 
+  // ── Shared wrapper for standalone pages ──
+  const pageShell = (children: React.ReactNode) => (
+    <div className="bg-zinc-950 text-white min-h-screen selection:bg-accent selection:text-white relative">
+      {children}
+      <Suspense fallback={null}>
+        <ContactModal isOpen={contactOpen} onClose={() => setContactOpen(false)} />
+      </Suspense>
+      <CookieBanner />
+      <ArdenoAIWidget />
+      <div className="grain" />
+    </div>
+  );
+
   // ── Docs route ──
   if (route === 'docs') {
-    return (
-      <div className="bg-zinc-950 text-white min-h-screen selection:bg-accent selection:text-white relative">
-        <DocsPage onOpenContact={() => setContactOpen(true)} />
-        <Suspense fallback={null}>
-          <ContactModal isOpen={contactOpen} onClose={() => setContactOpen(false)} />
-        </Suspense>
-        <div className="grain" />
-      </div>
+    return pageShell(
+      <DocsPage onOpenContact={() => setContactOpen(true)} />
+    );
+  }
+
+  // ── About route ──
+  if (route === 'about') {
+    return pageShell(
+      <Suspense fallback={null}>
+        <AboutPage onOpenContact={() => setContactOpen(true)} />
+      </Suspense>
+    );
+  }
+
+  // ── FAQ route ──
+  if (route === 'faq') {
+    return pageShell(
+      <Suspense fallback={null}>
+        <FAQPage onOpenContact={() => setContactOpen(true)} />
+      </Suspense>
     );
   }
 
   // ── Home route ──
   return (
     <div className="bg-zinc-950 text-white min-h-screen overflow-x-hidden selection:bg-accent selection:text-white relative">
+      <PageLoader onComplete={() => setLoaded(true)} minDuration={2800} />
 
-      {/* CINEMATIC LOADER */}
-      <PageLoader
-        onComplete={() => setLoaded(true)}
-        minDuration={2800}
-      />
-
-      {/* MAIN CONTENT — fades in after loader exits */}
       <main
         className="relative z-10"
         style={{
@@ -124,7 +160,6 @@ const App: React.FC = () => {
         <Navbar onOpenModal={() => setContactOpen(true)} />
         <Hero onOpenContact={() => setContactOpen(true)} />
 
-        {/* Sentinel at the fold — entering viewport triggers lazy-chunk preload */}
         <div ref={sentinelRef} aria-hidden="true" />
 
         <Suspense fallback={null}><FeaturedWork /></Suspense>
@@ -136,10 +171,12 @@ const App: React.FC = () => {
         </Suspense>
       </main>
 
-      {/* CONTACT MODAL */}
       <Suspense fallback={null}>
         <ContactModal isOpen={contactOpen} onClose={() => setContactOpen(false)} />
       </Suspense>
+
+      {loaded && <CookieBanner />}
+      {loaded && <ArdenoAIWidget />}
     </div>
   );
 };

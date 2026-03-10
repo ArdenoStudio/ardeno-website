@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..144,75..100,200..800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,13 +8,16 @@
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: #000000;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #333;
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #E50914;
 }
@@ -38,4 +43,10 @@ body {
 /* ── Text glow utility ──────────────────────────────────── */
 .text-glow {
   text-shadow: 0 0 30px rgba(229, 9, 20, 0.3);
+}
+
+/* ── Ardeno logo wordmark font ──────────────────────────── */
+.font-bricolage-condensed {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-variation-settings: "wdth" 75, "wght" 650;
 }
