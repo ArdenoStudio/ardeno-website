@@ -1,70 +1,69 @@
 import React, { useEffect, useRef, useState, memo } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-// ─── Font loader (runs once) ──────────────────────────────────────────────────
+// --- Font loader ---
 if (typeof document !== "undefined" && !document.getElementById("avl-fonts")) {
   const link = document.createElement("link");
   link.id = "avl-fonts";
   link.rel = "stylesheet";
   link.href =
-    "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;1,9..144,300" +
-    "&family=Cormorant+Garamond:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400" +
-    "&family=Sora:wght@300;400" +
-    "&family=Cinzel:wght@400;600" +
-    "&display=swap";
+    "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&family=Cinzel:wght@600&family=Sora:wght@300&display=swap";
   document.head.appendChild(link);
 }
 
-// ─── Global keyframes (injected once) ─────────────────────────────────────────
+// --- Keyframes ---
 const STYLES = `
   @keyframes avl-breathe {
-    0%,100% { opacity:.5; transform:scale(1); }
-    50%      { opacity:1;  transform:scale(1.1); }
+    0%,100% { opacity:0.3; transform:scale(1); filter: blur(20px); }
+    50%      { opacity:0.6;  transform:scale(1.15); filter: blur(30px); }
   }
   @keyframes avl-drawPath {
-    from { stroke-dashoffset: 2000; }
-    to   { stroke-dashoffset: 0; }
+    from { stroke-dashoffset: 2000; filter: drop-shadow(0 0 2px rgba(229,9,20,0)); }
+    to   { stroke-dashoffset: 0; filter: drop-shadow(0 0 12px rgba(229,9,20,0.6)); }
   }
   @keyframes avl-fillFade {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+    from { opacity: 0; filter: blur(4px); transform: scale(0.95); }
+    to   { opacity: 1; filter: blur(0px); transform: scale(1); }
   }
   @keyframes avl-charIn {
-    from { opacity:0; transform:translateY(14px); filter:blur(5px); }
-    to   { opacity:1; transform:translateY(0);    filter:blur(0);   }
+    from { opacity:0; transform: translateY(20px) scale(1.15); filter:blur(12px) brightness(2); letter-spacing: 0.05em; }
+    to   { opacity:1; transform: translateY(0) scale(1); filter:blur(0) brightness(1);  letter-spacing: 0.18em; }
   }
   @keyframes avl-charInUp {
-    from { opacity:0; transform:translateY(24px); filter:blur(8px); }
-    to   { opacity:1; transform:translateY(0);    filter:blur(0);   }
-  }
-  @keyframes avl-scaleX {
-    from { transform:scaleX(0); opacity:0; }
-    to   { transform:scaleX(1); opacity:1; }
-  }
-  @keyframes avl-shimmerSlide {
-    from { left:-14px; }
-    to   { left:calc(100% - 14px); }
+    from { opacity:0; transform: translateY(15px) scale(0.9); filter:blur(8px); }
+    to   { opacity:1; transform: translateY(0) scale(1); filter:blur(0); }
   }
   @keyframes avl-flashRed {
     0%   { opacity:0; }
-    40%  { opacity:1; }
-    100% { opacity:0; }
+    40%  { opacity:1; filter: blur(10px); }
+    100% { opacity:0; filter: blur(0px); }
   }
   @keyframes avl-fadeOutPhase {
-    from { opacity:1; transform:scale(1); }
-    to   { opacity:0; transform:scale(1.04); }
+    from { transform:scale(1); filter: blur(0px); }
+    to   { transform:scale(1.05); filter: blur(14px); }
+  }
+  @keyframes avl-fadeInPhase {
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
   @keyframes avl-crownReveal {
-    from { opacity:0; transform:translateY(-14px) scale(0.92); }
-    to   { opacity:1; transform:translateY(0) scale(1); }
+    from { opacity:0; transform:translateY(-20px) scale(0.9); filter: blur(10px); }
+    to   { opacity:1; transform:translateY(0) scale(1); filter: blur(0px); }
   }
-  @keyframes avl-fadeInSimple {
-    from { opacity:0; }
-    to   { opacity:1; }
+  .glass-overlay {
+    backdrop-filter: blur(8px);
+    background: radial-gradient(circle at 50% 50%, rgba(10,5,5,0.4) 0%, rgba(0,0,0,0.9) 100%);
   }
 `;
 
-// ─── SVG path constant ────────────────────────────────────────────────────────
+// --- Shared constants ---
+const FULL_COVER: React.CSSProperties = {
+  position: "absolute",
+  inset: 0,
+  width: "100%",
+  height: "100%",
+};
+
 const A_MARK_PATH =
   "M 514.300781 878.699219 L 434.792969 718.777344 " +
   "C 411.382812 739.714844 390.78125 776.453125 391.929688 806.554688 " +
@@ -83,91 +82,47 @@ const A_MARK_PATH =
   "L 432.074219 713.316406 " +
   "C 404.980469 732.679688 383.765625 759.746094 371.617188 791.304688";
 
-// ─── Grain data URI ───────────────────────────────────────────────────────────
 const GRAIN_BG =
   "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E" +
-  "%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' " +
-  "numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E" +
+  "%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' " +
+  "numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E" +
   "%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
 
-// ─── Shared style constants ───────────────────────────────────────────────────
-const FULL_COVER: React.CSSProperties = {
-  position: "absolute",
-  inset: 0,
-  width: "100%",
-  height: "100%",
-};
-
-const GRAIN_STYLE: React.CSSProperties = {
-  ...FULL_COVER,
-  backgroundImage: GRAIN_BG,
-  opacity: 0.06,
-  mixBlendMode: "overlay" as const,
-  pointerEvents: "none",
-};
-
-const VIGNETTE_STYLE: React.CSSProperties = {
-  ...FULL_COVER,
-  background: "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%)",
-  pointerEvents: "none",
-};
-
-const CENTER_FLEX: React.CSSProperties = {
-  position: "absolute",
-  inset: 0,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-};
-
-// ─── Props ────────────────────────────────────────────────────────────────────
-export interface PageLoaderProps {
-  onComplete?: () => void;
-  minDuration?: number;
-}
-
-// ─── StaggerWord ──────────────────────────────────────────────────────────────
-interface StaggerWordProps {
-  text: string;
-  baseDelay: number;
-  charStyle: React.CSSProperties;
-  animName?: string;
-}
-
-const StaggerWord = memo<StaggerWordProps>(({ text, baseDelay, charStyle, animName = "avl-charIn" }) => (
-  <span style={{ display: "inline-block", overflow: "hidden" }}>
-    {text.split("").map((ch, i) => (
-      <span
-        key={i}
-        style={{
-          ...charStyle,
-          display: "inline-block",
-          opacity: 0,
-          animation: `${animName} 0.7s cubic-bezier(0.22,1,0.36,1) ${baseDelay + i * 0.06}s forwards`,
-        }}
-      >
-        {ch === " " ? "\u00A0" : ch}
-      </span>
-    ))}
-  </span>
-));
+// --- Components ---
+const StaggerWord = memo<{ text: string; baseDelay: number; charStyle: React.CSSProperties; animName?: string }>(
+  ({ text, baseDelay, charStyle, animName = "avl-charIn" }) => (
+    <span style={{ display: "inline-block", overflow: "hidden" }}>
+      {text.split("").map((ch, i) => (
+        <span
+          key={i}
+          style={{
+            ...charStyle,
+            display: "inline-block",
+            opacity: 0,
+            animation: `${animName} 1.2s cubic-bezier(0.16,1,0.3,1) ${baseDelay + i * 0.08}s forwards`,
+          }}
+        >
+          {ch === " " ? "\u00A0" : ch}
+        </span>
+      ))}
+    </span>
+  )
+);
 StaggerWord.displayName = "StaggerWord";
 
-// ─── SVG gradient defs — brand red ───────────────────────────────────────────
 const SvgDefs = memo(() => (
   <defs>
     <linearGradient id="avl-aGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stopColor="#ff3301" />
-      <stop offset="50%" stopColor="#ff6633" />
-      <stop offset="100%" stopColor="#ff3301" />
+      <stop offset="0%" stopColor="#ff1420" />
+      <stop offset="50%" stopColor="#E50914" />
+      <stop offset="100%" stopColor="#cc0812" />
     </linearGradient>
     <linearGradient id="avl-aStroke" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stopColor="#ff3301" />
-      <stop offset="50%" stopColor="#ff6633" />
-      <stop offset="100%" stopColor="#ff3301" />
+      <stop offset="0%" stopColor="#ff4d55" />
+      <stop offset="100%" stopColor="#E50914" />
     </linearGradient>
     <filter id="avl-aGlow">
-      <feGaussianBlur stdDeviation="6" result="g" />
+      <feGaussianBlur stdDeviation="8" result="g" />
       <feMerge>
         <feMergeNode in="g" />
         <feMergeNode in="SourceGraphic" />
@@ -177,134 +132,137 @@ const SvgDefs = memo(() => (
 ));
 SvgDefs.displayName = "SvgDefs";
 
-// ─── Main phase ───────────────────────────────────────────────────────────────
-interface PhaseProps {
-  exiting: boolean;
-  flashRed: boolean;
-  progress: number;
-}
-
-const ArdenoPhase = memo<PhaseProps>(({ exiting, flashRed, progress }) => (
-  <div
-    style={{
-      ...FULL_COVER,
-      background: "radial-gradient(ellipse at 50% 45%, #1a1210 0%, #0d0a08 55%, #050303 100%)",
-      animation: exiting ? "avl-fadeOutPhase 0.8s cubic-bezier(0.4,0,0.2,1) forwards" : undefined,
-      zIndex: 3,
-    }}
-  >
-    <div style={GRAIN_STYLE} />
-    <div style={VIGNETTE_STYLE} />
-
-    {/* Ambient red glow */}
+const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number }>(
+  ({ exiting, flashRed, progress }) => (
     <div
+      className="glass-overlay"
       style={{
         ...FULL_COVER,
-        background: "radial-gradient(circle at 50% 50%, rgba(255,51,1,0.12) 0%, transparent 65%)",
-        animation: "avl-breathe 4.5s ease-in-out infinite",
-        pointerEvents: "none",
+        animation: exiting
+          ? "avl-fadeOutPhase 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards"
+          : "avl-fadeInPhase 1s ease-out forwards",
+        zIndex: 3,
+        perspective: "1000px"
       }}
-    />
+    >
+      <div style={{ ...FULL_COVER, backgroundImage: GRAIN_BG, opacity: 0.04, mixBlendMode: "overlay", pointerEvents: "none" }} />
+      <div style={{ ...FULL_COVER, background: "radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.85) 100%)", pointerEvents: "none" }} />
 
-    {/* Center content */}
-    <div style={CENTER_FLEX}>
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
-
-        {/* A-mark */}
-        <div style={{
-          width: 70, height: 70, marginBottom: 6,
-          opacity: 0,
-          animation: "avl-crownReveal 1s cubic-bezier(0.22,1,0.36,1) 0.15s forwards",
-        }}>
-          <svg
-            viewBox="200 580 360 340"
-            style={{ width: "100%", height: "100%", filter: "drop-shadow(0 0 12px rgba(255,51,1,0.25))" }}
-          >
-            <SvgDefs />
-            <path
-              d={A_MARK_PATH}
-              fill="none"
-              stroke="url(#avl-aStroke)"
-              strokeWidth="3"
-              style={{ strokeDasharray: 2000, animation: "avl-drawPath 2s cubic-bezier(0.22,1,0.36,1) 0.3s forwards" }}
-            />
-            <path
-              d={A_MARK_PATH}
-              fill="url(#avl-aGrad)"
-              filter="url(#avl-aGlow)"
-              style={{ opacity: 0, animation: "avl-fillFade 1.2s ease 1.6s forwards" }}
-            />
-          </svg>
-        </div>
-
-        {/* Wordmark */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
-          <StaggerWord
-            text="ARDENO"
-            baseDelay={0.6}
-            charStyle={{
-              fontFamily: "'Cinzel', serif",
-              fontSize: 28,
-              fontWeight: 600,
-              color: "#ffffff",
-              letterSpacing: "0.18em",
-            }}
-          />
-          <StaggerWord
-            text="STUDIO"
-            baseDelay={1.1}
-            charStyle={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: 14,
-              fontWeight: 300,
-              fontStyle: "italic",
-              color: "rgba(255,51,1,0.6)",
-              letterSpacing: "0.4em",
-            }}
-            animName="avl-charInUp"
-          />
-        </div>
-      </div>
-    </div>
-
-    {/* Progress bar */}
-    <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 2, background: "rgba(255,51,1,0.1)" }}>
-      <motion.div
-        style={{ height: "100%", background: "linear-gradient(90deg, #ff3301, #ff6633)", transformOrigin: "left", boxShadow: "0 0 12px rgba(255,51,1,0.8), 0 0 24px rgba(255,51,1,0.4)" }}
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 2.5, ease: [0.16, 1, 0.3, 1] }}
-      />
-      <motion.div
-        style={{ position: "absolute", top: "50%", transform: "translateY(-50%)", width: 6, height: 6, borderRadius: "50%", background: "#ff6633", boxShadow: "0 0 8px rgba(255,51,1,1), 0 0 16px rgba(255,51,1,0.6)" }}
-        initial={{ left: "0%" }}
-        animate={{ left: "100%" }}
-        transition={{ duration: 2.5, ease: [0.16, 1, 0.3, 1] }}
-      />
-    </div>
-
-    {/* Red flash on exit */}
-    {flashRed && (
+      {/* Ambient center glow */}
       <div
         style={{
           ...FULL_COVER,
-          background: "radial-gradient(circle at 50% 50%, rgba(255,51,1,0.15) 0%, transparent 70%)",
-          animation: "avl-flashRed 0.7s ease-out forwards",
+          background: "radial-gradient(circle at 50% 45%, rgba(229,9,20,0.15) 0%, transparent 50%)",
+          animation: "avl-breathe 5s ease-in-out infinite",
           pointerEvents: "none",
-          zIndex: 10,
         }}
       />
-    )}
-  </div>
-));
+
+      <div style={{ ...FULL_COVER, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+
+          {/* Logo */}
+          <div style={{
+            width: 80, height: 80, marginBottom: 8,
+            opacity: 0,
+            animation: "avl-crownReveal 1.4s cubic-bezier(0.16,1,0.3,1) 0.1s forwards",
+          }}>
+            <svg viewBox="200 580 360 340" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+              <SvgDefs />
+              {/* Subtle back stroke */}
+              <path d={A_MARK_PATH} fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+
+              <path
+                d={A_MARK_PATH}
+                fill="none"
+                stroke="url(#avl-aStroke)"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+                style={{ strokeDasharray: 2000, animation: "avl-drawPath 2.2s cubic-bezier(0.2,1,0.4,1) 0.4s forwards" }}
+              />
+              <path
+                d={A_MARK_PATH}
+                fill="url(#avl-aGrad)"
+                filter="url(#avl-aGlow)"
+                style={{ opacity: 0, transformOrigin: "center", animation: "avl-fillFade 1.4s cubic-bezier(0.16,1,0.3,1) 1.8s forwards" }}
+              />
+            </svg>
+          </div>
+
+          {/* Texts */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+            <StaggerWord
+              text="ARDENO"
+              baseDelay={0.8}
+              charStyle={{
+                fontFamily: "'Cinzel', serif",
+                fontSize: "clamp(24px, 8vw, 34px)",
+                fontWeight: 600,
+                color: "#ffffff",
+                textShadow: "0 0 16px rgba(255,255,255,0.3)"
+              }}
+            />
+            <StaggerWord
+              text="STUDIO"
+              baseDelay={1.4}
+              charStyle={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "clamp(10px, 4vw, 15px)",
+                fontWeight: 300,
+                fontStyle: "italic",
+                color: "rgba(229,9,20,0.8)",
+                letterSpacing: "0.5em",
+                textShadow: "0 0 12px rgba(229,9,20,0.4)"
+              }}
+              animName="avl-charInUp"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Progress Bar Container - highly refined */}
+      <div style={{ position: "absolute", bottom: 40, left: "50%", transform: "translateX(-50%)", width: 280, display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
+        <p style={{ fontFamily: "'Sora', sans-serif", fontSize: 10, letterSpacing: "0.3em", color: "rgba(255,255,255,0.4)" }}>
+          {progress < 100 ? "LOADING" : "INITIALIZING"}
+        </p>
+        <div style={{ width: "100%", height: 1, background: "rgba(255,255,255,0.08)", overflow: "hidden", position: "relative" }}>
+          <motion.div
+            style={{ width: "100%", height: "100%", background: "linear-gradient(90deg, transparent, #E50914)", transformOrigin: "left" }}
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: progress / 100 }}
+            transition={{ ease: "easeOut", duration: 0.1 }}
+          />
+        </div>
+      </div>
+
+      {flashRed && (
+        <div
+          style={{
+            ...FULL_COVER,
+            background: "radial-gradient(circle at 50% 50%, rgba(229,9,20,0.18) 0%, transparent 80%)",
+            animation: "avl-flashRed 0.6s cubic-bezier(0.16,1,0.3,1) forwards",
+            pointerEvents: "none",
+            zIndex: 10,
+          }}
+        />
+      )}
+    </div>
+  )
+);
 ArdenoPhase.displayName = "ArdenoPhase";
 
-// ─── Root export ──────────────────────────────────────────────────────────────
-export const PageLoader: React.FC<PageLoaderProps> = ({
+export const PageLoader: React.FC<{ onComplete?: () => void; minDuration?: number }> = ({
   onComplete,
-  minDuration = 2700,
+  minDuration = 3200,
 }) => {
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const isDocs = window.location.pathname.startsWith('/docs') || window.location.hash.includes('docs');
+      const hasLoaded = sessionStorage.getItem('ardeno_loader_shown');
+      return isDocs || !!hasLoaded;
+    }
+    return false;
+  });
   const [progress, setProgress] = useState(0);
   const [exiting, setExiting] = useState(false);
   const [flashRed, setFlashRed] = useState(false);
@@ -314,52 +272,68 @@ export const PageLoader: React.FC<PageLoaderProps> = ({
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
 
-  // Inject keyframes once
+  // Immediately notify parent if we skip loader
   useEffect(() => {
+    if (done) onCompleteRef.current?.();
+    else if (typeof window !== 'undefined') {
+      sessionStorage.setItem('ardeno_loader_shown', 'true');
+    }
+  }, [done]);
+
+  useEffect(() => {
+    if (done) return;
     if (document.getElementById("avl-keyframes")) return;
     const style = document.createElement("style");
     style.id = "avl-keyframes";
     style.textContent = STYLES;
     document.head.appendChild(style);
-    return () => { style.remove(); };
-  }, []);
+  }, [done]);
 
-  // rAF progress — drives the bar
   useEffect(() => {
+    if (done) return;
     const start = Date.now();
     const duration = minDuration * 0.85;
     const tick = () => {
-      const raw = Math.min(((Date.now() - start) / duration) * 100, 100);
-      const rounded = Math.round(raw);
+      // Use easeOut cubic to make the progress bar feel smoother
+      const rawPhase = Math.min(((Date.now() - start) / duration), 1);
+      const easedPhase = 1 - Math.pow(1 - rawPhase, 3);
+      const rounded = Math.round(easedPhase * 100);
+
       if (rounded !== lastProgressRef.current) {
         lastProgressRef.current = rounded;
         setProgress(rounded);
       }
-      if (raw < 100) rafRef.current = requestAnimationFrame(tick);
+      if (rawPhase < 1) rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [minDuration]);
+  }, [minDuration, done]);
 
-  // Sequencer
   useEffect(() => {
+    if (done) return;
     const timers: ReturnType<typeof setTimeout>[] = [];
     const t = (fn: () => void, ms: number) => timers.push(setTimeout(fn, ms));
 
     t(() => setFlashRed(true), minDuration);
-    t(() => setExiting(true), minDuration + 100);
+    t(() => setExiting(true), minDuration + 50);
     t(() => {
       setDone(true);
-      onCompleteRef.current?.();
-    }, minDuration + 900);
+    }, minDuration + 450); // Fast 0.4s crossfade
 
     return () => timers.forEach(clearTimeout);
-  }, [minDuration]);
+  }, [minDuration, done]);
 
   if (done) return null;
 
   return (
-    <div style={{ position: "fixed", inset: 0, zIndex: 9999, overflow: "hidden", background: "#050303" }}>
+    <div
+      style={{
+        position: "fixed", inset: 0, zIndex: 9999, overflow: "hidden", background: "#050303",
+        opacity: exiting ? 0 : 1,
+        transition: "opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+        pointerEvents: exiting ? "none" : "all"
+      }}
+    >
       <ArdenoPhase exiting={exiting} flashRed={flashRed} progress={progress} />
     </div>
   );

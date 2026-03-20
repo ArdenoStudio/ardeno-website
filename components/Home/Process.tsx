@@ -44,7 +44,7 @@ const STEPS = [
     chips: ["Design system", "Motion spec", "Figma prototype"],
     chipsMobile: ["Design system", "Motion spec"],
     duration: "2–4 wks",
-    progress: 58,
+    progress: 100,
   },
   {
     num: "04",
@@ -53,7 +53,7 @@ const STEPS = [
     chips: ["React / Next.js", "CI/CD pipeline", "Lighthouse 95+"],
     chipsMobile: ["React / Next.js", "Lighthouse 95+"],
     duration: "4–6 wks",
-    progress: 0,
+    progress: 100,
   },
 ] as const;
 
@@ -124,6 +124,27 @@ const StepRow = memo(({
   onScrollActivate: (i: number) => void;
 }) => {
   const reduced = useReducedMotion();
+  const contentOpacity = isActive ? 1 : isPast ? 0.62 : 0.82;
+  const titleColor = isActive
+    ? "#fff"
+    : isPast
+      ? "rgba(255,255,255,0.64)"
+      : "rgba(255,255,255,0.82)";
+  const descColor = isActive
+    ? "rgba(255,255,255,0.74)"
+    : isPast
+      ? "rgba(255,255,255,0.52)"
+      : "rgba(255,255,255,0.62)";
+  const chipColor = isActive
+    ? "rgba(229,9,20,0.78)"
+    : isPast
+      ? "rgba(255,255,255,0.44)"
+      : "rgba(255,255,255,0.5)";
+  const chipBorderColor = isActive
+    ? "rgba(229,9,20,0.26)"
+    : isPast
+      ? "rgba(255,255,255,0.12)"
+      : "rgba(255,255,255,0.16)";
 
   // Memoised hover handler — stable reference, no lambda on every render
   const handleEnter = useCallback(() => onHover(index), [onHover, index]);
@@ -153,7 +174,7 @@ const StepRow = memo(({
           fontSize: "clamp(4rem, 8vw, 8rem)",
           lineHeight: 1,
           // CSS transition instead of framer — no JS overhead
-          color: isActive ? "rgba(229,9,20,0.07)" : "rgba(255,255,255,0.022)",
+          color: isActive ? "rgba(229,9,20,0.08)" : "rgba(255,255,255,0.04)",
           transition: "color 0.5s ease",
           letterSpacing: "-0.04em",
           // Force GPU layer — prevents repaint on sibling updates
@@ -170,10 +191,10 @@ const StepRow = memo(({
         className="absolute left-0 top-1 w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center z-10 overflow-hidden"
         style={{
           border: `1px solid ${isActive
-              ? "rgba(229,9,20,0.55)"
-              : isPast
-                ? "rgba(255,255,255,0.12)"
-                : "rgba(255,255,255,0.07)"
+            ? "rgba(229,9,20,0.55)"
+            : isPast
+              ? "rgba(255,255,255,0.12)"
+              : "rgba(255,255,255,0.07)"
             }`,
           background: isActive ? "rgba(229,9,20,0.06)" : "#080809",
           boxShadow: isActive
@@ -255,7 +276,7 @@ const StepRow = memo(({
       <div
         className="relative z-10 pb-8 md:pb-14"
         style={{
-          opacity: isPast ? 0.28 : isActive ? 1 : 0.45,
+          opacity: contentOpacity,
           transition: "opacity 0.4s ease",
         }}
       >
@@ -263,7 +284,7 @@ const StepRow = memo(({
         <div className="flex items-baseline gap-2.5 mb-2 flex-wrap">
           <motion.h3
             animate={{
-              color: isActive ? "#fff" : "rgba(255,255,255,0.42)",
+              color: titleColor,
               scale: isActive ? 1.045 : 1,
             }}
             transition={{ duration: 0.38, ease: EASE }}
@@ -307,7 +328,7 @@ const StepRow = memo(({
             fontFamily: FONT_B,
             fontSize: "13px",
             lineHeight: 1.8,
-            color: "rgba(255,255,255,0.28)",
+            color: descColor,
             marginBottom: "0.75rem",
           }}
         >
@@ -328,8 +349,8 @@ const StepRow = memo(({
                 textTransform: "uppercase",
                 padding: "3px 8px",
                 borderRadius: 999,
-                border: `1px solid ${isActive ? "rgba(229,9,20,0.18)" : "rgba(255,255,255,0.05)"}`,
-                color: isActive ? "rgba(229,9,20,0.75)" : "rgba(255,255,255,0.14)",
+                border: `1px solid ${chipBorderColor}`,
+                color: chipColor,
                 background: isActive ? "rgba(229,9,20,0.04)" : "transparent",
                 transition: "all 0.3s ease",
               }}
@@ -350,8 +371,8 @@ const StepRow = memo(({
                 textTransform: "uppercase",
                 padding: "3px 9px",
                 borderRadius: 999,
-                border: `1px solid ${isActive ? "rgba(229,9,20,0.18)" : "rgba(255,255,255,0.05)"}`,
-                color: isActive ? "rgba(229,9,20,0.75)" : "rgba(255,255,255,0.14)",
+                border: `1px solid ${chipBorderColor}`,
+                color: chipColor,
                 background: isActive ? "rgba(229,9,20,0.04)" : "transparent",
                 transition: "all 0.3s ease",
               }}
@@ -554,7 +575,7 @@ const Dashboard = memo(({ activeStep }: { activeStep: number }) => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1.5">
                       <span
-                        className="text-[11.5px]"
+                        className="text-[13px]"
                         style={{
                           fontFamily: FONT_B,
                           fontWeight: active ? 600 : 400,
@@ -569,7 +590,7 @@ const Dashboard = memo(({ activeStep }: { activeStep: number }) => {
                         {step.title}
                       </span>
                       <span
-                        className="text-[9px] tabular-nums"
+                        className="text-[11px] tabular-nums"
                         style={{
                           fontFamily: FONT_B,
                           color: active
@@ -703,13 +724,13 @@ export const Process: React.FC = () => {
         >
           <Minus className="w-3.5 h-3.5 text-[#E50914] stroke-[1.5] shrink-0" />
           <span
-            className="text-[11px] tracking-[0.28em] text-zinc-400 uppercase"
-            style={{ fontFamily: FONT_B, fontWeight: 500 }}
+            className="text-[13px] tracking-[0.22em] uppercase"
+            style={{ fontFamily: FONT_B, fontWeight: 500, color: '#a0a0a0' }}
           >
             The Framework
           </span>
           <div className="flex-1 h-px bg-white/[0.05] ml-1" />
-          <span className="text-[11px] tracking-[0.2em] text-zinc-600 uppercase" style={{ fontFamily: FONT_B }}>
+          <span className="text-[12px] tracking-[0.2em] uppercase" style={{ fontFamily: FONT_B, color: '#888888' }}>
             04 Steps
           </span>
         </motion.div>
@@ -770,7 +791,7 @@ export const Process: React.FC = () => {
             className="md:max-w-[220px] md:pb-2 shrink-0"
           >
             <div className="w-5 h-px bg-[#E50914] mb-4 hidden md:block" style={{ opacity: 0.55 }} />
-            <p className="text-[13px] text-zinc-500 leading-[1.8]" style={{ fontFamily: FONT_B }}>
+            <p className="text-[15px] leading-[1.8]" style={{ fontFamily: FONT_B, color: '#c0c0c0' }}>
               Our proven process bridges creative vision and technical reality,
               ensuring every decision drives measurable results.
             </p>

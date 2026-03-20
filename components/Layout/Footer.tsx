@@ -14,14 +14,27 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     if (href === '#') return;
+    if (href.startsWith('/')) {
+      window.history.pushState({}, '', href);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+      window.scrollTo(0, 0);
+      return;
+    }
     const el = document.getElementById(href.replace('#', ''));
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    if (!el) return;
+    const navOffset = window.scrollY > 24 ? 72 : 80;
+    window.scrollTo({
+      top: el.getBoundingClientRect().top + window.scrollY - navOffset - 8,
+      behavior: 'smooth',
+    });
   };
 
   const navLinks = [
     { label: 'Work', href: '#work' },
     { label: 'Services', href: '#services' },
     { label: 'Process', href: '#process' },
+    { label: 'Docs', href: '/docs' },
+    { label: 'FAQ', href: '/faq' },
   ];
 
   const socialLinks = [
@@ -49,7 +62,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
         }}
       />
 
-      {/* Ambient glow — top right, different position from other sections */}
+      {/* Ambient glow */}
       <div
         className="pointer-events-none absolute top-[-20%] right-[-10%] w-[50vw] h-[50vw] rounded-full"
         style={{ background: 'radial-gradient(circle, rgba(229,9,20,0.045) 0%, transparent 65%)' }}
@@ -75,18 +88,16 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
             transition={{ duration: 0.8, ease: EASE }}
             className="max-w-xl"
           >
-            {/* Eyebrow — matches all other sections exactly */}
             <div className="flex items-center gap-3 mb-8">
               <Minus className="w-3.5 h-3.5 text-[#E50914] stroke-[1.5] shrink-0" />
               <span
-                className="text-[11px] tracking-[0.28em] text-zinc-400 uppercase"
-                style={{ fontFamily: FONT_B, fontWeight: 500 }}
+                className="text-[13px] tracking-[0.22em] uppercase"
+                style={{ fontFamily: FONT_B, fontWeight: 500, color: '#a0a0a0' }}
               >
                 Start a project
               </span>
             </div>
 
-            {/* Heading — Instrument Serif, same pattern as other sections */}
             <h2
               className="leading-[0.95] tracking-[-0.025em] text-white mb-8"
               style={{
@@ -99,17 +110,8 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
               <br />
               something
               <br />
-              {/* "iconic." — faded, with red underline reveal. Consistent with Process heading */}
               <span className="relative inline-block">
-                <em
-                  style={{
-                    fontStyle: 'italic',
-                    color: '#8c8c96',
-                    fontWeight: 400,
-                  }}
-                >
-                  iconic.
-                </em>
+                <em style={{ fontStyle: 'italic', color: '#8c8c96', fontWeight: 400 }}>iconic.</em>
                 <motion.span
                   className="absolute left-0 bottom-1 h-[2px] rounded-full"
                   style={{
@@ -125,16 +127,14 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
               </span>
             </h2>
 
-            {/* Body copy — 13px Sora zinc-500, matches Services/Process */}
             <p
-              className="text-[13px] text-zinc-500 mb-10 leading-[1.8] max-w-xs"
+              className="text-[15px] text-zinc-400 mb-10 leading-[1.8] max-w-xs"
               style={{ fontFamily: FONT_B }}
             >
               Ready to transform your digital presence?
               We are currently accepting new projects.
             </p>
 
-            {/* CTA — consistent with site arrow button language */}
             <div className="flex items-center gap-4">
               <motion.button
                 onClick={() => onOpenContact?.()}
@@ -165,10 +165,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
           >
             {/* Explore */}
             <div>
-              {/* Column label — matches eyebrow style */}
               <p
-                className="text-[10px] tracking-[0.28em] uppercase text-zinc-600 mb-6"
-                style={{ fontFamily: FONT_B, fontWeight: 500 }}
+                className="text-[12px] tracking-[0.22em] uppercase mb-6"
+                style={{ fontFamily: FONT_B, fontWeight: 500, color: '#777777' }}
               >
                 Explore
               </p>
@@ -192,13 +191,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
             {/* Contact */}
             <div>
               <p
-                className="text-[10px] tracking-[0.28em] uppercase text-zinc-600 mb-6"
-                style={{ fontFamily: FONT_B, fontWeight: 500 }}
+                className="text-[12px] tracking-[0.22em] uppercase mb-6"
+                style={{ fontFamily: FONT_B, fontWeight: 500, color: '#777777' }}
               >
                 Contact
               </p>
               <ul className="space-y-4">
-                {/* Email */}
                 <li>
                   <a
                     href="mailto:ardenostudio@gmail.com"
@@ -211,7 +209,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
                   </a>
                 </li>
 
-                {/* Suven */}
                 <li>
                   <a
                     href={suvenWhatsApp}
@@ -224,14 +221,13 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
                     <WhatsAppIcon />
                   </a>
                   <span
-                    className="text-[10px] text-zinc-700 tracking-[0.15em] uppercase mt-0.5 block"
-                    style={{ fontFamily: FONT_B }}
+                    className="text-[12px] tracking-[0.12em] uppercase mt-0.5 block"
+                    style={{ fontFamily: FONT_B, color: '#888888' }}
                   >
                     Suven Seoras
                   </span>
                 </li>
 
-                {/* Ovindu */}
                 <li>
                   <a
                     href={ovinduWhatsApp}
@@ -244,17 +240,16 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
                     <WhatsAppIcon />
                   </a>
                   <span
-                    className="text-[10px] text-zinc-700 tracking-[0.15em] uppercase mt-0.5 block"
-                    style={{ fontFamily: FONT_B }}
+                    className="text-[12px] tracking-[0.12em] uppercase mt-0.5 block"
+                    style={{ fontFamily: FONT_B, color: '#888888' }}
                   >
                     Ovindu Karunaratne
                   </span>
                 </li>
 
-                {/* Location */}
                 <li className="pt-1">
                   <span
-                    className="text-[13px] text-zinc-600"
+                    className="text-[13px] text-zinc-500"
                     style={{ fontFamily: FONT_B }}
                   >
                     Colombo, Sri Lanka
@@ -271,7 +266,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
 
       <div className="container mx-auto px-6 md:px-12 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <span
-          className="text-[10px] text-zinc-700 tracking-[0.2em] uppercase"
+          className="text-[11px] text-zinc-500 tracking-[0.18em] uppercase"
           style={{ fontFamily: FONT_B }}
         >
           © {new Date().getFullYear()} Ardeno Studio. All rights reserved.

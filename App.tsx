@@ -17,6 +17,9 @@ const Services = lazy(() =>
 const Process = lazy(() =>
   import('./components/Home/Process').then(m => ({ default: m.Process }))
 );
+const OurStory = lazy(() =>
+  import('./components/Home/OurStory').then(m => ({ default: m.OurStory }))
+);
 const Testimonials = lazy(() =>
   import('./components/Home/Testimonials').then(m => ({ default: m.Testimonials }))
 );
@@ -25,9 +28,6 @@ const Footer = lazy(() =>
 );
 const ContactModal = lazy(() =>
   import('./components/Home/ContactModal').then(m => ({ default: m.ContactModal }))
-);
-const AboutPage = lazy(() =>
-  import('./components/About/AboutPage').then(m => ({ default: m.AboutPage }))
 );
 const FAQPage = lazy(() =>
   import('./components/FAQ/FAQPage').then(m => ({ default: m.FAQPage }))
@@ -38,18 +38,18 @@ const preloadChunks = () => {
   import('./components/Home/FeaturedWork');
   import('./components/Home/Services');
   import('./components/Home/Process');
+  import('./components/Home/OurStory');
   import('./components/Home/Testimonials');
   import('./components/Layout/Footer');
   import('./components/Home/ContactModal');
 };
 
 // ─── Simple path-based router ────────────────────────────────────────────────
-type Route = 'home' | 'docs' | 'about' | 'faq';
+type Route = 'home' | 'docs' | 'faq';
 
 const getRoute = (): Route => {
   const p = window.location.pathname;
   if (p.startsWith('/docs')) return 'docs';
-  if (p.startsWith('/about')) return 'about';
   if (p.startsWith('/faq')) return 'faq';
   return 'home';
 };
@@ -126,15 +126,6 @@ const App: React.FC = () => {
     );
   }
 
-  // ── About route ──
-  if (route === 'about') {
-    return pageShell(
-      <Suspense fallback={null}>
-        <AboutPage onOpenContact={() => setContactOpen(true)} />
-      </Suspense>
-    );
-  }
-
   // ── FAQ route ──
   if (route === 'faq') {
     return pageShell(
@@ -165,6 +156,7 @@ const App: React.FC = () => {
         <Suspense fallback={null}><FeaturedWork /></Suspense>
         <Suspense fallback={null}><Services /></Suspense>
         <Suspense fallback={null}><Process /></Suspense>
+        <Suspense fallback={null}><OurStory /></Suspense>
         <Suspense fallback={null}><Testimonials /></Suspense>
         <Suspense fallback={null}>
           <Footer onOpenContact={() => setContactOpen(true)} />
@@ -175,7 +167,7 @@ const App: React.FC = () => {
         <ContactModal isOpen={contactOpen} onClose={() => setContactOpen(false)} />
       </Suspense>
 
-      {loaded && <CookieBanner />}
+      <CookieBanner />
       {loaded && <ArdenoAIWidget />}
     </div>
   );

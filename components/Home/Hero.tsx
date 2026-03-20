@@ -485,6 +485,8 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
   const opacityHero = useTransform(scrollY, [0, 500], [1, 0]);
   const scaleHero = useTransform(scrollY, [0, 500], [1, 0.95]);
 
+
+
   const mockRef = useRef<HTMLDivElement>(null);
   const rotX = useSpring(0, { stiffness: 90, damping: 18 });
   const rotY = useSpring(0, { stiffness: 90, damping: 18 });
@@ -596,8 +598,8 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
               initial={{ opacity: 0, y: 18, filter: "blur(4px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 0.75, delay: headlineDelay + 1.05, ease: EASE }}
-              className="text-[13px] text-zinc-500 max-w-[340px] leading-[1.8] mb-7"
-              style={{ fontFamily: FONT_B }}
+              className="text-[15px] max-w-[360px] leading-[1.8] mb-7"
+              style={{ fontFamily: FONT_B, color: '#c0c0c0' }}
             >
               We craft immersive digital products — strategic at the core,
               cinematic on the surface. Built to convert, load fast, and own every screen.
@@ -612,7 +614,7 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
             >
               <div>
                 <PrimaryButton onClick={onOpenContact} />
-                <p className="text-[11px] text-zinc-600 mt-2 ml-1" style={{ fontFamily: FONT_B }}>
+                <p className="text-[12px] text-zinc-500 mt-2 ml-1" style={{ fontFamily: FONT_B }}>
                   Reply within 24 hrs
                 </p>
               </div>
@@ -620,7 +622,7 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
                 <SecondaryButton onClick={() => {
                   document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
                 }} />
-                <p className="text-[11px] text-zinc-600 mt-2 ml-1" style={{ fontFamily: FONT_B }}>
+                <p className="text-[12px] text-zinc-500 mt-2 ml-1" style={{ fontFamily: FONT_B }}>
                   Taking on new work
                 </p>
               </div>
@@ -638,12 +640,12 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-55" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
                 </span>
-                <span className="text-[11px] text-emerald-400/85 font-medium" style={{ fontFamily: FONT_B }}>
+                <span className="text-[12px] text-emerald-400/85 font-medium" style={{ fontFamily: FONT_B }}>
                   Available now
                 </span>
               </div>
               <div className="h-3 w-px bg-white/10" />
-              <span className="text-[11px] text-zinc-500" style={{ fontFamily: FONT_B }}>
+              <span className="text-[12px] text-zinc-500" style={{ fontFamily: FONT_B }}>
                 2–3 project slots open
               </span>
             </motion.div>
@@ -690,7 +692,7 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
                   ) : (
                     <span className="text-[26px] font-bold text-white tracking-tight">{num}</span>
                   )}
-                  <span className="text-[10px] text-zinc-400 tracking-[0.15em] uppercase">{label}</span>
+                  <span className="text-[12px] text-zinc-400 tracking-[0.12em] uppercase">{label}</span>
                 </div>
               ))}
             </motion.div>

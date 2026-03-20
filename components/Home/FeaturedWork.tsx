@@ -116,38 +116,38 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 50, scale: 0.97 }}
         transition={{ duration: 0.55, ease: EXPO }}
-        className="relative z-10"
+        className="relative z-10 flex flex-col md:flex-row overflow-hidden shadow-2xl"
         style={{
           background: "#0c0c0e",
           border: "1px solid rgba(255,255,255,0.07)",
           width: "92vw",
-          maxWidth: 480,
-          maxHeight: "88vh",
-          overflowY: "auto",
-          borderRadius: 20,
+          maxWidth: 1040,
+          maxHeight: "min(90vh, 760px)",
+          borderRadius: 24,
           marginTop: "auto",
           marginBottom: "auto",
         }}
+        onClick={(e) => e.stopPropagation()}
       >
-        {/* Image */}
-        <div className="relative overflow-hidden" style={{ aspectRatio: window.innerWidth < 640 ? "16/10" : "3/4" }}>
+        {/* Left/Top: Image Section */}
+        <div className="relative w-full md:w-[55%] shrink-0 overflow-hidden aspect-[16/10] md:aspect-auto md:min-h-full">
           <motion.img
             src={project.image} alt={project.title}
-            width={800} height={300}
+            width={1200} height={800}
             loading="lazy" decoding="async"
             className="w-full h-full object-cover"
-            style={{ opacity: 0.55 }}
+            style={{ opacity: 1 }}
             initial={{ scale: 1.08 }} animate={{ scale: 1 }}
             transition={{ duration: 0.8, ease: EXPO }}
           />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.15) 100%)" }} />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 35%, transparent 60%)" }} />
 
-          {/* Close */}
+          {/* Close - Mobile only (inside image) */}
           <motion.button
             onClick={onClose}
-            className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center text-zinc-300"
+            className="md:hidden absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center text-zinc-300 z-20"
             style={{ background: "rgba(12,12,14,0.65)", border: "1px solid rgba(255,255,255,0.12)", backdropFilter: "blur(12px)" }}
-            whileHover={{ scale: 1.12, borderColor: "rgba(229,9,20,0.5)" }}
+            whileHover={{ scale: 1.12 }}
             whileTap={{ scale: 0.95 }}
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -156,81 +156,101 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
           </motion.button>
 
           {/* Year badge */}
-          <div className="absolute top-4 left-4">
+          <div className="absolute top-4 left-4 md:top-6 md:left-6">
             <span
-              className="text-[10px] tracking-[0.25em] uppercase px-3 py-1.5 rounded-full text-zinc-400"
-              style={{ fontFamily: "'Sora', sans-serif", background: "rgba(12,12,14,0.65)", border: "1px solid rgba(255,255,255,0.1)", backdropFilter: "blur(12px)" }}
+              className="text-[10px] tracking-[0.25em] uppercase px-3 py-1.5 rounded-full text-zinc-100 font-medium"
+              style={{ fontFamily: FONT_BODY, background: "rgba(12,12,14,0.75)", border: "1px solid rgba(255,255,255,0.15)", backdropFilter: "blur(12px)" }}
             >
               {project.year}
             </span>
           </div>
 
           {/* Title overlay */}
-          <div className="absolute bottom-0 left-0 right-0 px-8 pb-6">
-            <p className="text-[10px] text-zinc-400 tracking-[0.3em] uppercase mb-2" style={{ fontFamily: "'Sora', sans-serif", textShadow: "0 1px 8px rgba(0,0,0,1)" }}>
+          <div className="absolute bottom-0 left-0 right-0 px-6 pb-6 md:px-10 md:pb-10">
+            <p className="text-[11px] md:text-[12px] text-zinc-100 tracking-[0.22em] uppercase font-semibold mb-1.5 md:mb-3" style={{ fontFamily: FONT_BODY, textShadow: "0 2px 12px rgba(0,0,0,1), 0 0 1px rgba(0,0,0,1)" }}>
               {project.category}
             </p>
             <motion.h2
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, ease: EXPO, delay: 0.12 }}
-              className="text-2xl sm:text-4xl text-white leading-none tracking-[-0.025em]"
-              style={{ fontSize: "clamp(1.9rem,4vw,3rem)", fontFamily: "'Instrument Serif', Georgia, serif", fontWeight: 400, textShadow: "0 2px 20px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,1)" }}
+              className="text-white leading-[1.1]"
+              style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", fontFamily: FONT_HEADING, fontWeight: 400, textShadow: "0 2px 20px rgba(0,0,0,0.9)" }}
             >
               {project.title}
             </motion.h2>
           </div>
         </div>
 
-        {/* Body */}
-        <div className="p-4 sm:p-6">
-          <motion.div
-            initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-            transition={{ duration: 0.7, ease: EXPO, delay: 0.18 }}
-            className="h-px mb-6 origin-left"
-            style={{ background: "linear-gradient(90deg, #E50914 0%, rgba(229,9,20,0.08) 70%, transparent 100%)" }}
-          />
-          <motion.p
-            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: EXPO, delay: 0.22 }}
-            className="text-zinc-400 leading-[1.75] mb-6 text-sm"
-            style={{ fontFamily: "'Sora', sans-serif" }}
-          >
-            {project.description}
-          </motion.p>
+        {/* Right/Bottom: Body Section */}
+        <div className="relative flex-1 p-6 md:p-10 flex flex-col h-full min-w-0">
+          <div className="overflow-y-auto pr-2 custom-scrollbar flex-1">
+            {/* Close - Desktop only */}
+            <button
+              onClick={onClose}
+              className="hidden md:flex absolute top-6 right-6 w-10 h-10 rounded-full items-center justify-center text-zinc-500 hover:text-white transition-all duration-300 hover:bg-zinc-800/50"
+              style={{ border: "1px solid rgba(255,255,255,0.08)" }}
+            >
+              <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
+                <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+              </svg>
+            </button>
 
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex flex-wrap" style={{ flexWrap: "wrap", gap: 8 }}>
-              {project.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-[10px] text-zinc-300 px-3 py-1.5 rounded-full tracking-[0.1em]"
-                  style={{ fontFamily: "'Sora', sans-serif", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.03)" }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <div className="flex items-center gap-4">
-              <motion.a
-                href={project.url ?? "#"} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2.5 px-5 py-2.5 rounded-full text-white text-[11px] tracking-[0.14em] uppercase"
-                style={{ fontFamily: "'Sora', sans-serif", background: "#E50914", boxShadow: "0 0 28px rgba(229,9,20,0.28)" }}
-                whileHover={{ scale: 1.03, boxShadow: "0 0 36px rgba(229,9,20,0.42)" }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <span>Visit Site</span>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </motion.a>
-              <button
-                onClick={onClose}
-                className="text-[11px] text-zinc-500 tracking-[0.18em] uppercase hover:text-zinc-300 transition-colors duration-200"
-                style={{ fontFamily: "'Sora', sans-serif" }}
-              >
-                Close
-              </button>
-            </div>
+            <motion.div
+              initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+              transition={{ duration: 0.7, ease: EXPO, delay: 0.18 }}
+              className="h-px mb-8 md:mb-10 origin-left w-24"
+              style={{ background: "#E50914" }}
+            />
+
+            <motion.div
+              initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: EXPO, delay: 0.22 }}
+              className="space-y-6 md:space-y-8"
+            >
+              <div>
+                <h4 className="text-[10px] tracking-[0.2em] text-zinc-500 uppercase mb-3 font-semibold" style={{ fontFamily: FONT_BODY }}>Description</h4>
+                <p className="text-zinc-400 leading-[1.8] text-sm md:text-[15px]" style={{ fontFamily: FONT_BODY }}>
+                  {project.description}
+                </p>
+              </div>
+
+              <div>
+                <h4 className="text-[10px] tracking-[0.2em] text-zinc-500 uppercase mb-3 font-semibold" style={{ fontFamily: FONT_BODY }}>Scope</h4>
+                <div className="flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-[10px] text-zinc-300 px-3 py-1.5 rounded-full tracking-[0.05em]"
+                      style={{ fontFamily: FONT_BODY, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.02)" }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="mt-8 md:mt-auto pt-6 border-t border-white/5 flex items-center justify-between">
+            <motion.a
+              href={project.url ?? "#"} target="_blank" rel="noopener noreferrer"
+              className="group flex items-center gap-3 px-6 py-3 rounded-full text-white text-[11px] tracking-[0.14em] uppercase font-medium bg-[#E50914]"
+              style={{ boxShadow: "0 10px 30px rgba(229,9,20,0.2)" }}
+              whileHover={{ scale: 1.02, background: "#ff1420", boxShadow: "0 12px 40px rgba(229,9,20,0.35)" }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <span>Launch Project</span>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
+                <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </motion.a>
+            <button
+              onClick={onClose}
+              className="text-[11px] text-zinc-600 tracking-[0.2em] uppercase hover:text-zinc-400 transition-colors py-2 md:hidden"
+              style={{ fontFamily: FONT_BODY }}
+            >
+              Dismiss
+            </button>
           </div>
         </div>
       </motion.div>
@@ -294,7 +314,7 @@ export const FeaturedWork: React.FC = () => {
           <div>
             <div className="flex items-center gap-3 mb-5">
               <div style={{ width: 20, height: 1, background: "#E50914" }} />
-              <span className="text-[11px] tracking-[0.3em] text-zinc-500 uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
+              <span className="text-[13px] tracking-[0.22em] text-zinc-500 uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
                 Selected Work
               </span>
             </div>
@@ -375,7 +395,7 @@ export const FeaturedWork: React.FC = () => {
                     {/* Title + Category + mobile index */}
                     <div className="flex-1 min-w-0">
                       {/* Mobile index inline */}
-                      <span className="lg:hidden text-[10px] text-zinc-600 tracking-[0.2em] tabular-nums" style={{ fontFamily: "'Sora', sans-serif" }}>
+                      <span className="lg:hidden text-[11px] text-zinc-600 tracking-[0.2em] tabular-nums" style={{ fontFamily: "'Sora', sans-serif" }}>
                         {String(index + 1).padStart(2, "0")}
                       </span>
                       <motion.h3
@@ -392,7 +412,7 @@ export const FeaturedWork: React.FC = () => {
                       >
                         {project.title}
                       </motion.h3>
-                      <p className="text-[10px] text-zinc-500 mt-1 tracking-[0.18em] uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
+                      <p className="text-[12px] text-zinc-500 mt-1 tracking-[0.14em] uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
                         {project.category}
                       </p>
                     </div>
@@ -507,7 +527,7 @@ export const FeaturedWork: React.FC = () => {
 
                     {/* Bottom info */}
                     <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <p className="text-[9px] text-zinc-400 tracking-[0.28em] uppercase mb-1.5" style={{ fontFamily: "'Sora', sans-serif" }}>
+                      <p className="text-[11px] text-zinc-400 tracking-[0.22em] uppercase mb-1.5" style={{ fontFamily: "'Sora', sans-serif" }}>
                         {hoveredProject.category}
                       </p>
                       <h4 className="text-[1.2rem] text-white leading-tight tracking-[-0.02em]" style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontWeight: 400 }}>

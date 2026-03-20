@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowUpRight, CheckCircle2, Loader2 } from "lucide-react";
+import { getStoredUtm } from "../UI/trackUtm";
 
 interface ContactModalProps {
     isOpen: boolean;
@@ -47,24 +48,45 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
 
     const handleSubmit = async () => {
         const errs = validate();
-        if (Object.keys(errs).length) { setErrors(errs); return; }
+        if (Object.keys(errs).length) {
+            setErrors(errs);
+            return;
+        }
+
         setErrors({});
         setFormState("submitting");
+
         try {
-            // Replace YOUR_FORM_ID with your Formspree form ID.
-            // In Formspree dashboard, set the notification email to ardenostudio@gmail.com
+            const utm = getStoredUtm();
+
+            const payload = {
+                _replyto: fields.email,
+                subject: `New Ardeno inquiry from ${fields.name}`,
+                name: fields.name,
+                email: fields.email,
+                company: fields.company || "—",
+                budget: fields.budget || "Not specified",
+                message: fields.message,
+
+                utm_source: utm.utm_source || "direct",
+                utm_medium: utm.utm_medium || "none",
+                utm_campaign: utm.utm_campaign || "none",
+
+                page_path: window.location.pathname,
+                page_url: window.location.href,
+                referrer: document.referrer || "direct",
+                submitted_at: new Date().toISOString(),
+            };
+
             const res = await fetch("https://formspree.io/f/mreaalww", {
                 method: "POST",
-                headers: { "Content-Type": "application/json", Accept: "application/json" },
-                body: JSON.stringify({
-                    _replyto: fields.email,
-                    name: fields.name,
-                    email: fields.email,
-                    company: fields.company || "—",
-                    budget: fields.budget || "Not specified",
-                    message: fields.message,
-                }),
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json"
+                },
+                body: JSON.stringify(payload),
             });
+
             setFormState(res.ok ? "success" : "error");
         } catch {
             setFormState("error");
@@ -83,7 +105,6 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
 
     return (
         <>
-            {/* ── All focus/placeholder styles handled in CSS — no JS state needed ── */}
             <style>{`
         .ardeno-input {
           width: 100%;
@@ -191,7 +212,6 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                                 />
 
                                 <div className="relative p-8 md:p-10">
-
                                     {/* ── Header ── */}
                                     <div className="flex items-start justify-between mb-8">
                                         <div>
@@ -269,10 +289,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                                             </motion.div>
                                         ) : (
                                             <motion.div key="form" initial={{ opacity: 1 }} exit={{ opacity: 0 }}>
-
                                                 {/* Grid */}
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-
                                                     {/* Name */}
                                                     <div>
                                                         <label className="ardeno-label">Name <span style={{ color: "#E50914" }}>*</span></label>

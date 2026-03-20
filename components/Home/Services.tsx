@@ -440,11 +440,11 @@ const ServiceCard: React.FC<{
               {service.id}
             </motion.span>
             <span
-              className="text-[9px] font-semibold tracking-[0.18em] uppercase rounded-full px-2.5 py-1"
+              className="text-[11px] font-semibold tracking-[0.14em] uppercase rounded-full px-2.5 py-1"
               style={{
                 fontFamily: FONT_BODY,
-                color: hovered ? "rgba(161,161,170,1)" : "rgba(82,82,91,1)",
-                border: `1px solid ${hovered ? "rgba(255,255,255,0.11)" : "rgba(255,255,255,0.06)"}`,
+                color: hovered ? "rgba(200,200,208,1)" : "#888888",
+                border: `1px solid ${hovered ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.09)"}`,
                 transition: "all 0.35s ease",
               }}
             >
@@ -484,10 +484,10 @@ const ServiceCard: React.FC<{
 
           {/* Description */}
           <p
-            className="text-[13px] leading-[1.75] flex-1"
+            className="text-[14px] leading-[1.75] flex-1"
             style={{
               fontFamily: FONT_BODY,
-              color: hovered ? "rgba(161,161,170,1)" : "rgba(90,90,100,1)",
+              color: hovered ? "rgba(200,200,208,1)" : "#aaaaaa",
               transition: "color 0.4s ease",
             }}
           >
@@ -609,15 +609,15 @@ export const Services: React.FC = () => {
         >
           <Minus className="w-3.5 h-3.5 text-[#E50914] stroke-[1.5] shrink-0" />
           <span
-            className="text-[11px] tracking-[0.28em] text-zinc-400 uppercase"
-            style={{ fontFamily: FONT_BODY, fontWeight: 500 }}
+            className="text-[13px] tracking-[0.22em] uppercase"
+            style={{ fontFamily: FONT_BODY, fontWeight: 500, color: '#a0a0a0' }}
           >
             Our Expertise
           </span>
           <div className="flex-1 h-px bg-white/[0.05] ml-1" />
           <span
-            className="text-[11px] tracking-[0.2em] text-zinc-600 uppercase"
-            style={{ fontFamily: FONT_BODY }}
+            className="text-[12px] tracking-[0.2em] uppercase"
+            style={{ fontFamily: FONT_BODY, color: '#888888' }}
           >
             04 Services
           </span>
@@ -663,8 +663,8 @@ export const Services: React.FC = () => {
               style={{ opacity: 0.7 }}
             />
             <p
-              className="text-[13px] text-zinc-500 leading-[1.8]"
-              style={{ fontFamily: FONT_BODY }}
+              className="text-[15px] leading-[1.8]"
+              style={{ fontFamily: FONT_BODY, color: '#c0c0c0' }}
             >
               Four core disciplines. One agency. Infinite competitive edge for
               brands that refuse to be ignored.

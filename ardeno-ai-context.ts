@@ -10,13 +10,8 @@ Website redesigns — we rebuild outdated websites from scratch with a modern pr
 Portals and custom systems — web applications, dashboards, booking systems, and custom digital tools.
 AI-enhanced websites — optional features like chat assistants, smart forms, and personalized experiences that can be added to any project.
 
-PRICING (these are typical starting points — exact price always depends on scope, pages, and features required):
-Basic website (3–5 pages): starting around $200–$500
-Advanced website (6–10 pages with animations): typically between $500–$1,500
-Landing page: starting around $150–$400
-Portal or custom system: typically between $1,000–$5,000+
-Redesigns follow the same ranges as new websites.
-No hidden fees. Final quote is always discussed before work begins.
+PRICING (pricing is project-based and determined by the specific complexity and scope):
+Ardeno does not offer fixed price lists. Final quotes are provided after a discovery call to understand the project requirements, required pages, and custom functionality. Final pricing is always discussed and agreed upon before work begins. No hidden fees.
 
 PROCESS:
 Discovery — free consultation to understand the business and goals.
