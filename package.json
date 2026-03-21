@@ -1,5 +1,5 @@
 {
-  "name": "copy-of-copy-of-ardent-studio-v4",
+  "name": "ardeno-studio",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
+    "@vercel/node": "^5.1.0",
     "@vitejs/plugin-react": "^5.0.0",
     "autoprefixer": "^10.4.24",
     "postcss": "^8.5.6",

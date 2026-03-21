@@ -503,7 +503,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                   onMouseEnter={() => setPortalHov(true)}
                   onMouseLeave={() => setPortalHov(false)}
                   onClick={() => {
-                    window.open("https://ardeno-client-portal.netlify.app", "_blank");
+                    window.open("https://ardeno-portal.vercel.app", "_blank");
                   }}
                   style={{
                     position: "relative",
@@ -805,7 +805,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
               >
                 <div className="h-px bg-white/[0.05] mb-6" />
                 <a
-                  href="https://ardeno-client-portal.netlify.app"
+                  href="https://ardeno-portal.vercel.app"
                   className="w-full flex items-center justify-center gap-2 rounded-full py-3 mb-3"
                   style={{
                     fontFamily: "'DM Sans', sans-serif",

@@ -17,8 +17,8 @@ export const INTRO_CONFIG = {
   DURATION_MOVE: 1000,
   SAFETY_BUFFER: 1500,
   ASSETS: {
-    LOADER_GIF: '/ardent-loader.gif',
-    STATIC_LOGO: '/ardent-logo.png',
+    LOADER_GIF: '/ardeno-loader.gif',
+    STATIC_LOGO: '/ardeno-logo.png',
   }
 };
 
@@ -64,8 +64,7 @@ export const SERVICES: Service[] = [
   {
     id: 'development',
     title: 'Creative Development',
-    description:
-      'Fluid animations, WebGL interactions, and rock-solid code. Performance meets artistry.',
+    description: "Ardeno Studio - High Performance Digital Presence",
     icon: <Zap className="w-8 h-8 text-accent" />,
   },
   {
@@ -91,7 +90,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Marketing Director',
     company: 'Odel Luxury',
     quote:
-      "Ardent Studio didn't just build a website; they elevated our entire brand perception. The attention to detail is world-class.",
+      "Ardeno Studio didn't just build a website; they elevated our entire brand perception. The attention to detail is world-class.",
     avatar: 'https://picsum.photos/100/100?random=10',
   },
   {

@@ -25,7 +25,7 @@ const PROJECTS: Project[] = [
     tags: ["Branding", "Menu Design", "UI/UX"],
     description: "A warm, tactile digital presence for a specialty café where every pixel reflects the aroma of hand-poured coffee. Rich earthy tones, a curated menu experience, and a reservation flow as smooth as the espresso.",
     year: "2025",
-    url: "#",
+    url: "https://ardeno-cinnamon-cafe.vercel.app",
   },
   {
     id: "2",
@@ -35,7 +35,7 @@ const PROJECTS: Project[] = [
     tags: ["Web App", "Membership Portal", "Branding"],
     description: "A high-energy digital platform for Sri Lanka's premier gym brand. Class scheduling, membership management, and transformation stories packaged into an interface built to motivate from the first click.",
     year: "2025",
-    url: "#",
+    url: "https://ardeno-lanka-fitness.vercel.app",
   },
   {
     id: "3",
@@ -43,9 +43,9 @@ const PROJECTS: Project[] = [
     category: "Sports & Expo",
     image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=80",
     tags: ["Event Site", "Ticketing", "Animation"],
-    description: "A kinetic event platform for Sri Lanka's largest sports expo. Dynamic athlete profiles, live schedule tracking, and a ticketing experience designed to match the adrenaline of the event floor.",
+    description: "Sri Lanka's premier Health, Wellness, Performance & Lifestyle movement — bringing together athletes, experts, brands, and community under one roof.",
     year: "2025",
-    url: "#",
+    url: "https://ardeno-lanka-motion.vercel.app",
   },
   {
     id: "4",
@@ -55,7 +55,7 @@ const PROJECTS: Project[] = [
     tags: ["Booking System", "E-Commerce", "Branding"],
     description: "An indulgent digital salon experience built for Sri Lanka's most discerning clientele. Silky transitions, premium service showcases, and an appointment booking system as refined as the treatments themselves.",
     year: "2025",
-    url: "#",
+    url: "https://ardeno-luxe-lanka.vercel.app",
   },
   {
     id: "5",
@@ -65,7 +65,7 @@ const PROJECTS: Project[] = [
     tags: ["Online Ordering", "Menu Design", "UI/UX"],
     description: "A bold, appetite-driven web presence for a contemporary urban restaurant. Full digital menu, table reservations, and an online ordering flow that turns browsers into regulars before they walk through the door.",
     year: "2025",
-    url: "#",
+    url: "https://ardeno-urban-kitchen.vercel.app",
   },
 ];
 

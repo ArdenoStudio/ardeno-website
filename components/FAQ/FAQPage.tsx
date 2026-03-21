@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Minus, ArrowUpRight, Plus } from 'lucide-react';
+import { Minus, ArrowUpRight, Plus, X } from 'lucide-react';
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
-const FONT_H = "'Syne', sans-serif";
-const FONT_B = "'Manrope', sans-serif";
+const FONT_H = "'Instrument Serif', Georgia, serif";
+const FONT_B = "'Sora', sans-serif";
 const RED = '#E50914';
 
 interface FAQPageProps {
@@ -162,6 +162,40 @@ const AccordionItem: React.FC<{ item: FAQItem; index: number }> = ({ item, index
 
 export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
     const [activeCategory, setActiveCategory] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setStatus('loading');
+        setErrorMessage('');
+
+        try {
+            const res = await fetch('/api/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+
+            if (res.ok) {
+                setStatus('success');
+                setFormData({ name: '', email: '', message: '' });
+                setTimeout(() => {
+                    setIsModalOpen(false);
+                    setStatus('idle');
+                }, 2000);
+            } else {
+                const data = await res.json();
+                setStatus('error');
+                setErrorMessage(data.error || 'Something went wrong');
+            }
+        } catch (err) {
+            setStatus('error');
+            setErrorMessage('Network error. Please try again.');
+        }
+    };
 
     const openAIChat = () => {
         const isOpen = document.querySelector('[role="dialog"][aria-label="AI assistant"]');
@@ -207,7 +241,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
                     <img src="/ardeno-logo.svg" alt="Ardeno Studio" className="h-9 w-auto" draggable={false} />
                     <span
                         className="hidden sm:block text-[10px] tracking-[0.22em] uppercase"
-                        style={{ fontFamily: FONT_H, fontWeight: 600, color: 'rgba(255,255,255,0.45)' }}
+                        style={{ fontFamily: FONT_B, fontWeight: 600, color: 'rgba(255,255,255,0.45)' }}
                     >
                         Ardeno Studio
                     </span>
@@ -241,35 +275,35 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
 
                     <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
                         <h1
-                            className="leading-[0.95] tracking-[-0.03em] text-white"
+                            className="leading-[1.02] tracking-[-0.01em] text-white"
                             style={{
                                 fontFamily: FONT_H,
-                                fontSize: 'clamp(2rem, 4vw, 3.2rem)',
-                                fontWeight: 800,
-                                maxWidth: '700px',
+                                fontSize: 'clamp(2.4rem, 5vw, 4.4rem)',
+                                fontWeight: 400,
+                                maxWidth: '750px',
                             }}
                         >
                             Everything you
                             <br />
                             wanted to{' '}
-                            <em style={{ color: '#8c8c96' }}>ask.</em>
+                            <em style={{ color: 'rgba(161,161,170,0.55)', fontStyle: 'italic' }}>ask.</em>
                         </h1>
 
                         <p
                             className="leading-[1.8] max-w-xs lg:mb-2"
                             style={{ fontFamily: FONT_B, fontSize: '0.9rem', fontWeight: 400, color: '#6b6b76' }}
                         >
-                            Can't find your answer here?{' '}
-                            <a
-                                href="mailto:ardenostudio@gmail.com?subject=Ardeno%20Studio%20Enquiry&body=Hi%20Ardeno%20Studio%2C%0A%0AI%20would%20like%20to%20ask%20about%20..."
+                            Can&apos;t find your answer here?{' '}
+                            <button
+                                onClick={openAIChat}
                                 className="transition-colors duration-200"
-                                style={{ color: RED, fontWeight: 500 }}
+                                style={{ color: RED, fontWeight: 500, background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
                                 onMouseEnter={e => (e.currentTarget.style.color = '#ff2030')}
                                 onMouseLeave={e => (e.currentTarget.style.color = RED)}
                             >
-                                Send us a message
-                            </a>{' '}
-                            and we'll reply within 24 hours.
+                                Ask our AI assistant
+                            </button>{' '}
+                            for an instant response.
                         </p>
                     </div>
                 </motion.div>
@@ -352,7 +386,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
                     <div className="relative z-10">
                         <h2
                             className="mb-3 leading-[1.1]"
-                            style={{ fontFamily: FONT_H, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', fontWeight: 700, color: '#fff' }}
+                            style={{ fontFamily: FONT_H, fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', fontWeight: 400, color: '#fff' }}
                         >
                             Still have questions?
                         </h2>
@@ -365,7 +399,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
                     </div>
 
                     <motion.button
-                        onClick={openAIChat}
+                        onClick={() => setIsModalOpen(true)}
                         className="relative z-10 flex-shrink-0 inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full text-white text-[12px] tracking-[0.14em] uppercase"
                         style={{
                             fontFamily: FONT_B,
@@ -383,24 +417,109 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
                 </div>
             </section>
 
-            {/* Bottom bar */}
-            <div className="w-full h-px" style={{ background: 'rgba(255,255,255,0.055)' }} />
-            <div className="container mx-auto px-6 md:px-12 py-6 flex items-center justify-between">
-                <span
-                    className="text-[11px] text-zinc-500 tracking-[0.18em] uppercase"
-                    style={{ fontFamily: FONT_B }}
-                >
-                    © {new Date().getFullYear()} Ardeno Studio. All rights reserved.
-                </span>
-                <a
-                    href="/"
-                    onClick={handleBack}
-                    className="text-[11px] text-zinc-500 hover:text-white tracking-[0.12em] uppercase transition-colors duration-200"
-                    style={{ fontFamily: FONT_B }}
-                >
-                    ← Back
-                </a>
-            </div>
+            {/* ═══════════════════ MODAL ═══════════════════ */}
+            <AnimatePresence>
+                {isModalOpen && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsModalOpen(false)}
+                            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            transition={{ duration: 0.4, ease: EASE }}
+                            className="relative w-full max-w-lg bg-[#0d0d0f] border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <div className="p-8">
+                                <div className="flex items-center justify-between mb-8">
+                                    <h3 style={{ fontFamily: FONT_H, fontSize: '2rem', fontWeight: 400 }}>Ask us anything</h3>
+                                    <button
+                                        onClick={() => setIsModalOpen(false)}
+                                        className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors"
+                                    >
+                                        <X size={16} />
+                                    </button>
+                                </div>
+
+                                {status === 'success' ? (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="text-center py-12"
+                                    >
+                                        <div className="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                                            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                        <h4 style={{ fontFamily: FONT_H, fontSize: '1.5rem', marginBottom: '8px' }}>Message Sent!</h4>
+                                        <p style={{ color: '#6b6b76', fontSize: '0.9rem' }}>We&apos;ll get back to you within 24 hours.</p>
+                                    </motion.div>
+                                ) : (
+                                    <form onSubmit={handleSubmit} className="space-y-5">
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-semibold ml-1">Your Name</label>
+                                            <input
+                                                required
+                                                type="text"
+                                                value={formData.name}
+                                                onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                                placeholder="John Doe"
+                                                className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-[14px] text-white placeholder:text-zinc-600 focus:outline-none focus:border-red-500/50 transition-colors"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-semibold ml-1">Email Address</label>
+                                            <input
+                                                required
+                                                type="email"
+                                                value={formData.email}
+                                                onChange={e => setFormData({ ...formData, email: e.target.value })}
+                                                placeholder="john@example.com"
+                                                className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-[14px] text-white placeholder:text-zinc-600 focus:outline-none focus:border-red-500/50 transition-colors"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-semibold ml-1">Message</label>
+                                            <textarea
+                                                required
+                                                rows={4}
+                                                value={formData.message}
+                                                onChange={e => setFormData({ ...formData, message: e.target.value })}
+                                                placeholder="How can we help you?"
+                                                className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-[14px] text-white placeholder:text-zinc-600 focus:outline-none focus:border-red-500/50 transition-colors resize-none"
+                                            />
+                                        </div>
+
+                                        {status === 'error' && (
+                                            <p className="text-red-500 text-[12px] ml-1">{errorMessage}</p>
+                                        )}
+
+                                        <button
+                                            disabled={status === 'loading'}
+                                            type="submit"
+                                            className="w-full bg-[#E50914] hover:bg-[#ff1a1a] disabled:opacity-50 text-white rounded-xl py-4 font-semibold text-[13px] tracking-wider uppercase transition-all flex items-center justify-center gap-2 mt-4"
+                                            style={{ boxShadow: '0 8px 24px rgba(229,9,20,0.25)' }}
+                                        >
+                                            {status === 'loading' ? (
+                                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                            ) : (
+                                                <>Send Message <ArrowUpRight size={16} /></>
+                                            )}
+                                        </button>
+                                    </form>
+                                )}
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
