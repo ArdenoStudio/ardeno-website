@@ -77,7 +77,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
   const ease: [number, number, number, number] = [0.16, 1, 0.3, 1];
   const navSpring = reduced
     ? { duration: 0.2 }
-    : { type: "spring" as const, stiffness: 220, damping: 30, mass: 0.78 };
+    : { type: "spring" as const, stiffness: 220, damping: 30, mass: 0.78, restDelta: 0.001 };
 
   useEffect(() => {
     const hrefs = NAV_ITEMS.map((it) => it.href).filter((h) => h.startsWith("#") && h !== "#");
@@ -129,11 +129,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
       );
       // Use a tolerant threshold so tall viewports / late layout shifts still
       // mark the last section as active near the end of the page.
-      const nearBottom = scrollTop >= maxScroll - 80;
+      // Higher tolerance (120px) for mobile browser bars and late layout shifts
+      const nearBottom = scrollTop >= maxScroll - 120;
 
       if (nearBottom) {
-        setActiveNav(targets[targets.length - 1].href);
-        return;
+        // Explicitly set to the last item (Contact) when at the floor of the page
+        const lastItem = targets[targets.length - 1];
+        if (lastItem) {
+          setActiveNav(lastItem.href);
+          return;
+        }
       }
 
       const navHeight = isScrolledRef.current ? SCROLLED_NAV_HEIGHT : TOP_NAV_HEIGHT;
@@ -186,8 +191,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize, { passive: true });
     window.addEventListener("load", onLoad, { once: true });
-    const t1 = window.setTimeout(onLoad, 400);
-    const t2 = window.setTimeout(onLoad, 1200);
+    const t1 = window.setTimeout(onLoad, 800);
+    const t2 = window.setTimeout(onLoad, 2400);
     onScroll();
     return () => {
       window.removeEventListener("scroll", onScroll);
@@ -262,7 +267,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
           }}
           transition={navSpring}
           className="w-full"
-          style={{ willChange: "padding", transform: "translateZ(0)" }}
+          style={{ willChange: "padding", transform: "translate3d(0,0,0)" }}
         >
           <motion.div
             className="relative mx-auto flex items-center justify-between"
@@ -285,9 +290,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
               backdropFilter: "blur(18px) saturate(140%)",
               WebkitBackdropFilter: "blur(18px) saturate(140%)",
               transition:
-                "background 380ms cubic-bezier(0.22,1,0.36,1), border-color 380ms cubic-bezier(0.22,1,0.36,1), box-shadow 380ms cubic-bezier(0.22,1,0.36,1)",
-              willChange: "height, max-width, border-radius, transform",
-              transform: "translateZ(0)",
+                "background 420ms cubic-bezier(0.16,1,0.3,1), border-color 420ms cubic-bezier(0.16,1,0.3,1), box-shadow 420ms cubic-bezier(0.16,1,0.3,1)",
+              willChange: "height, maxWidth, borderRadius",
+              transform: "translate3d(0,0,0)",
             }}
           >
             <motion.div
