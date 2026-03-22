@@ -10,46 +10,48 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Contact', href: '#contact' },
 ];
 
-// --- INTRO CONFIGURATION ---
-export const INTRO_CONFIG = {
-  DURATION_LOADER: 1475,
-  DURATION_PAUSE: 1500,
-  DURATION_MOVE: 1000,
-  SAFETY_BUFFER: 1500,
-  ASSETS: {
-    LOADER_GIF: '/ardeno-loader.gif',
-    STATIC_LOGO: '/ardeno-logo.png',
-  }
-};
-
 export const PROJECTS: Project[] = [
   {
-    id: '1',
-    title: 'VOGUE LANKA',
-    category: 'Lifestyle & Fashion',
-    image: 'https://picsum.photos/1200/800?random=1',
-    tags: ['E-Commerce', 'Branding', 'UI/UX'],
+    id: "1",
+    title: "Cinnamon Oak Cafe",
+    category: "Cafe & Dining",
+    image: "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=800&q=80",
+    tags: ["Branding", "Menu Design", "UI/UX"],
   },
   {
-    id: '2',
-    title: 'CINNAMON AIR',
-    category: 'Travel & Aviation',
-    image: 'https://picsum.photos/1200/800?random=2',
-    tags: ['Web Application', 'Booking System'],
+    id: "2",
+    title: "Lanka Fitness",
+    category: "Health & Wellness",
+    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80",
+    tags: ["Web App", "Membership Portal", "Branding"],
   },
   {
-    id: '3',
-    title: 'URBAN ISLAND',
-    category: 'Interior Design',
-    image: 'https://picsum.photos/1200/800?random=3',
-    tags: ['Portfolio', 'Animation'],
+    id: "3",
+    title: "Lanka Motion",
+    category: "Sports & Expo",
+    image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=80",
+    tags: ["Event Site", "Ticketing", "Animation"],
   },
   {
-    id: '4',
-    title: 'KANDY HILLS',
-    category: 'Hospitality',
-    image: 'https://picsum.photos/1200/800?random=4',
-    tags: ['Resort Website', 'Photography'],
+    id: "4",
+    title: "Luxe Lanka",
+    category: "Luxury & Salon",
+    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80",
+    tags: ["Booking System", "E-Commerce", "Branding"],
+  },
+  {
+    id: "5",
+    title: "Urban Kitchen",
+    category: "Restaurant & Food",
+    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
+    tags: ["Online Ordering", "Menu Design", "UI/UX"],
+  },
+  {
+    id: "6",
+    title: "Global Jet Concierge",
+    category: "Private Aviation & Concierge",
+    image: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1200&q=80",
+    tags: ["Framer Motion", "Premium UI", "Aviation"],
   },
 ];
 

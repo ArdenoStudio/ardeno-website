@@ -67,6 +67,16 @@ const PROJECTS: Project[] = [
     year: "2025",
     url: "https://ardeno-urban-kitchen.vercel.app",
   },
+  {
+    id: "6",
+    title: "Global Jet Concierge",
+    category: "Private Aviation & Concierge",
+    image: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1200&q=80",
+    tags: ["Framer Motion", "Premium UI", "Aviation"],
+    description: "A cinematic digital experience for ultra-high-net-worth individuals. Centered branding, fluid layout transitions, and a champagne-gold aesthetic designed to reflect the peak of luxury travel.",
+    year: "2025",
+    url: "https://global-jet-concierge.vercel.app/",
+  },
 ];
 
 // ─── Magnetic button hook ─────────────────────────────────────────────────────
@@ -258,6 +268,72 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
   );
 };
 
+// ─── All Projects Modal (Grid) ─────────────────────────────────────────────
+const AllProjectsModal = ({ onClose, onSelectProject, projects }: { onClose: () => void; onSelectProject: (id: string) => void; projects: Project[] }) => {
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", h);
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", h); document.body.style.overflow = ""; };
+  }, [onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[9500] flex flex-col bg-[#080809]"
+    >
+      {/* Background decoration */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-[#E50914]/[0.03] blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-[#E50914]/[0.03] blur-[120px]" />
+      </div>
+
+      {/* Header */}
+      <div className="container mx-auto px-6 md:px-12 py-8 flex items-center justify-between relative z-10">
+        <h2 className="text-white text-3xl md:text-5xl font-serif">
+          Our <em className="text-zinc-500 not-italic">Archive</em>
+        </h2>
+        <motion.button
+          onClick={onClose}
+          className="w-12 h-12 rounded-full flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+          style={{ border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.03)" }}
+          whileHover={{ scale: 1.1, rotate: 90 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <svg width="20" height="20" viewBox="0 0 14 14" fill="none">
+            <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </motion.button>
+      </div>
+
+      {/* Grid */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar relative z-10">
+        <div className="container mx-auto px-6 md:px-12 py-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects.map((p, i) => (
+              <motion.div
+                key={p.id}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.05, ease: EXPO }}
+                onClick={() => { onSelectProject(p.id); onClose(); }}
+                className="group relative cursor-pointer aspect-[4/5] rounded-3xl overflow-hidden border border-white/5"
+              >
+                <img src={p.image} alt={p.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                <div className="absolute bottom-0 left-0 right-0 p-8">
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-zinc-400 mb-2 font-medium">{p.category}</p>
+                  <h3 className="text-2xl text-white font-serif">{p.title}</h3>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 // ─── Arrow button with magnetic effect ───────────────────────────────────────
 const ArrowBtn = ({ isHovered, onClick }: { isHovered: boolean; onClick: () => void }) => {
   const { ref, sx, sy, handleMouse, reset } = useMagnetic(0.4);
@@ -286,6 +362,7 @@ const ArrowBtn = ({ isHovered, onClick }: { isHovered: boolean; onClick: () => v
 export const FeaturedWork: React.FC = () => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
   const hoveredProject = PROJECTS.find((p) => p.id === hoveredId);
   const selectedProject = PROJECTS.find((p) => p.id === selectedId);
@@ -561,13 +638,13 @@ export const FeaturedWork: React.FC = () => {
       <div className="container mx-auto px-5 md:px-12 mt-10 md:mt-12">
         <div className="w-full mb-6" style={{ height: 1, background: "rgba(255,255,255,0.055)" }} />
         <div className="flex items-center justify-between">
-          <motion.a
-            href="#"
+          <motion.button
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.25, ease: EXPO }}
-            className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors duration-300"
+            onClick={() => setShowAll(true)}
+            className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors duration-300 bg-transparent border-none p-0"
             style={{ fontFamily: "'Sora', sans-serif" }}
           >
             <span className="text-[11px] tracking-[0.22em] uppercase">View All Projects</span>
@@ -581,7 +658,7 @@ export const FeaturedWork: React.FC = () => {
                 <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </motion.span>
-          </motion.a>
+          </motion.button>
           <span className="text-[10px] text-zinc-700 tracking-[0.18em] uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
             {new Date().getFullYear()} — Ardeno
           </span>
@@ -591,6 +668,16 @@ export const FeaturedWork: React.FC = () => {
       <AnimatePresence>
         {selectedProject && (
           <ProjectModal project={selectedProject} onClose={() => setSelectedId(null)} />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showAll && (
+          <AllProjectsModal 
+            projects={PROJECTS} 
+            onClose={() => setShowAll(false)} 
+            onSelectProject={(id) => setSelectedId(id)} 
+          />
         )}
       </AnimatePresence>
     </section>
