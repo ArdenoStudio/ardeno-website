@@ -639,7 +639,13 @@ export const Services: React.FC = () => {
               maxWidth: "18ch",
             }}
           >
-            Everything you need to dominate{" "}
+            <em
+              className="not-italic"
+              style={{ fontWeight: 300, color: "#8c8c96" }}
+            >
+              Everything you need to
+            </em>{" "}
+            dominate{" "}
             <em
               className="not-italic"
               style={{ fontWeight: 300, color: "#8c8c96" }}
