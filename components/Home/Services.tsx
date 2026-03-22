@@ -639,14 +639,13 @@ export const Services: React.FC = () => {
               maxWidth: "18ch",
             }}
           >
-            Everything you need to{" "}
+            Everything you need to dominate{" "}
             <em
               className="not-italic"
               style={{ fontWeight: 300, color: "#8c8c96" }}
             >
-              dominate
-            </em>{" "}
-            your market.
+              your market.
+            </em>
           </motion.h2>
 
           {/* Subtext — pulled closer to heading, left-aligned on desktop */}
