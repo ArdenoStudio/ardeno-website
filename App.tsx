@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { Navbar } from './components/Layout/Navbar';
 import { Hero } from './components/Home/Hero';
 import { PageLoader } from './components/Home/Pageloader';
@@ -115,6 +116,7 @@ const App: React.FC = () => {
       </Suspense>
       <CookieBanner />
       <ArdenoAIWidget />
+      <Analytics />
       <div className="grain" />
     </div>
   );
@@ -169,6 +171,7 @@ const App: React.FC = () => {
 
       <CookieBanner />
       {loaded && <ArdenoAIWidget />}
+      <Analytics />
     </div>
   );
 };
