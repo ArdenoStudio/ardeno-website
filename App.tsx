@@ -6,6 +6,7 @@ import { DocsPage } from './components/Docs/DocsPage';
 import CookieBanner from './components/UI/CookieBanner';
 import { trackUtmParams } from './components/UI/trackUtm';
 import ArdenoAIWidget from './components/AI/ArdenoAIWidget';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 // ─── Lazy-loaded below-fold sections ─────────────────────────────────────────
 const FeaturedWork = lazy(() =>
@@ -115,6 +116,7 @@ const App: React.FC = () => {
       </Suspense>
       <CookieBanner />
       <ArdenoAIWidget />
+      <SpeedInsights />
       <div className="grain" />
     </div>
   );
@@ -169,6 +171,7 @@ const App: React.FC = () => {
 
       <CookieBanner />
       {loaded && <ArdenoAIWidget />}
+      <SpeedInsights />
     </div>
   );
 };
