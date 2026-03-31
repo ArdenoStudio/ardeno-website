@@ -46,6 +46,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
 
   const navLinks = [
     { label: 'Work', href: '#work' },
+    { label: 'Case Studies', href: '/case-studies' },
     { label: 'Services', href: '#services' },
     { label: 'Process', href: '#process' },
     { label: 'Docs', href: '/docs' },

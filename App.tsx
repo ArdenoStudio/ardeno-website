@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Navbar } from './components/Layout/Navbar';
 import { Hero } from './components/Home/Hero';
 import { PageLoader } from './components/Home/Pageloader';
@@ -32,8 +33,12 @@ const ContactModal = lazy(() =>
 const FAQPage = lazy(() =>
   import('./components/FAQ/FAQPage').then(m => ({ default: m.FAQPage }))
 );
-
-// Pre-fetch lazy chunks before they're needed
+const CaseStudiesIndex = lazy(() =>
+  import('./components/CaseStudies/CaseStudiesIndex').then(m => ({ default: m.CaseStudiesIndex }))
+);
+const HumbleBeginnings = lazy(() =>
+  import('./components/CaseStudies/HumbleBeginnings').then(m => ({ default: m.HumbleBeginnings }))
+);
 const preloadChunks = () => {
   import('./components/Home/FeaturedWork');
   import('./components/Home/Services');
@@ -45,12 +50,14 @@ const preloadChunks = () => {
 };
 
 // ─── Simple path-based router ────────────────────────────────────────────────
-type Route = 'home' | 'docs' | 'faq';
+type Route = 'home' | 'docs' | 'faq' | 'case-studies' | 'cs-humble-beginnings';
 
 const getRoute = (): Route => {
   const p = window.location.pathname;
   if (p.startsWith('/docs')) return 'docs';
   if (p.startsWith('/faq')) return 'faq';
+  if (p.startsWith('/case-studies/humble-beginnings')) return 'cs-humble-beginnings';
+  if (p === '/case-studies' || p === '/case-studies/') return 'case-studies';
   return 'home';
 };
 
@@ -107,61 +114,73 @@ const App: React.FC = () => {
   }, [route]);
 
   // ── Shared wrapper for standalone pages ──
-  const pageShell = (children: React.ReactNode) => (
-    <div className="bg-zinc-950 text-white min-h-screen selection:bg-accent selection:text-white relative">
+  const pageShell = (children: React.ReactNode, options?: { hideNav?: boolean }) => (
+    <div key={route} className="case-study-page-root selection:bg-accent selection:text-white">
+      {!options?.hideNav && <Navbar onOpenModal={() => setContactOpen(true)} />}
       {children}
-      <Suspense fallback={null}>
-        <ContactModal isOpen={contactOpen} onClose={() => setContactOpen(false)} />
-      </Suspense>
       <CookieBanner />
-      <ArdenoAIWidget />
-      <div className="grain" />
     </div>
   );
 
-  // ── Docs route ──
-  if (route === 'docs') {
-    return pageShell(
-      <DocsPage onOpenContact={() => setContactOpen(true)} />
-    );
-  }
-
-  // ── FAQ route ──
-  if (route === 'faq') {
-    return pageShell(
-      <Suspense fallback={null}>
-        <FAQPage onOpenContact={() => setContactOpen(true)} />
-      </Suspense>
-    );
-  }
-
-  // ── Home route ──
   return (
     <div className="bg-zinc-950 text-white min-h-screen overflow-x-hidden selection:bg-accent selection:text-white relative">
       <PageLoader onComplete={() => setLoaded(true)} minDuration={2800} />
 
-      <main
-        className="relative z-10"
-        style={{
-          opacity: loaded ? 1 : 0,
-          transition: 'opacity 0.6s ease',
-          pointerEvents: loaded ? 'auto' : 'none',
-        }}
-      >
-        <Navbar onOpenModal={() => setContactOpen(true)} />
-        <Hero onOpenContact={() => setContactOpen(true)} />
+      <AnimatePresence mode="wait">
+        {route === 'docs' && (
+          <Suspense key="docs" fallback={null}>
+            <DocsPage onExit={(e: any) => window.dispatchEvent(new CustomEvent('docs:exit', { detail: e }))} />
+          </Suspense>
+        )}
 
-        <div ref={sentinelRef} aria-hidden="true" />
+        {route === 'faq' && pageShell(
+          <Suspense key="faq" fallback={null}>
+            <FAQPage />
+          </Suspense>,
+          { hideNav: true }
+        )}
 
-        <Suspense fallback={null}><FeaturedWork /></Suspense>
-        <Suspense fallback={null}><Services /></Suspense>
-        <Suspense fallback={null}><Process /></Suspense>
-        <Suspense fallback={null}><OurStory /></Suspense>
-        <Suspense fallback={null}><Testimonials /></Suspense>
-        <Suspense fallback={null}>
-          <Footer onOpenContact={() => setContactOpen(true)} />
-        </Suspense>
-      </main>
+        {route === 'case-studies' && pageShell(
+          <Suspense key="case-studies" fallback={null}>
+            <CaseStudiesIndex />
+          </Suspense>,
+          { hideNav: true }
+        )}
+
+        {route === 'cs-humble-beginnings' && pageShell(
+          <Suspense key="cs-humble-beginnings" fallback={null}>
+            <HumbleBeginnings />
+          </Suspense>,
+          { hideNav: true }
+        )}
+
+        {route === 'home' && (
+          <motion.main
+            key="home"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+            className="relative z-10"
+            style={{
+              opacity: loaded ? 1 : 0,
+              pointerEvents: loaded ? 'auto' : 'none',
+            }}
+          >
+            <Navbar onOpenModal={() => setContactOpen(true)} />
+            <Hero onOpenContact={() => setContactOpen(true)} />
+            <div ref={sentinelRef} aria-hidden="true" />
+            <Suspense fallback={null}><FeaturedWork /></Suspense>
+            <Suspense fallback={null}><Services /></Suspense>
+            <Suspense fallback={null}><Process /></Suspense>
+            <Suspense fallback={null}><OurStory /></Suspense>
+            <Suspense fallback={null}><Testimonials /></Suspense>
+            <Suspense fallback={null}>
+              <Footer onOpenContact={() => setContactOpen(true)} />
+            </Suspense>
+          </motion.main>
+        )}
+      </AnimatePresence>
 
       <Suspense fallback={null}>
         <ContactModal isOpen={contactOpen} onClose={() => setContactOpen(false)} />
