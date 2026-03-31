@@ -1370,3 +1370,17 @@
     .section-divider           { border: 2px solid ButtonText; }
     :focus-visible             { outline: 3px solid ButtonText; }
   }
+
+/* Mobile Table Stacking and Nav Positioning */
+@media (max-width: 640px) {
+    .identity-row { 
+      grid-template-columns: 1fr !important;
+          gap: 8px !important;
+          padding: 16px 0 !important;
+    }
+}
+
+.mobile-nav-dock {
+    bottom: 32px !important;
+    z-index: 9999 !important;
+}
