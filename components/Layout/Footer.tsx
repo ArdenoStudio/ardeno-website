@@ -55,7 +55,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
 
   const socialLinks = [
     { icon: Instagram, label: 'Instagram', href: 'https://www.instagram.com/ardenostudio/' },
-    { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/company/ardenostudiolk' },
+    { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/company/ardentstudiolk' },
     { icon: Facebook, label: 'Facebook', href: 'https://web.facebook.com/people/Ardeno-Studio/61578087120189/' },
     { icon: XIcon, label: 'X', href: 'https://x.com/ArdenoStudio' },
   ];
