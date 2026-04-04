@@ -16,7 +16,7 @@ const PORTFOLIO_PROJECTS = [
     name: 'Cinnamon Oak Cafe',
     short: 'CINNAMON',
     desc: 'Elevating a boutique coffee experience with a sophisticated, artisanal digital storefront.',
-    url: '#'
+    url: 'https://ardeno-cinnamon-cafe.vercel.app'
   },
   {
     id: 2,
@@ -25,7 +25,7 @@ const PORTFOLIO_PROJECTS = [
     name: 'Global Jet Concierge',
     short: 'AVIATION',
     desc: 'A high-altitude, luxury charter interface designed for precision and exclusivity.',
-    url: '#'
+    url: 'https://global-jet-concierge.vercel.app/'
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ const PORTFOLIO_PROJECTS = [
     name: 'Lanka Fitness',
     short: 'FITNESS',
     desc: "High-impact, high-energy platform for Sri Lanka's leading boutique fitness community.",
-    url: '#'
+    url: 'https://ardeno-lanka-fitness.vercel.app'
   },
   {
     id: 4,
@@ -43,7 +43,7 @@ const PORTFOLIO_PROJECTS = [
     name: 'Lanka Motion',
     short: 'MOTION',
     desc: 'Kinetic, performance-driven storytelling for a premier sports media collective.',
-    url: '#'
+    url: 'https://ardeno-lanka-motion.vercel.app'
   },
   {
     id: 5,
@@ -52,7 +52,7 @@ const PORTFOLIO_PROJECTS = [
     name: 'Luxe Lanka',
     short: 'LUXE',
     desc: 'A digital sanctuary for high-end beauty, blending editorial aesthetics with seamless booking.',
-    url: '#'
+    url: 'https://ardeno-luxe-lanka.vercel.app'
   },
   {
     id: 6,
@@ -61,7 +61,7 @@ const PORTFOLIO_PROJECTS = [
     name: 'Urban Kitchen',
     short: 'KITCHEN',
     desc: 'Crafting a visual feast for a modern culinary destination with fluid, seasonal layouts.',
-    url: '#'
+    url: 'https://ardeno-urban-kitchen.vercel.app'
   }
 ];
 
