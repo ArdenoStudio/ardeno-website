@@ -115,11 +115,17 @@ const App: React.FC = () => {
 
   // ── Shared wrapper for standalone pages ──
   const pageShell = (children: React.ReactNode, options?: { hideNav?: boolean }) => (
-    <div key={route} className="case-study-page-root selection:bg-accent selection:text-white">
+    <motion.div
+      key={route}
+      className="case-study-page-root selection:bg-accent selection:text-white"
+      initial={false}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4 }}
+    >
       {!options?.hideNav && <Navbar onOpenModal={() => setContactOpen(true)} />}
       {children}
       <CookieBanner />
-    </div>
+    </motion.div>
   );
 
   return (

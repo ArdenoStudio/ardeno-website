@@ -271,6 +271,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
         >
           <motion.div
             className="relative mx-auto flex items-center justify-between"
+            initial={{ height: TOP_NAV_HEIGHT, maxWidth: 1600, borderRadius: 0 }}
             animate={{
               height: isScrolled ? SCROLLED_NAV_HEIGHT : TOP_NAV_HEIGHT,
               maxWidth: isScrolled ? 1280 : 1600,

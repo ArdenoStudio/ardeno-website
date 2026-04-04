@@ -76,8 +76,10 @@ export function GlobePulse({
     let globe: ReturnType<typeof createGlobe> | null = null
     let animationId: number
     let dynamicPhi = initialPhi
+    let mounted = true
 
     function init() {
+      if (!mounted) return
       const width = canvas.offsetWidth;
       if (width === 0 || globe) return;
 
@@ -102,8 +104,9 @@ export function GlobePulse({
       })
       
       function animate() {
+        if (!mounted || !globe) return
         if (!isPausedRef.current) dynamicPhi += speed
-        globe!.update({
+        globe.update({
           phi: dynamicPhi + phiOffsetRef.current + dragOffset.current.phi,
           theta: initialTheta + thetaOffsetRef.current + dragOffset.current.theta,
         })
@@ -126,8 +129,9 @@ export function GlobePulse({
     }
 
     return () => {
+      mounted = false
       if (animationId) cancelAnimationFrame(animationId)
-      if (globe) globe.destroy()
+      if (globe) { globe.destroy(); globe = null }
     }
   }, [markers, speed, initialPhi, initialTheta])
 

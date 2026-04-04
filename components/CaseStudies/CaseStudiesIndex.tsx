@@ -39,7 +39,7 @@ export const CaseStudiesIndex: React.FC = () => {
   };
 
   return (
-    <motion.section 
+    <motion.section
       key="case-studies-index"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -47,9 +47,9 @@ export const CaseStudiesIndex: React.FC = () => {
       transition={{ duration: 0.5, ease: EASE }}
       className="relative pt-32 md:pt-48 pb-32 overflow-hidden min-h-screen z-10"
     >
-      
+
       {/* Floating Back Button */}
-      <a 
+      <a
         href="/"
         onClick={(e) => handleNavClick(e, '/')}
         className="fixed top-8 left-6 md:top-12 md:left-12 z-[100] flex items-center gap-3 text-zinc-400 hover:text-white transition-all duration-300 group"
@@ -63,13 +63,13 @@ export const CaseStudiesIndex: React.FC = () => {
       </a>
 
       <div className="container mx-auto px-6 md:px-12">
-        
+
         {/* Header */}
         <motion.div
-           initial={{ opacity: 0, y: 30 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 0.8, ease: EASE }}
-           className="mb-16 md:mb-24 flex flex-col items-center text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: EASE }}
+          className="mb-16 md:mb-24 flex flex-col items-center text-center"
         >
           <div className="flex items-center justify-center gap-3 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-[#E50914] shrink-0" />
@@ -109,7 +109,7 @@ export const CaseStudiesIndex: React.FC = () => {
               transition={{ duration: 0.8, ease: EASE, delay: 0.1 + idx * 0.1 }}
             >
               {/* Thumbnail Area - Glassmorphism & Glow */}
-              <div 
+              <div
                 className={`w-full aspect-[4/3] rounded-2xl mb-6 flex items-center justify-center overflow-hidden relative ${study.thumbnailClass || ''} transition-all duration-700 ease-out`}
                 style={{
                   border: '1px solid rgba(255,255,255,0.08)',
@@ -128,7 +128,7 @@ export const CaseStudiesIndex: React.FC = () => {
                 }}
               >
                 <div className="absolute inset-0 bg-[#E50914]/0 group-hover:bg-[#E50914]/10 transition-colors duration-700 z-10 pointer-events-none mix-blend-screen" />
-                
+
                 {/* Cinematic Background Logo */}
                 {study.bgImage && (
                   <div className="absolute -top-[15%] -right-[15%] w-[130%] h-[130%] opacity-[0.03] group-hover:opacity-[0.07] transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 group-hover:-translate-x-2 pointer-events-none">
@@ -142,7 +142,7 @@ export const CaseStudiesIndex: React.FC = () => {
                 {/* Ambient backdrop glow */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 bg-[radial-gradient(circle_at_center,rgba(229,9,20,0.15)_0%,transparent_70%)] pointer-events-none" />
 
-                <h3 
+                <h3
                   className="font-bold group-hover:scale-[1.03] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] text-center px-8 text-transparent bg-clip-text bg-gradient-to-b from-zinc-300 to-zinc-700 group-hover:from-white group-hover:to-zinc-400 z-20 relative"
                   style={{ fontFamily: FONT_H, fontSize: 'clamp(2rem, 4.5vw, 4rem)', lineHeight: 1, letterSpacing: '-0.02em' }}
                 >
@@ -150,7 +150,7 @@ export const CaseStudiesIndex: React.FC = () => {
                 </h3>
 
                 {/* Hover Reveal Button */}
-                 <div
+                <div
                   className="absolute bottom-6 right-6 w-14 h-14 rounded-full bg-white overflow-hidden flex items-center justify-center opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] z-20 shadow-[0_10px_30px_rgba(229,9,20,0.3)] hover:scale-110 group/btn"
                 >
                   <div className="absolute inset-0 flex items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/btn:translate-x-[150%] group-hover/btn:-translate-y-[150%]">
@@ -178,15 +178,15 @@ export const CaseStudiesIndex: React.FC = () => {
                     {study.year}
                   </span>
                 </div>
-                
-                <p 
+
+                <p
                   className="text-[14px] text-zinc-400 mt-1"
                   style={{ fontFamily: FONT_B, lineHeight: 1.6 }}
                 >
                   {study.summary}
                 </p>
                 <div className="flex items-center gap-4 mt-4">
-                  <span 
+                  <span
                     className="text-[11px] tracking-widest uppercase text-[#E50914] border border-[#E50914]/20 bg-[#E50914]/5 px-3 py-1.5 rounded-full"
                     style={{ fontFamily: FONT_B }}
                   >

@@ -558,8 +558,8 @@ const Dashboard = memo(({ activeStep }: { activeStep: number }) => {
                         <motion.circle
                           cx="8"
                           cy="8"
-                          r="3"
                           fill="#E50914"
+                          initial={{ r: 3 }}
                           animate={{ r: [2.5, 3.5, 2.5] }}
                           transition={{ duration: 1.8, repeat: Infinity }}
                         />

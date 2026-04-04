@@ -1,8 +1,8 @@
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :where(.case-study-page) *, :where(.case-study-page) *::before, :where(.case-study-page) *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .case-study-page-root { scroll-behavior: smooth; }
 
-  :root {
+  .case-study-page {
     --ink:        #080809;
     --surface:    #111113;
     --card:       #18181b;
@@ -16,9 +16,6 @@
     --cond:       'Instrument Serif', Georgia, serif;
     --body:       'Sora', sans-serif;
     --mono:       monospace;
-  }
-
-  .case-study-page {
     background: var(--ink);
     color: var(--text);
     font-family: var(--body);
@@ -28,12 +25,12 @@
   }
 
   /* Focus ring — never stripped */
-  :focus-visible {
+  .case-study-page :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
     border-radius: 3px;
   }
-  a { color: inherit; text-decoration: none; }
+  .case-study-page a { color: inherit; text-decoration: none; }
 
   /* Skip link */
   .skip-link {
@@ -46,9 +43,9 @@
   }
   .skip-link:focus { top: 0; }
 
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--ink); }
-  ::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 2px; }
+  .case-study-page::-webkit-scrollbar { width: 4px; }
+  .case-study-page::-webkit-scrollbar-track { background: var(--ink); }
+  .case-study-page::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 2px; }
 
   #progress {
     position: fixed; top: 0; left: 0; height: 2px;
@@ -381,7 +378,7 @@
     backdrop-filter: blur(8px);
   }
   .identity-row {
-    display: grid; grid-template-columns: 110px 1fr; gap: 0;
+    display: grid; grid-template-columns: minmax(130px, auto) 1fr; gap: 0;
     border-bottom: 1px solid rgba(255,255,255,0.05);
     opacity: 0; transform: translateX(-10px);
     transition: opacity 0.45s ease, transform 0.45s ease, background 0.3s ease;
@@ -411,6 +408,23 @@
     padding: 24px 28px;
   }
   dd.identity-val strong { color: var(--text); font-weight: 500; }
+
+  @media (max-width: 640px) {
+    .identity-row {
+      grid-template-columns: 1fr;
+    }
+    dt.identity-key {
+      border-right: none;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 16px 20px;
+      background: rgba(229,9,20,0.05);
+      font-size: 10px;
+    }
+    dd.identity-val {
+      padding: 20px;
+      font-size: 14px;
+    }
+  }
   /* --- Phase 2: Pro Max Additions --- */
 
   /* Parallax Watermark */
@@ -1152,7 +1166,7 @@
   /* Floating Bottom Dock (Dynamic Island Style) */
   .mobile-nav-dock {
     position: fixed;
-    bottom: 24px;
+    bottom: 32px;
     left: 50%;
     transform: translateX(-50%);
     width: auto;
@@ -1325,21 +1339,21 @@
     }
   }
 
-  footer { padding: 32px 0 48px; text-align: center; border-top: 1px solid var(--border); }
-  .footer-logo {
+  .case-study-page footer { padding: 32px 0 48px; text-align: center; border-top: 1px solid var(--border); }
+  .case-study-page .footer-logo {
     width: 44px; height: 44px;
     margin: 0 auto 16px;
     display: block;
     filter: brightness(0) invert(1);
   }
   
-  .footer-mark {
+  .case-study-page .footer-mark {
     font-family: var(--cond); font-size: 11px; color: #fff;
     letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px;
     opacity: 0.8;
   }
-  .footer-url { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 0.04em; outline: none; text-decoration: none; }
-  .footer-date { font-family: var(--mono); font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+  .case-study-page .footer-url { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 0.04em; outline: none; text-decoration: none; }
+  .case-study-page .footer-date { font-family: var(--mono); font-size: 11px; color: var(--text-dim); margin-top: 4px; }
 
   /* Responsive Global Overrides */
   @media (max-width: 1024px) {
