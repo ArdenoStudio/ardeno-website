@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { ARDENO_AI_PROMPT } from "../../ardeno-ai-prompt";
 
-// @ts-ignore
-const GROQ_API_KEY = (import.meta.env.VITE_GROQ_API_KEY || "").trim();
 
 type QuickAction = { label: string; value: string };
 type Message = {
@@ -454,54 +452,27 @@ const ArdenoAIWidget: React.FC = () => {
         setInput("");
         setLoading(true);
 
-        if (!GROQ_API_KEY) {
-            setMessages([
-                ...next,
-                {
-                    role: "assistant",
-                    content:
-                        "AI service is not configured. Add VITE_GROQ_API_KEY to your environment variables.",
-                    id: genId(),
-                },
-            ]);
-            setLoading(false);
-            return;
-        }
-
         abortRef.current?.abort();
         const controller = new AbortController();
         abortRef.current = controller;
 
         try {
-            const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            const res = await fetch("/api/chat", {
                 method: "POST",
                 signal: controller.signal,
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${GROQ_API_KEY}`,
                 },
-                body: JSON.stringify({
-                    model: "llama-3.3-70b-versatile",
-                    temperature: 0.45,
-                    max_tokens: 700,
-                    top_p: 0.95,
-                    messages: buildAPI(next),
-                }),
+                body: JSON.stringify({ messages: buildAPI(next) }),
             });
 
             const data = await res.json();
 
             if (!res.ok) {
-                const apiMsg = data?.error?.message || "API error";
-                if (res.status === 401) {
-                    throw new Error("Your GROQ API key is invalid or expired. Update VITE_GROQ_API_KEY.");
-                }
-                throw new Error(apiMsg);
+                throw new Error(data?.error || "API error");
             }
 
-            const reply =
-                data?.choices?.[0]?.message?.content?.trim() ||
-                "No response generated. Please try again.";
+            const reply = data?.content || "No response generated. Please try again.";
 
             setMessages([
                 ...next,
