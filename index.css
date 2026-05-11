@@ -140,8 +140,6 @@
 /* ── Body base ──────────────────────────────────────────── */
 body {
   background-color: var(--color-near-black);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
 }
 
 /* ── Text glow utility ──────────────────────────────────── */
