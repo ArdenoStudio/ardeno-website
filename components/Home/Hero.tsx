@@ -794,6 +794,9 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
               <StatusPill
                 style={{ position: "absolute", bottom: "28%", left: "-48px", zIndex: 30 }}
               />
+              <ProjectsTicker
+                style={{ position: "absolute", bottom: "6%", right: "-36px", zIndex: 30 }}
+              />
             </motion.div>
           </div>
 
