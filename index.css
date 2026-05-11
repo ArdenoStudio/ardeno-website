@@ -1,104 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..144,75..100,200..800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* ── Design tokens ──────────────────────────────────────── */
-:root {
-  /* Color */
-  --color-black:      #000000;
-  --color-near-black: #080809;
-  --color-white:      #FFFFFF;
-  --color-red:        #E50914;
-  --color-red-hover:  #B20710;
-  --color-red-logo:   #FF3301;
-  --color-red-glow:   rgba(229, 9, 20, 0.5);
-  --color-gray-900:   #111111;
-  --color-gray-850:   #1f1f22;
-  --color-gray-800:   #1A1A1A;
-  --color-gray-600:   #333333;
-  --color-gray-400:   #666666;
-  --color-success:    #22c55e;
-  --color-warning:    #facc15;
-
-  /* Semantic */
-  --bg-0:     var(--color-near-black);
-  --bg-1:     var(--color-gray-900);
-  --bg-2:     var(--color-gray-800);
-  --bg-glass: rgba(12, 12, 16, 0.82);
-  --fg-0:     var(--color-white);
-  --fg-1:     rgba(255, 255, 255, 0.78);
-  --fg-2:     #c0c0c0;
-  --fg-3:     var(--color-gray-400);
-  --fg-muted: #71717a;
-
-  --border-subtle:  rgba(255, 255, 255, 0.06);
-  --border-default: rgba(255, 255, 255, 0.08);
-  --border-strong:  rgba(255, 255, 255, 0.20);
-  --border-accent:  rgba(229, 9, 20, 0.24);
-
-  /* Type families */
-  --font-display:  'Syne', 'Bricolage Grotesque', sans-serif;
-  --font-serif:    'Instrument Serif', Georgia, serif;
-  --font-sans:     'Manrope', 'Sora', sans-serif;
-  --font-ui:       'DM Sans', 'Sora', sans-serif;
-  --font-wordmark: 'Bricolage Grotesque', sans-serif;
-
-  /* Type scale */
-  --fs-display: clamp(2.8rem, 5.8vw, 5.4rem);
-  --fs-h1:      clamp(2rem, 3.6vw, 3.25rem);
-  --fs-h2:      clamp(1.5rem, 2.4vw, 2.25rem);
-  --fs-h3:      1.5rem;
-  --fs-body:    0.9375rem;
-  --fs-body-sm: 0.8125rem;
-  --fs-caption: 0.75rem;
-  --fs-micro:   0.6875rem;
-
-  --lh-tight:   1.04;
-  --lh-heading: 1.15;
-  --lh-body:    1.8;
-
-  --tracking-display: -0.02em;
-  --tracking-label:    0.08em;
-  --tracking-eyebrow:  0.22em;
-  --tracking-micro:    0.5em;
-
-  /* Spacing */
-  --space-1:  4px;  --space-2:  8px;  --space-3:  12px;
-  --space-4:  16px; --space-6:  24px; --space-8:  32px;
-  --space-12: 48px; --space-16: 64px; --space-20: 80px;
-
-  /* Radii */
-  --radius-sm:   4px;
-  --radius-md:   8px;
-  --radius-lg:   16px;
-  --radius-xl:   28px;
-  --radius-pill: 999px;
-
-  /* Shadows */
-  --shadow-card:       0 10px 40px rgba(0,0,0,0.32);
-  --shadow-float:      0 24px 56px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.07);
-  --shadow-hero:       0 72px 100px -24px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.07);
-  --shadow-red-rest:   0 4px 16px rgba(229,9,20,0.20);
-  --shadow-red-hover:  0 0 0 5px rgba(229,9,20,0.12), 0 8px 32px rgba(229,9,20,0.35);
-  --glow-red:          0 0 30px rgba(229,9,20,0.3);
-  --glow-red-strong:   0 0 14px rgba(255,50,30,0.8), 0 0 40px rgba(229,9,20,0.4);
-
-  /* Easing */
-  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-quart: cubic-bezier(0.76, 0, 0.24, 1);
-  --ease-cta:   cubic-bezier(0.25, 1, 0.5, 1);
-
-  /* Backdrop */
-  --blur-glass: blur(28px);
-  --blur-nav:   blur(18px) saturate(140%);
-}
 
 /* ── Custom scrollbar ───────────────────────────────────── */
 ::-webkit-scrollbar {
@@ -118,12 +22,6 @@
   background: #E50914;
 }
 
-/* ── Selection ──────────────────────────────────────────── */
-::selection {
-  background: #E50914;
-  color: #fff;
-}
-
 /* ── Grain overlay ──────────────────────────────────────── */
 .grain {
   position: fixed;
@@ -139,34 +37,16 @@
 
 /* ── Body base ──────────────────────────────────────────── */
 body {
-  background-color: var(--color-near-black);
+  background-color: #000000;
 }
 
 /* ── Text glow utility ──────────────────────────────────── */
 .text-glow {
-  text-shadow: var(--glow-red);
+  text-shadow: 0 0 30px rgba(229, 9, 20, 0.3);
 }
 
 /* ── Ardeno logo wordmark font ──────────────────────────── */
 .font-bricolage-condensed {
   font-family: "Bricolage Grotesque", sans-serif;
   font-variation-settings: "wdth" 75, "wght" 650;
-}
-
-/* ── Glass surface utility ──────────────────────────────── */
-.glass {
-  background: var(--bg-glass);
-  backdrop-filter: var(--blur-glass);
-  -webkit-backdrop-filter: var(--blur-glass);
-  border: 1px solid var(--border-default);
-  box-shadow: var(--shadow-float);
-}
-
-/* ── Eyebrow utility ────────────────────────────────────── */
-.eyebrow {
-  font-family: var(--font-ui);
-  font-size: var(--fs-micro);
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  font-weight: 500;
 }
