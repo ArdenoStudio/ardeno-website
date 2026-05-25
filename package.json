@@ -1,0 +1,34 @@
+{
+  "name": "ardeno-studio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "video:studio": "remotion studio video/index.ts",
+    "video:still": "remotion still video/index.ts ArdenoWebsiteDemo --frame=300 --scale=0.25 public/demo-video/preview.png --overwrite",
+    "video:render": "remotion render video/index.ts ArdenoWebsiteDemo public/demo-video/ardeno-studio-demo.mp4 --codec=h264 --overwrite"
+  },
+  "dependencies": {
+    "cobe": "^2.0.1",
+    "framer-motion": "^12.34.2",
+    "lucide-react": "^0.574.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@remotion/cli": "^4.0.464",
+    "@types/node": "^22.14.0",
+    "@vercel/node": "^5.7.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "autoprefixer": "^10.4.24",
+    "postcss": "^8.5.6",
+    "remotion": "^4.0.464",
+    "tailwindcss": "^3.4.19",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0",
+    "zod": "4.3.6"
+  }
+}
