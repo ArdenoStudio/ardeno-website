@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const FONT_H = "var(--font-display)";
@@ -28,6 +29,13 @@ export const BrandIdentity: React.FC = () => {
 
   const lockupY = useTransform(scrollYProgress, [0, 1], [36, -28]);
   const markY = useTransform(scrollYProgress, [0, 1], [18, -18]);
+
+  const handleBackHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    window.history.pushState({}, "", "/");
+    window.dispatchEvent(new PopStateEvent("popstate"));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <section
@@ -77,6 +85,16 @@ export const BrandIdentity: React.FC = () => {
               <p className="mt-5 max-w-md text-[14px] leading-[1.8] text-zinc-500" style={{ fontFamily: FONT_B }}>
                 We can use the glossy Ardeno renders as a premium identity moment across the homepage, loader, and future product portals.
               </p>
+
+              <a
+                href="/"
+                onClick={handleBackHome}
+                className="mt-7 inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.035] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-white/20 hover:bg-white/[0.07]"
+                style={{ fontFamily: FONT_B }}
+              >
+                <ArrowLeft size={14} strokeWidth={1.8} />
+                Back to site
+              </a>
 
               <div className="mt-8 grid max-w-md grid-cols-3 border-y border-white/[0.08] py-5">
                 {[

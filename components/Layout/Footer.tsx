@@ -29,19 +29,39 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     if (href === '#') return;
+    const isHomePath = window.location.pathname === '/' || window.location.pathname === '';
+    const scrollToHash = (attempt = 0) => {
+      const el = document.getElementById(href.replace('#', ''));
+      if (el) {
+        const navOffset = window.scrollY > 24 ? 72 : 80;
+        window.scrollTo({
+          top: el.getBoundingClientRect().top + window.scrollY - navOffset - 8,
+          behavior: 'smooth',
+        });
+        return;
+      }
+      if (attempt < 10) window.setTimeout(() => scrollToHash(attempt + 1), 120);
+    };
+
+    if (href.startsWith('#') && !isHomePath) {
+      window.history.pushState({}, '', `/${href}`);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+      window.setTimeout(() => scrollToHash(), 80);
+      return;
+    }
+
+    if (href.endsWith('.html')) {
+      window.location.assign(href);
+      return;
+    }
+
     if (href.startsWith('/')) {
       window.history.pushState({}, '', href);
       window.dispatchEvent(new PopStateEvent('popstate'));
       window.scrollTo(0, 0);
       return;
     }
-    const el = document.getElementById(href.replace('#', ''));
-    if (!el) return;
-    const navOffset = window.scrollY > 24 ? 72 : 80;
-    window.scrollTo({
-      top: el.getBoundingClientRect().top + window.scrollY - navOffset - 8,
-      behavior: 'smooth',
-    });
+    scrollToHash();
   };
 
   const navLinks = [
@@ -51,6 +71,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
     { label: 'Process', href: '#process' },
     { label: 'Docs', href: '/docs' },
     { label: 'FAQ', href: '/faq' },
+    { label: 'Founders', href: '/founders.html' },
   ];
 
   const socialLinks = [

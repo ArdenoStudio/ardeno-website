@@ -7,6 +7,7 @@ import { PageLoader } from './components/Home/Pageloader';
 import { DocsPage } from './components/Docs/DocsPage';
 import CookieBanner from './components/UI/CookieBanner';
 import { trackUtmParams } from './components/UI/trackUtm';
+import { applySeoToDocument, SeoRouteKey } from './seo';
 import ArdenoAIWidget from './components/AI/ArdenoAIWidget';
 
 // ─── Lazy-loaded below-fold sections ─────────────────────────────────────────
@@ -83,6 +84,10 @@ const App: React.FC = () => {
   useEffect(() => {
     trackUtmParams();
   }, []);
+
+  useEffect(() => {
+    applySeoToDocument(route as SeoRouteKey);
+  }, [route]);
 
   useEffect(() => {
     const onPopState = () => setRoute(getRoute());

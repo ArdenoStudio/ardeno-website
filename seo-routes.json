@@ -1,0 +1,159 @@
+{
+  "site": {
+    "name": "Ardeno Studio",
+    "alternateName": ["Ardeno", "Ardeno Studio LK"],
+    "url": "https://www.ardenostudio.online",
+    "logo": "https://www.ardenostudio.online/ardeno-logo.png",
+    "image": "https://www.ardenostudio.online/og-image.png",
+    "email": "ardenostudio@gmail.com",
+    "location": "Colombo, Sri Lanka",
+    "sameAs": [
+      "https://www.linkedin.com/company/ardentstudiolk",
+      "https://www.instagram.com/ardenostudio/",
+      "https://web.facebook.com/people/Ardeno-Studio/61578087120189/",
+      "https://x.com/ArdenoStudio",
+      "https://github.com/ArdenoStudio"
+    ]
+  },
+  "routes": {
+    "home": {
+      "path": "/",
+      "title": "Ardeno Studio | Web Design and Development in Sri Lanka",
+      "description": "Ardeno Studio is a Colombo web design and development studio building custom websites, booking systems, redesigns, and AI lead flows for Sri Lankan businesses.",
+      "keywords": [
+        "web design Sri Lanka",
+        "website development Sri Lanka",
+        "Colombo web design studio",
+        "custom website design",
+        "business website Sri Lanka",
+        "booking system development",
+        "AI lead assistant"
+      ],
+      "type": "website",
+      "priority": "1.0",
+      "changefreq": "weekly"
+    },
+    "docs": {
+      "path": "/docs",
+      "title": "Ardeno Studio Docs | Process, Pricing, Privacy",
+      "description": "Read Ardeno Studio documentation for web design services, project process, timelines, pricing approach, terms, privacy, and client handoff details.",
+      "keywords": [
+        "Ardeno Studio docs",
+        "website design process",
+        "web design pricing Sri Lanka",
+        "website project timeline",
+        "Ardeno privacy policy"
+      ],
+      "type": "article",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    "faq": {
+      "path": "/faq",
+      "title": "Ardeno Studio FAQ | Website Design Questions",
+      "description": "Answers about Ardeno Studio website pricing, timelines, revisions, ownership, redesigns, maintenance, and custom web systems for Sri Lankan businesses.",
+      "keywords": [
+        "website design FAQ",
+        "website cost Sri Lanka",
+        "custom website timeline",
+        "website ownership",
+        "Ardeno Studio FAQ"
+      ],
+      "type": "faq",
+      "priority": "0.6",
+      "changefreq": "monthly"
+    },
+    "brand": {
+      "path": "/brand",
+      "title": "Ardeno Studio Brand Identity System",
+      "description": "View Ardeno Studio's persistent identity system, glossy logo renders, primary mark, contrast mark, and dark-first brand direction.",
+      "keywords": [
+        "Ardeno Studio brand",
+        "Ardeno logo",
+        "brand identity Sri Lanka",
+        "visual identity system"
+      ],
+      "type": "website",
+      "priority": "0.5",
+      "changefreq": "monthly"
+    },
+    "case-studies": {
+      "path": "/case-studies",
+      "title": "Ardeno Studio Case Studies | Web Design Portfolio",
+      "description": "Explore Ardeno Studio case studies, portfolio builds, concept projects, and proof-led web design work for premium Sri Lankan and global brands.",
+      "keywords": [
+        "Ardeno Studio portfolio",
+        "web design case studies",
+        "Sri Lanka web design portfolio",
+        "custom website projects"
+      ],
+      "type": "collection",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    "cs-humble-beginnings": {
+      "path": "/case-studies/humble-beginnings",
+      "title": "Humble Beginnings | Ardeno Studio Case Study",
+      "description": "A case study on how Ardeno Studio built its own premium web presence, identity, process, portfolio system, and launch-ready foundation from scratch.",
+      "keywords": [
+        "Ardeno Studio case study",
+        "web studio launch case study",
+        "premium website case study",
+        "Sri Lanka design studio"
+      ],
+      "type": "article",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    "founders": {
+      "path": "/founders.html",
+      "title": "Ardeno Studio Founders | Suven Seoras and Ovindu Karunaratne",
+      "description": "Meet Suven Seoras and Ovindu Karunaratne, the co-founders of Ardeno Studio, a Colombo-based web design and development studio.",
+      "keywords": [
+        "Ardeno Studio founders",
+        "Suven Seoras",
+        "Ovindu Karunaratne",
+        "Colombo web design studio"
+      ],
+      "type": "profile",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    }
+  },
+  "faq": [
+    {
+      "question": "How much does a website from Ardeno cost?",
+      "answer": "Every project is scoped individually because every business is different. Pricing is determined by complexity, custom features, and specific goals. Ardeno Studio provides a clear custom quote after a discovery call."
+    },
+    {
+      "question": "How long does it take to build a website?",
+      "answer": "A standard business website usually takes 2 to 4 weeks from kickoff to launch. More complex portals, ecommerce builds, booking systems, or custom web applications typically run 4 to 8 weeks."
+    },
+    {
+      "question": "Who owns the website after it is built?",
+      "answer": "The client owns the website after final payment is made. Full ownership of the code and design passes to the client with no lock-in or licensing fees."
+    },
+    {
+      "question": "Can Ardeno redesign an existing website?",
+      "answer": "Yes. Ardeno Studio audits what is working, identifies weak first impressions or conversion issues, and rebuilds the site from a stronger design, technical, and content foundation."
+    }
+  ],
+  "services": [
+    {
+      "name": "Premium Business Website",
+      "description": "Custom-coded business websites for brands that need a credible, fast, responsive, and SEO-ready web presence."
+    },
+    {
+      "name": "Website Redesign Sprint",
+      "description": "Focused rebuilds for sites that feel outdated, unclear, slow, or weaker than the actual business."
+    },
+    {
+      "name": "Booking and Order System",
+      "description": "Browser-based booking, ordering, and portal systems for restaurants, salons, service teams, clinics, events, and appointment-led businesses."
+    },
+    {
+      "name": "AI Lead Assistant",
+      "description": "Secure AI helpers that answer questions, qualify leads, and guide website visitors after hours."
+    }
+  ]
+}

@@ -1,5 +1,8 @@
+import fs from 'node:fs';
+
 const baseUrl = process.argv[2] || 'https://www.ardenostudio.online';
 const origin = baseUrl.replace(/\/$/, '');
+const seoConfig = JSON.parse(fs.readFileSync(new URL('../seo-routes.json', import.meta.url), 'utf8'));
 
 const failures = [];
 
@@ -55,6 +58,16 @@ assert(llms.response.status === 200, `llms.txt returned ${llms.response.status}`
 assert((llms.response.headers.get('content-type') || '').includes('text/plain'), 'llms.txt is not text/plain');
 assert(llms.text.startsWith('# Ardeno Studio'), 'llms.txt does not describe Ardeno Studio');
 assert(!llms.text.includes('<!DOCTYPE html>'), 'llms.txt is returning SPA HTML');
+
+for (const route of Object.values(seoConfig.routes)) {
+  const page = await getText(route.path);
+  const canonical = `${origin}${route.path}`;
+  assert(page.response.status === 200, `${route.path} returned ${page.response.status}`);
+  assert(page.text.includes(`<title>${route.title}</title>`), `${route.path} title metadata is missing`);
+  assert(page.text.includes(`name="description" content="${route.description}"`), `${route.path} description metadata is missing`);
+  assert(page.text.includes(`rel="canonical" href="${canonical}"`), `${route.path} canonical metadata is missing`);
+  assert(page.text.includes('id="structured-data" type="application/ld+json"'), `${route.path} structured data is missing`);
+}
 
 const blockedOrigin = 'https://example.invalid';
 for (const path of ['/api/chat', '/api/send-email']) {

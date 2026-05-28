@@ -73,6 +73,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
   const TOP_NAV_HEIGHT = 80;
   const SCROLLED_NAV_HEIGHT = 72;
   const CURRENT_NAV_HEIGHT = isScrolled ? SCROLLED_NAV_HEIGHT : TOP_NAV_HEIGHT;
+  const isHomePath = () => window.location.pathname === "/" || window.location.pathname === "";
 
   const ease: [number, number, number, number] = [0.16, 1, 0.3, 1];
   const navSpring = reduced
@@ -212,6 +213,35 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
     e.preventDefault();
     setMobileOpen(false);
 
+    const scrollToHomeTarget = (attempt = 0) => {
+      if (href === "#") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+
+      const el = document.getElementById(href.replace("#", ""));
+      if (el) {
+        window.scrollTo({
+          top: el.getBoundingClientRect().top + window.scrollY - CURRENT_NAV_HEIGHT - 8,
+          behavior: "smooth",
+        });
+        return;
+      }
+
+      if (attempt < 10) {
+        window.setTimeout(() => scrollToHomeTarget(attempt + 1), 120);
+      }
+    };
+
+    if (href.startsWith("#") && !isHomePath()) {
+      clickLockUntilRef.current = Date.now() + 1200;
+      setActiveNav(href);
+      window.history.pushState({}, "", href === "#" ? "/" : `/${href}`);
+      window.dispatchEvent(new PopStateEvent("popstate"));
+      window.setTimeout(() => scrollToHomeTarget(), 80);
+      return;
+    }
+
     if (href.startsWith("/") && !href.startsWith("/#")) {
       window.history.pushState({}, "", href);
       window.dispatchEvent(new PopStateEvent("popstate"));
@@ -323,8 +353,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
               style={{ height: "100%" }}
             >
               <a
-                href="#"
+                href="/"
                 onClick={(e) => handleNavClick(e, "#")}
+                aria-label="Go to Ardeno Studio home"
                 className="flex items-center select-none group"
               >
                 <motion.img

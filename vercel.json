@@ -40,6 +40,11 @@
     }
   ],
   "rewrites": [
+    { "source": "/docs", "destination": "/docs/index.html" },
+    { "source": "/faq", "destination": "/faq/index.html" },
+    { "source": "/brand", "destination": "/brand/index.html" },
+    { "source": "/case-studies", "destination": "/case-studies/index.html" },
+    { "source": "/case-studies/humble-beginnings", "destination": "/case-studies/humble-beginnings/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

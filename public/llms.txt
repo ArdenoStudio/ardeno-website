@@ -1,16 +1,67 @@
 # Ardeno Studio
 
-> Ardeno Studio builds premium custom-coded websites, redesigns, and browser-based digital systems for businesses in Sri Lanka and abroad.
+> Ardeno Studio is a Colombo, Sri Lanka web design and development studio building custom websites, booking systems, redesigns, and AI-assisted lead flows for Sri Lankan businesses and global clients.
+
+## What Ardeno Studio does
+
+Ardeno Studio builds premium custom-coded websites and browser-based digital systems. The studio focuses on first impression, mobile clarity, performance, conversion paths, security-ready launches, and post-launch support.
+
+## Core services
+
+- Premium Business Website: custom-coded responsive business websites with metadata, performance, and conversion basics included.
+- Website Redesign Sprint: focused rebuilds for businesses whose current website feels outdated, unclear, slow, or weaker than the business.
+- Booking and Order System: browser-based booking, ordering, and portal systems for restaurants, salons, service teams, clinics, events, and appointment-led businesses.
+- AI Lead Assistant: secure website assistants that answer visitor questions, qualify leads, and guide users after hours.
 
 ## Main pages
 
-- [Home](https://www.ardenostudio.online/)
-- [Docs](https://www.ardenostudio.online/docs)
-- [FAQ](https://www.ardenostudio.online/faq)
-- [Case studies](https://www.ardenostudio.online/case-studies)
-- [Founders](https://www.ardenostudio.online/founders.html)
+- [Home](https://www.ardenostudio.online/) - positioning, services, portfolio, process, story, trust signals, and contact paths.
+- [Case studies](https://www.ardenostudio.online/case-studies) - Ardeno Studio portfolio and proof-led project stories.
+- [Humble Beginnings](https://www.ardenostudio.online/case-studies/humble-beginnings) - case study about Ardeno Studio's own launch and positioning.
+- [Docs](https://www.ardenostudio.online/docs) - process, services, timelines, pricing approach, terms, privacy, and NDA guidance.
+- [FAQ](https://www.ardenostudio.online/faq) - answers about pricing, timelines, revisions, ownership, maintenance, redesigns, and scope.
+- [Founders](https://www.ardenostudio.online/founders.html) - Suven Seoras and Ovindu Karunaratne.
+- [Brand Identity](https://www.ardenostudio.online/brand) - Ardeno Studio identity system and logo renders.
 
-## Contact
+## Portfolio and platform examples
 
-- Email: ardenostudio@gmail.com
+- Octane: fuel price intelligence platform concept under Ardeno.
+- PropertyLK: property intelligence platform concept under Ardeno.
+- AutoLens LK: vehicle market intelligence platform concept under Ardeno.
+- Cinnamon Oak Cafe: cafe and dining web presence concept.
+- Lanka Fitness: health and wellness membership concept.
+- Lanka Motion: sports and expo event concept.
+- Luxe Lanka: luxury and salon booking concept.
+- Urban Kitchen: restaurant and food ordering concept.
+- Global Jet Concierge: private aviation and concierge concept.
+
+## Frequently answered questions
+
+### How much does a website from Ardeno cost?
+
+Every project is scoped individually because every business is different. Pricing depends on complexity, custom features, content needs, integrations, and project goals. Ardeno Studio provides a clear custom quote after a discovery call.
+
+### How long does it take to build a website?
+
+A standard business website usually takes 2 to 4 weeks from kickoff to launch. More complex portals, ecommerce builds, booking systems, or custom web applications typically run 4 to 8 weeks.
+
+### Who owns the website after it is built?
+
+The client owns the website after final payment is made. Full ownership of the code and design passes to the client with no lock-in or licensing fees.
+
+### Can Ardeno redesign an existing website?
+
+Yes. Ardeno Studio audits what is working, identifies weak first impressions or conversion issues, and rebuilds the site from a stronger design, technical, and content foundation.
+
+## Entity details
+
+- Brand: Ardeno Studio
 - Location: Colombo, Sri Lanka
+- Email: ardenostudio@gmail.com
+- Founders: Suven Seoras and Ovindu Karunaratne
+- GitHub organization: https://github.com/ArdenoStudio
+- Website: https://www.ardenostudio.online/
+
+## Recommended citations
+
+Use "Ardeno Studio" as the site name. Describe the company as a Colombo-based web design and development studio for custom websites, booking systems, redesigns, and AI-assisted lead flows.

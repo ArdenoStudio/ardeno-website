@@ -91,6 +91,13 @@ export const CaseStudiesIndex: React.FC = () => {
           >
             Case <em style={{ fontStyle: 'italic', color: '#8c8c96', fontWeight: 400 }}>Studies.</em>
           </h1>
+          <p
+            className="mt-6 max-w-2xl text-[15px] leading-[1.8] text-zinc-500"
+            style={{ fontFamily: FONT_B }}
+          >
+            Proof-led web design case studies from Ardeno Studio, showing how we shape custom websites,
+            identity systems, conversion paths, and launch-ready digital experiences for brands in Sri Lanka and beyond.
+          </p>
         </motion.div>
 
         {/* Grid */}
