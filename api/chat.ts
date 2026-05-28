@@ -1,5 +1,5 @@
-import { ARDENO_AI_CONTEXT } from '../ardeno-ai-context';
-import { ARDENO_AI_PROMPT } from '../ardeno-ai-prompt';
+import { ARDENO_AI_CONTEXT } from '../ardeno-ai-context.js';
+import { ARDENO_AI_PROMPT } from '../ardeno-ai-prompt.js';
 import {
   asString,
   checkRateLimit,
@@ -9,7 +9,7 @@ import {
   setApiHeaders,
   type ApiRequest,
   type ApiResponse,
-} from '../server/request-security';
+} from '../server/request-security.js';
 
 type ChatMessage = {
   role: 'user' | 'assistant';

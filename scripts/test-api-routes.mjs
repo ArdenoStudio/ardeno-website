@@ -25,8 +25,10 @@ const managedEnvKeys = [
 
 const rewriteRelativeImports = (source) => {
   return source.replace(/from\s+(['"])(\.\.?\/[^'"]+)\1/g, (match, quote, specifier) => {
-    if (/\.(c|m)?(j|t)sx?$/.test(specifier) || specifier.endsWith('.json')) return match;
-    return `from ${quote}${specifier}.mjs${quote}`;
+    if (specifier.endsWith('.json')) return match;
+    if (specifier.endsWith('.js')) return match;
+    if (/\.(c|m)?(j|t)sx?$/.test(specifier)) return match;
+    return `from ${quote}${specifier}.js${quote}`;
   });
 };
 
@@ -35,7 +37,7 @@ const compileForNode = () => {
 
   for (const relativePath of sourceFiles) {
     const sourcePath = path.join(root, relativePath);
-    const outPath = path.join(outRoot, relativePath).replace(/\.tsx?$/, '.mjs');
+    const outPath = path.join(outRoot, relativePath).replace(/\.tsx?$/, '.js');
     fs.mkdirSync(path.dirname(outPath), { recursive: true });
 
     const source = rewriteRelativeImports(fs.readFileSync(sourcePath, 'utf8'));
@@ -148,8 +150,8 @@ const runTest = async (name, fn) => {
 compileForNode();
 
 const originalFetch = globalThis.fetch;
-const chatModule = await import(pathToFileURL(path.join(outRoot, 'api', 'chat.mjs')));
-const leadModule = await import(pathToFileURL(path.join(outRoot, 'api', 'send-email.mjs')));
+const chatModule = await import(pathToFileURL(path.join(outRoot, 'api', 'chat.js')));
+const leadModule = await import(pathToFileURL(path.join(outRoot, 'api', 'send-email.js')));
 const chatHandler = chatModule.default;
 const leadHandler = leadModule.default;
 

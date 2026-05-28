@@ -11,7 +11,7 @@ import {
   verifyTurnstile,
   type ApiRequest,
   type ApiResponse,
-} from '../server/request-security';
+} from '../server/request-security.js';
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_BODY_SIZE = 16_000;
