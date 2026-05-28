@@ -212,18 +212,48 @@ const PAGE_CONTENT: Record<string, React.ReactNode> = {
     ),
 
     'brand-identity': (
-        <DocContent
-            title="Brand Identity"
-            lead="A brand is more than a logo. We build complete visual systems that scale from business cards to billboards."
-            sections={[
-                {
-                    heading: "What's Included",
-                    body: 'Logo suite (primary, secondary, icon), colour palette, typography system, iconography, brand voice guidelines, and a comprehensive brand book.',
-                },
-                { heading: 'Deliverables', body: 'All source files (AI, SVG, PDF), web-ready exports, and a Figma component library pre-loaded with your brand tokens.' },
-                { heading: 'Timeline', body: 'Brand projects typically run 3 to 5 weeks depending on complexity and feedback turnaround.' },
-            ]}
-        />
+        <div>
+            <DocContent
+                title="Brand Identity"
+                lead="A brand is more than a logo. We build complete visual systems that scale from business cards to billboards."
+                sections={[
+                    {
+                        heading: "What's Included",
+                        body: 'Logo suite (primary, secondary, icon), colour palette, typography system, iconography, brand voice guidelines, and a comprehensive brand book.',
+                    },
+                    { heading: 'Deliverables', body: 'All source files (AI, SVG, PDF), web-ready exports, and a Figma component library pre-loaded with your brand tokens.' },
+                    { heading: 'Timeline', body: 'Brand projects typically run 3 to 5 weeks depending on complexity and feedback turnaround.' },
+                ]}
+            />
+            <a
+                href="/brand"
+                onClick={(e) => {
+                    e.preventDefault();
+                    window.history.pushState({}, '', '/brand');
+                    window.dispatchEvent(new PopStateEvent('popstate'));
+                    window.scrollTo(0, 0);
+                }}
+                style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    marginTop: '2rem',
+                    padding: '0.85rem 1.1rem',
+                    borderRadius: 999,
+                    border: '1px solid rgba(229,9,20,0.32)',
+                    background: 'rgba(229,9,20,0.09)',
+                    color: '#fff',
+                    fontFamily: FONT_BODY,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    textDecoration: 'none',
+                }}
+            >
+                View Identity System <ArrowUpRight size={13} />
+            </a>
+        </div>
     ),
 
     'web-design': (
@@ -276,7 +306,7 @@ const PAGE_CONTENT: Record<string, React.ReactNode> = {
             title="Starting a Project"
             lead="Getting started with Ardeno Studio is straightforward. Here is everything you need to know."
             sections={[
-                { heading: 'Step 1 — Reach Out', body: "Use the Let's Talk button on our site or email ardenostudio@gmail.com with a brief description of your project and timeline." },
+                { heading: 'Step 1 — Reach Out', body: 'Use the Start Project button on our site or email ardenostudio@gmail.com with a brief description of your project and timeline.' },
                 { heading: 'Step 2 — Discovery Call', body: 'A 30 to 45 minute video call to understand your goals, scope, and budget range. No commitment required.' },
                 { heading: 'Step 3 — Proposal', body: "We'll send a detailed proposal within 48 hours — scope, deliverables, timeline, and pricing — all in plain language." },
                 { heading: 'Step 4 — Kick-Off', body: 'Once you sign off, we schedule a kick-off session and your project enters our active pipeline within one week.' },

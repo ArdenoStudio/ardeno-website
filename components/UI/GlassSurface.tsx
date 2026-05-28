@@ -127,14 +127,22 @@ const GlassSurface = ({
   // ResizeObserver to keep map fresh
   useEffect(() => {
     if (!containerRef.current) return;
-    const ro = new ResizeObserver(() => setTimeout(updateDisplacementMap, 0));
+    let updateTimer: ReturnType<typeof setTimeout> | undefined;
+    const ro = new ResizeObserver(() => {
+      if (updateTimer) clearTimeout(updateTimer);
+      updateTimer = setTimeout(updateDisplacementMap, 0);
+    });
     ro.observe(containerRef.current);
-    return () => ro.disconnect();
+    return () => {
+      if (updateTimer) clearTimeout(updateTimer);
+      ro.disconnect();
+    };
   }, []);
 
   // Re-measure when width/height props change
   useLayoutEffect(() => {
-    setTimeout(updateDisplacementMap, 0);
+    const updateTimer = setTimeout(updateDisplacementMap, 0);
+    return () => clearTimeout(updateTimer);
   }, [width, height]);
 
   // Detect SVG filter support once on mount

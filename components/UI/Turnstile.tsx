@@ -35,6 +35,7 @@ export const Turnstile: React.FC<TurnstileProps> = ({ onVerify, onExpire }) => {
 
         let widgetId: string | undefined;
         let cancelled = false;
+        let script: HTMLScriptElement | null = null;
 
         const renderWidget = () => {
             if (cancelled || widgetId || !containerRef.current || !window.turnstile) return;
@@ -51,7 +52,7 @@ export const Turnstile: React.FC<TurnstileProps> = ({ onVerify, onExpire }) => {
         if (window.turnstile) {
             renderWidget();
         } else {
-            let script = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null;
+            script = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null;
             if (!script) {
                 script = document.createElement("script");
                 script.id = SCRIPT_ID;
@@ -65,6 +66,7 @@ export const Turnstile: React.FC<TurnstileProps> = ({ onVerify, onExpire }) => {
 
         return () => {
             cancelled = true;
+            script?.removeEventListener("load", renderWidget);
             if (widgetId && window.turnstile?.remove) {
                 window.turnstile.remove(widgetId);
             }

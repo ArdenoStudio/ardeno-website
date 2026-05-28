@@ -66,10 +66,10 @@ const CookieBanner: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 14 }}
                     transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
-                    className="fixed inset-x-0 bottom-6 z-[9999] flex justify-center px-4"
+                    className="ardeno-cookie-banner fixed inset-x-0 bottom-4 z-[9999] flex justify-center px-3 sm:bottom-6 sm:px-4"
                 >
                     <div
-                        className="relative w-full max-w-[760px] rounded-[26px] border px-6 py-5 md:px-7 md:py-6"
+                        className="relative w-full max-w-[760px] rounded-[22px] border px-5 py-5 sm:rounded-[26px] md:px-7 md:py-6"
                         style={{
                             background: "rgba(20,20,22,0.88)",
                             borderColor: "rgba(255,255,255,0.08)",
@@ -130,10 +130,10 @@ const CookieBanner: React.FC = () => {
                                 </p>
                             </div>
 
-                            <div className="flex items-center gap-3 pt-1">
+                            <div className="flex flex-wrap items-center gap-2.5 pt-1 sm:gap-3">
                                 <button
                                     onClick={accept}
-                                    className="rounded-full px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-white transition-all duration-200"
+                                    className="min-w-[112px] rounded-full px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white transition-all duration-200 sm:px-6 sm:tracking-[0.2em]"
                                     style={{
                                         fontFamily: "'DM Sans', sans-serif",
                                         background: "#E50914",
@@ -154,7 +154,7 @@ const CookieBanner: React.FC = () => {
 
                                 <button
                                     onClick={reject}
-                                    className="rounded-full px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-white transition-all duration-200"
+                                    className="min-w-[112px] rounded-full px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white transition-all duration-200 sm:px-6 sm:tracking-[0.2em]"
                                     style={{
                                         fontFamily: "'DM Sans', sans-serif",
                                         background: "rgba(255,255,255,0.04)",

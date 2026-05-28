@@ -74,6 +74,13 @@ const STYLES = `
   .aw button, .aw textarea { font-family: ${MANROPE}; }
   .aw button { -webkit-tap-highlight-color: transparent; }
 
+  body.project-modal-open .aw-fab-wrapper,
+  body.project-modal-open .aw-panel-wrapper,
+  body.project-modal-open .aw-backdrop {
+    display: none !important;
+    pointer-events: none !important;
+  }
+
   @keyframes awPanelIn {
     0% { opacity: 0; transform: translateY(18px) scale(.965); }
     100% { opacity: 1; transform: translateY(0) scale(1); }

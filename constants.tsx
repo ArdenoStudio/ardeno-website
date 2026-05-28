@@ -16,50 +16,31 @@ export const NAV_ITEMS: NavItem[] = [
 export const SERVICES: Service[] = [
   {
     id: 'web-design',
-    title: 'Premium Web Design',
+    title: 'Premium Business Website',
     description:
-      "Bespoke UI/UX design that captures your brand essence. We don't use templates; we build digital masterpieces.",
+      'A custom-coded website for brands that need to look credible, modern, and ready for real customers.',
     icon: <Layout className="w-8 h-8 text-accent" />,
   },
   {
     id: 'development',
-    title: 'Creative Development',
-    description: "Ardeno Studio - High Performance Digital Presence",
+    title: 'Website Redesign Sprint',
+    description: 'A focused rebuild for sites that feel outdated, unclear, slow, or weaker than the actual business.',
     icon: <Zap className="w-8 h-8 text-accent" />,
   },
   {
     id: 'optimization',
-    title: 'Conversion Strategy',
+    title: 'Booking / Order System',
     description:
-      'Beautiful websites that sell. We use data-driven layouts to turn visitors into high-value clients.',
+      'Practical web systems for restaurants, salons, service teams, clinics, events, and appointment-led businesses.',
     icon: <TrendingUp className="w-8 h-8 text-accent" />,
   },
   {
     id: 'mobile',
-    title: 'Mobile First',
+    title: 'AI Lead Assistant',
     description:
-      'Seamless experiences across all devices. Your site will look stunning on a 4K monitor and an iPhone.',
+      'A secure AI helper for websites that need to answer questions, qualify leads, or guide visitors after hours.',
     icon: <Smartphone className="w-8 h-8 text-accent" />,
   },
 ];
 
-export const TESTIMONIALS: Testimonial[] = [
-  {
-    id: 't1',
-    name: 'Sarah Perera',
-    role: 'Marketing Director',
-    company: 'Odel Luxury',
-    quote:
-      "Ardeno Studio didn't just build a website; they elevated our entire brand perception. The attention to detail is world-class.",
-    avatar: 'https://picsum.photos/100/100?random=10',
-  },
-  {
-    id: 't2',
-    name: 'David Fernando',
-    role: 'Founder',
-    company: 'Ceylon Coffee House',
-    quote:
-      'Since launching the new site, our online reservations have doubled. The design exudes the premium feel we were missing.',
-    avatar: 'https://picsum.photos/100/100?random=11',
-  },
-];
+export const TESTIMONIALS: Testimonial[] = [];

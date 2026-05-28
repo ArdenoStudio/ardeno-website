@@ -274,7 +274,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
             initial={{ height: TOP_NAV_HEIGHT, maxWidth: 1600, borderRadius: 0 }}
             animate={{
               height: isScrolled ? SCROLLED_NAV_HEIGHT : TOP_NAV_HEIGHT,
-              maxWidth: isScrolled ? 1280 : 1600,
+              maxWidth: isScrolled ? 1040 : 1600,
               borderRadius: isScrolled ? 28 : 0,
             }}
             transition={navSpring}
@@ -317,13 +317,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
             />
 
             <div
-              className="w-full flex items-center justify-between px-6 md:px-12"
+              className={`w-full flex items-center justify-between transition-[padding] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isScrolled ? "px-7 md:px-8" : "px-6 md:px-12"
+              }`}
               style={{ height: "100%" }}
             >
               <a
                 href="#"
                 onClick={(e) => handleNavClick(e, "#")}
-                className="flex items-center gap-3 select-none group"
+                className="flex items-center select-none group"
               >
                 <motion.img
                   src={LOGO_SRC}
@@ -353,11 +355,33 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                   style={{ willChange: "height, opacity, filter", transform: "translateZ(0)" }}
                 />
 
-                <span className="hidden sm:block w-px h-6 bg-white/15 mx-1" />
+                <motion.span
+                  className="hidden sm:block h-6 shrink-0 bg-white/15"
+                  initial={false}
+                  animate={{
+                    opacity: isScrolled ? 0 : 1,
+                    width: isScrolled ? 0 : 1,
+                    marginLeft: isScrolled ? 0 : 16,
+                    marginRight: isScrolled ? 0 : 16,
+                  }}
+                  transition={navSpring}
+                  style={{ willChange: "width, margin, opacity" }}
+                />
 
-                <div
-                  className="hidden sm:flex flex-col leading-[0.9] uppercase text-white"
-                  style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
+                <motion.div
+                  className="hidden sm:flex shrink-0 flex-col overflow-hidden whitespace-nowrap leading-[0.9] uppercase text-white"
+                  initial={false}
+                  animate={{
+                    opacity: isScrolled ? 0 : 1,
+                    width: isScrolled ? 0 : 72,
+                    x: isScrolled ? -8 : 0,
+                  }}
+                  transition={navSpring}
+                  aria-hidden={isScrolled}
+                  style={{
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                    willChange: "width, opacity, transform",
+                  }}
                 >
                   <span
                     className="text-[10px]"
@@ -378,7 +402,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                   >
                     STUDIO
                   </span>
-                </div>
+                </motion.div>
               </a>
 
               <div className="hidden md:flex items-center gap-4 lg:gap-6">
@@ -610,7 +634,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                       lineHeight: 1,
                     }}
                   >
-                    LET&apos;S TALK
+                    START PROJECT
                   </span>
                   <motion.span
                     style={{ position: "relative", zIndex: 1, display: "flex", lineHeight: 1 }}
@@ -838,7 +862,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                   }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  LET&apos;S TALK <ArrowUpRight size={13} />
+                  START PROJECT <ArrowUpRight size={13} />
                 </motion.button>
               </motion.div>
             </motion.div>

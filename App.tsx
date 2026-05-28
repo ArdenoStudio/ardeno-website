@@ -13,6 +13,12 @@ import ArdenoAIWidget from './components/AI/ArdenoAIWidget';
 const FeaturedWork = lazy(() =>
   import('./components/Home/FeaturedWork').then(m => ({ default: m.FeaturedWork }))
 );
+const AuditCTA = lazy(() =>
+  import('./components/Home/AuditCTA').then(m => ({ default: m.AuditCTA }))
+);
+const BrandIdentity = lazy(() =>
+  import('./components/Home/BrandIdentity').then(m => ({ default: m.BrandIdentity }))
+);
 const Services = lazy(() =>
   import('./components/Home/Services').then(m => ({ default: m.Services }))
 );
@@ -24,6 +30,9 @@ const OurStory = lazy(() =>
 );
 const Testimonials = lazy(() =>
   import('./components/Home/Testimonials').then(m => ({ default: m.Testimonials }))
+);
+const FinalCTA = lazy(() =>
+  import('./components/Home/FinalCTA').then(m => ({ default: m.FinalCTA }))
 );
 const Footer = lazy(() =>
   import('./components/Layout/Footer').then(m => ({ default: m.Footer }))
@@ -42,21 +51,24 @@ const HumbleBeginnings = lazy(() =>
 );
 const preloadChunks = () => {
   import('./components/Home/FeaturedWork');
+  import('./components/Home/AuditCTA');
   import('./components/Home/Services');
   import('./components/Home/Process');
   import('./components/Home/OurStory');
   import('./components/Home/Testimonials');
+  import('./components/Home/FinalCTA');
   import('./components/Layout/Footer');
   import('./components/Home/ContactModal');
 };
 
 // ─── Simple path-based router ────────────────────────────────────────────────
-type Route = 'home' | 'docs' | 'faq' | 'case-studies' | 'cs-humble-beginnings';
+type Route = 'home' | 'docs' | 'faq' | 'brand' | 'case-studies' | 'cs-humble-beginnings';
 
 const getRoute = (): Route => {
   const p = window.location.pathname;
   if (p.startsWith('/docs')) return 'docs';
   if (p.startsWith('/faq')) return 'faq';
+  if (p.startsWith('/brand')) return 'brand';
   if (p.startsWith('/case-studies/humble-beginnings')) return 'cs-humble-beginnings';
   if (p === '/case-studies' || p === '/case-studies/') return 'case-studies';
   return 'home';
@@ -130,7 +142,7 @@ const App: React.FC = () => {
   );
 
   return (
-    <div className="bg-zinc-950 text-white min-h-screen overflow-x-hidden selection:bg-accent selection:text-white relative">
+    <div className="bg-zinc-950 text-white min-h-screen overflow-x-clip selection:bg-accent selection:text-white relative">
       <PageLoader onComplete={() => setLoaded(true)} minDuration={1500} />
 
       <AnimatePresence mode="wait">
@@ -152,6 +164,17 @@ const App: React.FC = () => {
             <CaseStudiesIndex />
           </Suspense>,
           { hideNav: true }
+        )}
+
+        {route === 'brand' && pageShell(
+          <main className="min-h-screen bg-[#080809] pt-14">
+            <Suspense key="brand" fallback={null}>
+              <BrandIdentity />
+            </Suspense>
+            <Suspense fallback={null}>
+              <Footer onOpenContact={() => setContactOpen(true)} />
+            </Suspense>
+          </main>
         )}
 
         {route === 'cs-humble-beginnings' && pageShell(
@@ -178,11 +201,13 @@ const App: React.FC = () => {
             <Hero onOpenContact={() => setContactOpen(true)} />
             <ProjectMarquee />
             <div ref={sentinelRef} aria-hidden="true" />
+            <Suspense fallback={null}><AuditCTA onOpenContact={() => setContactOpen(true)} /></Suspense>
             <Suspense fallback={null}><FeaturedWork /></Suspense>
             <Suspense fallback={null}><Services /></Suspense>
             <Suspense fallback={null}><Process /></Suspense>
             <Suspense fallback={null}><OurStory /></Suspense>
             <Suspense fallback={null}><Testimonials /></Suspense>
+            <Suspense fallback={null}><FinalCTA onOpenContact={() => setContactOpen(true)} /></Suspense>
             <Suspense fallback={null}>
               <Footer onOpenContact={() => setContactOpen(true)} />
             </Suspense>

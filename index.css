@@ -97,3 +97,9 @@ body {
 .image-reveal {
   mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
 }
+
+body.project-modal-open .ardeno-cookie-banner {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}

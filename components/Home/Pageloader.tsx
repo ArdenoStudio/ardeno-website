@@ -310,16 +310,17 @@ export const PageLoader: React.FC<{ onComplete?: () => void; minDuration?: numbe
 
   useEffect(() => {
     if (done) return;
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    const t = (fn: () => void, ms: number) => timers.push(setTimeout(fn, ms));
-
-    t(() => setFlashRed(true), minDuration);
-    t(() => setExiting(true), minDuration + 50);
-    t(() => {
+    const flashTimer = setTimeout(() => setFlashRed(true), minDuration);
+    const exitTimer = setTimeout(() => setExiting(true), minDuration + 50);
+    const doneTimer = setTimeout(() => {
       setDone(true);
     }, minDuration + 450); // Fast 0.4s crossfade
 
-    return () => timers.forEach(clearTimeout);
+    return () => {
+      clearTimeout(flashTimer);
+      clearTimeout(exitTimer);
+      clearTimeout(doneTimer);
+    };
   }, [minDuration, done]);
 
   if (done) return null;

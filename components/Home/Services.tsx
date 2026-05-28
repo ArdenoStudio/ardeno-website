@@ -29,17 +29,17 @@ const FONT_BODY = "'Sora', sans-serif";
 const SERVICES: Service[] = [
   {
     id: "01",
-    title: "Premium Web Design",
+    title: "Premium Business Website",
     description:
-      "Bespoke UI/UX design that captures your brand essence. We don't use templates; we build digital masterpieces.",
-    detail: `Every pixel is intentional. We begin with a deep discovery phase — understanding your audience, your competitors, and what makes your brand irreplaceable.`,
+      "A custom-coded website for brands that need to look credible, modern, and ready for real customers.",
+    detail: `For businesses that need more than a basic brochure, we shape the offer, design the interface, and build a fast responsive site that feels premium without becoming hard to maintain.`,
     deliverables: [
-      "Brand visual system",
-      "Figma design files",
-      "Component library",
-      "Motion guidelines",
+      "Homepage and key pages",
+      "Mobile-first responsive build",
+      "SEO and metadata basics",
+      "Analytics-ready launch",
     ],
-    tag: "UI / UX",
+    tag: "Website",
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -49,17 +49,17 @@ const SERVICES: Service[] = [
   },
   {
     id: "02",
-    title: "Creative Development",
+    title: "Website Redesign Sprint",
     description:
-      "Fluid animations, WebGL interactions, and rock-solid code. Performance meets artistry on every build.",
-    detail: `We write code the way designers think — with intention, creativity, and obsessive attention to detail. Our stack is modern and battle-tested: React, Next.js, TypeScript, and Framer Motion for buttery-smooth interactions.`,
+      "A focused rebuild for sites that feel outdated, unclear, slow, or weaker than the actual business.",
+    detail: `We audit the current site, identify the biggest trust and conversion gaps, then rebuild the high-impact pages with sharper positioning, cleaner content, stronger mobile flow, and a launch checklist.`,
     deliverables: [
-      "Next.js / React codebase",
-      "WebGL / Three.js scenes",
-      "CMS integration",
-      "95+ Lighthouse score",
+      "UX and conversion audit",
+      "Refreshed visual direction",
+      "Copy and CTA cleanup",
+      "Performance pass",
     ],
-    tag: "WebGL",
+    tag: "Redesign",
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
@@ -68,17 +68,17 @@ const SERVICES: Service[] = [
   },
   {
     id: "03",
-    title: "Conversion Strategy",
+    title: "Booking / Order System",
     description:
-      "Beautiful websites that sell. We use data-driven layouts to turn visitors into high-value clients.",
-    detail: `A website that doesn't convert is just an expensive brochure. We treat every layout decision as a hypothesis — informed by heatmaps, session recordings, and conversion data from hundreds of projects.`,
+      "Practical web systems for restaurants, salons, service teams, clinics, events, and appointment-led businesses.",
+    detail: `When the website needs to do real work, we add the flow behind it: booking requests, menus, lead forms, order intent, dashboards, email alerts, and admin-friendly data capture where the business needs it.`,
     deliverables: [
-      "CRO audit & roadmap",
-      "Analytics instrumentation",
-      "A/B test framework",
-      "30-day post-launch review",
+      "Booking or enquiry flow",
+      "Admin-friendly structure",
+      "Email notifications",
+      "Server-side validation",
     ],
-    tag: "CRO",
+    tag: "Systems",
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
@@ -88,17 +88,17 @@ const SERVICES: Service[] = [
   },
   {
     id: "04",
-    title: "Mobile First",
+    title: "AI Lead Assistant",
     description:
-      "Seamless experiences across all devices. Your site will look stunning on a 4K monitor and an iPhone.",
-    detail: `More than 60% of web traffic is mobile — yet most agencies design on desktop and "adapt" to mobile as an afterthought. We flip that entirely.`,
+      "A secure AI helper for websites that need to answer questions, qualify leads, or guide visitors after hours.",
+    detail: `We keep AI practical: answer common questions, collect project context, hand off to WhatsApp or email, and protect the endpoint with server-side keys, validation, rate limits, and abuse controls.`,
     deliverables: [
-      "Mobile-first responsive layout",
-      "Real-device QA",
-      "Touch interaction design",
-      "Adaptive asset delivery",
+      "AI chat or FAQ assistant",
+      "Server-side API proxy",
+      "Rate limit and abuse checks",
+      "Lead handoff flow",
     ],
-    tag: "Responsive",
+    tag: "AI",
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="7" y="2" width="10" height="20" rx="2" />
@@ -612,14 +612,14 @@ export const Services: React.FC = () => {
             className="text-[13px] tracking-[0.22em] uppercase"
             style={{ fontFamily: FONT_BODY, fontWeight: 500, color: '#a0a0a0' }}
           >
-            Our Expertise
+            What We Build
           </span>
           <div className="flex-1 h-px bg-white/[0.05] ml-1" />
           <span
             className="text-[12px] tracking-[0.2em] uppercase"
             style={{ fontFamily: FONT_BODY, color: '#888888' }}
           >
-            04 Services
+            04 Offers
           </span>
         </motion.div>
 
@@ -643,14 +643,14 @@ export const Services: React.FC = () => {
               className="not-italic"
               style={{ fontWeight: 300, color: "#8c8c96" }}
             >
-              Everything you need to
+              Choose the build your
             </em>{" "}
-            dominate{" "}
+            business{" "}
             <em
               className="not-italic"
               style={{ fontWeight: 300, color: "#8c8c96" }}
             >
-              your market.
+              actually needs.
             </em>
           </motion.h2>
 
@@ -671,8 +671,8 @@ export const Services: React.FC = () => {
               className="text-[15px] leading-[1.8]"
               style={{ fontFamily: FONT_BODY, color: '#c0c0c0' }}
             >
-              Four core disciplines. One agency. Infinite competitive edge for
-              brands that refuse to be ignored.
+              From sharper brand sites to booking systems and AI-assisted lead capture,
+              each offer is scoped around launch, trust, and real enquiries.
             </p>
           </motion.div>
         </div>

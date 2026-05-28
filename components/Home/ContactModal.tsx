@@ -20,18 +20,22 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
     const [turnstileToken, setTurnstileToken] = useState("");
 
     useEffect(() => {
+        let resetTimer: ReturnType<typeof setTimeout> | undefined;
         if (isOpen) {
             document.body.style.overflow = "hidden";
         } else {
             document.body.style.overflow = "";
-            setTimeout(() => {
+            resetTimer = setTimeout(() => {
                 setFormState("idle");
                 setFields({ name: "", email: "", company: "", budget: "", message: "" });
                 setErrors({});
                 setTurnstileToken("");
             }, 400);
         }
-        return () => { document.body.style.overflow = ""; };
+        return () => {
+            document.body.style.overflow = "";
+            if (resetTimer) clearTimeout(resetTimer);
+        };
     }, [isOpen]);
 
     useEffect(() => {

@@ -212,7 +212,7 @@ const LiveBuildBadge: React.FC = () => (
       className="text-[9px] tracking-[0.22em] uppercase text-zinc-500"
       style={{ fontFamily: FONT_B }}
     >
-      Latest Launch
+      Featured Build
     </span>
     <span className="text-[14px] text-white leading-tight" style={{ fontFamily: FONT_H }}>
       {HERO_FEATURED.title}
@@ -221,7 +221,7 @@ const LiveBuildBadge: React.FC = () => (
       className="inline-flex items-center gap-1.5 text-[10px] text-[#E50914] tracking-[0.12em] uppercase"
       style={{ fontFamily: FONT_B }}
     >
-      Live site <ArrowUpRight size={11} />
+      View build <ArrowUpRight size={11} />
     </span>
   </motion.a>
 );
@@ -237,11 +237,11 @@ const ShippedStat: React.FC = () => (
       className="text-[9px] tracking-[0.22em] uppercase text-zinc-500 mb-1"
       style={{ fontFamily: FONT_B }}
     >
-      Shipped
+      Built
     </p>
     <p className="text-[28px] leading-none text-white" style={{ fontFamily: FONT_H }}>
       {PROJECTS.length}
-      <span className="text-[14px] text-zinc-500 ml-1">projects</span>
+      <span className="text-[14px] text-zinc-500 ml-1">builds</span>
     </p>
   </motion.div>
 );
@@ -443,7 +443,7 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
       >
         <Minus className="w-3.5 h-3.5 text-[#E50914] stroke-[1.5] shrink-0" />
         <span className="text-[12px] tracking-[0.22em] text-zinc-300 uppercase font-medium">
-          Digital Design Studio
+          Websites, Systems, AI
         </span>
         <div className="flex-1" />
         <span
@@ -462,7 +462,7 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
           <div className="w-full lg:w-[52%] flex flex-col justify-start">
             <h1
               aria-label="Websites for brands that refuse to blend in"
-              className="text-[2.65rem] sm:text-[4rem] lg:text-[5.1rem] xl:text-[5.4rem] leading-[1.04] tracking-normal text-white mb-5 lg:mb-6"
+              className="text-[2.35rem] sm:text-[4rem] lg:text-[5.1rem] xl:text-[5.4rem] leading-[1.04] tracking-normal text-white mb-5 lg:mb-6"
               style={{ fontFamily: FONT_H }}
             >
               <AnimatedLine delay={headlineDelay}>
@@ -473,7 +473,7 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
                   brands that
                 </span>
               </AnimatedLine>
-              <AnimatedLine delay={headlineDelay + 0.2} className="flex flex-wrap items-baseline gap-x-[0.22em]">
+              <AnimatedLine delay={headlineDelay + 0.2} className="flex flex-wrap items-baseline gap-x-[0.16em]">
                 <RefuseWord delay={headlineDelay + 0.28} />
                 <span style={{ fontWeight: 400 }}>to blend in</span>
               </AnimatedLine>
@@ -483,12 +483,29 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
               initial={{ opacity: 0, y: 18, filter: "blur(4px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 0.75, delay: headlineDelay + 0.55, ease: EASE }}
-              className="text-[15px] w-full max-w-[min(380px,calc(100vw-3rem))] break-words leading-[1.8] mb-7 text-[#c8c8c8]"
+              className="text-[15px] w-full max-w-[32ch] sm:max-w-[380px] break-words leading-[1.8] mb-7 text-[#c8c8c8]"
               style={{ fontFamily: FONT_B }}
             >
-              We craft immersive digital products — strategic at the core, cinematic on the
-              surface. Built to convert, load fast, and own every screen.
+              We build custom websites and digital systems for Sri Lankan businesses that
+              need to look premium, earn trust fast, and turn attention into enquiries.
             </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: headlineDelay + 0.62, ease: EASE }}
+              className="mb-7 grid w-full max-w-[28rem] grid-cols-3 gap-1.5 sm:gap-2"
+              style={{ fontFamily: FONT_B }}
+            >
+              {["Free audit", "No templates", "Secure launch"].map((item) => (
+                <span
+                  key={item}
+                  className="min-w-0 rounded-full border border-white/[0.1] bg-white/[0.025] px-2 py-1.5 text-center text-[8.5px] uppercase tracking-[0.08em] text-zinc-400 sm:px-3 sm:text-[10px] sm:tracking-[0.13em]"
+                >
+                  {item}
+                </span>
+              ))}
+            </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 14 }}
@@ -509,7 +526,7 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
                   }}
                 />
                 <p className="text-[12px] text-zinc-500 mt-2 ml-1" style={{ fontFamily: FONT_B }}>
-                  {PROJECTS.length} live builds
+                  {PROJECTS.length} portfolio builds
                 </p>
               </div>
             </motion.div>
@@ -542,13 +559,13 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: headlineDelay + 0.95, ease: EASE }}
-              className="grid grid-cols-3 gap-3 w-full max-w-md mt-8 pt-6 border-t border-white/[0.07]"
+              className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full max-w-md mt-8 pt-6 border-t border-white/[0.07]"
               style={{ fontFamily: FONT_B }}
             >
               {[
-                ["∞", "Revisions"],
+                ["Free", "Website Audit"],
                 ["100%", "Custom Built"],
-                ["Weekly", "Portal Updates"],
+                ["Launch", "Support"],
               ].map(([num, label]) => (
                 <div key={label} className="flex flex-col gap-0.5 items-center text-center">
                   <span className="text-[26px] font-bold text-white tracking-tight">{num}</span>

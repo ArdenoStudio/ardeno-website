@@ -29,19 +29,30 @@ function useMagnetic(strength = 0.3) {
 
 // ─── Modal ────────────────────────────────────────────────────────────────────
 const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => void }) => {
+  const proofItems = [
+    { label: "Problem", value: project.problem },
+    { label: "Solution", value: project.solution },
+    { label: "Outcome", value: project.outcome },
+  ].filter((item): item is { label: string; value: string } => Boolean(item.value));
+
   useEffect(() => {
     const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", h);
+    document.body.classList.add("project-modal-open");
     document.body.style.overflow = "hidden";
-    return () => { window.removeEventListener("keydown", h); document.body.style.overflow = ""; };
+    return () => {
+      window.removeEventListener("keydown", h);
+      document.body.classList.remove("project-modal-open");
+      document.body.style.overflow = "";
+    };
   }, [onClose]);
 
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="fixed inset-0 z-[9000]"
-      style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+      className="fixed inset-0 z-[11000]"
+      style={{ display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2147483000 }}
     >
       <motion.div
         className="absolute inset-0 bg-black/75 backdrop-blur-md"
@@ -59,6 +70,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
           border: "1px solid rgba(255,255,255,0.07)",
           width: "92vw",
           maxWidth: 1040,
+          height: "min(90vh, 760px)",
           maxHeight: "min(90vh, 760px)",
           borderRadius: 24,
           marginTop: "auto",
@@ -67,7 +79,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
         onClick={(e) => e.stopPropagation()}
       >
         {/* Left/Top: Image Section */}
-        <div className="relative w-full md:w-[55%] shrink-0 overflow-hidden aspect-[16/10] md:aspect-auto md:min-h-full">
+        <div className="relative w-full md:w-[55%] shrink-0 overflow-hidden aspect-[16/10] md:aspect-auto md:h-full">
           <motion.img
             src={project.image} alt={project.title}
             width={1200} height={800}
@@ -99,7 +111,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
               className="text-[10px] tracking-[0.25em] uppercase px-3 py-1.5 rounded-full text-zinc-100 font-medium"
               style={{ fontFamily: FONT_BODY, background: "rgba(12,12,14,0.75)", border: "1px solid rgba(255,255,255,0.15)", backdropFilter: "blur(12px)" }}
             >
-              {project.year}
+              {project.year} {project.status ? ` / ${project.status}` : ""}
             </span>
           </div>
 
@@ -120,20 +132,24 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
         </div>
 
         {/* Right/Bottom: Body Section */}
-        <div className="relative flex-1 p-6 md:p-10 flex flex-col h-full min-w-0">
-          <div className="overflow-y-auto pr-2 custom-scrollbar flex-1">
-            {/* Close - Desktop only */}
-            <button
-              onClick={onClose}
-              aria-label="Close project details"
-              className="hidden md:flex absolute top-6 right-6 w-10 h-10 rounded-full items-center justify-center text-zinc-500 hover:text-white transition-all duration-300 hover:bg-zinc-800/50"
-              style={{ border: "1px solid rgba(255,255,255,0.08)" }}
-            >
-              <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
-                <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-              </svg>
-            </button>
+        <div className="relative flex-1 min-h-0 p-5 md:p-8 lg:p-10 flex flex-col h-full min-w-0">
+          {/* Close - Desktop only */}
+          <button
+            onClick={onClose}
+            aria-label="Close project details"
+            className="hidden md:flex absolute top-5 right-5 z-30 w-10 h-10 rounded-full items-center justify-center text-zinc-500 hover:text-white transition-all duration-300 hover:bg-zinc-800/70"
+            style={{
+              background: "rgba(12,12,14,0.78)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              backdropFilter: "blur(14px)",
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
+              <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+            </svg>
+          </button>
 
+          <div className="min-h-0 overflow-y-auto pr-2 pb-4 custom-scrollbar flex-1 md:mr-20">
             <motion.div
               initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
               transition={{ duration: 0.7, ease: EXPO, delay: 0.18 }}
@@ -153,6 +169,27 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
                 </p>
               </div>
 
+              {proofItems.length > 0 && (
+                <div>
+                  <h4 className="text-[10px] tracking-[0.2em] text-zinc-500 uppercase mb-3 font-semibold" style={{ fontFamily: FONT_BODY }}>Build Notes</h4>
+                  <div className="grid grid-cols-1 gap-2.5">
+                    {proofItems.map((item) => (
+                      <div
+                        key={item.label}
+                        className="rounded-xl border border-white/[0.07] bg-white/[0.025] p-4"
+                      >
+                        <p className="text-[10px] tracking-[0.18em] uppercase text-[#E50914] mb-2" style={{ fontFamily: FONT_BODY }}>
+                          {item.label}
+                        </p>
+                        <p className="text-[13px] leading-[1.7] text-zinc-400" style={{ fontFamily: FONT_BODY }}>
+                          {item.value}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div>
                 <h4 className="text-[10px] tracking-[0.2em] text-zinc-500 uppercase mb-3 font-semibold" style={{ fontFamily: FONT_BODY }}>Scope</h4>
                 <div className="flex flex-wrap gap-2">
@@ -167,18 +204,27 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
                   ))}
                 </div>
               </div>
+
+              {project.role && (
+                <div>
+                  <h4 className="text-[10px] tracking-[0.2em] text-zinc-500 uppercase mb-3 font-semibold" style={{ fontFamily: FONT_BODY }}>Ardeno Role</h4>
+                  <p className="text-[13px] leading-[1.7] text-zinc-400" style={{ fontFamily: FONT_BODY }}>
+                    {project.role}
+                  </p>
+                </div>
+              )}
             </motion.div>
           </div>
 
-          <div className="mt-8 md:mt-auto pt-6 border-t border-white/5 flex items-center justify-between">
+          <div className="shrink-0 pt-4 md:pt-5 border-t border-white/5 flex items-center justify-between bg-[#0c0c0e]">
             <motion.a
               href={project.url ?? "#"} target="_blank" rel="noopener noreferrer"
-              className="group flex items-center gap-3 px-6 py-3 rounded-full text-white text-[11px] tracking-[0.14em] uppercase font-medium bg-[#E50914]"
+              className="group flex items-center gap-3 px-5 md:px-6 py-3 rounded-full text-white text-[11px] tracking-[0.14em] uppercase font-medium bg-[#E50914]"
               style={{ boxShadow: "0 10px 30px rgba(229,9,20,0.2)" }}
               whileHover={{ scale: 1.02, background: "#ff1420", boxShadow: "0 12px 40px rgba(229,9,20,0.35)" }}
               whileTap={{ scale: 0.98 }}
             >
-              <span>Launch Project</span>
+              <span>View Live Build</span>
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
                 <path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -202,14 +248,19 @@ const AllProjectsModal = ({ onClose, onSelectProject, projects }: { onClose: () 
   useEffect(() => {
     const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", h);
+    document.body.classList.add("project-modal-open");
     document.body.style.overflow = "hidden";
-    return () => { window.removeEventListener("keydown", h); document.body.style.overflow = ""; };
+    return () => {
+      window.removeEventListener("keydown", h);
+      document.body.classList.remove("project-modal-open");
+      document.body.style.overflow = "";
+    };
   }, [onClose]);
 
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[9500] flex flex-col bg-[#080809]"
+      className="fixed inset-0 z-[11000] flex flex-col bg-[#080809]"
     >
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -253,6 +304,9 @@ const AllProjectsModal = ({ onClose, onSelectProject, projects }: { onClose: () 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
                 <div className="absolute bottom-0 left-0 right-0 p-8">
                   <p className="text-[10px] tracking-[0.2em] uppercase text-zinc-400 mb-2 font-medium">{p.category}</p>
+                  {p.status && (
+                    <p className="text-[9px] tracking-[0.16em] uppercase text-[#E50914] mb-2 font-medium">{p.status}</p>
+                  )}
                   <h3 className="text-2xl text-white font-serif">{p.title}</h3>
                 </div>
               </motion.div>
@@ -289,17 +343,172 @@ const ArrowBtn = ({ isHovered, onClick, label }: { isHovered: boolean; onClick: 
   );
 };
 
+const StickyProjectPreview = ({
+  project,
+  activeId,
+  onOpen,
+}: {
+  project: Project;
+  activeId: string | null;
+  onOpen: () => void;
+}) => (
+  <div className="sticky top-[7rem]">
+    <div
+      className="relative h-[calc(100vh-8.5rem)] min-h-[420px] max-h-[680px] overflow-hidden rounded-[24px]"
+      style={{
+        background: "rgba(255,255,255,0.025)",
+        border: "1px solid rgba(255,255,255,0.07)",
+      }}
+    >
+      <motion.div
+        key={project.id}
+        initial={{ opacity: 0, scale: 1.04 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.45, ease: EXPO }}
+        className="absolute inset-0 cursor-pointer"
+        onClick={onOpen}
+      >
+        <img
+          src={project.image}
+          alt={project.title}
+          width={760}
+          height={960}
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-cover"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(8,8,9,0.9) 0%, rgba(8,8,9,0.28) 48%, rgba(8,8,9,0.08) 100%)",
+          }}
+        />
+
+        <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
+          <motion.button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              onOpen();
+            }}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.14, duration: 0.32, ease: EXPO }}
+            className="pointer-events-auto flex items-center gap-2 rounded-full px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white"
+            style={{
+              fontFamily: "'Sora', sans-serif",
+              background: "rgba(229,9,20,0.9)",
+              border: "1px solid rgba(255,255,255,0.16)",
+              boxShadow: "0 14px 42px rgba(229,9,20,0.32)",
+              backdropFilter: "blur(12px)",
+            }}
+          >
+            Open Project
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M1 9L9 1M9 1H3M9 1v6" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </motion.button>
+        </div>
+
+        <div className="absolute bottom-0 left-0 right-0 p-6">
+          <p className="mb-1.5 text-[11px] uppercase tracking-[0.22em] text-zinc-400" style={{ fontFamily: "'Sora', sans-serif" }}>
+            {project.category}
+          </p>
+          {project.status && (
+            <p className="mb-2 text-[9px] uppercase tracking-[0.18em] text-[#E50914]" style={{ fontFamily: "'Sora', sans-serif" }}>
+              {project.status}
+            </p>
+          )}
+          <h4
+            className="text-white"
+            style={{
+              fontFamily: "'Instrument Serif', Georgia, serif",
+              fontSize: "clamp(1.8rem,2.4vw,2.6rem)",
+              lineHeight: 1,
+              fontWeight: 400,
+            }}
+          >
+            {project.title}
+          </h4>
+        </div>
+      </motion.div>
+    </div>
+
+    <div className="mt-5 flex items-center justify-center gap-2">
+      {PROJECTS.map((item) => (
+        <motion.span
+          key={item.id}
+          animate={{
+            width: activeId === item.id ? 22 : 6,
+            background: activeId === item.id ? "#E50914" : "rgba(255,255,255,0.16)",
+          }}
+          transition={{ duration: 0.28, ease: EXPO }}
+          style={{ height: 4, borderRadius: 999 }}
+        />
+      ))}
+    </div>
+  </div>
+);
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 export const FeaturedWork: React.FC = () => {
-  const [hoveredId, setHoveredId] = useState<string | null>(PROJECTS[0]?.id ?? null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [activeId, setActiveId] = useState<string | null>(PROJECTS[0]?.id ?? null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
+  const rowRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  const hoveredProject = PROJECTS.find((p) => p.id === hoveredId);
+  const previewId = hoveredId ?? activeId ?? PROJECTS[0]?.id ?? null;
+  const previewProject = PROJECTS.find((p) => p.id === previewId) ?? PROJECTS[0];
   const selectedProject = PROJECTS.find((p) => p.id === selectedId);
 
+  useEffect(() => {
+    let rafId = 0;
+
+    const updateActiveProject = () => {
+      rafId = 0;
+      const targetY = window.innerHeight * 0.46;
+      let nextId: string | null = null;
+      let bestDistance = Number.POSITIVE_INFINITY;
+
+      PROJECTS.forEach((project) => {
+        const node = rowRefs.current[project.id];
+        if (!node) return;
+        const rect = node.getBoundingClientRect();
+        if (rect.bottom < 96 || rect.top > window.innerHeight) return;
+
+        const center = rect.top + rect.height / 2;
+        const distance = Math.abs(center - targetY);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          nextId = project.id;
+        }
+      });
+
+      if (nextId) {
+        setActiveId((current) => (current === nextId ? current : nextId));
+      }
+    };
+
+    const scheduleUpdate = () => {
+      if (rafId) return;
+      rafId = window.requestAnimationFrame(updateActiveProject);
+    };
+
+    scheduleUpdate();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      if (rafId) window.cancelAnimationFrame(rafId);
+    };
+  }, []);
+
   return (
-    <section id="work" className="relative py-24 overflow-hidden" style={{ background: "#080809" }}>
+    <section id="work" className="relative py-24" style={{ background: "#080809" }}>
       {/* Ambient glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div style={{
@@ -323,17 +532,20 @@ export const FeaturedWork: React.FC = () => {
             <div className="flex items-center gap-3 mb-5">
               <div style={{ width: 20, height: 1, background: "#E50914" }} />
               <span className="text-[13px] tracking-[0.22em] text-zinc-400 uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
-                Selected Work
+                Selected Builds
               </span>
             </div>
             <h2
               className="leading-[0.92] tracking-[-0.025em] text-white"
               style={{ fontSize: "clamp(2.6rem,5.5vw,5rem)", fontFamily: "'Instrument Serif', Georgia, serif", fontWeight: 400 }}
             >
-              Featured
+              Proof-led
               <br />
-              <em className="not-italic text-zinc-500" style={{ fontWeight: 300 }}>Projects</em>
+              <em className="not-italic text-zinc-500" style={{ fontWeight: 300 }}>Portfolio</em>
             </h2>
+            <p className="mt-5 max-w-lg text-[14px] leading-[1.8] text-zinc-500" style={{ fontFamily: "'Sora', sans-serif" }}>
+              These are Ardeno-built platforms, live concept builds, and showcase projects. We label them clearly, then show the problem, solution, and build role behind each one.
+            </p>
           </div>
 
           {/* Counter */}
@@ -351,15 +563,21 @@ export const FeaturedWork: React.FC = () => {
 
       <div className="w-full" style={{ height: 1, background: "rgba(255,255,255,0.055)" }} />
 
-      {/* ── Rows + Preview ── */}
-      <div className="relative flex">
+      {/* ── Project rows + sticky preview ── */}
+      <div
+        className="relative lg:grid"
+        style={{ gridTemplateColumns: "minmax(0, 1fr) minmax(320px, 34vw)" }}
+      >
         {/* Project rows */}
-        <div className="w-full lg:w-[65%]" onMouseLeave={() => setHoveredId(null)}>
+        <div className="min-w-0" onMouseLeave={() => setHoveredId(null)}>
           {PROJECTS.map((project, index) => {
-            const isHovered = hoveredId === project.id;
+            const isHovered = previewId === project.id;
             return (
               <motion.div
                 key={project.id}
+                ref={(node) => {
+                  rowRefs.current[project.id] = node;
+                }}
                 initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
@@ -378,15 +596,15 @@ export const FeaturedWork: React.FC = () => {
                 />
 
                 <div
-                  className="px-5 md:px-12 py-6 md:py-9"
+                  className="px-5 py-6 md:px-12 md:py-8 xl:px-16 lg:pr-8"
                   onClick={() => setSelectedId(project.id)}
                 >
                   {/* Mobile: thumbnail banner + content row */}
-                  <div className="flex items-center gap-4 lg:gap-12">
+                  <div className="flex items-center gap-4 lg:gap-10">
 
                     {/* Index — hidden on mobile, shown md+ */}
                     <motion.span
-                      className="hidden lg:block text-[11px] shrink-0 w-7 tabular-nums"
+                      className="hidden lg:block text-[11px] shrink-0 w-8 tabular-nums"
                       style={{ fontFamily: "'Sora', sans-serif", color: "rgb(82,82,91)" }}
                       animate={{ color: isHovered ? "#E50914" : "rgb(82,82,91)" }}
                       transition={{ duration: 0.2 }}
@@ -401,7 +619,7 @@ export const FeaturedWork: React.FC = () => {
                     </div>
 
                     {/* Title + Category + mobile index */}
-                    <div className="flex-1 min-w-0">
+                    <div className="min-w-0 flex-1">
                       {/* Mobile index inline */}
                       <span className="lg:hidden text-[11px] text-zinc-600 tracking-[0.2em] tabular-nums" style={{ fontFamily: "'Sora', sans-serif" }}>
                         {String(index + 1).padStart(2, "0")}
@@ -420,13 +638,20 @@ export const FeaturedWork: React.FC = () => {
                       >
                         {project.title}
                       </motion.h3>
-                      <p className="text-[12px] text-zinc-400 mt-1 tracking-[0.14em] uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
-                        {project.category}
-                      </p>
+                      <div className="mt-1 flex flex-wrap items-center gap-2">
+                        <p className="text-[12px] text-zinc-400 tracking-[0.14em] uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
+                          {project.category}
+                        </p>
+                        {project.status && (
+                          <span className="rounded-full border border-white/[0.08] px-2 py-0.5 text-[8px] uppercase tracking-[0.14em] text-zinc-500" style={{ fontFamily: "'Sora', sans-serif" }}>
+                            {project.status}
+                          </span>
+                        )}
+                      </div>
                     </div>
 
                     {/* Tags — desktop only */}
-                    <div className="hidden lg:flex items-center gap-2 shrink-0">
+                    <div className="ml-auto hidden lg:flex items-center gap-2 shrink-0">
                       {project.tags.slice(0, 2).map((tag) => (
                         <motion.span
                           key={tag}
@@ -482,89 +707,15 @@ export const FeaturedWork: React.FC = () => {
           })}
         </div>
 
-        {/* Preview panel */}
-        <div className="hidden lg:block w-[35%] relative">
-          <div className="sticky top-28 px-8 pr-12">
-            <div
-              className="relative overflow-hidden"
-              style={{ aspectRatio: "3/4", borderRadius: 24, background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.06)" }}
-            >
-              {/* Empty state */}
-              {!hoveredProject && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 pointer-events-none">
-                <div style={{ width: 32, height: 32, border: "1px solid rgba(255,255,255,0.08)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path d="M1 11L11 1M11 1H4M11 1v7" stroke="rgba(255,255,255,0.2)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
-                <span className="text-[10px] text-zinc-700 tracking-[0.25em] uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
-                  Hover a project
-                </span>
-              </div>
-              )}
-
-              <AnimatePresence mode="wait">
-                {hoveredProject && (
-                  <motion.div
-                    key={hoveredProject.id}
-                    initial={{ opacity: 0, scale: 1.06 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.96 }}
-                    transition={{ duration: 0.42, ease: EXPO }}
-                    className="absolute inset-0 cursor-pointer"
-                    onClick={() => setSelectedId(hoveredProject.id)}
-                  >
-                    <img src={hoveredProject.image} alt={hoveredProject.title} width={600} height={600} loading="lazy" decoding="async" className="w-full h-full object-cover" />
-                    <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(8,8,9,0.85) 0%, rgba(8,8,9,0.15) 55%, transparent 100%)" }} />
-
-                    {/* Center CTA */}
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.18, duration: 0.3 }}
-                      className="absolute inset-0 flex items-center justify-center"
-                    >
-                      <div
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-full text-white text-[10px] tracking-[0.18em] uppercase"
-                        style={{ fontFamily: "'Sora', sans-serif", background: "rgba(229,9,20,0.88)", backdropFilter: "blur(12px)", boxShadow: "0 4px 24px rgba(229,9,20,0.3)" }}
-                      >
-                        <span>Open Project</span>
-                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                          <path d="M1 9L9 1M9 1H3M9 1v6" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </div>
-                    </motion.div>
-
-                    {/* Bottom info */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <p className="text-[11px] text-zinc-400 tracking-[0.22em] uppercase mb-1.5" style={{ fontFamily: "'Sora', sans-serif" }}>
-                        {hoveredProject.category}
-                      </p>
-                      <h4 className="text-[1.2rem] text-white leading-tight tracking-[-0.02em]" style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontWeight: 400 }}>
-                        {hoveredProject.title}
-                      </h4>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Progress dots */}
-            <div className="flex items-center gap-2 justify-center mt-5">
-              {PROJECTS.map((p) => (
-                <motion.div
-                  key={p.id}
-                  animate={{
-                    width: hoveredId === p.id ? 20 : 6,
-                    background: hoveredId === p.id ? "#E50914" : "rgba(255,255,255,0.15)",
-                  }}
-                  transition={{ duration: 0.3 }}
-                  style={{ height: 4, borderRadius: 2 }}
-                />
-              ))}
-            </div>
+        {previewProject && (
+          <div className="relative hidden border-l border-white/[0.055] px-6 py-0 lg:block xl:px-8">
+            <StickyProjectPreview
+              project={previewProject}
+              activeId={previewId}
+              onOpen={() => setSelectedId(previewProject.id)}
+            />
           </div>
-        </div>
+        )}
       </div>
 
       {/* ── Footer row ── */}

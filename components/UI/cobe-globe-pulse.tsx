@@ -75,6 +75,8 @@ export function GlobePulse({
     const canvas = canvasRef.current
     let globe: ReturnType<typeof createGlobe> | null = null
     let animationId: number
+    let opacityTimer: ReturnType<typeof setTimeout> | undefined
+    let resizeObserver: ResizeObserver | undefined
     let dynamicPhi = initialPhi
     let mounted = true
 
@@ -113,23 +115,25 @@ export function GlobePulse({
         animationId = requestAnimationFrame(animate)
       }
       animate()
-      setTimeout(() => canvas && (canvas.style.opacity = "1"))
+      opacityTimer = setTimeout(() => canvas && (canvas.style.opacity = "1"), 0)
     }
 
     if (canvas.offsetWidth > 0) {
       init()
     } else {
-      const ro = new ResizeObserver((entries) => {
+      resizeObserver = new ResizeObserver((entries) => {
         if (entries[0]?.contentRect.width > 0) {
-          ro.disconnect()
+          resizeObserver?.disconnect()
           init()
         }
       })
-      ro.observe(canvas)
+      resizeObserver.observe(canvas)
     }
 
     return () => {
       mounted = false
+      if (opacityTimer) clearTimeout(opacityTimer)
+      resizeObserver?.disconnect()
       if (animationId) cancelAnimationFrame(animationId)
       if (globe) { globe.destroy(); globe = null }
     }
