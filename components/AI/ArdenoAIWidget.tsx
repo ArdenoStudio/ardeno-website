@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
-import { ARDENO_AI_PROMPT } from "../../ardeno-ai-prompt";
 
 
 type QuickAction = { label: string; value: string };
@@ -395,11 +394,6 @@ const ArdenoAIWidget: React.FC = () => {
         el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
     }, [input]);
 
-    const buildAPI = (conversation: Message[]) => [
-        { role: "system", content: ARDENO_AI_PROMPT },
-        ...conversation.slice(-14).map((m) => ({ role: m.role, content: m.content })),
-    ];
-
     const close = useCallback(() => {
         abortRef.current?.abort();
         setAnimOut(true);
@@ -463,7 +457,13 @@ const ArdenoAIWidget: React.FC = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ messages: buildAPI(next) }),
+                body: JSON.stringify({
+                    message: trimmed,
+                    history: messages.slice(-10).map((m) => ({
+                        role: m.role,
+                        content: m.content,
+                    })),
+                }),
             });
 
             const data = await res.json();

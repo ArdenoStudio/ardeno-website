@@ -460,8 +460,9 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
       >
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-12 items-start flex-1">
           <div className="w-full lg:w-[52%] flex flex-col justify-start">
-            <div
-              className="text-[clamp(2.8rem,5.8vw,5.4rem)] leading-[1.04] tracking-[-0.02em] text-white mb-5 lg:mb-6"
+            <h1
+              aria-label="Websites for brands that refuse to blend in"
+              className="text-[2.65rem] sm:text-[4rem] lg:text-[5.1rem] xl:text-[5.4rem] leading-[1.04] tracking-normal text-white mb-5 lg:mb-6"
               style={{ fontFamily: FONT_H }}
             >
               <AnimatedLine delay={headlineDelay}>
@@ -476,13 +477,13 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
                 <RefuseWord delay={headlineDelay + 0.28} />
                 <span style={{ fontWeight: 400 }}>to blend in</span>
               </AnimatedLine>
-            </div>
+            </h1>
 
             <motion.p
               initial={{ opacity: 0, y: 18, filter: "blur(4px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 0.75, delay: headlineDelay + 0.55, ease: EASE }}
-              className="text-[15px] max-w-[380px] leading-[1.8] mb-7 text-[#c8c8c8]"
+              className="text-[15px] w-full max-w-[min(380px,calc(100vw-3rem))] break-words leading-[1.8] mb-7 text-[#c8c8c8]"
               style={{ fontFamily: FONT_B }}
             >
               We craft immersive digital products — strategic at the core, cinematic on the

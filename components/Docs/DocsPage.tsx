@@ -356,10 +356,12 @@ const PAGE_CONTENT: Record<string, React.ReactNode> = {
             title="Privacy Policy"
             lead="Ardeno Studio takes your privacy seriously. Here is a plain-language summary of how we handle your data."
             sections={[
-                { heading: 'Data We Collect', body: 'Name, email, and project details when you contact us. No data is collected by our marketing website beyond what you voluntarily provide.' },
-                { heading: 'How We Use It', body: 'Solely to respond to your enquiry and deliver your project. We do not sell, rent, or share your data with third parties.' },
-                { heading: 'Storage', body: 'Project data is stored in encrypted cloud services (Google Drive, Figma, Notion) with access restricted to your project team.' },
-                { heading: 'Your Rights', body: "You may request deletion of your data at any time by emailing ardenostudio@gmail.com. We'll action it within 7 business days." },
+                { heading: 'Data We Collect', body: 'When you contact us we collect your name, email, company, budget range, project message, page path, referrer, submission time, and campaign parameters if present. The AI assistant stores recent chat history in your browser and sends your messages to our server so it can respond.' },
+                { heading: 'How We Use It', body: 'We use this information to reply to enquiries, qualify project fit, prevent spam or abuse, improve the website, and deliver agreed client work. We do not sell or rent personal data.' },
+                { heading: 'Service Providers', body: 'The website runs on Vercel. Enquiry emails are processed through Resend and delivered to our admin inbox. The AI assistant uses our server-side AI provider key. Optional analytics only loads after cookie consent. Turnstile may be used to verify public forms.' },
+                { heading: 'Storage', body: 'Lead details are stored in our email/admin systems. Project files may later be stored in Google Drive, Figma, Notion, GitHub, or similar project tools with access limited to the delivery team. Browser chat history and campaign data remain on your device unless you clear them.' },
+                { heading: 'Retention & Security', body: 'We keep enquiry data only as long as needed for sales, support, legal, and operational records. Server routes validate inputs, rate-limit abuse, avoid exposing secrets to the browser, and return generic production errors.' },
+                { heading: 'Your Rights', body: "You may request access, correction, or deletion of your data at any time by emailing ardenostudio@gmail.com. We'll action reasonable requests within 7 business days unless a legal or operational retention need applies." },
             ]}
         />
     ),

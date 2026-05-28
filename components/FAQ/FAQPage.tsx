@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Minus, ArrowUpRight, Plus, X } from 'lucide-react';
+import { Turnstile } from '../UI/Turnstile';
+import { getStoredUtm } from '../UI/trackUtm';
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const FONT_H = "'Instrument Serif', Georgia, serif";
@@ -166,6 +168,8 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
     const [errorMessage, setErrorMessage] = useState('');
+    const [turnstileToken, setTurnstileToken] = useState('');
+    const clearTurnstileToken = useCallback(() => setTurnstileToken(''), []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -173,15 +177,30 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
         setErrorMessage('');
 
         try {
+            const utm = getStoredUtm();
             const res = await fetch('/api/send-email', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({
+                    ...formData,
+                    company: 'FAQ page',
+                    budget: 'Not specified',
+                    page_path: window.location.pathname,
+                    page_url: window.location.href,
+                    referrer: document.referrer || 'direct',
+                    submitted_at: new Date().toISOString(),
+                    utm_source: utm.utm_source || 'direct',
+                    utm_medium: utm.utm_medium || 'none',
+                    utm_campaign: utm.utm_campaign || 'none',
+                    turnstileToken,
+                    website: '',
+                }),
             });
 
             if (res.ok) {
                 setStatus('success');
                 setFormData({ name: '', email: '', message: '' });
+                setTurnstileToken('');
                 setTimeout(() => {
                     setIsModalOpen(false);
                     setStatus('idle');
@@ -189,10 +208,12 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
             } else {
                 const data = await res.json();
                 setStatus('error');
+                setTurnstileToken('');
                 setErrorMessage(data.error || 'Something went wrong');
             }
         } catch (err) {
             setStatus('error');
+            setTurnstileToken('');
             setErrorMessage('Network error. Please try again.');
         }
     };
@@ -441,6 +462,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
                                     <h3 style={{ fontFamily: FONT_H, fontSize: '2rem', fontWeight: 400 }}>Ask us anything</h3>
                                     <button
                                         onClick={() => setIsModalOpen(false)}
+                                        aria-label="Close question form"
                                         className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors"
                                     >
                                         <X size={16} />
@@ -464,7 +486,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
                                 ) : (
                                     <form onSubmit={handleSubmit} className="space-y-5">
                                         <div className="space-y-2">
-                                            <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-semibold ml-1">Your Name</label>
+                                            <label className="text-[10px] uppercase tracking-widest text-zinc-400 font-semibold ml-1">Your Name</label>
                                             <input
                                                 required
                                                 type="text"
@@ -475,7 +497,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-semibold ml-1">Email Address</label>
+                                            <label className="text-[10px] uppercase tracking-widest text-zinc-400 font-semibold ml-1">Email Address</label>
                                             <input
                                                 required
                                                 type="email"
@@ -486,7 +508,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-semibold ml-1">Message</label>
+                                            <label className="text-[10px] uppercase tracking-widest text-zinc-400 font-semibold ml-1">Message</label>
                                             <textarea
                                                 required
                                                 rows={4}
@@ -496,6 +518,8 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
                                                 className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-[14px] text-white placeholder:text-zinc-600 focus:outline-none focus:border-red-500/50 transition-colors resize-none"
                                             />
                                         </div>
+
+                                        <Turnstile onVerify={setTurnstileToken} onExpire={clearTurnstileToken} />
 
                                         {status === 'error' && (
                                             <p className="text-red-500 text-[12px] ml-1">{errorMessage}</p>

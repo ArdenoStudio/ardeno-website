@@ -366,7 +366,8 @@ const FocusPulse: React.FC<{ scene: Scene; frame: number; width: number; height:
   if (!scene.highlight) return null;
 
   const visible = clamp(frame, [92, 126], [0, 1]) * clamp(frame, [scene.duration - 70, scene.duration - 34], [1, 0]);
-  const beat = clamp(frame % 42, [0, 18, 42], [0.6, 1, 0.6], EASE_IN_OUT);
+  const beatProgress = (frame % 42) / 42;
+  const beat = 0.6 + Math.sin(beatProgress * Math.PI) * 0.4;
   const x = scene.highlight.x * width;
   const y = 46 + scene.highlight.y * height;
 

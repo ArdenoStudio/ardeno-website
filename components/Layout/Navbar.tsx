@@ -504,7 +504,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                   onMouseEnter={() => setPortalHov(true)}
                   onMouseLeave={() => setPortalHov(false)}
                   onClick={() => {
-                    window.open("https://ardeno-portal.vercel.app", "_blank");
+                    window.open("https://ardeno-portal.vercel.app", "_blank", "noopener,noreferrer");
                   }}
                   style={{
                     position: "relative",

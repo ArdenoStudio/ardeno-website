@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useLayoutEffect, useState, useRef, useId } from 'react';
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, ReactNode, Ref } from 'react';
 import './GlassSurface.css';
 
 interface GlassSurfaceProps {
@@ -161,21 +161,21 @@ const GlassSurface = ({
       <svg className="glass-surface__filter" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <filter id={filterId} colorInterpolationFilters="sRGB" x="0%" y="0%" width="100%" height="100%">
-            <feImage ref={feImageRef as React.Ref<SVGFEImageElement>} x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="map" />
+            <feImage ref={feImageRef as Ref<SVGFEImageElement>} x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="map" />
 
-            <feDisplacementMap ref={redChannelRef as React.Ref<SVGFEDisplacementMapElement>} in="SourceGraphic" in2="map" result="dispRed" />
+            <feDisplacementMap ref={redChannelRef as Ref<SVGFEDisplacementMapElement>} in="SourceGraphic" in2="map" result="dispRed" />
             <feColorMatrix in="dispRed" type="matrix"
               values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"
               result="red"
             />
 
-            <feDisplacementMap ref={greenChannelRef as React.Ref<SVGFEDisplacementMapElement>} in="SourceGraphic" in2="map" result="dispGreen" />
+            <feDisplacementMap ref={greenChannelRef as Ref<SVGFEDisplacementMapElement>} in="SourceGraphic" in2="map" result="dispGreen" />
             <feColorMatrix in="dispGreen" type="matrix"
               values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0"
               result="green"
             />
 
-            <feDisplacementMap ref={blueChannelRef as React.Ref<SVGFEDisplacementMapElement>} in="SourceGraphic" in2="map" result="dispBlue" />
+            <feDisplacementMap ref={blueChannelRef as Ref<SVGFEDisplacementMapElement>} in="SourceGraphic" in2="map" result="dispBlue" />
             <feColorMatrix in="dispBlue" type="matrix"
               values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0"
               result="blue"
@@ -183,7 +183,7 @@ const GlassSurface = ({
 
             <feBlend in="red" in2="green" mode="screen" result="rg" />
             <feBlend in="rg" in2="blue" mode="screen" result="output" />
-            <feGaussianBlur ref={gaussianBlurRef as React.Ref<SVGFEGaussianBlurElement>} in="output" stdDeviation="0.7" />
+            <feGaussianBlur ref={gaussianBlurRef as Ref<SVGFEGaussianBlurElement>} in="output" stdDeviation="0.7" />
           </filter>
         </defs>
       </svg>

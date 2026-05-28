@@ -1,5 +1,8 @@
 type ConsentValue = "granted" | "denied";
 
+const MEASUREMENT_ID = "G-LXT357JC8Y";
+let gtagLoaded = false;
+
 const sendGtag = (...args: any[]) => {
   if (typeof window === "undefined") return;
 
@@ -11,6 +14,36 @@ const sendGtag = (...args: any[]) => {
 
   win.dataLayer = win.dataLayer || [];
   win.dataLayer.push(args);
+};
+
+const ensureGtag = () => {
+  if (typeof window === "undefined" || gtagLoaded) return;
+
+  const win = window as any;
+  win.dataLayer = win.dataLayer || [];
+  win.gtag =
+    win.gtag ||
+    function gtagShim() {
+      win.dataLayer.push(arguments);
+    };
+
+  sendGtag("consent", "default", {
+    analytics_storage: "denied",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+  });
+  sendGtag("js", new Date());
+  sendGtag("config", MEASUREMENT_ID, {
+    anonymize_ip: true,
+    send_page_view: false,
+  });
+
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`;
+  document.head.appendChild(script);
+  gtagLoaded = true;
 };
 
 export const setAnalyticsConsent = (value: ConsentValue) => {
@@ -33,6 +66,7 @@ export const trackInitialPageView = () => {
 };
 
 export const enableAnalyticsTracking = () => {
+  ensureGtag();
   setAnalyticsConsent("granted");
   trackInitialPageView();
 };

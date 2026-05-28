@@ -6,7 +6,8 @@ export const setCookie = (
     const expires = new Date();
     expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
 
-    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`;
+    const secure = window.location.protocol === "https:" ? "; Secure" : "";
+    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires.toUTCString()}; path=/; SameSite=Lax${secure}`;
 };
 
 export const getCookie = (name: string): string | null => {
@@ -24,5 +25,6 @@ export const getCookie = (name: string): string | null => {
 };
 
 export const deleteCookie = (name: string) => {
-    document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Lax`;
+    const secure = window.location.protocol === "https:" ? "; Secure" : "";
+    document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Lax${secure}`;
 };

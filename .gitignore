@@ -32,3 +32,9 @@ dist-ssr
 # Build and local tool directories
 .vite
 .claude
+.codex-deploy/
+.vercel-global/
+.tmp/
+
+# Local verification artifacts
+reports/*.png

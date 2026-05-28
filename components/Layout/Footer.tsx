@@ -231,12 +231,13 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
                     +94 75 850 4424
                     <WhatsAppIcon />
                   </a>
-                  <span
-                    className="text-[12px] tracking-[0.12em] uppercase mt-0.5 block"
+                  <a
+                    href="/founders.html#suven-seoras"
+                    className="text-[12px] tracking-[0.12em] uppercase mt-0.5 block hover:text-white transition-colors duration-200"
                     style={{ fontFamily: FONT_B, color: '#888888' }}
                   >
                     Suven Seoras
-                  </span>
+                  </a>
                 </li>
 
                 <li>
@@ -250,12 +251,13 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
                     +94 76 248 5456
                     <WhatsAppIcon />
                   </a>
-                  <span
-                    className="text-[12px] tracking-[0.12em] uppercase mt-0.5 block"
+                  <a
+                    href="/founders.html#ovindu-karunaratne"
+                    className="text-[12px] tracking-[0.12em] uppercase mt-0.5 block hover:text-white transition-colors duration-200"
                     style={{ fontFamily: FONT_B, color: '#888888' }}
                   >
                     Ovindu Karunaratne
-                  </span>
+                  </a>
                 </li>
 
                 <li className="pt-1">

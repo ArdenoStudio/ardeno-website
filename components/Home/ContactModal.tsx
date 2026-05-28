@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowUpRight, CheckCircle2, Loader2 } from "lucide-react";
 import { getStoredUtm } from "../UI/trackUtm";
+import { Turnstile } from "../UI/Turnstile";
 
 interface ContactModalProps {
     isOpen: boolean;
@@ -16,6 +17,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
     const [formState, setFormState] = useState<FormState>("idle");
     const [fields, setFields] = useState({ name: "", email: "", company: "", budget: "", message: "" });
     const [errors, setErrors] = useState<Partial<typeof fields>>({});
+    const [turnstileToken, setTurnstileToken] = useState("");
 
     useEffect(() => {
         if (isOpen) {
@@ -26,6 +28,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                 setFormState("idle");
                 setFields({ name: "", email: "", company: "", budget: "", message: "" });
                 setErrors({});
+                setTurnstileToken("");
             }, 400);
         }
         return () => { document.body.style.overflow = ""; };
@@ -46,6 +49,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
         return errs;
     };
 
+    const clearTurnstileToken = useCallback(() => setTurnstileToken(""), []);
+
     const handleSubmit = async () => {
         const errs = validate();
         if (Object.keys(errs).length) {
@@ -60,8 +65,6 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
             const utm = getStoredUtm();
 
             const payload = {
-                _replyto: fields.email,
-                subject: `New Ardeno inquiry from ${fields.name}`,
                 name: fields.name,
                 email: fields.email,
                 company: fields.company || "—",
@@ -76,9 +79,11 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                 page_url: window.location.href,
                 referrer: document.referrer || "direct",
                 submitted_at: new Date().toISOString(),
+                turnstileToken,
+                website: "",
             };
 
-            const res = await fetch("https://formspree.io/f/mreaalww", {
+            const res = await fetch("/api/send-email", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -87,8 +92,16 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                 body: JSON.stringify(payload),
             });
 
-            setFormState(res.ok ? "success" : "error");
+            if (!res.ok) {
+                await res.json().catch(() => ({}));
+                setTurnstileToken("");
+                setFormState("error");
+                return;
+            }
+
+            setFormState("success");
         } catch {
+            setTurnstileToken("");
             setFormState("error");
         }
     };
@@ -231,6 +244,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
 
                                         <button
                                             onClick={onClose}
+                                            aria-label="Close contact form"
                                             className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 shrink-0 mt-1"
                                             style={{
                                                 border: "1px solid rgba(255,255,255,0.18)",
@@ -358,6 +372,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                                                         style={{ resize: "vertical", minHeight: 120 }}
                                                     />
                                                     {errors.message && <span className="ardeno-error">✕ {errors.message}</span>}
+                                                </div>
+
+                                                <div className="mb-6">
+                                                    <Turnstile onVerify={setTurnstileToken} onExpire={clearTurnstileToken} />
                                                 </div>
 
                                                 {/* Submit row */}

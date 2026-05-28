@@ -22,6 +22,12 @@ const CookieBanner: React.FC = () => {
             return;
         }
 
+        const timer = window.setTimeout(() => {
+            if (hasShownRef.current) return;
+            hasShownRef.current = true;
+            setVisible(true);
+        }, 1400);
+
         const handleScroll = () => {
             if (hasShownRef.current) return;
 
@@ -35,6 +41,7 @@ const CookieBanner: React.FC = () => {
         window.addEventListener("scroll", handleScroll, { passive: true });
 
         return () => {
+            window.clearTimeout(timer);
             window.removeEventListener("scroll", handleScroll);
         };
     }, []);
@@ -117,9 +124,9 @@ const CookieBanner: React.FC = () => {
                                         letterSpacing: "0.02em",
                                     }}
                                 >
-                                    We use essential cookies to keep the site working properly and optional
-                                    cookies to understand traffic, improve performance, and measure where
-                                    inquiries come from.
+                                    We use essential cookies to keep the site working properly. Optional
+                                    analytics only loads if you accept, helping us understand traffic and
+                                    improve the enquiry flow.
                                 </p>
                             </div>
 

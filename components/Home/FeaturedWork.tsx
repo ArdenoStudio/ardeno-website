@@ -82,6 +82,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
           {/* Close - Mobile only (inside image) */}
           <motion.button
             onClick={onClose}
+            aria-label="Close project details"
             className="md:hidden absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center text-zinc-300 z-20"
             style={{ background: "rgba(12,12,14,0.65)", border: "1px solid rgba(255,255,255,0.12)", backdropFilter: "blur(12px)" }}
             whileHover={{ scale: 1.12 }}
@@ -124,6 +125,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
             {/* Close - Desktop only */}
             <button
               onClick={onClose}
+              aria-label="Close project details"
               className="hidden md:flex absolute top-6 right-6 w-10 h-10 rounded-full items-center justify-center text-zinc-500 hover:text-white transition-all duration-300 hover:bg-zinc-800/50"
               style={{ border: "1px solid rgba(255,255,255,0.08)" }}
             >
@@ -222,6 +224,7 @@ const AllProjectsModal = ({ onClose, onSelectProject, projects }: { onClose: () 
         </h2>
         <motion.button
           onClick={onClose}
+          aria-label="Close project archive"
           className="w-12 h-12 rounded-full flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
           style={{ border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.03)" }}
           whileHover={{ scale: 1.1, rotate: 90 }}
@@ -262,12 +265,13 @@ const AllProjectsModal = ({ onClose, onSelectProject, projects }: { onClose: () 
 };
 
 // ─── Arrow button with magnetic effect ───────────────────────────────────────
-const ArrowBtn = ({ isHovered, onClick }: { isHovered: boolean; onClick: () => void }) => {
+const ArrowBtn = ({ isHovered, onClick, label }: { isHovered: boolean; onClick: () => void; label: string }) => {
   const { ref, sx, sy, handleMouse, reset } = useMagnetic(0.4);
   return (
     <motion.button
       ref={ref}
       onClick={onClick}
+      aria-label={label}
       onMouseMove={handleMouse}
       onMouseLeave={reset}
       className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center"
@@ -318,7 +322,7 @@ export const FeaturedWork: React.FC = () => {
           <div>
             <div className="flex items-center gap-3 mb-5">
               <div style={{ width: 20, height: 1, background: "#E50914" }} />
-              <span className="text-[13px] tracking-[0.22em] text-zinc-500 uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
+              <span className="text-[13px] tracking-[0.22em] text-zinc-400 uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
                 Selected Work
               </span>
             </div>
@@ -416,7 +420,7 @@ export const FeaturedWork: React.FC = () => {
                       >
                         {project.title}
                       </motion.h3>
-                      <p className="text-[12px] text-zinc-500 mt-1 tracking-[0.14em] uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
+                      <p className="text-[12px] text-zinc-400 mt-1 tracking-[0.14em] uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
                         {project.category}
                       </p>
                     </div>
@@ -450,7 +454,7 @@ export const FeaturedWork: React.FC = () => {
                     </div>
 
                     {/* Arrow — smaller on mobile */}
-                    <ArrowBtn isHovered={isHovered} onClick={() => setSelectedId(project.id)} />
+                    <ArrowBtn isHovered={isHovered} onClick={() => setSelectedId(project.id)} label={`Open ${project.title} project details`} />
                   </div>
 
                   {/* Mobile tags — shown below the row */}
@@ -459,7 +463,7 @@ export const FeaturedWork: React.FC = () => {
                       {project.tags.slice(0, 2).map((tag) => (
                         <span
                           key={tag}
-                          className="text-[9px] px-2.5 py-1 rounded-full tracking-[0.1em] text-zinc-500"
+                          className="text-[9px] px-2.5 py-1 rounded-full tracking-[0.1em] text-zinc-400"
                           style={{ fontFamily: "'Sora', sans-serif", border: "1px solid rgba(255,255,255,0.08)" }}
                         >
                           {tag}
@@ -573,6 +577,7 @@ export const FeaturedWork: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.25, ease: EXPO }}
             onClick={() => setShowAll(true)}
+            aria-label="View all projects"
             className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors duration-300 bg-transparent border-none p-0"
             style={{ fontFamily: "'Sora', sans-serif" }}
           >

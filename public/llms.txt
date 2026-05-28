@@ -1,0 +1,16 @@
+# Ardeno Studio
+
+> Ardeno Studio builds premium custom-coded websites, redesigns, and browser-based digital systems for businesses in Sri Lanka and abroad.
+
+## Main pages
+
+- [Home](https://www.ardenostudio.online/)
+- [Docs](https://www.ardenostudio.online/docs)
+- [FAQ](https://www.ardenostudio.online/faq)
+- [Case studies](https://www.ardenostudio.online/case-studies)
+- [Founders](https://www.ardenostudio.online/founders.html)
+
+## Contact
+
+- Email: ardenostudio@gmail.com
+- Location: Colombo, Sri Lanka
