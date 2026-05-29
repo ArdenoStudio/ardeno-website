@@ -5,6 +5,7 @@ import {
     ChevronRight,
     Menu,
     X,
+    ArrowLeft,
     ArrowUpRight,
     Zap,
     Globe,
@@ -14,18 +15,26 @@ import {
     Clock,
     PlayCircle,
     Briefcase,
+    Sparkles,
 } from 'lucide-react';
 
 // Typography / colour tokens
 // Match Hero typography
 const FONT_DISPLAY = "'Instrument Serif', Georgia, serif"; // Hero headline font
 const FONT_BODY = "'Sora', system-ui, -apple-system, 'Segoe UI', sans-serif"; // clean UI/body font
+const FONT_BRAND = "'Bricolage Grotesque', sans-serif";
+const FONT_UI = "'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif";
 const RED = '#E50914';
 const RED_DIM = 'rgba(229,9,20,0.18)';
-const RED_GLOW = 'rgba(229,9,20,0.08)';
-const BG_MAIN = '#0a0a0a';
-const BG_SIDEBAR = '#111111';
-const BORDER = 'rgba(255,255,255,0.07)';
+const RED_GLOW = 'rgba(229,9,20,0.10)';
+const BG_MAIN = '#050506';
+const BG_SIDEBAR = 'rgba(10,10,11,0.92)';
+const BORDER = 'rgba(255,255,255,0.09)';
+const BORDER_STRONG = 'rgba(255,255,255,0.14)';
+const TEXT_SOFT = 'rgba(255,255,255,0.62)';
+const TEXT_DIM = 'rgba(255,255,255,0.38)';
+const PANEL = 'rgba(255,255,255,0.035)';
+const PANEL_HOVER = 'rgba(255,255,255,0.055)';
 
 // ─── Sidebar data ──────────────────────────────────────────────────────────
 interface SidebarItem {
@@ -94,81 +103,118 @@ function DocContent({
     sections: { heading: string; body: string }[];
 }) {
     return (
-        <div>
+        <article>
+            <div
+                style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 10,
+                    marginBottom: 18,
+                    fontFamily: FONT_UI,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: '0.18em',
+                    textTransform: 'uppercase',
+                    color: TEXT_DIM,
+                }}
+            >
+                <span style={{ width: 28, height: 1, background: RED, display: 'inline-block' }} />
+                Studio Operating Notes
+            </div>
+
             <h1
+                className="docs-content-title"
                 style={{
                     fontFamily: FONT_DISPLAY,
-                    fontSize: 'clamp(1.6rem, 3vw, 2.4rem)',
                     fontWeight: 700,
                     color: '#fff',
-                    letterSpacing: '-0.02em',
-                    lineHeight: 1.1,
-                    marginBottom: '1rem',
+                    letterSpacing: 0,
+                    lineHeight: 1.02,
+                    marginBottom: 18,
                     overflow: 'visible',
                 }}
             >
-                <span style={{ display: 'inline-block', paddingBottom: '0.3em', verticalAlign: 'top' }}>
-                    {title}
-                </span>
+                {title}
             </h1>
 
             <p
                 style={{
                     fontFamily: FONT_BODY,
-                    fontSize: '1rem',
-                    color: 'rgba(255,255,255,0.58)',
-                    lineHeight: 1.75,
-                    marginBottom: '2.5rem',
-                    maxWidth: 640,
+                    fontSize: 15,
+                    color: TEXT_SOFT,
+                    lineHeight: 1.85,
+                    marginBottom: 34,
+                    maxWidth: 720,
                 }}
             >
                 {lead}
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <div style={{ display: 'grid', gap: 0, borderTop: `1px solid ${BORDER}` }}>
                 {sections.map((s, i) => (
-                    <div key={i}>
-                        <h2
+                    <section
+                        key={i}
+                        className="docs-content-row"
+                        style={{
+                            display: 'grid',
+                            gridTemplateColumns: '64px minmax(0, 1fr)',
+                            gap: 22,
+                            padding: '24px 0',
+                            borderBottom: `1px solid ${BORDER}`,
+                        }}
+                    >
+                        <div
                             style={{
-                                fontFamily: FONT_DISPLAY,
-                                fontSize: '1rem',
-                                fontWeight: 600,
-                                color: '#fff',
-                                marginBottom: '0.5rem',
-                                letterSpacing: '-0.01em',
-                                lineHeight: 1.2,
-                                overflow: 'visible',
+                                width: 40,
+                                height: 40,
+                                borderRadius: 8,
+                                border: `1px solid ${BORDER_STRONG}`,
+                                background: 'linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.018))',
+                                color: RED,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontFamily: FONT_UI,
+                                fontSize: 11,
+                                fontWeight: 800,
+                                letterSpacing: '0.08em',
+                                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
                             }}
                         >
-                            <span style={{ display: 'inline-block', paddingBottom: '0.2em', verticalAlign: 'top' }}>
-                                {s.heading}
-                            </span>
-                        </h2>
+                            {String(i + 1).padStart(2, '0')}
+                        </div>
 
-                        <p
-                            style={{
-                                fontFamily: FONT_BODY,
-                                fontSize: '0.9rem',
-                                color: 'rgba(255,255,255,0.52)',
-                                lineHeight: 1.8,
-                            }}
-                        >
-                            {s.body}
-                        </p>
-
-                        {i < sections.length - 1 && (
-                            <div
+                        <div>
+                            <h2
                                 style={{
-                                    marginTop: '2rem',
-                                    height: 1,
-                                    background: 'rgba(255,255,255,0.05)',
+                                    fontFamily: FONT_BRAND,
+                                    fontSize: 22,
+                                    fontWeight: 700,
+                                    color: '#fff',
+                                    marginBottom: 9,
+                                    letterSpacing: 0,
+                                    lineHeight: 1.18,
                                 }}
-                            />
-                        )}
-                    </div>
+                            >
+                                {s.heading}
+                            </h2>
+
+                            <p
+                                style={{
+                                    fontFamily: FONT_BODY,
+                                    fontSize: 14,
+                                    color: 'rgba(255,255,255,0.54)',
+                                    lineHeight: 1.85,
+                                    maxWidth: 720,
+                                }}
+                            >
+                                {s.body}
+                            </p>
+                        </div>
+                    </section>
                 ))}
             </div>
-        </div>
+        </article>
     );
 }
 
@@ -458,17 +504,25 @@ const QuickCard: React.FC<{
     };
 
     return (
-        <motion.div
+        <motion.button
+            type="button"
             onHoverStart={() => setHov(true)}
             onHoverEnd={() => setHov(false)}
             onClick={handleClick}
             style={{
-                borderRadius: 12,
-                border: `1px solid ${hov ? RED_DIM : BORDER}`,
-                background: hov ? RED_GLOW : 'rgba(255,255,255,0.02)',
+                width: '100%',
+                minHeight: 188,
+                borderRadius: 8,
+                border: `1px solid ${hov ? 'rgba(229,9,20,0.35)' : BORDER}`,
+                background: hov
+                    ? 'linear-gradient(180deg, rgba(229,9,20,0.13), rgba(255,255,255,0.035))'
+                    : 'linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02))',
                 padding: '20px',
                 cursor: 'pointer',
                 transition: 'all 0.25s ease',
+                textAlign: 'left',
+                whiteSpace: 'normal',
+                boxShadow: hov ? '0 18px 60px rgba(0,0,0,0.26), inset 0 1px 0 rgba(255,255,255,0.06)' : 'inset 0 1px 0 rgba(255,255,255,0.045)',
             }}
         >
             <div
@@ -476,7 +530,8 @@ const QuickCard: React.FC<{
                     width: 36,
                     height: 36,
                     borderRadius: 8,
-                    background: hov ? 'rgba(229,9,20,0.15)' : 'rgba(255,255,255,0.05)',
+                    border: `1px solid ${hov ? 'rgba(229,9,20,0.36)' : 'rgba(255,255,255,0.08)'}`,
+                    background: hov ? 'rgba(229,9,20,0.16)' : 'rgba(255,255,255,0.04)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -490,12 +545,13 @@ const QuickCard: React.FC<{
 
             <h3
                 style={{
-                    fontFamily: FONT_DISPLAY,
-                    fontSize: 14,
+                    fontFamily: FONT_BRAND,
+                    fontSize: 17,
                     fontWeight: 700,
                     color: '#fff',
-                    marginBottom: 6,
-                    letterSpacing: '-0.01em',
+                    marginBottom: 8,
+                    letterSpacing: 0,
+                    lineHeight: 1.15,
                 }}
             >
                 {title}
@@ -505,7 +561,7 @@ const QuickCard: React.FC<{
                 style={{
                     fontFamily: FONT_BODY,
                     fontSize: 12,
-                    color: 'rgba(255,255,255,0.4)',
+                    color: 'rgba(255,255,255,0.52)',
                     lineHeight: 1.7,
                     marginBottom: 16,
                 }}
@@ -520,15 +576,16 @@ const QuickCard: React.FC<{
                     gap: 4,
                     fontFamily: FONT_BODY,
                     fontSize: 11,
-                    fontWeight: 600,
+                    fontWeight: 700,
                     color: hov ? RED : 'rgba(255,255,255,0.35)',
-                    letterSpacing: '0.06em',
+                    letterSpacing: '0.10em',
+                    textTransform: 'uppercase',
                     transition: 'color 0.2s ease',
                 }}
             >
                 {label} <ArrowUpRight size={11} />
             </span>
-        </motion.div>
+        </motion.button>
     );
 };
 
@@ -542,6 +599,37 @@ const SidebarContent: React.FC<{
     searchQuery: string;
 }> = ({ sections, activeId, onNavigate, filterItems, hasMatchingItems, searchQuery }) => (
     <div>
+        <div style={{ padding: '0 16px 24px' }}>
+            <div
+                style={{
+                    borderRadius: 8,
+                    border: `1px solid ${BORDER}`,
+                    background: 'linear-gradient(180deg, rgba(255,255,255,0.052), rgba(255,255,255,0.018))',
+                    padding: 16,
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.045)',
+                }}
+            >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 16 }}>
+                    <span
+                        style={{
+                            fontFamily: FONT_UI,
+                            fontSize: 10,
+                            fontWeight: 800,
+                            letterSpacing: '0.18em',
+                            textTransform: 'uppercase',
+                            color: TEXT_DIM,
+                        }}
+                    >
+                        Client Manual
+                    </span>
+                    <span style={{ width: 7, height: 7, borderRadius: '50%', background: RED, boxShadow: `0 0 18px ${RED}` }} />
+                </div>
+                <p style={{ fontFamily: FONT_BRAND, fontSize: 20, lineHeight: 1.05, color: '#fff', margin: 0, letterSpacing: 0 }}>
+                    Process, scope, pricing, and legal clarity.
+                </p>
+            </div>
+        </div>
+
         {!hasMatchingItems && searchQuery && (
             <p style={{ fontFamily: FONT_BODY, fontSize: 12, color: 'rgba(255,255,255,0.28)', padding: '0 20px' }}>
                 No results for &quot;{searchQuery}&quot;
@@ -558,12 +646,12 @@ const SidebarContent: React.FC<{
                         <span style={{ color: 'rgba(255,255,255,0.25)' }}>{section.icon}</span>
                         <span
                             style={{
-                                fontFamily: FONT_BODY,
+                                fontFamily: FONT_UI,
                                 fontSize: 10,
-                                fontWeight: 700,
+                                fontWeight: 800,
                                 letterSpacing: '0.2em',
                                 textTransform: 'uppercase',
-                                color: 'rgba(255,255,255,0.28)',
+                                color: 'rgba(255,255,255,0.33)',
                             }}
                         >
                             {section.group}
@@ -581,9 +669,9 @@ const SidebarContent: React.FC<{
                                     display: 'flex',
                                     alignItems: 'center',
                                     width: '100%',
-                                    padding: '7px 20px',
+                                    padding: '8px 20px',
                                     paddingLeft: isActive ? 17 : 20,
-                                    background: isActive ? 'rgba(229,9,20,0.07)' : 'transparent',
+                                    background: isActive ? 'linear-gradient(90deg, rgba(229,9,20,0.13), rgba(229,9,20,0.02))' : 'transparent',
                                     border: 'none',
                                     borderLeft: isActive ? `3px solid ${RED}` : '3px solid transparent',
                                     cursor: 'pointer',
@@ -600,10 +688,11 @@ const SidebarContent: React.FC<{
                                 <span
                                     style={{
                                         fontFamily: FONT_BODY,
-                                        fontSize: 13,
+                                        fontSize: 12,
                                         fontWeight: isActive ? 600 : 400,
-                                        color: isActive ? '#fff' : 'rgba(255,255,255,0.48)',
+                                        color: isActive ? '#fff' : 'rgba(255,255,255,0.54)',
                                         transition: 'color 0.15s ease',
+                                        lineHeight: 1.45,
                                     }}
                                 >
                                     {item.label}
@@ -641,20 +730,23 @@ const DocPager: React.FC<{ activeId: string; onNavigate: (id: string) => void }>
     const btnStyle: React.CSSProperties = {
         fontFamily: FONT_BODY,
         fontSize: 12,
-        color: 'rgba(255,255,255,0.45)',
-        background: 'transparent',
+        color: 'rgba(255,255,255,0.62)',
+        background: PANEL,
         border: `1px solid ${BORDER}`,
         borderRadius: 8,
-        padding: '10px 16px',
+        padding: '13px 16px',
         cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',
         gap: 8,
         transition: 'all 0.2s ease',
+        minHeight: 48,
+        maxWidth: 280,
+        textAlign: 'left',
     };
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginTop: 40 }}>
+        <div className="docs-pager" style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginTop: 40 }}>
             {prev ? (
                 <button
                     onClick={() => onNavigate(prev.id)}
@@ -663,11 +755,13 @@ const DocPager: React.FC<{ activeId: string; onNavigate: (id: string) => void }>
                         const b = e.currentTarget as HTMLButtonElement;
                         b.style.color = '#fff';
                         b.style.borderColor = RED_DIM;
+                        b.style.background = PANEL_HOVER;
                     }}
                     onMouseLeave={(e) => {
                         const b = e.currentTarget as HTMLButtonElement;
-                        b.style.color = 'rgba(255,255,255,0.45)';
+                        b.style.color = 'rgba(255,255,255,0.62)';
                         b.style.borderColor = BORDER;
+                        b.style.background = PANEL;
                     }}
                 >
                     &larr; {prev.label}
@@ -684,11 +778,13 @@ const DocPager: React.FC<{ activeId: string; onNavigate: (id: string) => void }>
                         const b = e.currentTarget as HTMLButtonElement;
                         b.style.color = '#fff';
                         b.style.borderColor = RED_DIM;
+                        b.style.background = PANEL_HOVER;
                     }}
                     onMouseLeave={(e) => {
                         const b = e.currentTarget as HTMLButtonElement;
-                        b.style.color = 'rgba(255,255,255,0.45)';
+                        b.style.color = 'rgba(255,255,255,0.62)';
                         b.style.borderColor = BORDER;
+                        b.style.background = PANEL;
                     }}
                 >
                     {next.label} &rarr;
@@ -735,12 +831,6 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
         window.dispatchEvent(new CustomEvent('docs:exit', hash ? { detail: { hash } } : undefined));
     };
 
-    const goToGroup = (group: string) => {
-        const sec = SIDEBAR_SECTIONS.find((s) => s.group === group);
-        const first = sec?.items?.[0]?.id;
-        if (first) navigate(first);
-    };
-
     useEffect(() => {
         const h = (e: KeyboardEvent) => {
             if (e.key === 'Escape') setSidebarOpen(false);
@@ -757,132 +847,221 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
     // ── Overview content ───────────────────────────────────────────────────
     const overviewContent = (
         <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: '1.25rem' }}>
-                <div style={{ width: 24, height: 1, background: RED }} />
-                <span
+            <section className="docs-overview-hero">
+                <div
                     style={{
-                        fontFamily: FONT_BODY,
-                        fontSize: 10,
-                        letterSpacing: '0.25em',
-                        textTransform: 'uppercase',
-                        color: 'rgba(255,255,255,0.38)',
-                        fontWeight: 600,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 10,
+                        marginBottom: 22,
+                        border: `1px solid ${BORDER}`,
+                        background: 'rgba(255,255,255,0.035)',
+                        borderRadius: 999,
+                        padding: '8px 12px',
+                        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
                     }}
                 >
-                    Welcome
-                </span>
-            </div>
+                    <Sparkles size={13} color={RED} />
+                    <span
+                        style={{
+                            fontFamily: FONT_UI,
+                            fontSize: 10,
+                            fontWeight: 800,
+                            letterSpacing: '0.18em',
+                            textTransform: 'uppercase',
+                            color: 'rgba(255,255,255,0.64)',
+                        }}
+                    >
+                        Ardeno Studio Docs
+                    </span>
+                </div>
 
-            <h1
-                style={{
-                    fontFamily: FONT_DISPLAY,
-                    fontSize: 'clamp(2rem, 4vw, 3rem)',
-                    fontWeight: 800,
-                    color: '#fff',
-                    letterSpacing: '-0.03em',
-                    lineHeight: 1.1,
-                    marginBottom: '1.25rem',
-                    overflow: 'visible',
-                }}
-            >
-                <span style={{ display: 'inline-block', paddingBottom: '0.3em', verticalAlign: 'top', color: RED }}>
-                    Ardeno
-                </span>{' '}
-                <br></br>Studio Docs
-            </h1>
+                <h1
+                    className="docs-hero-title"
+                    style={{
+                        fontFamily: FONT_DISPLAY,
+                        fontWeight: 700,
+                        color: '#fff',
+                        letterSpacing: 0,
+                        lineHeight: 0.96,
+                        marginBottom: 22,
+                    }}
+                >
+                    Build clarity before we build the site.
+                </h1>
 
-            <p
-                style={{
-                    fontFamily: FONT_BODY,
-                    fontSize: '1rem',
-                    color: 'rgba(255,255,255,0.52)',
-                    lineHeight: 1.8,
-                    maxWidth: 560,
-                    marginBottom: '2.75rem',
-                }}
-            >
-                Everything you need to know about working with Ardeno Studio — from first brief to final delivery.
-            </p>
-
-            <div
-                style={{
-                    height: 1,
-                    background: 'linear-gradient(90deg, rgba(229,9,20,0.25), rgba(255,255,255,0.04) 60%, transparent)',
-                    marginBottom: '2.75rem',
-                }}
-            />
-
-            <p
-                style={{
-                    fontFamily: FONT_BODY,
-                    fontSize: 10,
-                    letterSpacing: '0.22em',
-                    textTransform: 'uppercase',
-                    color: 'rgba(255,255,255,0.28)',
-                    fontWeight: 600,
-                    marginBottom: '1rem',
-                }}
-            >
-                Quick Start
-            </p>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 16, marginBottom: '3rem' }}>
-                {QUICK_CARDS.map((card, i) => (
-                    <QuickCard key={i} {...card} onOpenContact={onOpenContact} />
-                ))}
-            </div>
-
-            <div style={{ padding: '1.5rem', borderRadius: 12, border: `1px solid ${BORDER}`, background: 'rgba(255,255,255,0.02)' }}>
                 <p
                     style={{
                         fontFamily: FONT_BODY,
-                        fontSize: 11,
-                        letterSpacing: '0.18em',
-                        textTransform: 'uppercase',
-                        color: 'rgba(255,255,255,0.28)',
-                        fontWeight: 600,
-                        marginBottom: '1rem',
+                        fontSize: 16,
+                        color: 'rgba(255,255,255,0.66)',
+                        lineHeight: 1.85,
+                        maxWidth: 690,
+                        marginBottom: 28,
                     }}
                 >
-                    Where to go next
+                    Our docs now work like a client operating manual: process, scope, timelines, privacy, pricing logic, and handoff expectations in one focused place.
                 </p>
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                    {ALL_ITEMS.filter((i) => i.id !== 'overview')
-                        .slice(0, 6)
-                        .map((item) => (
-                            <button
-                                key={item.id}
-                                onClick={() => navigate(item.id)}
-                                style={{
-                                    fontFamily: FONT_BODY,
-                                    fontSize: 12,
-                                    color: 'rgba(255,255,255,0.55)',
-                                    background: 'rgba(255,255,255,0.04)',
-                                    border: `1px solid ${BORDER}`,
-                                    borderRadius: 6,
-                                    padding: '4px 12px',
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s ease',
-                                }}
-                                onMouseEnter={(e) => {
-                                    const b = e.currentTarget as HTMLButtonElement;
-                                    b.style.color = '#fff';
-                                    b.style.borderColor = RED_DIM;
-                                    b.style.background = RED_GLOW;
-                                }}
-                                onMouseLeave={(e) => {
-                                    const b = e.currentTarget as HTMLButtonElement;
-                                    b.style.color = 'rgba(255,255,255,0.55)';
-                                    b.style.borderColor = BORDER;
-                                    b.style.background = 'rgba(255,255,255,0.04)';
-                                }}
-                            >
-                                {item.label}
-                            </button>
-                        ))}
+                <div className="docs-hero-actions" style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
+                    <button
+                        type="button"
+                        onClick={onOpenContact}
+                        style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: 10,
+                            minHeight: 46,
+                            padding: '0 20px',
+                            borderRadius: 999,
+                            border: '1px solid rgba(229,9,20,0.46)',
+                            background: RED,
+                            color: '#fff',
+                            fontFamily: FONT_UI,
+                            fontSize: 11,
+                            fontWeight: 800,
+                            letterSpacing: '0.14em',
+                            textTransform: 'uppercase',
+                            cursor: 'pointer',
+                            boxShadow: '0 18px 44px rgba(229,9,20,0.18)',
+                        }}
+                    >
+                        Start a Project <ArrowUpRight size={13} />
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => navigate('our-process')}
+                        style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: 10,
+                            minHeight: 46,
+                            padding: '0 18px',
+                            borderRadius: 999,
+                            border: `1px solid ${BORDER_STRONG}`,
+                            background: 'rgba(255,255,255,0.035)',
+                            color: 'rgba(255,255,255,0.78)',
+                            fontFamily: FONT_UI,
+                            fontSize: 11,
+                            fontWeight: 800,
+                            letterSpacing: '0.14em',
+                            textTransform: 'uppercase',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Read Process <ChevronRight size={13} />
+                    </button>
                 </div>
+            </section>
+
+            <div className="docs-proof-strip">
+                {[
+                    ['5', 'Project phases'],
+                    ['2', 'Structured feedback rounds'],
+                    ['90+', 'Performance baseline'],
+                ].map(([value, label]) => (
+                    <div key={label}>
+                        <strong style={{ display: 'block', fontFamily: FONT_BRAND, fontSize: 30, color: '#fff', lineHeight: 1 }}>{value}</strong>
+                        <span
+                            style={{
+                                display: 'block',
+                                marginTop: 8,
+                                fontFamily: FONT_UI,
+                                fontSize: 10,
+                                fontWeight: 800,
+                                letterSpacing: '0.13em',
+                                textTransform: 'uppercase',
+                                color: TEXT_DIM,
+                            }}
+                        >
+                            {label}
+                        </span>
+                    </div>
+                ))}
             </div>
+
+            <section style={{ marginTop: 42 }}>
+                <p
+                    style={{
+                        fontFamily: FONT_UI,
+                        fontSize: 10,
+                        letterSpacing: '0.2em',
+                        textTransform: 'uppercase',
+                        color: TEXT_DIM,
+                        fontWeight: 800,
+                        marginBottom: 16,
+                    }}
+                >
+                    Quick Start
+                </p>
+
+                <div className="docs-quick-grid">
+                    {QUICK_CARDS.map((card, i) => (
+                        <QuickCard key={i} {...card} onOpenContact={onOpenContact} />
+                    ))}
+                </div>
+            </section>
+
+            <section style={{ marginTop: 46, paddingTop: 28, borderTop: `1px solid ${BORDER}` }}>
+                <div className="docs-next-row">
+                    <div>
+                        <p
+                            style={{
+                                fontFamily: FONT_UI,
+                                fontSize: 10,
+                                letterSpacing: '0.2em',
+                                textTransform: 'uppercase',
+                                color: TEXT_DIM,
+                                fontWeight: 800,
+                                marginBottom: 8,
+                            }}
+                        >
+                            Browse by Intent
+                        </p>
+                        <h2 style={{ fontFamily: FONT_BRAND, fontSize: 24, lineHeight: 1.08, letterSpacing: 0, color: '#fff', margin: 0 }}>
+                            Jump straight to the part of the engagement you are deciding on.
+                        </h2>
+                    </div>
+
+                    <div className="docs-chip-list">
+                        {ALL_ITEMS.filter((i) => i.id !== 'overview')
+                            .slice(0, 8)
+                            .map((item) => (
+                                <button
+                                    key={item.id}
+                                    onClick={() => navigate(item.id)}
+                                    style={{
+                                        fontFamily: FONT_BODY,
+                                        fontSize: 12,
+                                        color: 'rgba(255,255,255,0.62)',
+                                        background: PANEL,
+                                        border: `1px solid ${BORDER}`,
+                                        borderRadius: 999,
+                                        padding: '8px 12px',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s ease',
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        const b = e.currentTarget as HTMLButtonElement;
+                                        b.style.color = '#fff';
+                                        b.style.borderColor = RED_DIM;
+                                        b.style.background = RED_GLOW;
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        const b = e.currentTarget as HTMLButtonElement;
+                                        b.style.color = 'rgba(255,255,255,0.62)';
+                                        b.style.borderColor = BORDER;
+                                        b.style.background = PANEL;
+                                    }}
+                                >
+                                    {item.label}
+                                </button>
+                            ))}
+                    </div>
+                </div>
+            </section>
         </div>
     );
 
@@ -893,15 +1072,44 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                 <p style={{ color: 'rgba(255,255,255,0.3)', fontFamily: FONT_BODY, fontSize: 14 }}>Content coming soon…</p>
             );
 
-    // ✅ functional breadcrumb model
-    const crumbs: Array<{ label: string; onClick?: () => void }> = [
-        { label: 'Docs', onClick: () => exitDocs() },
-        { label: currentSection?.group ?? 'Getting Started', onClick: () => goToGroup(currentSection?.group ?? 'Getting Started') },
-        { label: labelFor(activeId) },
-    ];
-
     return (
-        <div style={{ minHeight: '100vh', background: BG_MAIN, display: 'flex', flexDirection: 'column' }}>
+        <div
+            style={{
+                minHeight: '100vh',
+                background: BG_MAIN,
+                display: 'flex',
+                flexDirection: 'column',
+                position: 'relative',
+                isolation: 'isolate',
+                overflow: 'hidden',
+            }}
+        >
+            <div
+                aria-hidden="true"
+                style={{
+                    position: 'fixed',
+                    inset: 0,
+                    zIndex: -2,
+                    pointerEvents: 'none',
+                    background:
+                        'linear-gradient(115deg, rgba(229,9,20,0.10) 0%, rgba(5,5,6,0) 32%), linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0) 24%), #050506',
+                }}
+            />
+            <div
+                aria-hidden="true"
+                style={{
+                    position: 'fixed',
+                    inset: 0,
+                    zIndex: -1,
+                    pointerEvents: 'none',
+                    opacity: 0.22,
+                    backgroundImage:
+                        'linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
+                    backgroundSize: '88px 88px',
+                    maskImage: 'linear-gradient(to bottom, black, transparent 72%)',
+                    WebkitMaskImage: 'linear-gradient(to bottom, black, transparent 72%)',
+                }}
+            />
             {/* ── TOP BAR ── */}
             <header
                 style={{
@@ -910,15 +1118,16 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                     left: 0,
                     right: 0,
                     zIndex: 80,
-                    height: 56,
-                    background: 'rgba(10,10,10,0.92)',
-                    backdropFilter: 'blur(18px)',
-                    WebkitBackdropFilter: 'blur(18px)',
+                    height: 72,
+                    background: 'rgba(5,5,6,0.78)',
+                    backdropFilter: 'blur(22px)',
+                    WebkitBackdropFilter: 'blur(22px)',
                     borderBottom: `1px solid ${BORDER}`,
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '0 20px',
+                    padding: '0 24px',
                     gap: 16,
+                    boxShadow: '0 20px 70px rgba(0,0,0,0.24)',
                 }}
             >
                 {/* Hamburger — hidden on desktop via CSS */}
@@ -931,12 +1140,12 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        width: 32,
-                        height: 32,
-                        borderRadius: 6,
+                        width: 38,
+                        height: 38,
+                        borderRadius: 8,
                         border: `1px solid ${BORDER}`,
-                        background: 'transparent',
-                        color: 'rgba(255,255,255,0.5)',
+                        background: PANEL,
+                        color: 'rgba(255,255,255,0.68)',
                         cursor: 'pointer',
                         flexShrink: 0,
                     }}
@@ -952,13 +1161,13 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                         e.preventDefault();
                         exitDocs();
                     }}
-                    style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', flexShrink: 0 }}
+                    style={{ display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none', flexShrink: 0 }}
                 >
-                    <img src="/ardeno-logo.svg" alt="Ardeno Studio" style={{ height: 28, width: 'auto' }} />
-                    <span style={{ fontFamily: FONT_DISPLAY, fontSize: 13, fontWeight: 700, color: '#fff', letterSpacing: '0.04em' }}>ARDENO</span>
+                    <img src="/ardeno-logo.svg" alt="Ardeno Studio" style={{ height: 30, width: 'auto' }} />
+                    <span style={{ fontFamily: FONT_BRAND, fontSize: 14, fontWeight: 800, color: '#fff', letterSpacing: '0.04em' }}>ARDENO</span>
                     <span
                         className="docs-header-ext"
-                        style={{ fontFamily: FONT_BODY, fontSize: 11, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.15em', textTransform: 'uppercase' }}
+                        style={{ fontFamily: FONT_UI, fontSize: 11, color: 'rgba(255,255,255,0.38)', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 800 }}
                     >
                         / DOCS
                     </span>
@@ -975,36 +1184,42 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                     }}
                     className="docs-header-back-button"
                     style={{
-                        fontFamily: FONT_BODY,
-                        fontWeight: 500,
+                        fontFamily: FONT_UI,
+                        fontWeight: 800,
                         fontSize: 11,
-                        letterSpacing: '0.12em',
+                        letterSpacing: '0.14em',
                         textTransform: 'uppercase',
-                        color: 'rgba(255,255,255,0.5)',
+                        color: 'rgba(255,255,255,0.62)',
                         textDecoration: 'none',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: 6,
+                        gap: 8,
                         marginRight: 8,
                         transition: 'color 0.2s ease',
-                        whiteSpace: 'nowrap'
+                        whiteSpace: 'nowrap',
+                        minHeight: 38,
+                        padding: '0 14px',
+                        borderRadius: 999,
+                        border: `1px solid ${BORDER}`,
+                        background: PANEL,
                     }}
                     onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#fff')}
-                    onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,255,255,0.5)')}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,255,255,0.62)')}
                 >
-                    ← Back to site
+                    <ArrowLeft size={13} />
+                    <span>Site</span>
                 </a>
 
                 {/* Search */}
-                <div style={{ position: 'relative', width: '100%', maxWidth: 300, flexShrink: 1 }}>
+                <div className="docs-search-wrap" style={{ position: 'relative', width: '100%', maxWidth: 340, flexShrink: 1 }}>
                     <Search
                         size={13}
                         style={{
                             position: 'absolute',
-                            left: 11,
+                            left: 14,
                             top: '50%',
                             transform: 'translateY(-50%)',
-                            color: searchFocused ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.25)',
+                            color: searchFocused ? 'rgba(255,255,255,0.62)' : 'rgba(255,255,255,0.32)',
                             pointerEvents: 'none',
                             transition: 'color 0.2s',
                         }}
@@ -1019,9 +1234,10 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                         onBlur={() => setSearchFocused(false)}
                         style={{
                             width: '100%',
-                            padding: '6px 12px 6px 32px',
-                            borderRadius: 8,
-                            background: searchFocused ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.04)',
+                            minHeight: 38,
+                            padding: '8px 14px 8px 38px',
+                            borderRadius: 999,
+                            background: searchFocused ? 'rgba(255,255,255,0.07)' : PANEL,
                             border: `1px solid ${searchFocused ? RED_DIM : BORDER}`,
                             color: '#fff',
                             fontFamily: FONT_BODY,
@@ -1035,22 +1251,24 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
             </header>
 
             {/* ── BODY ── */}
-            <div style={{ display: 'flex', flex: 1, paddingTop: 56 }}>
+            <div style={{ display: 'flex', flex: 1, paddingTop: 72, position: 'relative', zIndex: 1 }}>
                 {/* Desktop sidebar */}
                 <aside
                     className="docs-sidebar-desktop"
                     style={{
-                        width: 240,
+                        width: 288,
                         flexShrink: 0,
                         position: 'fixed',
-                        top: 56,
+                        top: 72,
                         bottom: 0,
                         left: 0,
                         background: BG_SIDEBAR,
+                        backdropFilter: 'blur(18px)',
+                        WebkitBackdropFilter: 'blur(18px)',
                         borderRight: `1px solid ${BORDER}`,
                         overflowY: 'auto',
                         overflowX: 'hidden',
-                        padding: '24px 0 32px',
+                        padding: '28px 0 34px',
                     }}
                 >
                     <SidebarContent
@@ -1084,15 +1302,17 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                                 className="docs-mobile-drawer"
                                 style={{
                                     position: 'fixed',
-                                    top: 56,
+                                    top: 72,
                                     left: 0,
                                     bottom: 0,
-                                    width: 260,
+                                    width: 288,
                                     zIndex: 75,
                                     background: BG_SIDEBAR,
+                                    backdropFilter: 'blur(18px)',
+                                    WebkitBackdropFilter: 'blur(18px)',
                                     borderRight: `1px solid ${BORDER}`,
                                     overflowY: 'auto',
-                                    padding: '24px 0 32px',
+                                    padding: '28px 0 34px',
                                 }}
                             >
                                 <SidebarContent
@@ -1110,34 +1330,48 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
 
                 {/* Main content */}
                 <main ref={contentRef} className="docs-main-content" style={{ flex: 1, minWidth: 0, overflowY: 'auto' }}>
-                    <div style={{ maxWidth: 760, margin: '0 auto', padding: '40px 28px 80px' }}>
+                    <div className="docs-content-wrap">
 
-                        {/* ✅ Breadcrumb (Docs goes to Overview landing page) */}
-                        <nav aria-label="breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 32 }}>
-                            {/* Docs (click -> overview) */}
+                        <nav
+                            aria-label="breadcrumb"
+                            className="docs-breadcrumb"
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: 8,
+                                marginBottom: 34,
+                                border: `1px solid ${BORDER}`,
+                                background: PANEL,
+                                borderRadius: 999,
+                                padding: '8px 10px',
+                                maxWidth: '100%',
+                                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.045)',
+                            }}
+                        >
                             <button
                                 type="button"
                                 onClick={() => navigate('overview')}
                                 style={{
-                                    fontFamily: FONT_BODY,
-                                    fontSize: 11,
-                                    letterSpacing: '0.06em',
-                                    color: 'rgba(255,255,255,0.28)',
-                                    fontWeight: 400,
+                                    fontFamily: FONT_UI,
+                                    fontSize: 10,
+                                    letterSpacing: '0.12em',
+                                    textTransform: 'uppercase',
+                                    color: 'rgba(255,255,255,0.42)',
+                                    fontWeight: 800,
                                     background: 'transparent',
                                     border: 'none',
-                                    padding: 0,
+                                    padding: '0 2px',
                                     cursor: 'pointer',
+                                    whiteSpace: 'nowrap',
                                 }}
                                 onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.65)')}
-                                onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.28)')}
+                                onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.42)')}
                             >
                                 Docs
                             </button>
 
                             <ChevronRight size={11} style={{ color: 'rgba(255,255,255,0.2)', flexShrink: 0 }} />
 
-                            {/* Group (optional click -> first page in group) */}
                             <button
                                 type="button"
                                 onClick={() => {
@@ -1147,32 +1381,36 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                                     else navigate('overview');
                                 }}
                                 style={{
-                                    fontFamily: FONT_BODY,
-                                    fontSize: 11,
-                                    letterSpacing: '0.06em',
-                                    color: 'rgba(255,255,255,0.28)',
-                                    fontWeight: 400,
+                                    fontFamily: FONT_UI,
+                                    fontSize: 10,
+                                    letterSpacing: '0.12em',
+                                    textTransform: 'uppercase',
+                                    color: 'rgba(255,255,255,0.42)',
+                                    fontWeight: 800,
                                     background: 'transparent',
                                     border: 'none',
-                                    padding: 0,
+                                    padding: '0 2px',
                                     cursor: 'pointer',
+                                    whiteSpace: 'nowrap',
                                 }}
                                 onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.65)')}
-                                onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.28)')}
+                                onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.42)')}
                             >
                                 {currentSection?.group ?? 'Getting Started'}
                             </button>
 
                             <ChevronRight size={11} style={{ color: 'rgba(255,255,255,0.2)', flexShrink: 0 }} />
 
-                            {/* Current page (not clickable) */}
                             <span
+                                className="docs-breadcrumb-current"
                                 style={{
-                                    fontFamily: FONT_BODY,
-                                    fontSize: 11,
-                                    letterSpacing: '0.06em',
-                                    color: 'rgba(255,255,255,0.65)',
-                                    fontWeight: 500,
+                                    fontFamily: FONT_UI,
+                                    fontSize: 10,
+                                    letterSpacing: '0.12em',
+                                    textTransform: 'uppercase',
+                                    color: '#fff',
+                                    fontWeight: 800,
+                                    minWidth: 0,
                                 }}
                             >
                                 {labelFor(activeId)}
@@ -1206,9 +1444,9 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                                 gap: 8,
                             }}
                         >
-                            <Clock size={11} style={{ color: 'rgba(255,255,255,0.2)' }} />
-                            <span style={{ fontFamily: FONT_BODY, fontSize: 11, color: 'rgba(255,255,255,0.28)', letterSpacing: '0.05em' }}>
-                                Last updated: March 2026
+                            <Clock size={11} style={{ color: RED }} />
+                            <span style={{ fontFamily: FONT_UI, fontSize: 11, color: TEXT_DIM, letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 800 }}>
+                                Last updated: May 2026
                             </span>
                         </div>
 
@@ -1220,20 +1458,132 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
 
             {/* Scoped responsive CSS */}
             <style>{`
+        .docs-content-wrap {
+          width: min(100%, 980px);
+          margin: 0 auto;
+          padding: 62px 36px 96px;
+          box-sizing: border-box;
+          overflow-x: hidden;
+        }
+        .docs-hero-title {
+          font-size: 4.35rem;
+          max-width: 760px;
+          overflow-wrap: break-word;
+          text-wrap: balance;
+        }
+        .docs-content-title {
+          font-size: 3.1rem;
+          max-width: 760px;
+          overflow-wrap: break-word;
+          text-wrap: balance;
+        }
+        .docs-overview-hero {
+          padding: 26px 0 36px;
+          border-bottom: 1px solid rgba(255,255,255,0.09);
+        }
+        .docs-proof-strip {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 12px;
+          margin-top: 20px;
+          padding: 18px 0;
+          border-bottom: 1px solid rgba(255,255,255,0.09);
+        }
+        .docs-proof-strip > div {
+          border-left: 1px solid rgba(255,255,255,0.09);
+          padding-left: 18px;
+        }
+        .docs-proof-strip > div:first-child {
+          border-left: 0;
+          padding-left: 0;
+        }
+        .docs-quick-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 14px;
+        }
+        .docs-next-row {
+          display: grid;
+          grid-template-columns: minmax(0, 0.92fr) minmax(280px, 1fr);
+          gap: 28px;
+          align-items: start;
+        }
+        .docs-chip-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          justify-content: flex-end;
+        }
+        .docs-breadcrumb {
+          box-sizing: border-box;
+        }
+        .docs-hero-actions > button {
+          max-width: 100%;
+        }
         @media (min-width: 768px) {
           .docs-mobile-btn { display: none !important; }
           .docs-mobile-backdrop,
           .docs-mobile-drawer { display: none !important; }
-          .docs-main-content { margin-left: 240px !important; }
+          .docs-main-content { margin-left: 288px !important; }
         }
-        @media (max-width: 480px) {
+        @media (max-width: 900px) {
+          .docs-quick-grid,
+          .docs-next-row { grid-template-columns: 1fr; }
+          .docs-chip-list { justify-content: flex-start; }
+        }
+        @media (max-width: 640px) {
+          .docs-search-wrap { display: none !important; }
           .docs-header-ext { display: none !important; }
+          .docs-content-wrap {
+            width: min(100%, 390px);
+            margin: 0;
+            padding: 38px 20px 74px;
+          }
+          .docs-hero-title { font-size: 2.45rem; line-height: 1.02; }
+          .docs-content-title { font-size: 2.45rem; }
+          .docs-hero-actions {
+            flex-direction: column;
+            align-items: stretch !important;
+          }
+          .docs-hero-actions > button {
+            width: 100%;
+            flex: 1 1 auto;
+          }
+          .docs-proof-strip { grid-template-columns: 1fr; gap: 0; }
+          .docs-proof-strip > div,
+          .docs-proof-strip > div:first-child {
+            border-left: 0;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.09);
+          }
+          .docs-proof-strip > div:last-child { border-bottom: 0; }
+          .docs-breadcrumb {
+            width: 100%;
+            overflow-x: auto;
+            justify-content: flex-start;
+          }
+          .docs-content-row {
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
+          }
+          .docs-quick-grid > button {
+            min-width: 0;
+          }
+          .docs-pager {
+            flex-direction: column;
+          }
+          .docs-pager button {
+            max-width: none !important;
+            width: 100%;
+            justify-content: space-between;
+          }
         }
         @media (max-width: 767px) {
           .docs-sidebar-desktop { display: none !important; }
           .docs-main-content { margin-left: 0 !important; }
           .docs-header-back-button { font-size: 0 !important; gap: 0 !important; }
-          .docs-header-back-button::before { content: '←'; font-size: 14px; }
+          .docs-header-back-button svg { width: 14px; height: 14px; }
+          .docs-header-back-button span { display: none !important; }
         }
         .docs-sidebar-desktop::-webkit-scrollbar,
         .docs-mobile-drawer::-webkit-scrollbar { width: 4px; }

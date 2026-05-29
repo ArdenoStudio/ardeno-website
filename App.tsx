@@ -153,7 +153,7 @@ const App: React.FC = () => {
       <>
         {route === 'docs' && (
           <Suspense key="docs" fallback={null}>
-            <DocsPage onExit={(e: any) => window.dispatchEvent(new CustomEvent('docs:exit', { detail: e }))} />
+            <DocsPage onOpenContact={() => setContactOpen(true)} />
           </Suspense>
         )}
 
