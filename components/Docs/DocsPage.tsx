@@ -91,6 +91,7 @@ const SIDEBAR_SECTIONS: SidebarSection[] = [
 const ALL_ITEMS = SIDEBAR_SECTIONS.flatMap((s) => s.items);
 const findSection = (id: string) => SIDEBAR_SECTIONS.find((s) => s.items.some((i) => i.id === id));
 const labelFor = (id: string) => ALL_ITEMS.find((i) => i.id === id)?.label ?? id;
+const cleanSectionHeading = (heading: string) => heading.replace(/^\s*(?:\d{1,2}|Step\s+\d+)\s*[—-]\s*/i, '');
 
 // ─── DocContent helper (declared BEFORE PAGE_CONTENT) ─────────────────────
 function DocContent({
@@ -196,7 +197,7 @@ function DocContent({
                                     lineHeight: 1.18,
                                 }}
                             >
-                                {s.heading}
+                                {cleanSectionHeading(s.heading)}
                             </h2>
 
                             <p
