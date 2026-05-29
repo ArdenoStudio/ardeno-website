@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Navbar } from './components/Layout/Navbar';
 import { Hero } from './components/Home/Hero';
 import { ProjectMarquee } from './components/Home/ProjectMarquee';
@@ -150,7 +150,7 @@ const App: React.FC = () => {
     <div className="bg-zinc-950 text-white min-h-screen overflow-x-clip selection:bg-accent selection:text-white relative">
       <PageLoader onComplete={() => setLoaded(true)} minDuration={1500} />
 
-      <AnimatePresence mode="wait">
+      <>
         {route === 'docs' && (
           <Suspense key="docs" fallback={null}>
             <DocsPage onExit={(e: any) => window.dispatchEvent(new CustomEvent('docs:exit', { detail: e }))} />
@@ -218,7 +218,7 @@ const App: React.FC = () => {
             </Suspense>
           </motion.main>
         )}
-      </AnimatePresence>
+      </>
 
       <Suspense fallback={null}>
         <ContactModal isOpen={contactOpen} onClose={() => setContactOpen(false)} />
