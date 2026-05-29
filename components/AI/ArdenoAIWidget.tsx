@@ -76,7 +76,10 @@ const STYLES = `
 
   body.project-modal-open .aw-fab-wrapper,
   body.project-modal-open .aw-panel-wrapper,
-  body.project-modal-open .aw-backdrop {
+  body.project-modal-open .aw-backdrop,
+  body.contact-modal-open .aw-fab-wrapper,
+  body.contact-modal-open .aw-panel-wrapper,
+  body.contact-modal-open .aw-backdrop {
     display: none !important;
     pointer-events: none !important;
   }
