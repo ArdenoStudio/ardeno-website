@@ -19,7 +19,7 @@ export const PROJECTS: Project[] = [
     id: "octane",
     title: "Octane",
     category: "Fuel Price Intelligence",
-    image: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=900&auto=format&fit=crop&q=72",
     tags: ["Data Platform", "Public API", "Price Alerts"],
     description:
       "A live Sri Lanka fuel price platform with CPC price tracking, revision history, alerts, trip-cost tools, and developer API access.",
@@ -35,7 +35,7 @@ export const PROJECTS: Project[] = [
     id: "propertylk",
     title: "PropertyLK",
     category: "Property Intelligence",
-    image: "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=720&auto=format&fit=crop&q=72",
     tags: ["Market Data", "Listings", "AI Estimate"],
     description:
       "A Sri Lanka property market intelligence platform with district-level data, listing signals, trend views, and estimate workflows.",
@@ -51,7 +51,7 @@ export const PROJECTS: Project[] = [
     id: "autolens-lk",
     title: "AutoLens LK",
     category: "Vehicle Market Intelligence",
-    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=720&auto=format&fit=crop&q=72",
     tags: ["Valuation Tools", "Market Trends", "AI Copilot"],
     description:
       "A Sri Lankan vehicle market cockpit for tracking listings, price signals, district coverage, valuation workflows, and AI-assisted comparison.",
@@ -67,7 +67,7 @@ export const PROJECTS: Project[] = [
     id: "1",
     title: "Cinnamon Oak Cafe",
     category: "Cafe & Dining",
-    image: "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=720&auto=format&fit=crop&q=72",
     tags: ["Branding", "Menu Design", "UI/UX"],
     description:
       "A warm, tactile digital presence for a specialty café where every pixel reflects the aroma of hand-poured coffee.",
@@ -83,7 +83,7 @@ export const PROJECTS: Project[] = [
     id: "2",
     title: "Lanka Fitness",
     category: "Health & Wellness",
-    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=720&auto=format&fit=crop&q=72",
     tags: ["Web App", "Membership Portal", "Branding"],
     description:
       "A high-energy digital platform for Sri Lanka's premier gym brand with class scheduling and membership management.",
@@ -99,7 +99,7 @@ export const PROJECTS: Project[] = [
     id: "3",
     title: "Lanka Motion",
     category: "Sports & Expo",
-    image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=720&auto=format&fit=crop&q=72",
     tags: ["Event Site", "Ticketing", "Animation"],
     description:
       "Sri Lanka's premier health, wellness, and performance movement — athletes, experts, and community under one roof.",
@@ -115,7 +115,7 @@ export const PROJECTS: Project[] = [
     id: "4",
     title: "Luxe Lanka",
     category: "Luxury & Salon",
-    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=720&auto=format&fit=crop&q=72",
     tags: ["Booking System", "E-Commerce", "Branding"],
     description:
       "An indulgent digital salon experience with silky transitions and a refined appointment booking flow.",
@@ -131,7 +131,7 @@ export const PROJECTS: Project[] = [
     id: "5",
     title: "Urban Kitchen",
     category: "Restaurant & Food",
-    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=720&auto=format&fit=crop&q=72",
     tags: ["Online Ordering", "Menu Design", "UI/UX"],
     description:
       "A bold, appetite-driven web presence with digital menu, reservations, and online ordering.",
@@ -147,7 +147,7 @@ export const PROJECTS: Project[] = [
     id: "6",
     title: "Global Jet Concierge",
     category: "Private Aviation & Concierge",
-    image: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=900&auto=format&fit=crop&q=72",
     tags: ["Framer Motion", "Premium UI", "Aviation"],
     description:
       "A cinematic digital experience for ultra-high-net-worth individuals with fluid layout transitions.",

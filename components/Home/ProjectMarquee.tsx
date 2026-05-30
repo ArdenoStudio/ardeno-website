@@ -41,7 +41,7 @@ export const ProjectMarquee: React.FC = () => {
                   {project.title}
                 </span>
                 <span
-                  className="text-[9px] md:text-[10px] tracking-[0.16em] uppercase text-zinc-500 group-hover:text-zinc-400 transition-colors"
+                  className="text-[9px] md:text-[10px] tracking-[0.16em] uppercase text-zinc-400 group-hover:text-zinc-300 transition-colors"
                   style={{ fontFamily: "var(--font-body)" }}
                 >
                   {project.category}

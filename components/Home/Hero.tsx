@@ -19,30 +19,20 @@ const AnimatedLine: React.FC<{
   delay?: number;
   className?: string;
   style?: React.CSSProperties;
-}> = ({ children, delay = 0, className, style }) => {
-  const reduced = useReducedMotion();
+}> = ({ children, className, style }) => {
   return (
-    <motion.div
-      className={className}
-      style={style}
-      initial={reduced ? {} : { opacity: 0, y: 36, filter: "blur(6px)" }}
-      animate={reduced ? {} : { opacity: 1, y: 0, filter: "blur(0px)" }}
-      transition={{ duration: 0.8, delay, ease: EASE }}
-    >
+    <div className={className} style={style}>
       {children}
-    </motion.div>
+    </div>
   );
 };
 
 const RefuseWord: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
   const reduced = useReducedMotion();
   return (
-    <motion.span
+    <span
       className="relative inline-block italic text-[#E50914]"
       style={{ paddingBottom: 6 }}
-      initial={reduced ? {} : { opacity: 0, y: 36, filter: "blur(6px)" }}
-      animate={reduced ? {} : { opacity: 1, y: 0, filter: "blur(0px)" }}
-      transition={{ duration: 0.75, delay, ease: EASE }}
     >
       <svg
         aria-hidden
@@ -56,8 +46,8 @@ const RefuseWord: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
           stroke="#E50914"
           strokeWidth="2"
           strokeLinecap="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 1 }}
+          initial={reduced ? false : { pathLength: 0, opacity: 0 }}
+          animate={reduced ? undefined : { pathLength: 1, opacity: 1 }}
           transition={{
             pathLength: { duration: 0.65, delay: delay + 0.35, ease: EASE },
             opacity: { duration: 0.1, delay: delay + 0.35 },
@@ -65,7 +55,7 @@ const RefuseWord: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
         />
       </svg>
       refuse
-    </motion.span>
+    </span>
   );
 };
 
@@ -373,12 +363,12 @@ const FeaturedPreview: React.FC<{
           >
             {HERO_FEATURED.category}
           </p>
-          <h3
+          <h2
             className="text-[1.65rem] text-white leading-[1.05] tracking-[-0.02em] mb-4"
             style={{ fontFamily: FONT_H }}
           >
             {HERO_FEATURED.title}
-          </h3>
+          </h2>
           <div className="flex flex-wrap gap-2">
             {HERO_FEATURED.tags.slice(0, 3).map((tag) => (
               <span
@@ -479,16 +469,13 @@ export const Hero: React.FC<{ onOpenContact?: () => void }> = ({ onOpenContact }
               </AnimatedLine>
             </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 18, filter: "blur(4px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.75, delay: headlineDelay + 0.55, ease: EASE }}
-              className="text-[15px] w-full max-w-[32ch] sm:max-w-[380px] break-words leading-[1.8] mb-7 text-[#c8c8c8]"
+            <p
+              className="w-full max-w-[30ch] break-words text-[14px] leading-[1.65] text-[#c8c8c8] mb-6 sm:max-w-[380px] sm:text-[15px] sm:leading-[1.8] sm:mb-7"
               style={{ fontFamily: FONT_B }}
             >
               We build custom websites and digital systems for Sri Lankan businesses that
               need to look premium, earn trust fast, and turn attention into enquiries.
-            </motion.p>
+            </p>
 
             <motion.div
               initial={{ opacity: 0, y: 12 }}

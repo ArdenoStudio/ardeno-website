@@ -22,11 +22,13 @@ const CookieBanner: React.FC = () => {
             return;
         }
 
+        const revealDelay = window.matchMedia("(max-width: 767px)").matches ? 5200 : 2600;
+
         const timer = window.setTimeout(() => {
             if (hasShownRef.current) return;
             hasShownRef.current = true;
             setVisible(true);
-        }, 1400);
+        }, revealDelay);
 
         const handleScroll = () => {
             if (hasShownRef.current) return;

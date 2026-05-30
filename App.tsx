@@ -4,11 +4,9 @@ import { Navbar } from './components/Layout/Navbar';
 import { Hero } from './components/Home/Hero';
 import { ProjectMarquee } from './components/Home/ProjectMarquee';
 import { PageLoader } from './components/Home/Pageloader';
-import { DocsPage } from './components/Docs/DocsPage';
 import CookieBanner from './components/UI/CookieBanner';
 import { trackUtmParams } from './components/UI/trackUtm';
 import { applySeoToDocument, SeoRouteKey } from './seo';
-import ArdenoAIWidget from './components/AI/ArdenoAIWidget';
 
 // ─── Lazy-loaded below-fold sections ─────────────────────────────────────────
 const FeaturedWork = lazy(() =>
@@ -41,6 +39,10 @@ const Footer = lazy(() =>
 const ContactModal = lazy(() =>
   import('./components/Home/ContactModal').then(m => ({ default: m.ContactModal }))
 );
+const DocsPage = lazy(() =>
+  import('./components/Docs/DocsPage').then(m => ({ default: m.DocsPage }))
+);
+const ArdenoAIWidget = lazy(() => import('./components/AI/ArdenoAIWidget'));
 const FAQPage = lazy(() =>
   import('./components/FAQ/FAQPage').then(m => ({ default: m.FAQPage }))
 );
@@ -77,6 +79,8 @@ const getRoute = (): Route => {
 
 const App: React.FC = () => {
   const [loaded, setLoaded] = useState(false);
+  const [assistantReady, setAssistantReady] = useState(false);
+  const [homeSectionsReady, setHomeSectionsReady] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [route, setRoute] = useState<Route>(getRoute);
   const sentinelRef = useRef<HTMLDivElement>(null);
@@ -120,16 +124,51 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (route !== 'home') return;
+    if (route !== 'home') {
+      setHomeSectionsReady(false);
+      return;
+    }
+
     const el = sentinelRef.current;
     if (!el) return;
     const io = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { preloadChunks(); io.disconnect(); } },
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHomeSectionsReady(true);
+          preloadChunks();
+          io.disconnect();
+        }
+      },
       { rootMargin: '300px' }
     );
     io.observe(el);
     return () => io.disconnect();
   }, [route]);
+
+  useEffect(() => {
+    if (!loaded) return;
+
+    const win = window as Window & {
+      requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+
+    let idleId: number | undefined;
+    const timerId = window.setTimeout(() => {
+      if (win.requestIdleCallback) {
+        idleId = win.requestIdleCallback(() => setAssistantReady(true), { timeout: 3000 });
+      } else {
+        setAssistantReady(true);
+      }
+    }, 2400);
+
+    return () => {
+      window.clearTimeout(timerId);
+      if (idleId !== undefined) {
+        win.cancelIdleCallback?.(idleId);
+      }
+    };
+  }, [loaded]);
 
   // ── Shared wrapper for standalone pages ──
   const pageShell = (children: React.ReactNode, options?: { hideNav?: boolean }) => (
@@ -148,7 +187,7 @@ const App: React.FC = () => {
 
   return (
     <div className="bg-zinc-950 text-white min-h-screen overflow-x-clip selection:bg-accent selection:text-white relative">
-      <PageLoader onComplete={() => setLoaded(true)} minDuration={1500} />
+      <PageLoader onComplete={() => setLoaded(true)} minDuration={900} />
 
       <>
         {route === 'docs' && (
@@ -206,16 +245,20 @@ const App: React.FC = () => {
             <Hero onOpenContact={() => setContactOpen(true)} />
             <ProjectMarquee />
             <div ref={sentinelRef} aria-hidden="true" />
-            <Suspense fallback={null}><AuditCTA onOpenContact={() => setContactOpen(true)} /></Suspense>
-            <Suspense fallback={null}><FeaturedWork /></Suspense>
-            <Suspense fallback={null}><Services /></Suspense>
-            <Suspense fallback={null}><Process /></Suspense>
-            <Suspense fallback={null}><OurStory /></Suspense>
-            <Suspense fallback={null}><Testimonials /></Suspense>
-            <Suspense fallback={null}><FinalCTA onOpenContact={() => setContactOpen(true)} /></Suspense>
-            <Suspense fallback={null}>
-              <Footer onOpenContact={() => setContactOpen(true)} />
-            </Suspense>
+            {homeSectionsReady && (
+              <>
+                <Suspense fallback={null}><AuditCTA onOpenContact={() => setContactOpen(true)} /></Suspense>
+                <Suspense fallback={null}><FeaturedWork /></Suspense>
+                <Suspense fallback={null}><Services /></Suspense>
+                <Suspense fallback={null}><Process /></Suspense>
+                <Suspense fallback={null}><OurStory /></Suspense>
+                <Suspense fallback={null}><Testimonials /></Suspense>
+                <Suspense fallback={null}><FinalCTA onOpenContact={() => setContactOpen(true)} /></Suspense>
+                <Suspense fallback={null}>
+                  <Footer onOpenContact={() => setContactOpen(true)} />
+                </Suspense>
+              </>
+            )}
           </motion.main>
         )}
       </>
@@ -225,7 +268,11 @@ const App: React.FC = () => {
       </Suspense>
 
       <CookieBanner />
-      {loaded && <ArdenoAIWidget />}
+      {assistantReady && (
+        <Suspense fallback={null}>
+          <ArdenoAIWidget />
+        </Suspense>
+      )}
     </div>
   );
 };

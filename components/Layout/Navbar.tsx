@@ -355,7 +355,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
               <a
                 href="/"
                 onClick={(e) => handleNavClick(e, "#")}
-                aria-label="Go to Ardeno Studio home"
                 className="flex items-center select-none group"
               >
                 <motion.img

@@ -257,8 +257,11 @@ export const PageLoader: React.FC<{ onComplete?: () => void; minDuration?: numbe
   const [done, setDone] = useState(() => {
     if (typeof window !== 'undefined') {
       const isDocs = window.location.pathname.startsWith('/docs') || window.location.hash.includes('docs');
+      const shouldSkipForPerformance = window.matchMedia(
+        '(max-width: 767px), (prefers-reduced-motion: reduce)'
+      ).matches;
       const hasLoaded = sessionStorage.getItem('ardeno_loader_shown');
-      return isDocs || !!hasLoaded;
+      return isDocs || shouldSkipForPerformance || !!hasLoaded;
     }
     return false;
   });

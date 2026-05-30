@@ -201,6 +201,14 @@ const applySeo = (html, key, route) => {
     /<script\s+id="structured-data"\s+type="application\/ld\+json">[\s\S]*?<\/script>/i,
     `<script id="structured-data" type="application/ld+json">${jsonLd}</script>`
   );
+  next = next.replace(
+    /(<h1\b[^>]*\bdata-static-title\b[^>]*>)[\s\S]*?(<\/h1>)/i,
+    `$1${escapeAttr(route.title.split("|")[0].trim())}$2`
+  );
+  next = next.replace(
+    /(<p\b[^>]*\bdata-static-description\b[^>]*>)[\s\S]*?(<\/p>)/i,
+    `$1${escapedDescription}$2`
+  );
   return next;
 };
 
