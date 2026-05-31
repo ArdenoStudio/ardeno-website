@@ -23,6 +23,7 @@
     "video:render": "remotion render video/index.ts ArdenoWebsiteDemo public/demo-video/ardeno-studio-demo.mp4 --codec=h264 --overwrite"
   },
   "dependencies": {
+    "@vercel/speed-insights": "^2.0.0",
     "cobe": "^2.0.1",
     "framer-motion": "^12.34.2",
     "lucide-react": "^0.574.0",

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { motion } from 'framer-motion';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Navbar } from './components/Layout/Navbar';
 import { Hero } from './components/Home/Hero';
 import { ProjectMarquee } from './components/Home/ProjectMarquee';
@@ -273,6 +274,7 @@ const App: React.FC = () => {
           <ArdenoAIWidget />
         </Suspense>
       )}
+      <SpeedInsights />
     </div>
   );
 };
