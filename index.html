@@ -115,6 +115,32 @@
 
 <body>
   <div id="root">
+    <div
+      class="static-loader-shell"
+      role="status"
+      aria-label="Loading Ardeno Studio"
+      style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(circle at 50% 45%,rgba(229,9,20,.08),transparent 42%),#050303;color:#fff;font-family:'Sora',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+    >
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,.88) 100%);pointer-events:none"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;position:relative">
+        <img
+          src="/ardeno-logo.svg"
+          alt=""
+          width="80"
+          height="80"
+          decoding="async"
+          style="width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 0 18px rgba(229,9,20,.28))"
+        />
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+          <strong style="font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:clamp(24px,8vw,34px);font-weight:700;letter-spacing:.18em;font-variation-settings:'wdth' 75,'wght' 700">ARDENO</strong>
+          <span style="font-size:clamp(10px,4vw,14px);font-weight:500;letter-spacing:.45em;color:rgba(229,9,20,.85)">STUDIO</span>
+        </div>
+      </div>
+      <div style="position:absolute;bottom:40px;left:50%;transform:translateX(-50%);width:min(280px,72vw);display:flex;flex-direction:column;gap:12px;align-items:center">
+        <span style="font-size:10px;letter-spacing:.3em;color:rgba(255,255,255,.4)">LOADING</span>
+        <span style="width:100%;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.08),rgba(229,9,20,.75),rgba(255,255,255,.08));display:block"></span>
+      </div>
+    </div>
     <main
       aria-label="Ardeno Studio preview"
       style="min-height:100svh;background:#080809;color:#fff;padding:96px 24px 48px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
@@ -131,6 +157,9 @@
     </main>
   </div>
   <noscript>
+    <style>
+      #root { display: none !important; }
+    </style>
     <div style="max-width:720px;margin:48px auto;padding:24px;font-family:system-ui,sans-serif;color:#fff;background:#080809">
       <h1>Ardeno Studio - Web Design and Development in Sri Lanka</h1>
       <p>Ardeno Studio is a Colombo web design and development studio building custom websites, booking systems, redesigns, and AI lead flows for Sri Lankan businesses.</p>
