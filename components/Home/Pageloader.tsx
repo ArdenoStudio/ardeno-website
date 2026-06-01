@@ -1,15 +1,5 @@
 import React, { useEffect, useRef, useState, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-
-// --- Font loader — uses brand fonts from index.html ---
-if (typeof document !== "undefined" && !document.getElementById("avl-fonts")) {
-  const link = document.createElement("link");
-  link.id = "avl-fonts";
-  link.rel = "stylesheet";
-  link.href =
-    "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..144,75..100,400;600;700;800&family=Sora:wght@300;400;500;600&display=swap";
-  document.head.appendChild(link);
-}
+import { motion } from "framer-motion";
 
 // --- Keyframes ---
 const STYLES = `
@@ -50,7 +40,7 @@ const STYLES = `
     from { opacity:0; transform:translateY(-20px) scale(0.9); filter: blur(10px); }
     to   { opacity:1; transform:translateY(0) scale(1); filter: blur(0px); }
   }
-  .glass-overlay {
+  .avl-glass-overlay {
     backdrop-filter: blur(8px);
     background: radial-gradient(circle at 50% 50%, rgba(10,5,5,0.4) 0%, rgba(0,0,0,0.9) 100%);
   }
@@ -99,7 +89,7 @@ const StaggerWord = memo<{ text: string; baseDelay: number; charStyle: React.CSS
             ...charStyle,
             display: "inline-block",
             opacity: 0,
-            animation: `${animName} 1.2s cubic-bezier(0.16,1,0.3,1) ${baseDelay + i * 0.08}s forwards`,
+            animation: `${animName} 0.58s cubic-bezier(0.16,1,0.3,1) ${baseDelay + i * 0.045}s forwards`,
           }}
         >
           {ch === " " ? "\u00A0" : ch}
@@ -135,7 +125,7 @@ SvgDefs.displayName = "SvgDefs";
 const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number }>(
   ({ exiting, flashRed, progress }) => (
     <div
-      className="glass-overlay"
+      className="avl-glass-overlay"
       style={{
         ...FULL_COVER,
         animation: exiting
@@ -165,7 +155,7 @@ const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number
           <div style={{
             width: 80, height: 80, marginBottom: 8,
             opacity: 0,
-            animation: "avl-crownReveal 1.4s cubic-bezier(0.16,1,0.3,1) 0.1s forwards",
+            animation: "avl-crownReveal 0.42s cubic-bezier(0.16,1,0.3,1) 0.02s forwards",
           }}>
             <svg viewBox="200 580 360 340" style={{ width: "100%", height: "100%", overflow: "visible" }}>
               <SvgDefs />
@@ -178,13 +168,13 @@ const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number
                 stroke="url(#avl-aStroke)"
                 strokeWidth="3.5"
                 strokeLinecap="round"
-                style={{ strokeDasharray: 2000, animation: "avl-drawPath 2.2s cubic-bezier(0.2,1,0.4,1) 0.4s forwards" }}
+                style={{ strokeDasharray: 2000, animation: "avl-drawPath 0.62s cubic-bezier(0.2,1,0.4,1) 0.1s forwards" }}
               />
               <path
                 d={A_MARK_PATH}
                 fill="url(#avl-aGrad)"
                 filter="url(#avl-aGlow)"
-                style={{ opacity: 0, transformOrigin: "center", animation: "avl-fillFade 1.4s cubic-bezier(0.16,1,0.3,1) 1.8s forwards" }}
+                style={{ opacity: 0, transformOrigin: "center", animation: "avl-fillFade 0.48s cubic-bezier(0.16,1,0.3,1) 0.44s forwards" }}
               />
             </svg>
           </div>
@@ -193,7 +183,7 @@ const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
             <StaggerWord
               text="ARDENO"
-              baseDelay={0.8}
+              baseDelay={0.28}
               charStyle={{
                 fontFamily: "'Bricolage Grotesque', sans-serif",
                 fontSize: "clamp(24px, 8vw, 34px)",
@@ -205,7 +195,7 @@ const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number
             />
             <StaggerWord
               text="STUDIO"
-              baseDelay={1.4}
+              baseDelay={0.54}
               charStyle={{
                 fontFamily: "'Sora', sans-serif",
                 fontSize: "clamp(10px, 4vw, 14px)",
@@ -222,9 +212,16 @@ const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number
       {/* Progress Bar Container - highly refined */}
       <div style={{ position: "absolute", bottom: 40, left: "50%", transform: "translateX(-50%)", width: 280, display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
         <p style={{ fontFamily: "'Sora', sans-serif", fontSize: 10, letterSpacing: "0.3em", color: "rgba(255,255,255,0.4)" }}>
-          {progress < 100 ? "LOADING" : "INITIALIZING"}
+          {progress < 100 ? "LOADING" : "READY"}
         </p>
-        <div style={{ width: "100%", height: 1, background: "rgba(255,255,255,0.08)", overflow: "hidden", position: "relative" }}>
+        <div
+          role="progressbar"
+          aria-label="Ardeno Studio loading progress"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={progress}
+          style={{ width: "100%", height: 1, background: "rgba(255,255,255,0.08)", overflow: "hidden", position: "relative" }}
+        >
           <motion.div
             style={{ width: "100%", height: "100%", background: "linear-gradient(90deg, transparent, #E50914)", transformOrigin: "left" }}
             initial={{ scaleX: 0 }}
@@ -250,21 +247,46 @@ const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number
 );
 ArdenoPhase.displayName = "ArdenoPhase";
 
+const getLoaderShown = () => {
+  try {
+    return sessionStorage.getItem("ardeno_loader_shown") === "true";
+  } catch {
+    return false;
+  }
+};
+
+const setLoaderShown = () => {
+  try {
+    sessionStorage.setItem("ardeno_loader_shown", "true");
+  } catch {
+    // Browsers can block sessionStorage in hardened privacy modes.
+  }
+};
+
+const shouldSkipLoader = () => {
+  if (typeof window === "undefined") return false;
+
+  const isStandaloneRoute =
+    window.location.pathname.startsWith("/docs") ||
+    window.location.pathname.startsWith("/faq") ||
+    window.location.pathname.startsWith("/brand") ||
+    window.location.pathname.startsWith("/case-studies") ||
+    window.location.hash.includes("docs");
+  const shouldSaveData = Boolean(
+    (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData
+  );
+  const shouldSkipForPerformance = window.matchMedia(
+    "(max-width: 767px), (prefers-reduced-motion: reduce)"
+  ).matches;
+
+  return isStandaloneRoute || shouldSaveData || shouldSkipForPerformance || getLoaderShown();
+};
+
 export const PageLoader: React.FC<{ onComplete?: () => void; minDuration?: number }> = ({
   onComplete,
   minDuration = 1500,
 }) => {
-  const [done, setDone] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const isDocs = window.location.pathname.startsWith('/docs') || window.location.hash.includes('docs');
-      const shouldSkipForPerformance = window.matchMedia(
-        '(max-width: 767px), (prefers-reduced-motion: reduce)'
-      ).matches;
-      const hasLoaded = sessionStorage.getItem('ardeno_loader_shown');
-      return isDocs || shouldSkipForPerformance || !!hasLoaded;
-    }
-    return false;
-  });
+  const [done, setDone] = useState(shouldSkipLoader);
   const [progress, setProgress] = useState(0);
   const [exiting, setExiting] = useState(false);
   const [flashRed, setFlashRed] = useState(false);
@@ -277,9 +299,7 @@ export const PageLoader: React.FC<{ onComplete?: () => void; minDuration?: numbe
   // Immediately notify parent if we skip loader
   useEffect(() => {
     if (done) onCompleteRef.current?.();
-    else if (typeof window !== 'undefined') {
-      sessionStorage.setItem('ardeno_loader_shown', 'true');
-    }
+    else setLoaderShown();
   }, [done]);
 
   useEffect(() => {
@@ -330,6 +350,9 @@ export const PageLoader: React.FC<{ onComplete?: () => void; minDuration?: numbe
 
   return (
     <div
+      role="status"
+      aria-live="polite"
+      aria-label="Loading Ardeno Studio"
       style={{
         position: "fixed", inset: 0, zIndex: 9999, overflow: "hidden", background: "#050303",
         opacity: exiting ? 0 : 1,
