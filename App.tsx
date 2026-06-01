@@ -199,7 +199,7 @@ const App: React.FC = () => {
 
         {route === 'faq' && pageShell(
           <Suspense key="faq" fallback={null}>
-            <FAQPage />
+            <FAQPage onOpenContact={() => setContactOpen(true)} />
           </Suspense>,
           { hideNav: true }
         )}
