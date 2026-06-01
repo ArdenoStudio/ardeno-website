@@ -1,7 +1,27 @@
-import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import {
+    ArrowUpRight,
+    Bot,
+    CheckCircle2,
+    Clock3,
+    Loader2,
+    MessageCircle,
+    RotateCcw,
+    Send,
+    ShieldCheck,
+    Sparkles,
+    X,
+    Zap,
+} from "lucide-react";
 
+type QuickAction = {
+    label: string;
+    value: string;
+    detail?: string;
+    icon: React.ElementType;
+};
 
-type QuickAction = { label: string; value: string };
 type Message = {
     role: "user" | "assistant";
     content: string;
@@ -9,16 +29,48 @@ type Message = {
 };
 
 const QUICK_ACTIONS: QuickAction[] = [
-    { label: "New Website", value: "I need a website for my business." },
-    { label: "Redesign", value: "I want to redesign my current website." },
-    { label: "Pricing", value: "How much does a website usually cost?" },
-    { label: "Portal / System", value: "I need a portal or a custom system for my business." },
+    {
+        label: "Audit my site",
+        detail: "Find trust, UX, and conversion gaps",
+        value: "Can you audit my current website and tell me what Ardeno Studio would improve first?",
+        icon: ShieldCheck,
+    },
+    {
+        label: "Plan a redesign",
+        detail: "Shape a sharper modern rebuild",
+        value: "I want to redesign my current website. What should the first plan look like?",
+        icon: Sparkles,
+    },
+    {
+        label: "Estimate a build",
+        detail: "Clarify scope, pricing, and timeline",
+        value: "How much does a custom website usually cost and what affects the timeline?",
+        icon: Clock3,
+    },
+    {
+        label: "Add a system",
+        detail: "Booking, order, portal, or AI workflow",
+        value: "I need a portal, booking system, or custom business system. How would Ardeno scope it?",
+        icon: Zap,
+    },
 ];
 
 const STARTER_PROMPTS: QuickAction[] = [
-    { label: "What is your process?", value: "What is your process for building a website?" },
-    { label: "How much does it cost?", value: "How much does a website project usually cost?" },
-    { label: "Do you build portals?", value: "Do you build custom business portals and internal systems?" },
+    {
+        label: "What makes an Ardeno site different?",
+        value: "What makes an Ardeno Studio website different from a basic template site?",
+        icon: CheckCircle2,
+    },
+    {
+        label: "What do you need from me?",
+        value: "What information should I prepare before starting a project with Ardeno Studio?",
+        icon: MessageCircle,
+    },
+    {
+        label: "Can you build AI lead capture?",
+        value: "Can you build an AI lead assistant for my business website?",
+        icon: Bot,
+    },
 ];
 
 const STORAGE_KEY = "ardeno_ai_messages_v7";
@@ -28,84 +80,46 @@ const genId = () => Math.random().toString(36).slice(2, 9);
 
 const RED = "#E50914";
 const RED_RGB = "229,9,20";
-const SYNE = "'Syne', sans-serif";
-const MANROPE = "'Manrope', sans-serif";
-
-const Logo: React.FC<{ size?: number }> = ({ size = 26 }) => (
-    <img
-        src="/ardeno-logo.svg"
-        alt="AI assistant"
-        width={size}
-        height={size}
-        style={{ display: "block", flexShrink: 0, objectFit: "contain" }}
-        draggable={false}
-    />
-);
-
-const SendIcon = () => (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-);
-
-const CloseIcon = () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-        <path d="M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <path d="M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-);
-
-const Spinner = () => (
-    <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        style={{ animation: "awSpin .85s linear infinite", display: "block" }}
-    >
-        <circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,.16)" strokeWidth="2.5" />
-        <path d="M12 3a9 9 0 0 1 9 9" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
-    </svg>
-);
 
 const STYLES = `
-  .aw * { box-sizing: border-box; }
-  .aw button, .aw textarea { font-family: ${MANROPE}; }
-  .aw button { -webkit-tap-highlight-color: transparent; }
+  .aw * {
+    box-sizing: border-box;
+  }
+
+  .aw {
+    --aw-red: ${RED};
+    --aw-red-rgb: ${RED_RGB};
+    --aw-display: var(--font-display);
+    --aw-body: var(--font-body);
+    --aw-ui: var(--font-ui);
+  }
+
+  .aw button,
+  .aw textarea {
+    font-family: var(--aw-ui);
+  }
+
+  .aw button {
+    -webkit-tap-highlight-color: transparent;
+  }
 
   body.project-modal-open .aw-fab-wrapper,
   body.project-modal-open .aw-panel-wrapper,
   body.project-modal-open .aw-backdrop,
   body.contact-modal-open .aw-fab-wrapper,
   body.contact-modal-open .aw-panel-wrapper,
-  body.contact-modal-open .aw-backdrop {
+  body.contact-modal-open .aw-backdrop,
+  body.nav-open .aw-fab-wrapper,
+  body.nav-open .aw-panel-wrapper,
+  body.nav-open .aw-backdrop {
     display: none !important;
     pointer-events: none !important;
   }
 
-  @keyframes awPanelIn {
-    0% { opacity: 0; transform: translateY(18px) scale(.965); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
-  }
-
-  @keyframes awPanelOut {
-    0% { opacity: 1; transform: translateY(0) scale(1); }
-    100% { opacity: 0; transform: translateY(14px) scale(.975); }
-  }
-
-  @keyframes awMsgIn {
-    0% { opacity: 0; transform: translateY(8px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes awDot {
-    0%, 60%, 100% { transform: translateY(0); opacity: .35; }
-    30% { transform: translateY(-4px); opacity: 1; }
-  }
-
-  @keyframes awSpin {
-    to { transform: rotate(360deg); }
+  body.ai-assistant-open .ardeno-cookie-banner {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
   }
 
   @keyframes awPulseRing {
@@ -132,56 +146,481 @@ const STYLES = `
     to { transform: rotate(360deg); }
   }
 
-  .aw-panel-in { animation: awPanelIn 260ms cubic-bezier(.22,.68,0,1.08) both; }
-  .aw-panel-out { animation: awPanelOut 220ms ease both; }
-  .aw-msg { animation: awMsgIn 220ms cubic-bezier(.22,.68,0,1.08) both; }
+  .aw-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 9997;
+    background: rgba(3, 3, 4, 0.48);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
 
-  .aw-scroll::-webkit-scrollbar { width: 5px; }
-  .aw-scroll::-webkit-scrollbar-track { background: transparent; }
-  .aw-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 999px; }
-  .aw-scroll::-webkit-scrollbar-thumb:hover { background: rgba(${RED_RGB}, .72); }
+  .aw-fab-wrapper {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9999;
+    transition: bottom 0.4s cubic-bezier(0.16,1,0.3,1);
+    animation: awFabFloat 2.8s ease-in-out infinite;
+  }
 
-  .aw-fab,
-  .aw-chip,
-  .aw-ctrl,
-  .aw-send,
-  .aw-starter {
+  .aw-fab {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    padding: 0;
+    background: rgba(8,8,10,.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 22px;
+    box-shadow:
+      0 18px 56px rgba(0,0,0,.58),
+      inset 0 1px 0 rgba(255,255,255,.04),
+      0 0 22px rgba(229,9,20,.12);
+    cursor: pointer;
+    overflow: hidden;
     transition: all 180ms ease;
   }
 
-  .aw-fab:hover { transform: translateY(-2px) scale(1.01); }
-  .aw-fab:active { transform: translateY(0) scale(.985); }
-
-  .aw-chip:hover,
-  .aw-starter:hover {
-    border-color: rgba(${RED_RGB}, .30) !important;
-    background: rgba(${RED_RGB}, .10) !important;
-    color: #fff !important;
+  .aw-fab:hover {
+    transform: translateY(-2px) scale(1.01);
   }
 
-  .aw-ctrl:hover {
-    background: rgba(255,255,255,.06) !important;
-    color: rgba(255,255,255,.95) !important;
-    border-color: rgba(255,255,255,.14) !important;
+  .aw-fab:active {
+    transform: translateY(0) scale(.985);
   }
 
-  .aw-send:hover:not(:disabled) {
+  .aw-fab-mark {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 auto;
+    border-radius: 15px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+      rgba(var(--aw-red-rgb), 0.08);
+    border: 1px solid rgba(var(--aw-red-rgb), 0.22);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .aw-fab-mark::after {
+    content: "";
+    position: absolute;
+    inset: -7px;
+    border-radius: inherit;
+    border: 1px solid rgba(var(--aw-red-rgb), 0.16);
+    opacity: 0.9;
+  }
+
+  .aw-panel-wrapper {
+    position: fixed;
+    right: 24px;
+    bottom: 104px;
+    width: 430px;
+    max-width: calc(100vw - 24px);
+    height: min(680px, calc(100dvh - 130px));
+    z-index: 9998;
+  }
+
+  .aw-panel {
+    position: relative;
+    display: flex;
+    height: 100%;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 24px;
+    background:
+      radial-gradient(circle at 0% 0%, rgba(var(--aw-red-rgb), 0.18), transparent 34%),
+      radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 0.05), transparent 34%),
+      linear-gradient(145deg, rgba(20, 20, 22, 0.98), rgba(7, 7, 8, 0.99));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+      0 38px 120px rgba(0, 0, 0, 0.78),
+      0 0 0 1px rgba(var(--aw-red-rgb), 0.08);
+  }
+
+  .aw-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 150px;
+  }
+
+  .aw-top-line {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(var(--aw-red-rgb), 0.9), rgba(255,255,255,0.22), transparent);
+  }
+
+  .aw-header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .aw-brand {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .aw-brand-mark {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 auto;
+    border-radius: 14px;
+    background: rgba(var(--aw-red-rgb), 0.1);
+    border: 1px solid rgba(var(--aw-red-rgb), 0.2);
+  }
+
+  .aw-brand-title {
+    margin: 0;
+    font-family: var(--aw-display);
+    font-size: 21px;
+    line-height: 1;
+    font-weight: 400;
+    color: #fff;
+  }
+
+  .aw-brand-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+    font-family: var(--aw-ui);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: rgba(255, 255, 255, 0.46);
+  }
+
+  .aw-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #3ddc84;
+    box-shadow: 0 0 12px rgba(61, 220, 132, 0.65);
+  }
+
+  .aw-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .aw-icon-button {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.045);
+    color: rgba(255, 255, 255, 0.62);
+    cursor: pointer;
+    transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+  }
+
+  .aw-icon-button:hover {
     transform: translateY(-1px);
-    box-shadow: 0 10px 30px rgba(${RED_RGB}, .34) !important;
+    border-color: rgba(var(--aw-red-rgb), 0.36);
+    background: rgba(var(--aw-red-rgb), 0.1);
+    color: #fff;
   }
 
-  .aw-send:active:not(:disabled) {
-    transform: translateY(0) scale(.97);
+  .aw-scroll {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 13px;
+    overflow-y: auto;
+    padding: 16px;
   }
 
-  .aw-input-wrap {
-    transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  .aw-scroll > * {
+    flex-shrink: 0;
   }
 
-  .aw-input-wrap.focused {
-    border-color: rgba(${RED_RGB}, .30) !important;
-    box-shadow: 0 0 0 3px rgba(${RED_RGB}, .08) !important;
-    background: rgba(255,255,255,.045) !important;
+  .aw-scroll::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .aw-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .aw-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+  }
+
+  .aw-empty-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 18px;
+    border-radius: 20px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.035)),
+      rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .aw-empty-hero::after {
+    content: "";
+    position: absolute;
+    right: -42px;
+    top: -42px;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--aw-red-rgb), 0.18), transparent 66%);
+    pointer-events: none;
+  }
+
+  .aw-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 12px;
+    font-family: var(--aw-ui);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0;
+    color: rgba(255, 255, 255, 0.56);
+  }
+
+  .aw-empty-title {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    max-width: 12ch;
+    font-family: var(--aw-display);
+    font-size: 36px;
+    line-height: 0.98;
+    font-weight: 400;
+    color: #fff;
+  }
+
+  .aw-empty-title em {
+    color: rgba(255, 255, 255, 0.42);
+    font-style: italic;
+  }
+
+  .aw-empty-copy {
+    position: relative;
+    z-index: 1;
+    margin: 14px 0 0;
+    max-width: 32ch;
+    font-family: var(--aw-body);
+    font-size: 13px;
+    line-height: 1.72;
+    color: rgba(255, 255, 255, 0.68);
+  }
+
+  .aw-proof-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .aw-proof {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.035);
+    padding: 10px;
+    color: rgba(255, 255, 255, 0.68);
+    font-family: var(--aw-ui);
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .aw-proof svg {
+    flex: 0 0 auto;
+    color: var(--aw-red);
+  }
+
+  .aw-section-label {
+    margin: 4px 0 0;
+    font-family: var(--aw-ui);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0;
+    color: rgba(255, 255, 255, 0.42);
+  }
+
+  .aw-quick-grid {
+    display: grid;
+    gap: 9px;
+  }
+
+  .aw-quick {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr) 22px;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    min-height: 68px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 10px 12px;
+    text-align: left;
+    color: #fff;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.035);
+    transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+  }
+
+  .aw-quick:hover {
+    transform: translateY(-1px);
+    border-color: rgba(var(--aw-red-rgb), 0.32);
+    background: rgba(var(--aw-red-rgb), 0.075);
+  }
+
+  .aw-quick-icon {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+    color: var(--aw-red);
+    background: rgba(var(--aw-red-rgb), 0.09);
+    border: 1px solid rgba(var(--aw-red-rgb), 0.16);
+  }
+
+  .aw-quick-title {
+    display: block;
+    overflow-wrap: anywhere;
+    font-family: var(--aw-ui);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0;
+    color: rgba(255, 255, 255, 0.94);
+  }
+
+  .aw-quick-detail {
+    display: block;
+    margin-top: 4px;
+    overflow-wrap: anywhere;
+    font-family: var(--aw-body);
+    font-size: 11px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.46);
+  }
+
+  .aw-quick-arrow {
+    display: grid;
+    place-items: center;
+    color: rgba(255, 255, 255, 0.35);
+  }
+
+  .aw-starters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .aw-starter {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 38px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    padding: 8px 11px;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+    font-family: var(--aw-ui);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0;
+    transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+  }
+
+  .aw-starter:hover {
+    border-color: rgba(var(--aw-red-rgb), 0.3);
+    background: rgba(var(--aw-red-rgb), 0.08);
+    color: #fff;
+  }
+
+  .aw-message {
+    display: flex;
+    max-width: 88%;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .aw-message.user {
+    align-self: flex-end;
+  }
+
+  .aw-message.assistant {
+    align-self: flex-start;
+  }
+
+  .aw-message-meta {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding-inline: 3px;
+    font-family: var(--aw-ui);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0;
+    color: rgba(255, 255, 255, 0.36);
+  }
+
+  .aw-message.user .aw-message-meta {
+    justify-content: flex-end;
+    color: rgba(var(--aw-red-rgb), 0.82);
+  }
+
+  .aw-bubble {
+    overflow-wrap: anywhere;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 13px 14px;
+    white-space: pre-wrap;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: var(--aw-body);
+    font-size: 13px;
+    line-height: 1.7;
+    background: rgba(255, 255, 255, 0.045);
+  }
+
+  .aw-message.user .aw-bubble {
+    border-color: rgba(var(--aw-red-rgb), 0.28);
+    background: linear-gradient(180deg, rgba(var(--aw-red-rgb), 0.22), rgba(var(--aw-red-rgb), 0.12));
+    box-shadow: 0 12px 32px rgba(var(--aw-red-rgb), 0.12);
   }
 
   .aw-text p {
@@ -201,49 +640,121 @@ const STYLES = `
     margin: 5px 0;
   }
 
-  .aw-panel-glow {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(circle at top right, rgba(${RED_RGB}, .10), transparent 30%),
-      radial-gradient(circle at bottom left, rgba(${RED_RGB}, .06), transparent 26%);
+  .aw-loading {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 11px 13px;
+    color: rgba(255, 255, 255, 0.72);
+    background: rgba(255, 255, 255, 0.045);
+    font-family: var(--aw-ui);
+    font-size: 12px;
+    font-weight: 700;
   }
 
-  .aw-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 9997;
-    background: rgba(0,0,0,.18);
-    backdrop-filter: blur(4px);
+  .aw-compose {
+    position: relative;
+    z-index: 1;
+    flex: 0 0 auto;
+    padding: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.18);
   }
 
-  .aw-fab-wrapper {
-    position: fixed;
-    right: 24px;
-    bottom: 24px;
-    z-index: 9999;
-    transition: bottom 0.4s cubic-bezier(0.16,1,0.3,1);
-    animation: awFabFloat 2.8s ease-in-out infinite;
+  .aw-input-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 46px;
+    align-items: end;
+    gap: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.045);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
   }
 
-  .aw-panel-wrapper {
-    position: fixed;
-    right: 24px;
-    bottom: 112px;
-    width: 388px;
-    max-width: calc(100vw - 20px);
-    height: min(620px, calc(100vh - 112px));
-    z-index: 9998;
-    transition: bottom 0.4s cubic-bezier(0.16,1,0.3,1);
+  .aw-input-wrap.focused {
+    border-color: rgba(var(--aw-red-rgb), 0.5);
+    background: rgba(255, 255, 255, 0.065);
+    box-shadow: 0 0 0 4px rgba(var(--aw-red-rgb), 0.08);
   }
 
-  .aw.aw-bottom .aw-fab-wrapper {
-    bottom: 24px;
+  .aw-input {
+    width: 100%;
+    min-height: 44px;
+    max-height: 124px;
+    resize: none;
+    overflow-y: auto;
+    border: 0;
+    outline: 0;
+    border-radius: 12px;
+    padding: 12px 10px;
+    background: transparent;
+    color: #fff;
+    font-family: var(--aw-body);
+    font-size: 13px;
+    line-height: 1.5;
   }
 
-  .aw.aw-bottom .aw-panel-wrapper {
-    bottom: 112px;
+  .aw-input::placeholder {
+    color: rgba(255, 255, 255, 0.36);
+  }
+
+  .aw-send {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 auto;
+    border: 1px solid rgba(var(--aw-red-rgb), 0.4);
+    border-radius: 15px;
+    color: #fff;
+    background: var(--aw-red);
+    cursor: pointer;
+    box-shadow: 0 12px 28px rgba(var(--aw-red-rgb), 0.28);
+    transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .aw-send:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 16px 34px rgba(var(--aw-red-rgb), 0.36);
+  }
+
+  .aw-send:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .aw-compose-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 9px;
+    padding-inline: 4px;
+    font-family: var(--aw-ui);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: rgba(255, 255, 255, 0.32);
+  }
+
+  .aw-compose-meta strong {
+    color: rgba(var(--aw-red-rgb), 0.78);
+    font-weight: 800;
+  }
+
+  .aw-reduced .aw-fab,
+  .aw-reduced .aw-quick,
+  .aw-reduced .aw-icon-button,
+  .aw-reduced .aw-send {
+    transition-duration: 0.01ms;
   }
 
   @media (max-width: 768px) {
@@ -251,30 +762,76 @@ const STYLES = `
       right: 16px;
       bottom: 16px;
     }
+  }
+
+  @media (max-width: 640px) {
     .aw-panel-wrapper {
-      right: 10px;
       left: 10px;
-      top: 12px;
-      bottom: 104px;
+      right: 10px;
+      top: 84px;
+      bottom: 88px;
       width: auto;
       max-width: none;
       height: auto;
     }
-    .aw.aw-bottom .aw-fab-wrapper {
-      bottom: 16px;
-    }
-    .aw.aw-bottom .aw-panel-wrapper {
-      top: 12px;
-      bottom: 104px;
-    }
-  }
 
-  body.nav-open .aw-fab-wrapper,
-  body.nav-open .aw-panel-wrapper,
-  body.nav-open .aw-backdrop {
-    display: none !important;
+    .aw-panel {
+      border-radius: 22px;
+    }
+
+    .aw-header {
+      padding: 14px;
+    }
+
+    .aw-brand-title {
+      font-size: 20px;
+    }
+
+    .aw-scroll {
+      padding: 13px;
+      gap: 11px;
+    }
+
+    .aw-empty-title {
+      font-size: 31px;
+    }
+
+    .aw-proof-strip {
+      grid-template-columns: 1fr;
+    }
+
+    .aw-quick {
+      grid-template-columns: 32px minmax(0, 1fr) 18px;
+      min-height: 62px;
+      border-radius: 14px;
+      padding: 9px 10px;
+    }
+
+    .aw-message {
+      max-width: 94%;
+    }
+
+    .aw-compose {
+      padding: 10px;
+    }
+
+    .aw-compose-meta {
+      display: none;
+    }
   }
 `;
+
+const Logo: React.FC<{ size?: number }> = ({ size = 26 }) => (
+    <img
+        src="/ardeno-logo.svg"
+        alt=""
+        width={size}
+        height={size}
+        style={{ display: "block", flexShrink: 0, objectFit: "contain" }}
+        draggable={false}
+        aria-hidden="true"
+    />
+);
 
 function formatMessage(content: string) {
     const lines = content.split("\n").filter((line) => line.trim() !== "");
@@ -295,14 +852,15 @@ function formatMessage(content: string) {
 
     lines.forEach((line, index) => {
         const trimmed = line.trim();
-        const isBullet = trimmed.startsWith("- ") || trimmed.startsWith("• ");
+        const isBullet = trimmed.startsWith("- ") || trimmed.startsWith("* ") || trimmed.startsWith("• ");
 
         if (isBullet) {
-            bulletBuffer.push(trimmed.replace(/^(-|•)\s*/, ""));
-        } else {
-            flushBullets(`bullets-${index}`);
-            elements.push(<p key={`p-${index}`}>{line}</p>);
+            bulletBuffer.push(trimmed.replace(/^(-|\*|•)\s*/, ""));
+            return;
         }
+
+        flushBullets(`bullets-${index}`);
+        elements.push(<p key={`p-${index}`}>{line}</p>);
     });
 
     flushBullets("bullets-final");
@@ -310,9 +868,15 @@ function formatMessage(content: string) {
     return <div className="aw-text">{elements}</div>;
 }
 
+const panelMotion = {
+    initial: { opacity: 0, y: 18, scale: 0.97 },
+    animate: { opacity: 1, y: 0, scale: 1 },
+    exit: { opacity: 0, y: 12, scale: 0.98 },
+};
+
 const ArdenoAIWidget: React.FC = () => {
+    const reduced = useReducedMotion() ?? false;
     const [open, setOpen] = useState(false);
-    const [animOut, setAnimOut] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState<Message[]>([]);
@@ -320,12 +884,28 @@ const ArdenoAIWidget: React.FC = () => {
     const [focused, setFocused] = useState(false);
     const [isAtBottom, setIsAtBottom] = useState(false);
 
-    const panelRef = useRef<HTMLDivElement>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const abortRef = useRef<AbortController | null>(null);
 
     const isInputEmpty = useMemo(() => input.trim().length === 0, [input]);
+
+    const close = useCallback(() => {
+        abortRef.current?.abort();
+        setLoading(false);
+        setOpen(false);
+    }, []);
+
+    const clearChat = useCallback(() => {
+        abortRef.current?.abort();
+        setLoading(false);
+        setMessages([]);
+        try {
+            localStorage.removeItem(STORAGE_KEY);
+        } catch {
+            // Ignore storage failures in private browsing or locked-down clients.
+        }
+    }, []);
 
     useEffect(() => {
         setMounted(true);
@@ -340,7 +920,7 @@ const ArdenoAIWidget: React.FC = () => {
 
             if (savedOpen === "true") setOpen(true);
         } catch {
-            //
+            // Ignore malformed stored chat state.
         }
     }, []);
 
@@ -349,7 +929,7 @@ const ArdenoAIWidget: React.FC = () => {
         try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(messages.slice(-24)));
         } catch {
-            //
+            // Ignore storage failures.
         }
     }, [messages, mounted]);
 
@@ -358,13 +938,21 @@ const ArdenoAIWidget: React.FC = () => {
         try {
             localStorage.setItem(OPEN_KEY, String(open));
         } catch {
-            //
+            // Ignore storage failures.
         }
     }, [open, mounted]);
 
     useEffect(() => {
-        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages, loading]);
+        if (open) {
+            document.body.classList.add("ai-assistant-open");
+        } else {
+            document.body.classList.remove("ai-assistant-open");
+        }
+
+        return () => {
+            document.body.classList.remove("ai-assistant-open");
+        };
+    }, [open]);
 
     useEffect(() => {
         if (!open) return;
@@ -373,53 +961,32 @@ const ArdenoAIWidget: React.FC = () => {
     }, [open]);
 
     useEffect(() => {
+        if (messages.length === 0 && !loading) return;
+        bottomRef.current?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
+    }, [messages, loading, reduced]);
+
+    useEffect(() => {
         const onGlobalKey = (e: KeyboardEvent) => {
             if (e.key === "Escape" && open) close();
         };
 
         window.addEventListener("keydown", onGlobalKey);
         return () => window.removeEventListener("keydown", onGlobalKey);
-    }, [open]);
-
-    useEffect(() => {
-        const onMouseDown = (e: MouseEvent) => {
-            if (!open || !panelRef.current) return;
-            const target = e.target as Node;
-            const fab = document.getElementById("ardeno-ai-fab");
-
-            if (panelRef.current.contains(target)) return;
-            if (fab?.contains(target)) return;
-
-            close();
-        };
-
-        document.addEventListener("mousedown", onMouseDown);
-        return () => document.removeEventListener("mousedown", onMouseDown);
-    }, [open]);
+    }, [close, open]);
 
     useEffect(() => {
         const el = textareaRef.current;
         if (!el) return;
         el.style.height = "0px";
-        el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
+        el.style.height = `${Math.min(el.scrollHeight, 124)}px`;
     }, [input]);
-
-    const close = useCallback(() => {
-        abortRef.current?.abort();
-        setAnimOut(true);
-
-        setTimeout(() => {
-            setOpen(false);
-            setAnimOut(false);
-            setLoading(false);
-        }, 220);
-    }, []);
 
     useEffect(() => {
         const handleScroll = () => {
             const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 70;
             setIsAtBottom(bottom);
         };
+
         window.addEventListener("scroll", handleScroll, { passive: true });
         handleScroll();
         return () => window.removeEventListener("scroll", handleScroll);
@@ -428,18 +995,7 @@ const ArdenoAIWidget: React.FC = () => {
     const toggle = useCallback(() => {
         if (open) close();
         else setOpen(true);
-    }, [open, close]);
-
-    const clearChat = () => {
-        abortRef.current?.abort();
-        setLoading(false);
-        setMessages([]);
-        try {
-            localStorage.removeItem(STORAGE_KEY);
-        } catch {
-            //
-        }
-    };
+    }, [close, open]);
 
     const sendPrompt = async (value: string) => {
         const trimmed = value.trim();
@@ -476,7 +1032,7 @@ const ArdenoAIWidget: React.FC = () => {
                 }),
             });
 
-            const data = await res.json();
+            const data = await res.json().catch(() => ({}));
 
             if (!res.ok) {
                 throw new Error(data?.error || "API error");
@@ -523,16 +1079,31 @@ const ArdenoAIWidget: React.FC = () => {
     };
 
     return (
-        <div className={`aw ${isAtBottom ? "aw-bottom" : ""}`}>
+        <div className={`aw ${isAtBottom ? "aw-bottom" : ""} ${reduced ? "aw-reduced" : ""}`}>
             <style>{STYLES}</style>
 
-            {open && <div className="aw-backdrop" />}
+            <AnimatePresence>
+                {open && (
+                    <motion.button
+                        type="button"
+                        className="aw-backdrop"
+                        aria-label="Close AI assistant"
+                        onClick={close}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: reduced ? 0 : 0.2 }}
+                    />
+                )}
+            </AnimatePresence>
 
-            <button
+            <motion.button
                 id="ardeno-ai-fab"
+                type="button"
                 onClick={toggle}
                 aria-label={open ? "Close AI assistant" : "Open AI assistant"}
                 className="aw-fab aw-fab-wrapper"
+                whileTap={reduced ? undefined : { scale: 0.98 }}
                 style={{
                     display: "flex",
                     alignItems: "center",
@@ -606,518 +1177,213 @@ const ArdenoAIWidget: React.FC = () => {
                 >
                     <Logo size={24} />
                 </div>
-            </button>
+            </motion.button>
 
-            {open && (
-                <div
-                    ref={panelRef}
-                    role="dialog"
-                    aria-label="AI assistant"
-                    aria-modal="true"
-                    className={`aw-panel-wrapper ${animOut ? "aw-panel-out" : "aw-panel-in"}`}
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        overflow: "hidden",
-                        borderRadius: "20px",
-                        background:
-                            "linear-gradient(180deg, rgba(14,14,16,.97) 0%, rgba(9,9,11,.985) 100%)",
-                        backdropFilter: "blur(20px)",
-                        border: "1px solid rgba(255,255,255,.08)",
-                        boxShadow:
-                            "0 30px 100px rgba(0,0,0,.74), 0 0 0 1px rgba(255,255,255,.02), 0 0 42px rgba(229,9,20,.08)",
-                    }}
-                >
-                    <div className="aw-panel-glow" />
-
-                    <div
-                        style={{
-                            position: "relative",
-                            height: 1,
-                            background: `linear-gradient(90deg, rgba(${RED_RGB}, .94) 0%, rgba(${RED_RGB}, .18) 42%, transparent 100%)`,
-                            flexShrink: 0,
-                            zIndex: 1,
-                        }}
-                    />
-
-                    <div
-                        style={{
-                            position: "relative",
-                            padding: "13px 13px 12px",
-                            borderBottom: "1px solid rgba(255,255,255,.07)",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            background:
-                                "linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.012))",
-                            zIndex: 1,
-                        }}
+            <AnimatePresence>
+                {open && (
+                    <motion.div
+                        role="dialog"
+                        aria-label="Ardeno AI assistant"
+                        aria-modal="true"
+                        className="aw-panel-wrapper"
+                        {...panelMotion}
+                        transition={{ duration: reduced ? 0 : 0.32, ease: [0.16, 1, 0.3, 1] }}
                     >
-                        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                            <div
-                                style={{
-                                    width: 36,
-                                    height: 36,
-                                    borderRadius: 11,
-                                    display: "grid",
-                                    placeItems: "center",
-                                    background: "linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015))",
-                                    border: "1px solid rgba(255,255,255,.06)",
-                                    boxShadow: "inset 0 1px 0 rgba(255,255,255,.03)",
-                                }}
-                            >
-                                <Logo size={18} />
-                            </div>
+                        <div className="aw-panel" onClick={(e) => e.stopPropagation()}>
+                            <div className="aw-top-line" />
 
-                            <div>
-                                <div
-                                    style={{
-                                        fontFamily: SYNE,
-                                        fontSize: "14px",
-                                        fontWeight: 700,
-                                        color: "#fff",
-                                        lineHeight: 1.1,
-                                    }}
-                                >
-                                    AI Assistant
-                                </div>
-
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: 6,
-                                        marginTop: 4,
-                                    }}
-                                >
-                                    <span
-                                        style={{
-                                            width: 6,
-                                            height: 6,
-                                            borderRadius: "50%",
-                                            background: "#3ddc84",
-                                            boxShadow: "0 0 8px rgba(61,220,132,.6)",
-                                        }}
-                                    />
-                                    <span
-                                        style={{
-                                            fontFamily: MANROPE,
-                                            fontSize: "10px",
-                                            fontWeight: 500,
-                                            color: "rgba(255,255,255,.42)",
-                                            letterSpacing: "0.13em",
-                                            textTransform: "uppercase",
-                                        }}
-                                    >
-                                        Online · Project Advisor
+                            <header className="aw-header">
+                                <div className="aw-brand">
+                                    <span className="aw-brand-mark">
+                                        <Logo size={22} />
                                     </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style={{ display: "flex", gap: 8 }}>
-                            <button
-                                onClick={clearChat}
-                                className="aw-ctrl"
-                                style={{
-                                    height: "31px",
-                                    padding: "0 10px",
-                                    borderRadius: "9px",
-                                    border: "1px solid rgba(255,255,255,.08)",
-                                    background: "rgba(255,255,255,.02)",
-                                    color: "rgba(255,255,255,.55)",
-                                    cursor: "pointer",
-                                    fontSize: "12px",
-                                    fontWeight: 600,
-                                }}
-                            >
-                                Clear
-                            </button>
-
-                            <button
-                                onClick={close}
-                                aria-label="Close chat"
-                                className="aw-ctrl"
-                                style={{
-                                    width: "31px",
-                                    height: "31px",
-                                    borderRadius: "9px",
-                                    border: "1px solid rgba(255,255,255,.08)",
-                                    background: "rgba(255,255,255,.02)",
-                                    color: "rgba(255,255,255,.55)",
-                                    cursor: "pointer",
-                                    display: "grid",
-                                    placeItems: "center",
-                                }}
-                            >
-                                <CloseIcon />
-                            </button>
-                        </div>
-                    </div>
-
-                    <div
-                        className="aw-scroll"
-                        style={{
-                            position: "relative",
-                            flex: 1,
-                            overflowY: "auto",
-                            padding: "18px 16px 12px",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "12px",
-                            zIndex: 1,
-                        }}
-                    >
-                        {messages.length === 0 && (
-                            <>
-                                <div
-                                    className="aw-msg"
-                                    style={{
-                                        padding: "18px",
-                                        borderRadius: "20px",
-                                        background:
-                                            "linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.022))",
-                                        border: "1px solid rgba(255,255,255,.07)",
-                                        boxShadow: "inset 0 1px 0 rgba(255,255,255,.03)",
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            fontFamily: SYNE,
-                                            fontSize: "18px",
-                                            fontWeight: 700,
-                                            color: "#fff",
-                                            lineHeight: 1.25,
-                                        }}
-                                    >
-                                        Talk to <span style={{ color: RED }}>our AI assistant</span>
+                                    <div>
+                                        <h2 className="aw-brand-title">Ardeno AI</h2>
+                                        <div className="aw-brand-meta">
+                                            <span className="aw-status-dot" />
+                                            <span>Online project advisor</span>
+                                        </div>
                                     </div>
+                                </div>
 
-                                    <p
-                                        style={{
-                                            margin: "10px 0 0",
-                                            fontFamily: MANROPE,
-                                            fontSize: "14px",
-                                            lineHeight: 1.7,
-                                            color: "rgba(255,255,255,.79)",
-                                        }}
+                                <div className="aw-actions">
+                                    <button
+                                        type="button"
+                                        className="aw-icon-button"
+                                        onClick={clearChat}
+                                        aria-label="Clear chat"
+                                        title="Clear chat"
                                     >
-                                        Ask about websites, redesigns, pricing, portals, timelines, or how we work.
-                                    </p>
+                                        <RotateCcw size={15} strokeWidth={1.8} />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="aw-icon-button"
+                                        onClick={close}
+                                        aria-label="Close chat"
+                                        title="Close chat"
+                                    >
+                                        <X size={16} strokeWidth={1.8} />
+                                    </button>
+                                </div>
+                            </header>
 
-                                    <div
-                                        style={{
-                                            marginTop: 13,
-                                            display: "inline-flex",
-                                            alignItems: "center",
-                                            gap: 8,
-                                            padding: "8px 10px",
-                                            borderRadius: 999,
-                                            background: "rgba(255,255,255,.025)",
-                                            border: "1px solid rgba(255,255,255,.06)",
-                                        }}
-                                    >
-                                        <span
-                                            style={{
-                                                width: 7,
-                                                height: 7,
-                                                borderRadius: "50%",
-                                                background: "#3ddc84",
-                                                boxShadow: "0 0 10px rgba(61,220,132,.55)",
-                                            }}
-                                        />
-                                        <span
-                                            style={{
-                                                fontSize: "10px",
-                                                color: "rgba(255,255,255,.42)",
-                                                letterSpacing: ".08em",
-                                                textTransform: "uppercase",
-                                            }}
+                            <div className="aw-scroll">
+                                {messages.length === 0 && (
+                                    <>
+                                        <motion.section
+                                            className="aw-empty-hero"
+                                            initial={reduced ? false : { opacity: 0, y: 12 }}
+                                            animate={reduced ? undefined : { opacity: 1, y: 0 }}
+                                            transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
                                         >
-                                            Replies instantly · Best for project enquiries
+                                            <div className="aw-kicker">
+                                                <Bot size={14} strokeWidth={1.8} />
+                                                Website and system strategy
+                                            </div>
+                                            <h3 className="aw-empty-title">
+                                                Shape the <em>right</em> build.
+                                            </h3>
+                                            <p className="aw-empty-copy">
+                                                Bring the business, the current site, and the result you want. I will help turn it into a clear next step.
+                                            </p>
+                                        </motion.section>
+
+                                        <div className="aw-proof-strip">
+                                            {[
+                                                { label: "Free audit", icon: ShieldCheck },
+                                                { label: "Custom scope", icon: Sparkles },
+                                                { label: "Launch focus", icon: CheckCircle2 },
+                                            ].map(({ label, icon: Icon }) => (
+                                                <div className="aw-proof" key={label}>
+                                                    <Icon size={14} strokeWidth={1.8} />
+                                                    <span>{label}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        <p className="aw-section-label">Start with</p>
+
+                                        <div className="aw-quick-grid">
+                                            {QUICK_ACTIONS.map(({ label, detail, value, icon: Icon }) => (
+                                                <button
+                                                    key={label}
+                                                    type="button"
+                                                    className="aw-quick"
+                                                    onClick={() => sendPrompt(value)}
+                                                >
+                                                    <span className="aw-quick-icon">
+                                                        <Icon size={16} strokeWidth={1.8} />
+                                                    </span>
+                                                    <span>
+                                                        <span className="aw-quick-title">{label}</span>
+                                                        {detail && <span className="aw-quick-detail">{detail}</span>}
+                                                    </span>
+                                                    <span className="aw-quick-arrow">
+                                                        <ArrowUpRight size={15} strokeWidth={1.8} />
+                                                    </span>
+                                                </button>
+                                            ))}
+                                        </div>
+
+                                        <p className="aw-section-label">Common questions</p>
+
+                                        <div className="aw-starters">
+                                            {STARTER_PROMPTS.map(({ label, value, icon: Icon }) => (
+                                                <button
+                                                    key={label}
+                                                    type="button"
+                                                    className="aw-starter"
+                                                    onClick={() => sendPrompt(value)}
+                                                >
+                                                    <Icon size={13} strokeWidth={1.8} />
+                                                    {label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
+
+                                {messages.map((msg, i) => {
+                                    const isUser = msg.role === "user";
+                                    return (
+                                        <motion.div
+                                            key={msg.id}
+                                            className={`aw-message ${isUser ? "user" : "assistant"}`}
+                                            initial={reduced ? false : { opacity: 0, y: 8 }}
+                                            animate={reduced ? undefined : { opacity: 1, y: 0 }}
+                                            transition={{ duration: 0.22, delay: Math.min(i * 0.015, 0.08) }}
+                                        >
+                                            <span className="aw-message-meta">
+                                                {!isUser && <Bot size={12} strokeWidth={1.9} />}
+                                                {isUser ? "You" : "Ardeno AI"}
+                                            </span>
+                                            <div className="aw-bubble">{formatMessage(msg.content)}</div>
+                                        </motion.div>
+                                    );
+                                })}
+
+                                {loading && (
+                                    <motion.div
+                                        className="aw-message assistant"
+                                        initial={reduced ? false : { opacity: 0, y: 8 }}
+                                        animate={reduced ? undefined : { opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.22 }}
+                                    >
+                                        <span className="aw-message-meta">
+                                            <Bot size={12} strokeWidth={1.9} />
+                                            Ardeno AI
                                         </span>
-                                    </div>
-                                </div>
+                                        <div className="aw-loading">
+                                            <Loader2 size={15} className="animate-spin" strokeWidth={1.8} />
+                                            Thinking
+                                        </div>
+                                    </motion.div>
+                                )}
 
-                                <div className="aw-msg" style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                                    {QUICK_ACTIONS.map((action) => (
-                                        <button
-                                            key={action.label}
-                                            onClick={() => sendPrompt(action.value)}
-                                            className="aw-chip"
-                                            style={{
-                                                padding: "9px 13px",
-                                                borderRadius: "999px",
-                                                background: "rgba(255,255,255,.03)",
-                                                border: "1px solid rgba(255,255,255,.08)",
-                                                color: "rgba(255,255,255,.64)",
-                                                fontSize: "12px",
-                                                fontWeight: 600,
-                                                cursor: "pointer",
-                                            }}
-                                        >
-                                            {action.label}
-                                        </button>
-                                    ))}
-                                </div>
-
-                                <div className="aw-msg">
-                                    <div
-                                        style={{
-                                            fontSize: "10px",
-                                            color: "rgba(255,255,255,.28)",
-                                            letterSpacing: ".14em",
-                                            textTransform: "uppercase",
-                                            marginBottom: 10,
-                                        }}
-                                    >
-                                        Suggested questions
-                                    </div>
-
-                                    <div style={{ display: "grid", gap: 8 }}>
-                                        {STARTER_PROMPTS.map((item) => (
-                                            <button
-                                                key={item.label}
-                                                onClick={() => sendPrompt(item.value)}
-                                                className="aw-starter"
-                                                style={{
-                                                    textAlign: "left",
-                                                    padding: "13px 14px",
-                                                    borderRadius: "16px",
-                                                    background: "rgba(255,255,255,.025)",
-                                                    border: "1px solid rgba(255,255,255,.07)",
-                                                    color: "rgba(255,255,255,.8)",
-                                                    cursor: "pointer",
-                                                    fontSize: "13px",
-                                                    lineHeight: 1.45,
-                                                }}
-                                            >
-                                                {item.label}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                            </>
-                        )}
-
-                        {messages.map((msg, i) => {
-                            const isUser = msg.role === "user";
-
-                            return (
-                                <div
-                                    key={msg.id}
-                                    className="aw-msg"
-                                    style={{
-                                        alignSelf: isUser ? "flex-end" : "flex-start",
-                                        maxWidth: "87%",
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        gap: 6,
-                                        animationDelay: `${Math.min(i * 10, 50)}ms`,
-                                    }}
-                                >
-                                    <span
-                                        style={{
-                                            fontFamily: SYNE,
-                                            fontSize: "9px",
-                                            fontWeight: 700,
-                                            letterSpacing: ".16em",
-                                            textTransform: "uppercase",
-                                            color: isUser ? "rgba(229,9,20,.72)" : "rgba(255,255,255,.28)",
-                                            alignSelf: isUser ? "flex-end" : "flex-start",
-                                            paddingInline: 2,
-                                        }}
-                                    >
-                                        {isUser ? "You" : "Assistant"}
-                                    </span>
-
-                                    <div
-                                        style={{
-                                            padding: "13px 15px",
-                                            borderRadius: isUser ? "18px 18px 7px 18px" : "7px 18px 18px 18px",
-                                            background: isUser
-                                                ? "linear-gradient(180deg, rgba(229,9,20,.19), rgba(229,9,20,.11))"
-                                                : "linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.028))",
-                                            border: isUser
-                                                ? "1px solid rgba(229,9,20,.25)"
-                                                : "1px solid rgba(255,255,255,.07)",
-                                            color: "rgba(255,255,255,.92)",
-                                            fontSize: "13.5px",
-                                            lineHeight: 1.68,
-                                            whiteSpace: "pre-wrap",
-                                            wordBreak: "break-word",
-                                            boxShadow: isUser ? "0 8px 24px rgba(229,9,20,.11)" : "none",
-                                        }}
-                                    >
-                                        {formatMessage(msg.content)}
-                                    </div>
-                                </div>
-                            );
-                        })}
-
-                        {loading && (
-                            <div
-                                className="aw-msg"
-                                style={{
-                                    alignSelf: "flex-start",
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: 6,
-                                }}
-                            >
-                                <span
-                                    style={{
-                                        fontFamily: SYNE,
-                                        fontSize: "9px",
-                                        fontWeight: 700,
-                                        letterSpacing: ".16em",
-                                        textTransform: "uppercase",
-                                        color: "rgba(255,255,255,.28)",
-                                        paddingLeft: 2,
-                                    }}
-                                >
-                                    Assistant
-                                </span>
-
-                                <div
-                                    style={{
-                                        padding: "12px 14px",
-                                        borderRadius: "7px 18px 18px 18px",
-                                        background: "linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.03))",
-                                        border: "1px solid rgba(255,255,255,.07)",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: 6,
-                                    }}
-                                >
-                                    {[0, 1, 2].map((n) => (
-                                        <span
-                                            key={n}
-                                            style={{
-                                                width: 6,
-                                                height: 6,
-                                                borderRadius: "50%",
-                                                background: RED,
-                                                animation: `awDot 1.3s ${n * 0.18}s infinite`,
-                                            }}
-                                        />
-                                    ))}
-                                </div>
+                                <div ref={bottomRef} style={{ height: 2 }} />
                             </div>
-                        )}
 
-                        <div ref={bottomRef} style={{ height: 2 }} />
-                    </div>
+                            <footer className="aw-compose">
+                                <div className={`aw-input-wrap${focused ? " focused" : ""}`}>
+                                    <textarea
+                                        ref={textareaRef}
+                                        value={input}
+                                        onChange={(e) => setInput(e.target.value)}
+                                        onKeyDown={onInputKeyDown}
+                                        onFocus={() => setFocused(true)}
+                                        onBlur={() => setFocused(false)}
+                                        placeholder="Tell us what you want to build..."
+                                        disabled={loading}
+                                        rows={1}
+                                        className="aw-input"
+                                    />
 
-                    <div
-                        style={{
-                            position: "relative",
-                            padding: "12px 14px 14px",
-                            borderTop: "1px solid rgba(255,255,255,.07)",
-                            background: "rgba(0,0,0,.18)",
-                            flexShrink: 0,
-                            zIndex: 1,
-                        }}
-                    >
-                        <div
-                            className={`aw-input-wrap${focused ? " focused" : ""}`}
-                            style={{
-                                display: "flex",
-                                gap: 8,
-                                alignItems: "flex-end",
-                                padding: "8px",
-                                borderRadius: "18px",
-                                background: "rgba(255,255,255,.03)",
-                                border: "1px solid rgba(255,255,255,.08)",
-                                boxShadow: "inset 0 1px 0 rgba(255,255,255,.02)",
-                            }}
-                        >
-                            <textarea
-                                ref={textareaRef}
-                                value={input}
-                                onChange={(e) => setInput(e.target.value)}
-                                onKeyDown={onInputKeyDown}
-                                onFocus={() => setFocused(true)}
-                                onBlur={() => setFocused(false)}
-                                placeholder="Ask about services, pricing, process..."
-                                disabled={loading}
-                                rows={1}
-                                style={{
-                                    flex: 1,
-                                    minWidth: 0,
-                                    maxHeight: 120,
-                                    resize: "none",
-                                    overflowY: "auto",
-                                    background: "transparent",
-                                    border: "none",
-                                    outline: "none",
-                                    color: "#fff",
-                                    fontFamily: MANROPE,
-                                    fontSize: "13.5px",
-                                    lineHeight: 1.5,
-                                    padding: "8px 6px 8px 8px",
-                                }}
-                            />
+                                    <button
+                                        type="button"
+                                        onClick={handleSend}
+                                        disabled={isInputEmpty || loading}
+                                        aria-label="Send message"
+                                        title="Send message"
+                                        className="aw-send"
+                                    >
+                                        {loading ? (
+                                            <Loader2 size={18} className="animate-spin" strokeWidth={1.9} />
+                                        ) : (
+                                            <Send size={18} strokeWidth={1.9} />
+                                        )}
+                                    </button>
+                                </div>
 
-                            <button
-                                onClick={handleSend}
-                                disabled={isInputEmpty || loading}
-                                aria-label="Send message"
-                                className="aw-send"
-                                style={{
-                                    width: 42,
-                                    height: 42,
-                                    flexShrink: 0,
-                                    borderRadius: "14px",
-                                    border: "none",
-                                    background: isInputEmpty || loading ? "rgba(255,255,255,.05)" : RED,
-                                    color: isInputEmpty || loading ? "rgba(255,255,255,.22)" : "#fff",
-                                    cursor: isInputEmpty || loading ? "not-allowed" : "pointer",
-                                    display: "grid",
-                                    placeItems: "center",
-                                    boxShadow: isInputEmpty || loading ? "none" : "0 8px 24px rgba(229,9,20,.28)",
-                                }}
-                            >
-                                {loading ? <Spinner /> : <SendIcon />}
-                            </button>
+                                <div className="aw-compose-meta">
+                                    <span>Server-side Ardeno context</span>
+                                    <strong>Ardeno Studio</strong>
+                                </div>
+                            </footer>
                         </div>
-
-                        <div
-                            style={{
-                                marginTop: 8,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                                gap: 8,
-                                paddingInline: 4,
-                            }}
-                        >
-                            <span
-                                style={{
-                                    fontSize: "10px",
-                                    color: "rgba(255,255,255,.25)",
-                                    letterSpacing: ".04em",
-                                }}
-                            >
-                                Enter to send · Shift + Enter for new line
-                            </span>
-
-                            <span
-                                style={{
-                                    fontFamily: SYNE,
-                                    fontSize: "10px",
-                                    fontWeight: 700,
-                                    color: "rgba(229,9,20,.55)",
-                                    letterSpacing: ".08em",
-                                    textTransform: "uppercase",
-                                }}
-                            >
-                                Ardeno Studio
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            )}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
