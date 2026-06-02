@@ -225,7 +225,7 @@ export const BrandIdentity: React.FC = () => {
                 </span>
               </div>
 
-              <h2
+              <h1
                 className="max-w-xl text-white"
                 style={{
                   fontFamily: FONT_H,
@@ -235,7 +235,7 @@ export const BrandIdentity: React.FC = () => {
                 }}
               >
                 A mark built to stay in memory.
-              </h2>
+              </h1>
 
               <p className="mt-5 max-w-md text-[14px] leading-[1.8] text-zinc-500" style={{ fontFamily: FONT_B }}>
                 We can use the glossy Ardeno renders as a premium identity moment across the homepage, loader, and future product portals.

@@ -48,6 +48,14 @@ const CookieBanner: React.FC = () => {
         };
     }, []);
 
+    useEffect(() => {
+        document.body.classList.toggle("cookie-banner-visible", visible);
+
+        return () => {
+            document.body.classList.remove("cookie-banner-visible");
+        };
+    }, [visible]);
+
     const accept = () => {
         setCookie("ardeno_cookie_consent", "accepted", 180);
         enableAnalyticsTracking();
@@ -68,10 +76,10 @@ const CookieBanner: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 14 }}
                     transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
-                    className="ardeno-cookie-banner fixed inset-x-0 bottom-4 z-[9999] flex justify-center px-3 sm:bottom-6 sm:px-4"
+                    className="ardeno-cookie-banner fixed inset-x-0 bottom-3 z-[9999] flex justify-center px-3 sm:bottom-6 sm:px-4"
                 >
                     <div
-                        className="relative w-full max-w-[760px] rounded-[22px] border px-5 py-5 sm:rounded-[26px] md:px-7 md:py-6"
+                        className="relative w-full max-w-[760px] rounded-[18px] border px-4 py-4 sm:rounded-[26px] sm:px-5 sm:py-5 md:px-7 md:py-6"
                         style={{
                             background: "rgba(20,20,22,0.88)",
                             borderColor: "rgba(255,255,255,0.08)",
@@ -97,7 +105,7 @@ const CookieBanner: React.FC = () => {
                             }}
                         />
 
-                        <div className="relative flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                        <div className="relative flex flex-col gap-3 sm:gap-4 md:flex-row md:items-end md:justify-between">
                             <div className="max-w-md">
                                 <div className="mb-2 flex items-center gap-2">
                                     <div
@@ -113,14 +121,14 @@ const CookieBanner: React.FC = () => {
                                 </div>
 
                                 <h3
-                                    className="text-[1.9rem] leading-none tracking-[-0.03em] text-white"
+                                    className="text-[1.48rem] leading-none tracking-[-0.02em] text-white sm:text-[1.9rem]"
                                     style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
                                 >
                                     A smoother <span style={{ color: "#8c8c96" }}>experience</span>
                                 </h3>
 
                                 <p
-                                    className="mt-2 text-[13px] leading-6 text-zinc-400"
+                                    className="mt-2 text-[12px] leading-5 text-zinc-400 sm:text-[13px] sm:leading-6"
                                     style={{
                                         fontFamily: "'DM Sans', sans-serif",
                                         letterSpacing: "0.02em",
@@ -132,10 +140,10 @@ const CookieBanner: React.FC = () => {
                                 </p>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-2.5 pt-1 sm:gap-3">
+                            <div className="grid grid-cols-2 items-center gap-2.5 pt-1 sm:flex sm:flex-wrap sm:gap-3">
                                 <button
                                     onClick={accept}
-                                    className="min-w-[112px] rounded-full px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white transition-all duration-200 sm:px-6 sm:tracking-[0.2em]"
+                                    className="min-h-[44px] min-w-0 rounded-full px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-white transition-all duration-200 sm:min-w-[112px] sm:px-6 sm:tracking-[0.2em]"
                                     style={{
                                         fontFamily: "'DM Sans', sans-serif",
                                         background: "#E50914",
@@ -156,7 +164,7 @@ const CookieBanner: React.FC = () => {
 
                                 <button
                                     onClick={reject}
-                                    className="min-w-[112px] rounded-full px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white transition-all duration-200 sm:px-6 sm:tracking-[0.2em]"
+                                    className="min-h-[44px] min-w-0 rounded-full px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-white transition-all duration-200 sm:min-w-[112px] sm:px-6 sm:tracking-[0.2em]"
                                     style={{
                                         fontFamily: "'DM Sans', sans-serif",
                                         background: "rgba(255,255,255,0.04)",

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
     ArrowUpRight,
@@ -44,20 +44,36 @@ const briefNotes = [
     { label: "Build style", value: "Custom", icon: Sparkles },
 ];
 
+const focusableSelector =
+    'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+const getFocusableElements = (container: HTMLElement | null) =>
+    container
+        ? Array.from(container.querySelectorAll<HTMLElement>(focusableSelector)).filter(
+              (element) => !element.hasAttribute("disabled") && element.offsetParent !== null
+          )
+        : [];
+
 export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
     const [formState, setFormState] = useState<FormState>("idle");
     const [fields, setFields] = useState({ name: "", email: "", company: "", budget: "", message: "" });
     const [errors, setErrors] = useState<Partial<typeof fields>>({});
     const [turnstileToken, setTurnstileToken] = useState("");
+    const modalRef = useRef<HTMLDivElement>(null);
+    const previousFocusRef = useRef<HTMLElement | null>(null);
 
     useEffect(() => {
         let resetTimer: ReturnType<typeof setTimeout> | undefined;
+        let focusTimer: ReturnType<typeof setTimeout> | undefined;
         if (isOpen) {
+            previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
             document.body.style.overflow = "hidden";
             document.body.classList.add("contact-modal-open");
+            focusTimer = setTimeout(() => modalRef.current?.focus(), 0);
         } else {
             document.body.style.overflow = "";
             document.body.classList.remove("contact-modal-open");
+            previousFocusRef.current?.focus?.();
             resetTimer = setTimeout(() => {
                 setFormState("idle");
                 setFields({ name: "", email: "", company: "", budget: "", message: "" });
@@ -69,16 +85,41 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
             document.body.style.overflow = "";
             document.body.classList.remove("contact-modal-open");
             if (resetTimer) clearTimeout(resetTimer);
+            if (focusTimer) clearTimeout(focusTimer);
         };
     }, [isOpen]);
 
     useEffect(() => {
         const onKey = (e: KeyboardEvent) => {
-            if (e.key === "Escape") onClose();
+            if (isOpen && e.key === "Escape") onClose();
         };
         window.addEventListener("keydown", onKey);
         return () => window.removeEventListener("keydown", onKey);
-    }, [onClose]);
+    }, [isOpen, onClose]);
+
+    const trapFocus = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.key !== "Tab") return;
+
+        const focusable = getFocusableElements(modalRef.current);
+        if (!focusable.length) {
+            event.preventDefault();
+            return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+            return;
+        }
+
+        if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    };
 
     const validate = () => {
         const errs: Partial<typeof fields> = {};
@@ -299,13 +340,26 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
 
                         <motion.div className="pointer-events-none fixed inset-0 z-[90] flex items-center justify-center p-3 sm:p-5 md:p-8">
                             <motion.div
+                                ref={modalRef}
+                                role="dialog"
+                                aria-modal="true"
+                                aria-labelledby="contact-modal-title"
+                                aria-describedby="contact-modal-description"
+                                tabIndex={-1}
                                 initial={{ opacity: 0, y: 34, scale: 0.975 }}
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, y: 16, scale: 0.985 }}
                                 transition={{ duration: 0.45, ease }}
                                 className="ardeno-contact-modal pointer-events-auto relative h-[calc(100dvh-24px)] w-full max-w-5xl overflow-hidden rounded-[28px] sm:h-[min(92dvh,760px)]"
                                 onClick={(e) => e.stopPropagation()}
+                                onKeyDown={trapFocus}
                             >
+                                <h2 id="contact-modal-title" className="sr-only">
+                                    Start a project with Ardeno Studio
+                                </h2>
+                                <p id="contact-modal-description" className="sr-only">
+                                    Share your project goal, timeline, and contact details so Ardeno Studio can reply with the next step.
+                                </p>
                                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#E50914] to-transparent" />
                                 <button
                                     type="button"

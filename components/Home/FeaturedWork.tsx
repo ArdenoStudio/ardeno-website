@@ -27,8 +27,45 @@ function useMagnetic(strength = 0.3) {
   return { ref, sx, sy, handleMouse, reset };
 }
 
+const focusableSelector =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+const getFocusableElements = (container: HTMLElement | null) =>
+  container
+    ? Array.from(container.querySelectorAll<HTMLElement>(focusableSelector)).filter(
+        (element) => !element.hasAttribute("disabled") && element.offsetParent !== null
+      )
+    : [];
+
+const trapDialogFocus = (event: React.KeyboardEvent<HTMLElement>, container: HTMLElement | null) => {
+  if (event.key !== "Tab") return;
+
+  const focusable = getFocusableElements(container);
+  if (!focusable.length) {
+    event.preventDefault();
+    return;
+  }
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+    return;
+  }
+
+  if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+};
+
 // ─── Modal ────────────────────────────────────────────────────────────────────
 const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => void }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const titleId = `project-modal-title-${project.id}`;
+  const descriptionId = `project-modal-description-${project.id}`;
   const proofItems = [
     { label: "Problem", value: project.problem },
     { label: "Solution", value: project.solution },
@@ -37,13 +74,17 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
 
   useEffect(() => {
     const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const focusTimer = window.setTimeout(() => modalRef.current?.focus(), 0);
     window.addEventListener("keydown", h);
     document.body.classList.add("project-modal-open");
     document.body.style.overflow = "hidden";
     return () => {
       window.removeEventListener("keydown", h);
+      window.clearTimeout(focusTimer);
       document.body.classList.remove("project-modal-open");
       document.body.style.overflow = "";
+      previousFocus?.focus?.();
     };
   }, [onClose]);
 
@@ -60,6 +101,12 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
         onClick={onClose}
       />
       <motion.div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
+        tabIndex={-1}
         initial={{ opacity: 0, y: 80, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 50, scale: 0.97 }}
@@ -77,6 +124,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
           marginBottom: "auto",
         }}
         onClick={(e) => e.stopPropagation()}
+        onKeyDown={(event) => trapDialogFocus(event, modalRef.current)}
       >
         {/* Left/Top: Image Section */}
         <div className="relative w-full md:w-[55%] shrink-0 overflow-hidden aspect-[16/10] md:aspect-auto md:h-full">
@@ -121,6 +169,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
               {project.category}
             </p>
             <motion.h2
+              id={titleId}
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, ease: EXPO, delay: 0.12 }}
               className="text-white leading-[1.1]"
@@ -164,7 +213,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
             >
               <div>
                 <h4 className="text-[10px] tracking-[0.2em] text-zinc-500 uppercase mb-3 font-semibold" style={{ fontFamily: FONT_BODY }}>Description</h4>
-                <p className="text-zinc-400 leading-[1.8] text-sm md:text-[15px]" style={{ fontFamily: FONT_BODY }}>
+                <p id={descriptionId} className="text-zinc-400 leading-[1.8] text-sm md:text-[15px]" style={{ fontFamily: FONT_BODY }}>
                   {project.description}
                 </p>
               </div>
@@ -230,6 +279,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
               </svg>
             </motion.a>
             <button
+              type="button"
               onClick={onClose}
               className="text-[11px] text-zinc-600 tracking-[0.2em] uppercase hover:text-zinc-400 transition-colors py-2 md:hidden"
               style={{ fontFamily: FONT_BODY }}
@@ -245,22 +295,33 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
 
 // ─── All Projects Modal (Grid) ─────────────────────────────────────────────
 const AllProjectsModal = ({ onClose, onSelectProject, projects }: { onClose: () => void; onSelectProject: (id: string) => void; projects: Project[] }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const focusTimer = window.setTimeout(() => modalRef.current?.focus(), 0);
     window.addEventListener("keydown", h);
     document.body.classList.add("project-modal-open");
     document.body.style.overflow = "hidden";
     return () => {
       window.removeEventListener("keydown", h);
+      window.clearTimeout(focusTimer);
       document.body.classList.remove("project-modal-open");
       document.body.style.overflow = "";
+      previousFocus?.focus?.();
     };
   }, [onClose]);
 
   return (
     <motion.div
+      ref={modalRef}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="project-archive-title"
+      tabIndex={-1}
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="fixed inset-0 z-[11000] flex flex-col bg-[#080809]"
+      onKeyDown={(event) => trapDialogFocus(event, modalRef.current)}
     >
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -270,7 +331,7 @@ const AllProjectsModal = ({ onClose, onSelectProject, projects }: { onClose: () 
 
       {/* Header */}
       <div className="container mx-auto px-6 md:px-12 py-8 flex items-center justify-between relative z-10">
-        <h2 className="text-white text-3xl md:text-5xl font-serif">
+        <h2 id="project-archive-title" className="text-white text-3xl md:text-5xl font-serif">
           Our <em className="text-zinc-500 not-italic">Archive</em>
         </h2>
         <motion.button
@@ -292,13 +353,14 @@ const AllProjectsModal = ({ onClose, onSelectProject, projects }: { onClose: () 
         <div className="container mx-auto px-6 md:px-12 py-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((p, i) => (
-              <motion.div
+              <motion.button
                 key={p.id}
+                type="button"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.05, ease: EXPO }}
                 onClick={() => { onSelectProject(p.id); onClose(); }}
-                className="group relative cursor-pointer aspect-[4/5] rounded-3xl overflow-hidden border border-white/5"
+                className="group relative block w-full cursor-pointer aspect-[4/5] rounded-3xl overflow-hidden border border-white/5 text-left"
               >
                 <img src={p.image} alt={p.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
@@ -309,7 +371,7 @@ const AllProjectsModal = ({ onClose, onSelectProject, projects }: { onClose: () 
                   )}
                   <h3 className="text-2xl text-white font-serif">{p.title}</h3>
                 </div>
-              </motion.div>
+              </motion.button>
             ))}
           </div>
         </div>

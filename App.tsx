@@ -85,6 +85,7 @@ const App: React.FC = () => {
   const [contactOpen, setContactOpen] = useState(false);
   const [route, setRoute] = useState<Route>(getRoute);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const showSpeedInsights = import.meta.env.PROD && !['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
 
   useEffect(() => {
     trackUtmParams();
@@ -182,7 +183,6 @@ const App: React.FC = () => {
     >
       {!options?.hideNav && <Navbar onOpenModal={() => setContactOpen(true)} />}
       {children}
-      <CookieBanner />
     </motion.div>
   );
 
@@ -274,7 +274,7 @@ const App: React.FC = () => {
           <ArdenoAIWidget />
         </Suspense>
       )}
-      <SpeedInsights />
+      {showSpeedInsights && <SpeedInsights />}
     </div>
   );
 };

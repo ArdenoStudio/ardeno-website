@@ -109,6 +109,9 @@ const STYLES = `
   body.contact-modal-open .aw-fab-wrapper,
   body.contact-modal-open .aw-panel-wrapper,
   body.contact-modal-open .aw-backdrop,
+  body.cookie-banner-visible .aw-fab-wrapper,
+  body.cookie-banner-visible .aw-panel-wrapper,
+  body.cookie-banner-visible .aw-backdrop,
   body.nav-open .aw-fab-wrapper,
   body.nav-open .aw-panel-wrapper,
   body.nav-open .aw-backdrop {

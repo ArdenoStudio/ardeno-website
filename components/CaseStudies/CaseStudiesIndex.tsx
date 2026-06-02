@@ -39,8 +39,9 @@ export const CaseStudiesIndex: React.FC = () => {
   };
 
   return (
-    <motion.section
+    <motion.main
       key="case-studies-index"
+      aria-labelledby="case-studies-title"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
@@ -82,6 +83,7 @@ export const CaseStudiesIndex: React.FC = () => {
           </div>
 
           <h1
+            id="case-studies-title"
             className="text-white leading-[0.95] tracking-[-0.02em]"
             style={{
               fontFamily: FONT_H,
@@ -205,6 +207,6 @@ export const CaseStudiesIndex: React.FC = () => {
           ))}
         </div>
       </div>
-    </motion.section>
+    </motion.main>
   );
 };
