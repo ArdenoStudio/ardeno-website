@@ -34,6 +34,96 @@
       "priority": "1.0",
       "changefreq": "weekly"
     },
+    "service-booking-systems": {
+      "path": "/services/booking-systems",
+      "title": "Custom Booking Systems | Ardeno Studio",
+      "description": "Ardeno Studio builds custom booking systems for appointment-led businesses, including booking forms, service selection, notifications, admin records, reminders, and payment-ready flows.",
+      "keywords": [
+        "custom booking system",
+        "booking system development Sri Lanka",
+        "appointment booking website",
+        "automate customer appointments",
+        "professional booking system",
+        "reservation system development",
+        "Ardeno booking systems"
+      ],
+      "type": "service",
+      "lastmod": "2026-06-05",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    "service-business-websites": {
+      "path": "/services/business-websites",
+      "title": "Professional Business Websites | Ardeno Studio",
+      "description": "Ardeno Studio builds professional business websites with custom design, responsive development, service pages, conversion paths, metadata, structured data, and launch checks.",
+      "keywords": [
+        "professional business website",
+        "business website Sri Lanka",
+        "company website development",
+        "custom business website",
+        "increase sales through website",
+        "website design Colombo",
+        "Ardeno business websites"
+      ],
+      "type": "service",
+      "lastmod": "2026-06-05",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    "service-website-redesign": {
+      "path": "/services/website-redesign",
+      "title": "Website Redesign Services | Ardeno Studio",
+      "description": "Ardeno Studio redesigns outdated, unclear, slow, or low-converting websites with stronger page structure, visual direction, mobile experience, metadata, and launch checks.",
+      "keywords": [
+        "website redesign Sri Lanka",
+        "redesign existing website",
+        "website conversion audit",
+        "modern business website redesign",
+        "improve company website",
+        "local business website redesign",
+        "Ardeno redesign"
+      ],
+      "type": "service",
+      "lastmod": "2026-06-05",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    "service-ai-lead-assistants": {
+      "path": "/services/ai-lead-assistants",
+      "title": "AI Lead Assistants for Websites | Ardeno Studio",
+      "description": "Ardeno Studio builds secure AI lead assistants that answer website questions, qualify enquiries, guide visitors, and hand off to forms, email, WhatsApp, or booking flows.",
+      "keywords": [
+        "AI lead assistant",
+        "website AI assistant",
+        "AI chatbot for business website",
+        "AI lead qualification",
+        "secure AI website assistant",
+        "after hours lead capture",
+        "Ardeno AI assistant"
+      ],
+      "type": "service",
+      "lastmod": "2026-06-05",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    "guide-custom-development-vs-builders": {
+      "path": "/guides/custom-development-vs-website-builders",
+      "title": "Custom Development vs Website Builders | Ardeno Studio Guide",
+      "description": "A practical guide from Ardeno Studio explaining when to use website builders and when custom development is better for brand, booking flows, integrations, ownership, and growth.",
+      "keywords": [
+        "custom development vs website builders",
+        "website builder vs custom website",
+        "custom web development guide",
+        "when to choose custom development",
+        "website builder limitations",
+        "business website decision guide",
+        "Ardeno website guide"
+      ],
+      "type": "article",
+      "lastmod": "2026-06-05",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
     "docs": {
       "path": "/docs",
       "title": "Ardeno Studio Docs | Process, Pricing, Privacy",
@@ -180,18 +270,22 @@
   "services": [
     {
       "name": "Premium Business Website",
+      "url": "https://www.ardenostudio.online/services/business-websites",
       "description": "Custom-coded business websites for brands that need a credible, fast, responsive, and SEO-ready web presence."
     },
     {
       "name": "Website Redesign Sprint",
+      "url": "https://www.ardenostudio.online/services/website-redesign",
       "description": "Focused rebuilds for sites that feel outdated, unclear, slow, or weaker than the actual business."
     },
     {
       "name": "Booking and Order System",
+      "url": "https://www.ardenostudio.online/services/booking-systems",
       "description": "Browser-based booking, ordering, and portal systems for restaurants, salons, service teams, clinics, events, and appointment-led businesses."
     },
     {
       "name": "AI Lead Assistant",
+      "url": "https://www.ardenostudio.online/services/ai-lead-assistants",
       "description": "Secure AI helpers that answer questions, qualify leads, and guide website visitors after hours."
     }
   ]

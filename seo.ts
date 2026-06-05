@@ -60,6 +60,8 @@ export const buildStructuredData = (route: SeoRouteKey) => {
     });
   }
 
+  const pageType = route === "case-studies" ? "CollectionPage" : route === "faq" ? "FAQPage" : "WebPage";
+  const pageName = seo.title.split("|")[0].trim();
   const graph: Record<string, unknown>[] = [
     {
       "@type": "Organization",
@@ -99,7 +101,7 @@ export const buildStructuredData = (route: SeoRouteKey) => {
       itemListElement: breadcrumbItems,
     },
     {
-      "@type": route === "case-studies" ? "CollectionPage" : route === "faq" ? "FAQPage" : "WebPage",
+      "@type": pageType,
       "@id": pageId,
       url: canonical,
       name: seo.title,
@@ -140,6 +142,7 @@ export const buildStructuredData = (route: SeoRouteKey) => {
             "@type": "Service",
             name: service.name,
             description: service.description,
+            url: service.url,
             provider: { "@id": `${SITE.url}/#organization` },
             areaServed: "Sri Lanka",
           },
@@ -178,17 +181,35 @@ export const buildStructuredData = (route: SeoRouteKey) => {
     });
   }
 
-  if (route === "cs-humble-beginnings") {
+  if (seo.type === "service") {
+    graph.push({
+      "@type": "Service",
+      "@id": `${canonical.replace(/\/$/, "")}#service`,
+      name: pageName,
+      description: seo.description,
+      url: canonical,
+      provider: { "@id": `${SITE.url}/#organization` },
+      areaServed: [
+        { "@type": "Country", name: "Sri Lanka" },
+        { "@type": "Place", name: "Global" },
+      ],
+      serviceType: pageName,
+      mainEntityOfPage: { "@id": pageId },
+    });
+  }
+
+  if (seo.type === "article") {
+    const date = route === "cs-humble-beginnings" ? "2026-05-28" : seo.lastmod;
     graph.push({
       "@type": "Article",
       "@id": `${canonical}#article`,
-      headline: "Humble Beginnings",
+      headline: pageName,
       description: seo.description,
       image: SITE.image,
       author: { "@id": `${SITE.url}/#organization` },
       publisher: { "@id": `${SITE.url}/#organization` },
-      datePublished: "2026-05-28",
-      dateModified: "2026-05-28",
+      datePublished: date,
+      dateModified: seo.lastmod,
       mainEntityOfPage: { "@id": pageId },
     });
   }

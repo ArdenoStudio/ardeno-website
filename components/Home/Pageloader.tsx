@@ -271,6 +271,8 @@ const shouldSkipLoader = () => {
     window.location.pathname.startsWith("/faq") ||
     window.location.pathname.startsWith("/brand") ||
     window.location.pathname.startsWith("/case-studies") ||
+    window.location.pathname.startsWith("/services") ||
+    window.location.pathname.startsWith("/guides") ||
     window.location.hash.includes("docs");
   const shouldSaveData = Boolean(
     (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData

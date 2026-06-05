@@ -13,6 +13,7 @@ import { Minus, ArrowUpRight, X } from "lucide-react";
 type Service = {
   id: string;
   title: string;
+  href: string;
   description: string;
   detail: string;
   deliverables: string[];
@@ -30,6 +31,7 @@ const SERVICES: Service[] = [
   {
     id: "01",
     title: "Premium Business Website",
+    href: "/services/business-websites",
     description:
       "A custom-coded website for brands that need to look credible, modern, and ready for real customers.",
     detail: `For businesses that need more than a basic brochure, we shape the offer, design the interface, and build a fast responsive site that feels premium without becoming hard to maintain.`,
@@ -50,6 +52,7 @@ const SERVICES: Service[] = [
   {
     id: "02",
     title: "Website Redesign Sprint",
+    href: "/services/website-redesign",
     description:
       "A focused rebuild for sites that feel outdated, unclear, slow, or weaker than the actual business.",
     detail: `We audit the current site, identify the biggest trust and conversion gaps, then rebuild the high-impact pages with sharper positioning, cleaner content, stronger mobile flow, and a launch checklist.`,
@@ -69,6 +72,7 @@ const SERVICES: Service[] = [
   {
     id: "03",
     title: "Booking / Order System",
+    href: "/services/booking-systems",
     description:
       "Practical web systems for restaurants, salons, service teams, clinics, events, and appointment-led businesses.",
     detail: `When the website needs to do real work, we add the flow behind it: booking requests, menus, lead forms, order intent, dashboards, email alerts, and admin-friendly data capture where the business needs it.`,
@@ -89,6 +93,7 @@ const SERVICES: Service[] = [
   {
     id: "04",
     title: "AI Lead Assistant",
+    href: "/services/ai-lead-assistants",
     description:
       "A secure AI helper for websites that need to answer questions, qualify leads, or guide visitors after hours.",
     detail: `We keep AI practical: answer common questions, collect project context, hand off to WhatsApp or email, and protect the endpoint with server-side keys, validation, rate limits, and abuse controls.`,
@@ -129,6 +134,14 @@ const Modal: React.FC<{ service: Service; onClose: () => void }> = ({
         document.querySelector("footer");
       el?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 300);
+  };
+
+  const handleReadPage = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    onClose();
+    window.history.pushState({}, "", service.href);
+    window.dispatchEvent(new PopStateEvent("popstate"));
+    window.scrollTo(0, 0);
   };
 
   const paragraphs = service.detail.split("\n\n");
@@ -299,6 +312,14 @@ const Modal: React.FC<{ service: Service; onClose: () => void }> = ({
                 Start a project
                 <ArrowUpRight size={13} />
               </motion.button>
+              <a
+                href={service.href}
+                onClick={handleReadPage}
+                className="text-[12px] text-zinc-400 tracking-[0.15em] uppercase hover:text-white transition-colors duration-200"
+                style={{ fontFamily: FONT_BODY }}
+              >
+                Read page
+              </a>
               <button
                 onClick={onClose}
                 className="text-[12px] text-zinc-600 tracking-[0.15em] uppercase hover:text-zinc-300 transition-colors duration-200"

@@ -81,6 +81,8 @@ for (const route of Object.values(seoConfig.routes)) {
 
 const llms = await fs.readFile(path.resolve("public/llms.txt"), "utf8");
 assert(llms.startsWith("# Ardeno Studio"), "llms.txt missing title");
-assert(llms.includes("https://www.ardenostudio.online/case-studies/humble-beginnings"), "llms.txt missing case-study route");
+for (const route of Object.values(seoConfig.routes)) {
+  assert(llms.includes(`${seoConfig.site.url}${route.path}`), `llms.txt missing ${route.path}`);
+}
 
 console.log("SEO checks passed.");

@@ -53,6 +53,11 @@
     }
   ],
   "rewrites": [
+    { "source": "/services/booking-systems", "destination": "/services/booking-systems/index.html" },
+    { "source": "/services/business-websites", "destination": "/services/business-websites/index.html" },
+    { "source": "/services/website-redesign", "destination": "/services/website-redesign/index.html" },
+    { "source": "/services/ai-lead-assistants", "destination": "/services/ai-lead-assistants/index.html" },
+    { "source": "/guides/custom-development-vs-website-builders", "destination": "/guides/custom-development-vs-website-builders/index.html" },
     { "source": "/docs", "destination": "/docs/index.html" },
     { "source": "/faq", "destination": "/faq/index.html" },
     { "source": "/brand", "destination": "/brand/index.html" },

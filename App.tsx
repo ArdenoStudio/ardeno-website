@@ -8,6 +8,7 @@ import { PageLoader } from './components/Home/Pageloader';
 import CookieBanner from './components/UI/CookieBanner';
 import { trackUtmParams } from './components/UI/trackUtm';
 import { applySeoToDocument, SeoRouteKey } from './seo';
+import type { ServicePageKey } from './components/Services/ServicePage';
 
 // ─── Lazy-loaded below-fold sections ─────────────────────────────────────────
 const FeaturedWork = lazy(() =>
@@ -53,6 +54,9 @@ const CaseStudiesIndex = lazy(() =>
 const HumbleBeginnings = lazy(() =>
   import('./components/CaseStudies/HumbleBeginnings').then(m => ({ default: m.HumbleBeginnings }))
 );
+const ServicePage = lazy(() =>
+  import('./components/Services/ServicePage').then(m => ({ default: m.ServicePage }))
+);
 const preloadChunks = () => {
   import('./components/Home/FeaturedWork');
   import('./components/Home/AuditCTA');
@@ -66,13 +70,37 @@ const preloadChunks = () => {
 };
 
 // ─── Simple path-based router ────────────────────────────────────────────────
-type Route = 'home' | 'docs' | 'faq' | 'brand' | 'case-studies' | 'cs-humble-beginnings';
+type Route =
+  | 'home'
+  | 'docs'
+  | 'faq'
+  | 'brand'
+  | 'case-studies'
+  | 'cs-humble-beginnings'
+  | 'service-booking-systems'
+  | 'service-business-websites'
+  | 'service-website-redesign'
+  | 'service-ai-lead-assistants'
+  | 'guide-custom-development-vs-builders';
+
+const SERVICE_ROUTE_PAGES: Partial<Record<Route, ServicePageKey>> = {
+  'service-booking-systems': 'service-booking-systems',
+  'service-business-websites': 'service-business-websites',
+  'service-website-redesign': 'service-website-redesign',
+  'service-ai-lead-assistants': 'service-ai-lead-assistants',
+  'guide-custom-development-vs-builders': 'guide-custom-development-vs-builders',
+};
 
 const getRoute = (): Route => {
-  const p = window.location.pathname;
+  const p = window.location.pathname.replace(/\/+$/, '') || '/';
   if (p.startsWith('/docs')) return 'docs';
   if (p.startsWith('/faq')) return 'faq';
   if (p.startsWith('/brand')) return 'brand';
+  if (p === '/services/booking-systems') return 'service-booking-systems';
+  if (p === '/services/business-websites') return 'service-business-websites';
+  if (p === '/services/website-redesign') return 'service-website-redesign';
+  if (p === '/services/ai-lead-assistants') return 'service-ai-lead-assistants';
+  if (p === '/guides/custom-development-vs-website-builders') return 'guide-custom-development-vs-builders';
   if (p.startsWith('/case-studies/humble-beginnings')) return 'cs-humble-beginnings';
   if (p === '/case-studies' || p === '/case-studies/') return 'case-studies';
   return 'home';
@@ -86,6 +114,7 @@ const App: React.FC = () => {
   const [route, setRoute] = useState<Route>(getRoute);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const showSpeedInsights = import.meta.env.PROD && !['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
+  const servicePageKey = SERVICE_ROUTE_PAGES[route];
 
   useEffect(() => {
     trackUtmParams();
@@ -225,6 +254,13 @@ const App: React.FC = () => {
         {route === 'cs-humble-beginnings' && pageShell(
           <Suspense key="cs-humble-beginnings" fallback={null}>
             <HumbleBeginnings />
+          </Suspense>,
+          { hideNav: true }
+        )}
+
+        {servicePageKey && pageShell(
+          <Suspense key={route} fallback={null}>
+            <ServicePage pageKey={servicePageKey} onOpenContact={() => setContactOpen(true)} />
           </Suspense>,
           { hideNav: true }
         )}
