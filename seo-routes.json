@@ -30,6 +30,7 @@
         "AI lead assistant"
       ],
       "type": "website",
+      "lastmod": "2026-06-05",
       "priority": "1.0",
       "changefreq": "weekly"
     },
@@ -45,6 +46,7 @@
         "Ardeno privacy policy"
       ],
       "type": "article",
+      "lastmod": "2026-06-05",
       "priority": "0.6",
       "changefreq": "monthly"
     },
@@ -64,6 +66,7 @@
         "Ardeno Studio FAQ"
       ],
       "type": "faq",
+      "lastmod": "2026-06-05",
       "priority": "0.6",
       "changefreq": "monthly"
     },
@@ -78,6 +81,7 @@
         "visual identity system"
       ],
       "type": "website",
+      "lastmod": "2026-06-05",
       "priority": "0.5",
       "changefreq": "monthly"
     },
@@ -92,6 +96,7 @@
         "custom website projects"
       ],
       "type": "collection",
+      "lastmod": "2026-06-05",
       "priority": "0.8",
       "changefreq": "monthly"
     },
@@ -106,6 +111,7 @@
         "Sri Lanka design studio"
       ],
       "type": "article",
+      "lastmod": "2026-06-05",
       "priority": "0.7",
       "changefreq": "monthly"
     },
@@ -120,6 +126,7 @@
         "Colombo web design studio"
       ],
       "type": "profile",
+      "lastmod": "2026-06-05",
       "priority": "0.8",
       "changefreq": "monthly"
     }

@@ -56,7 +56,13 @@ for (const [key, route] of Object.entries(seoConfig.routes)) {
 
 const sitemap = await fs.readFile(path.resolve("public/sitemap.xml"), "utf8");
 for (const route of Object.values(seoConfig.routes)) {
-  assert(sitemap.includes(`${seoConfig.site.url}${route.path}`), `sitemap missing ${route.path}`);
+  const loc = `${seoConfig.site.url}${route.path}`;
+  assert(sitemap.includes(loc), `sitemap missing ${route.path}`);
+  const urlBlock = sitemap.match(new RegExp(`<url>\\s*<loc>${loc.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</loc>[\\s\\S]*?</url>`))?.[0] ?? "";
+  assert(urlBlock, `sitemap block missing for ${route.path}`);
+  assert(urlBlock.includes(`<lastmod>${route.lastmod}</lastmod>`), `sitemap lastmod mismatch for ${route.path}`);
+  assert(urlBlock.includes(`<changefreq>${route.changefreq}</changefreq>`), `sitemap changefreq mismatch for ${route.path}`);
+  assert(urlBlock.includes(`<priority>${route.priority}</priority>`), `sitemap priority mismatch for ${route.path}`);
 }
 
 const robots = await fs.readFile(path.resolve("public/robots.txt"), "utf8");

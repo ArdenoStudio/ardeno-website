@@ -26,6 +26,14 @@ const assert = (condition, message) => {
   if (!condition) failures.push(message);
 };
 
+const getVisibleText = (html) =>
+  html
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
 const home = await getText('/');
 assert(home.response.status === 200, `Home returned ${home.response.status}`);
 
@@ -62,11 +70,25 @@ assert(!llms.text.includes('<!DOCTYPE html>'), 'llms.txt is returning SPA HTML')
 for (const route of Object.values(seoConfig.routes)) {
   const page = await getText(route.path);
   const canonical = `${origin}${route.path}`;
+  const visibleText = getVisibleText(page.text);
   assert(page.response.status === 200, `${route.path} returned ${page.response.status}`);
   assert(page.text.includes(`<title>${route.title}</title>`), `${route.path} title metadata is missing`);
   assert(page.text.includes(`name="description" content="${route.description}"`), `${route.path} description metadata is missing`);
   assert(page.text.includes(`rel="canonical" href="${canonical}"`), `${route.path} canonical metadata is missing`);
   assert(page.text.includes('id="structured-data" type="application/ld+json"'), `${route.path} structured data is missing`);
+  assert(visibleText.length >= 1200, `${route.path} static HTML body is too thin (${visibleText.length} chars)`);
+  if (!route.path.endsWith('.html')) {
+    assert(page.text.includes('data-static-content'), `${route.path} static content block is missing`);
+  }
+}
+
+const faq = await getText('/faq');
+for (const prompt of [
+  'How can I build a custom booking system for my business?',
+  'How do I choose between custom development and website builders?',
+  'How can I increase sales through my company website?',
+]) {
+  assert(faq.text.includes(prompt), `/faq is missing prompt: ${prompt}`);
 }
 
 const blockedOrigin = 'https://example.invalid';
