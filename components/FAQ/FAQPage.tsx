@@ -111,6 +111,18 @@ const FAQS: FAQCategory[] = [
                 a: 'Websites are the core, but we also build booking systems, client portals, admin dashboards, internal tools, AI-assisted lead flows, and custom web applications. If it lives in a browser and needs to work well, it is probably in scope.',
             },
             {
+                q: 'How can I build a custom booking system for my business?',
+                a: 'Start by mapping the booking journey: what the customer selects, what information the business needs, how staff confirm availability, and what happens after the booking request is sent. Ardeno can then build the booking flow, admin records, notifications, and handover around the way your business actually operates.',
+            },
+            {
+                q: 'What features should a professional booking system include?',
+                a: 'A professional booking system should include a clear booking form, service or package selection, date and time handling, customer contact capture, staff notifications, admin-friendly records, confirmation messages, and privacy-aware data handling. More advanced builds can add payments, calendar sync, dashboards, reminders, and customer portals.',
+            },
+            {
+                q: 'Can I automate customer appointments on my website?',
+                a: 'Yes. A website can automate customer appointment requests, confirmations, notifications, reminders, and admin records. For many early businesses, we recommend starting with a controlled request-and-confirmation flow before adding complex real-time scheduling, payments, or calendar integrations.',
+            },
+            {
                 q: 'Do you do ongoing maintenance?',
                 a: 'Yes. We offer monthly maintenance for businesses that want ongoing support, updates, backups, security patches, content changes, and small improvements after launch.',
             },
@@ -121,6 +133,30 @@ const FAQS: FAQCategory[] = [
             {
                 q: 'Can you redesign my existing website?',
                 a: "Yes. Redesigns are one of our most useful project types. We audit what is working, identify what is hurting trust or conversion, and rebuild from a stronger foundation while keeping anything worth preserving.",
+            },
+        ],
+    },
+    {
+        label: 'Growth & Visibility',
+        summary: 'How a better site supports discovery, trust, and enquiries.',
+        metric: 'Sales ready',
+        icon: Search,
+        items: [
+            {
+                q: 'How do I choose between custom development and website builders?',
+                a: 'Website builders are useful for simple brochure sites with limited custom logic. Custom development is the better fit when the business needs stronger brand differentiation, faster interaction, booking or ordering flows, dashboards, custom integrations, ownership of the code, or a site that is not locked into a generic template.',
+            },
+            {
+                q: 'What digital marketing strategies work best for local businesses?',
+                a: 'Local businesses usually need a clear website, accurate Google and social profiles, service pages that match buyer questions, local SEO basics, strong proof or reviews, fast mobile pages, and conversion paths such as calls, forms, WhatsApp, bookings, or lead magnets. Ardeno focuses on making the website credible and conversion-ready first.',
+            },
+            {
+                q: 'How can I increase sales through my company website?',
+                a: 'A company website increases sales when visitors quickly understand the offer, trust the business, see proof, and have an easy next step. Ardeno improves this through clearer service pages, stronger first impressions, faster mobile layouts, better calls to action, lead capture, booking or order flows, and analytics-ready launch checks.',
+            },
+            {
+                q: 'How do I start building a professional business website?',
+                a: 'Start with the business goal, target customer, services, proof, brand assets, required pages, and the action visitors should take. Ardeno turns that into a scoped website plan, then designs, builds, tests, launches, and hands over a custom site or web system.',
             },
         ],
     },

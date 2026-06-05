@@ -21,6 +21,14 @@ const getTag = (html, pattern) => {
   return match?.[1] ?? "";
 };
 
+const getVisibleText = (html) =>
+  html
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
 for (const [key, route] of Object.entries(seoConfig.routes)) {
   const html = await readRouteHtml(route);
   const canonical = `${seoConfig.site.url}${route.path}`;
@@ -32,12 +40,17 @@ for (const [key, route] of Object.entries(seoConfig.routes)) {
     html,
     /<script\s+id="structured-data"\s+type="application\/ld\+json">([\s\S]*?)<\/script>/i
   );
+  const visibleText = getVisibleText(html);
 
   assert(title === route.title, `${key}: title mismatch`);
   assert(description === route.description, `${key}: description mismatch`);
   assert(canonicalTag === canonical, `${key}: canonical mismatch`);
   assert(ogUrl === canonical, `${key}: og:url mismatch`);
   assert(jsonLd, `${key}: missing structured data`);
+  assert(visibleText.length >= 1200, `${key}: static HTML body is too thin (${visibleText.length} chars)`);
+  if (!route.path.endsWith(".html")) {
+    assert(html.includes("data-static-content"), `${key}: missing crawlable static content block`);
+  }
   JSON.parse(jsonLd);
 }
 
