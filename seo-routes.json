@@ -106,24 +106,6 @@
       "priority": "0.7",
       "changefreq": "monthly"
     },
-    "guide-custom-development-vs-builders": {
-      "path": "/guides/custom-development-vs-website-builders",
-      "title": "Custom Development vs Website Builders | Ardeno Studio Guide",
-      "description": "A practical guide from Ardeno Studio explaining when to use website builders and when custom development is better for brand, booking flows, integrations, ownership, and growth.",
-      "keywords": [
-        "custom development vs website builders",
-        "website builder vs custom website",
-        "custom web development guide",
-        "when to choose custom development",
-        "website builder limitations",
-        "business website decision guide",
-        "Ardeno website guide"
-      ],
-      "type": "article",
-      "lastmod": "2026-06-05",
-      "priority": "0.8",
-      "changefreq": "monthly"
-    },
     "docs": {
       "path": "/docs",
       "title": "Ardeno Studio Docs | Process, Pricing, Privacy",

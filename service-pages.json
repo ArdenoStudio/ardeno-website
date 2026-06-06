@@ -121,6 +121,19 @@
             "Use proof, process, reviews, case studies, or examples.",
             "Make contact, enquiry, booking, or WhatsApp actions obvious."
           ]
+        },
+        {
+          "title": "Should I use a website builder or custom development?",
+          "body": [
+            "Use a website builder when the site is mostly a simple brochure, the budget is tight, the business needs to launch quickly, and there is no custom logic beyond normal pages, forms, images, and basic content updates.",
+            "Custom development becomes worth it when the website is part of how the business sells or operates. That includes booking systems, order flows, dashboards, customer portals, AI assistants, custom integrations, unique brand presentation, and performance-sensitive public pages."
+          ],
+          "bullets": [
+            "Choose a builder for a simple brochure or early validation site.",
+            "Choose custom development for stronger brand control, code ownership, and long-term flexibility.",
+            "Do not force booking, ordering, dashboards, portals, or automations into a generic template.",
+            "Start with the smallest custom version that solves the real business problem."
+          ]
         }
       ],
       "process": [
@@ -133,7 +146,7 @@
       "faqs": [
         {
           "question": "Is a custom business website better than a website builder?",
-          "answer": "A builder can be fine for a simple brochure. Custom development is better when the business needs stronger brand differentiation, code ownership, faster interaction, service-specific content, booking or order flows, or integrations."
+          "answer": "A builder can be fine for a simple brochure, a fast experiment, or a very early business. Custom development is better when the business needs stronger brand differentiation, code ownership, faster interaction, service-specific content, booking or order flows, dashboards, portals, AI assistants, integrations, or long-term flexibility."
         },
         {
           "question": "Can the site be optimized for AI and search visibility?",
@@ -142,7 +155,7 @@
       ],
       "related": [
         { "label": "Website redesign", "href": "/services/website-redesign" },
-        { "label": "Custom vs builders", "href": "/guides/custom-development-vs-website-builders" },
+        { "label": "FAQ", "href": "/faq" },
         { "label": "Docs", "href": "/docs" }
       ]
     },
@@ -290,92 +303,6 @@
         { "label": "Booking systems", "href": "/services/booking-systems" },
         { "label": "Business websites", "href": "/services/business-websites" },
         { "label": "FAQ", "href": "/faq" }
-      ]
-    },
-    "guide-custom-development-vs-builders": {
-      "path": "/guides/custom-development-vs-website-builders",
-      "kind": "guide",
-      "icon": "scale",
-      "eyebrow": "Decision Guide",
-      "shortLabel": "Custom vs builders",
-      "title": "Custom development vs website builders: how to choose.",
-      "intro": "Website builders are useful for simple brochure sites, fast experiments, and tight budgets. Custom development is the better fit when the website needs stronger brand differentiation, custom flows, integrations, ownership, performance control, or a system that goes beyond template pages.",
-      "summary": "The right answer depends on the job. A small business can start with a builder when speed matters more than control. A growing business should consider custom development when the website needs to support bookings, ordering, dashboards, AI assistants, service-specific content, or long-term brand trust.",
-      "idealFor": [
-        "Business owners comparing Wix, Squarespace, Shopify-style builders, WordPress templates, and custom-coded websites.",
-        "Teams deciding whether a website should be a brochure, sales asset, booking flow, or business system.",
-        "Local businesses that want to avoid paying for custom work before it is actually needed."
-      ],
-      "outcomes": [
-        "Clear builder vs custom decision criteria",
-        "Use cases where a website builder is enough",
-        "Use cases where custom development is stronger",
-        "Risks around lock-in, templates, speed, and integrations",
-        "Practical recommendation for the first version",
-        "Next-step paths into Ardeno service pages"
-      ],
-      "sections": [
-        {
-          "title": "When should I use a website builder?",
-          "body": [
-            "Use a website builder when the site is mostly a simple brochure, the budget is tight, the business needs to launch quickly, and there is no custom logic beyond normal pages, forms, images, and basic content updates.",
-            "Builders can be a practical start for very early businesses. The tradeoff is that the design, performance, code ownership, and custom behavior are limited by the platform."
-          ],
-          "bullets": [
-            "Simple brochure site with a few pages.",
-            "Very fast launch with minimal custom behavior.",
-            "Low budget and low technical complexity.",
-            "The business is still validating the offer."
-          ]
-        },
-        {
-          "title": "When is custom development worth it?",
-          "body": [
-            "Custom development is worth it when the site is part of how the business sells or operates. That includes booking systems, order flows, dashboards, customer portals, AI assistants, custom integrations, unique brand presentation, and performance-sensitive public pages.",
-            "It is also the better fit when the business wants ownership of the code and a web presence that does not look or behave like a generic template."
-          ],
-          "bullets": [
-            "You need booking, ordering, dashboards, portals, or automations.",
-            "You want stronger brand differentiation and page-level control.",
-            "You need custom integrations or server-side behavior.",
-            "You care about code ownership, performance, and long-term flexibility."
-          ]
-        },
-        {
-          "title": "What does Ardeno usually recommend?",
-          "body": [
-            "Ardeno recommends matching the build to the business stage. If the business only needs a simple online presence, a builder can be enough. If the website must create trust, capture leads, support bookings, answer buyer questions, or become a business system, custom development is usually the stronger investment.",
-            "The safest path is to start with the smallest custom version that solves the actual problem, then expand once the business has real usage and clearer priorities."
-          ],
-          "bullets": [
-            "Do not overbuild a simple brochure.",
-            "Do not force operational workflows into a generic template.",
-            "Prioritize the pages, flows, and proof that affect revenue.",
-            "Launch with a foundation that search engines and AI systems can understand."
-          ]
-        }
-      ],
-      "process": [
-        "Define what the website must do for the business.",
-        "Separate simple content pages from custom workflows.",
-        "Compare speed, budget, ownership, integrations, and growth needs.",
-        "Choose builder, custom, or a phased hybrid path.",
-        "Review the decision again once real users interact with the site."
-      ],
-      "faqs": [
-        {
-          "question": "How do I choose between custom development and website builders?",
-          "answer": "Choose a builder for simple brochure needs and fast launches. Choose custom development when the business needs stronger brand differentiation, booking or ordering flows, dashboards, custom integrations, ownership of the code, or a site that is not locked into a generic template."
-        },
-        {
-          "question": "Can Ardeno rebuild a builder site later?",
-          "answer": "Yes. Ardeno can audit a builder site, preserve useful content or assets, and rebuild the experience as a custom website or web system when the business outgrows the template."
-        }
-      ],
-      "related": [
-        { "label": "Business websites", "href": "/services/business-websites" },
-        { "label": "Website redesign", "href": "/services/website-redesign" },
-        { "label": "Booking systems", "href": "/services/booking-systems" }
       ]
     }
   }

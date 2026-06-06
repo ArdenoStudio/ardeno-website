@@ -9,7 +9,6 @@ import {
   Layers3,
   MonitorSmartphone,
   RefreshCw,
-  Scale,
   ShieldCheck,
   type LucideIcon,
 } from 'lucide-react';
@@ -34,7 +33,6 @@ const ICONS: Record<string, LucideIcon> = {
   calendar: CalendarCheck,
   monitor: MonitorSmartphone,
   refresh: RefreshCw,
-  scale: Scale,
 };
 
 const navigateTo = (href: string) => {

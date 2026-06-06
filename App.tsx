@@ -80,15 +80,13 @@ type Route =
   | 'service-booking-systems'
   | 'service-business-websites'
   | 'service-website-redesign'
-  | 'service-ai-lead-assistants'
-  | 'guide-custom-development-vs-builders';
+  | 'service-ai-lead-assistants';
 
 const SERVICE_ROUTE_PAGES: Partial<Record<Route, ServicePageKey>> = {
   'service-booking-systems': 'service-booking-systems',
   'service-business-websites': 'service-business-websites',
   'service-website-redesign': 'service-website-redesign',
   'service-ai-lead-assistants': 'service-ai-lead-assistants',
-  'guide-custom-development-vs-builders': 'guide-custom-development-vs-builders',
 };
 
 const getRoute = (): Route => {
@@ -100,7 +98,10 @@ const getRoute = (): Route => {
   if (p === '/services/business-websites') return 'service-business-websites';
   if (p === '/services/website-redesign') return 'service-website-redesign';
   if (p === '/services/ai-lead-assistants') return 'service-ai-lead-assistants';
-  if (p === '/guides/custom-development-vs-website-builders') return 'guide-custom-development-vs-builders';
+  if (p === '/guides/custom-development-vs-website-builders') {
+    window.history.replaceState({}, '', '/services/business-websites');
+    return 'service-business-websites';
+  }
   if (p.startsWith('/case-studies/humble-beginnings')) return 'cs-humble-beginnings';
   if (p === '/case-studies' || p === '/case-studies/') return 'case-studies';
   return 'home';

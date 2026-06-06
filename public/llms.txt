@@ -17,10 +17,9 @@ Ardeno Studio builds premium custom-coded websites and browser-based digital sys
 
 - [Home](https://www.ardenostudio.online/) - positioning, services, portfolio, process, story, trust signals, and contact paths.
 - [Booking Systems](https://www.ardenostudio.online/services/booking-systems) - custom booking and appointment systems for restaurants, salons, clinics, events, consultants, venues, and appointment-led businesses.
-- [Business Websites](https://www.ardenostudio.online/services/business-websites) - professional business websites with custom design, service pages, conversion paths, metadata, structured data, and launch checks.
+- [Business Websites](https://www.ardenostudio.online/services/business-websites) - professional business websites with custom design, service pages, conversion paths, metadata, structured data, launch checks, and builder-vs-custom decision guidance.
 - [Website Redesign](https://www.ardenostudio.online/services/website-redesign) - redesigns for existing sites that feel outdated, unclear, slow, hard to use, or weaker than the business.
 - [AI Lead Assistants](https://www.ardenostudio.online/services/ai-lead-assistants) - secure website AI assistants for visitor questions, lead qualification, and handoff to forms, email, WhatsApp, or booking flows.
-- [Custom Development vs Website Builders](https://www.ardenostudio.online/guides/custom-development-vs-website-builders) - guide explaining when to use builders and when custom development is better.
 - [Case studies](https://www.ardenostudio.online/case-studies) - Ardeno Studio portfolio and proof-led project stories.
 - [Humble Beginnings](https://www.ardenostudio.online/case-studies/humble-beginnings) - case study about Ardeno Studio's own launch and positioning.
 - [Docs](https://www.ardenostudio.online/docs) - process, services, timelines, pricing approach, terms, privacy, and NDA guidance.

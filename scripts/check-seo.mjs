@@ -55,6 +55,9 @@ for (const [key, route] of Object.entries(seoConfig.routes)) {
 }
 
 const sitemap = await fs.readFile(path.resolve("public/sitemap.xml"), "utf8");
+const retiredGuidePath = "/guides/custom-development-vs-website-builders";
+const retiredGuideUrl = `${seoConfig.site.url}${retiredGuidePath}`;
+assert(!sitemap.includes(retiredGuideUrl), "sitemap still includes retired custom-vs-builders guide");
 for (const route of Object.values(seoConfig.routes)) {
   const loc = `${seoConfig.site.url}${route.path}`;
   assert(sitemap.includes(loc), `sitemap missing ${route.path}`);
@@ -70,6 +73,16 @@ assert(robots.includes("Sitemap: https://www.ardenostudio.online/sitemap.xml"), 
 assert(robots.includes("User-agent: GPTBot"), "robots missing AI crawler allowlist");
 
 const vercel = JSON.parse(await fs.readFile(path.resolve("vercel.json"), "utf8"));
+const redirects = vercel.redirects ?? [];
+assert(
+  redirects.some(
+    (redirect) =>
+      redirect.source === retiredGuidePath &&
+      redirect.destination === `${seoConfig.site.url}/services/business-websites` &&
+      redirect.permanent === true
+  ),
+  "vercel redirect missing for retired custom-vs-builders guide"
+);
 const rewrites = vercel.rewrites ?? [];
 for (const route of Object.values(seoConfig.routes)) {
   if (route.path === "/" || route.path.endsWith(".html")) continue;
@@ -81,6 +94,7 @@ for (const route of Object.values(seoConfig.routes)) {
 
 const llms = await fs.readFile(path.resolve("public/llms.txt"), "utf8");
 assert(llms.startsWith("# Ardeno Studio"), "llms.txt missing title");
+assert(!llms.includes(retiredGuideUrl), "llms.txt still links retired custom-vs-builders guide");
 for (const route of Object.values(seoConfig.routes)) {
   assert(llms.includes(`${seoConfig.site.url}${route.path}`), `llms.txt missing ${route.path}`);
 }

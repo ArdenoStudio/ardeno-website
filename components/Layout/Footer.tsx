@@ -67,7 +67,6 @@ const footerColumns: FooterColumn[] = [
     links: [
       { label: 'Docs', href: '/docs' },
       { label: 'FAQ', href: '/faq' },
-      { label: 'Custom vs builders', href: '/guides/custom-development-vs-website-builders' },
       { label: 'Portal', href: 'https://ardeno-portal.vercel.app', external: true },
     ],
   },
