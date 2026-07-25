@@ -1,0 +1,624 @@
+{
+  "goal": "100 iterative improvements using complements inspired by HyperUI, FAQ/Footer patterns, Animated Beam, Apple Cards Carousel, React Bits, Cult UI panels, Shadcnblocks, 21st.dev",
+  "status": "complete",
+  "completed": 100,
+  "complementsUsed": [
+    "HyperUI / Tailwind patterns (adapted)",
+    "FAQ Sections accordion",
+    "Footers directory + underline sweep",
+    "Animated Beam (Process)",
+    "Apple Cards Carousel depth (marquee)",
+    "React Bits magnetic/motion (reduced-motion safe)",
+    "Cult UI panel / FinalCTA scene light",
+    "Shadcnblocks editorial cards",
+    "21st.dev dialog/a11y patterns",
+    "lucide icons"
+  ],
+  "skippedInstalls": [
+    "DaisyUI",
+    "HyperUI package",
+    "Tremor Charts (no dashboard)"
+  ],
+  "loops": [
+    {
+      "n": 1,
+      "area": "Hero",
+      "change": "Removed floating LiveBuildBadge overlay",
+      "done": true
+    },
+    {
+      "n": 2,
+      "area": "Hero",
+      "change": "Removed ShippedStat floating badge",
+      "done": true
+    },
+    {
+      "n": 3,
+      "area": "Hero",
+      "change": "Removed pill cluster (Free audit / No templates / Secure launch)",
+      "done": true
+    },
+    {
+      "n": 4,
+      "area": "Hero",
+      "change": "Removed lower Free/100%/Launch stat strip",
+      "done": true
+    },
+    {
+      "n": 5,
+      "area": "Hero",
+      "change": "Removed MobileProjectStrip from first viewport",
+      "done": true
+    },
+    {
+      "n": 6,
+      "area": "Hero",
+      "change": "Replaced browser-chrome mock with cinematic framed artwork",
+      "done": true
+    },
+    {
+      "n": 7,
+      "area": "Hero",
+      "change": "Brand-first eyebrow: Ardeno Studio",
+      "done": true
+    },
+    {
+      "n": 8,
+      "area": "Hero",
+      "change": "Simplified CTAs to primary + secondary only",
+      "done": true
+    },
+    {
+      "n": 9,
+      "area": "Hero",
+      "change": "Added type=button on hero CTAs",
+      "done": true
+    },
+    {
+      "n": 10,
+      "area": "Hero",
+      "change": "Added focus-visible rings on hero buttons",
+      "done": true
+    },
+    {
+      "n": 11,
+      "area": "Hero",
+      "change": "Magnetic hover respects prefers-reduced-motion",
+      "done": true
+    },
+    {
+      "n": 12,
+      "area": "Hero",
+      "change": "Scroll indicator hides after scroll + reduced motion",
+      "done": true
+    },
+    {
+      "n": 13,
+      "area": "Hero",
+      "change": "Featured preview is a real accessible link",
+      "done": true
+    },
+    {
+      "n": 14,
+      "area": "Hero",
+      "change": "Quieter supporting microcopy under CTAs",
+      "done": true
+    },
+    {
+      "n": 15,
+      "area": "Hero",
+      "change": "noise-overlay utility instead of inline grain SVG",
+      "done": true
+    },
+    {
+      "n": 16,
+      "area": "ProjectMarquee",
+      "change": "aria-label View {title} project",
+      "done": true
+    },
+    {
+      "n": 17,
+      "area": "ProjectMarquee",
+      "change": "Pause on focus-within",
+      "done": true
+    },
+    {
+      "n": 18,
+      "area": "ProjectMarquee",
+      "change": "Larger thumbs / Apple-cards depth",
+      "done": true
+    },
+    {
+      "n": 19,
+      "area": "AuditCTA",
+      "change": "Sharper headline about average sites costing business",
+      "done": true
+    },
+    {
+      "n": 20,
+      "area": "AuditCTA",
+      "change": "Reduced checks to 4 high-signal items",
+      "done": true
+    },
+    {
+      "n": 21,
+      "area": "AuditCTA",
+      "change": "Diagnostic strip / audit receipt layout",
+      "done": true
+    },
+    {
+      "n": 22,
+      "area": "AuditCTA",
+      "change": "aria-hidden on decorative icons",
+      "done": true
+    },
+    {
+      "n": 23,
+      "area": "AuditCTA",
+      "change": "focus-visible rings on CTAs",
+      "done": true
+    },
+    {
+      "n": 24,
+      "area": "FinalCTA",
+      "change": "Removed signal pill cluster",
+      "done": true
+    },
+    {
+      "n": 25,
+      "area": "FinalCTA",
+      "change": "Single primary CTA + quiet audit text link",
+      "done": true
+    },
+    {
+      "n": 26,
+      "area": "FinalCTA",
+      "change": "Red edge-light scene atmosphere",
+      "done": true
+    },
+    {
+      "n": 27,
+      "area": "Testimonials",
+      "change": "Positive trust copy (no defensive fake-quotes tone)",
+      "done": true
+    },
+    {
+      "n": 28,
+      "area": "Testimonials",
+      "change": "aria-label on founder links",
+      "done": true
+    },
+    {
+      "n": 29,
+      "area": "Testimonials",
+      "change": "Initials avatar circles",
+      "done": true
+    },
+    {
+      "n": 30,
+      "area": "OurStory",
+      "change": "Tightened founder origin copy",
+      "done": true
+    },
+    {
+      "n": 31,
+      "area": "OurStory",
+      "change": "Removed floating Industries badge",
+      "done": true
+    },
+    {
+      "n": 32,
+      "area": "OurStory",
+      "change": "Director's note block with red rule",
+      "done": true
+    },
+    {
+      "n": 33,
+      "area": "Process",
+      "change": "Heading: Strategy first. Then interface, systems, launch.",
+      "done": true
+    },
+    {
+      "n": 34,
+      "area": "Process",
+      "change": "American spelling optimized",
+      "done": true
+    },
+    {
+      "n": 35,
+      "area": "Process",
+      "change": "Removed fake 100% progress fields",
+      "done": true
+    },
+    {
+      "n": 36,
+      "area": "Process",
+      "change": "Keyboard-operable step rows",
+      "done": true
+    },
+    {
+      "n": 37,
+      "area": "Process",
+      "change": "AnimatedBeam complement strip (Discover→Launch)",
+      "done": true
+    },
+    {
+      "n": 38,
+      "area": "Process",
+      "change": "noise-overlay instead of duplicated grain",
+      "done": true
+    },
+    {
+      "n": 39,
+      "area": "FeaturedWork",
+      "change": "Selected Builds & Concepts framing",
+      "done": true
+    },
+    {
+      "n": 40,
+      "area": "FeaturedWork",
+      "change": "Confident craft copy",
+      "done": true
+    },
+    {
+      "n": 41,
+      "area": "FeaturedWork",
+      "change": "Project rows as buttons",
+      "done": true
+    },
+    {
+      "n": 42,
+      "area": "FeaturedWork",
+      "change": "Pagination dots aria-hidden",
+      "done": true
+    },
+    {
+      "n": 43,
+      "area": "FeaturedWork",
+      "change": "Sane modal z-index",
+      "done": true
+    },
+    {
+      "n": 44,
+      "area": "FeaturedWork",
+      "change": "AllProjectsModal aria-describedby",
+      "done": true
+    },
+    {
+      "n": 45,
+      "area": "FeaturedWork",
+      "change": "Hide View Live Build without URL",
+      "done": true
+    },
+    {
+      "n": 46,
+      "area": "FeaturedWork",
+      "change": "Editorial Challenge/Direction/Result",
+      "done": true
+    },
+    {
+      "n": 47,
+      "area": "FeaturedWork",
+      "change": "kind-derived Platform/Concept/Live labels",
+      "done": true
+    },
+    {
+      "n": 48,
+      "area": "Services",
+      "change": "Dialog a11y roles on modal",
+      "done": true
+    },
+    {
+      "n": 49,
+      "area": "Services",
+      "change": "Close button aria-label",
+      "done": true
+    },
+    {
+      "n": 50,
+      "area": "Services",
+      "change": "Cards as buttons with aria-haspopup",
+      "done": true
+    },
+    {
+      "n": 51,
+      "area": "Services",
+      "change": "onOpenContact wired from App",
+      "done": true
+    },
+    {
+      "n": 52,
+      "area": "Services",
+      "change": "Simplified red edge-light hover",
+      "done": true
+    },
+    {
+      "n": 53,
+      "area": "Services",
+      "change": "Cinematic titles Flagship/Redesign/Booking/AI Concierge",
+      "done": true
+    },
+    {
+      "n": 54,
+      "area": "Navbar",
+      "change": "Mobile aria-expanded + aria-controls",
+      "done": true
+    },
+    {
+      "n": 55,
+      "area": "Navbar",
+      "change": "Portal as real external anchor",
+      "done": true
+    },
+    {
+      "n": 56,
+      "area": "Navbar",
+      "change": "Sora/body font for nav UI",
+      "done": true
+    },
+    {
+      "n": 57,
+      "area": "Navbar",
+      "change": "Focus trap + Escape restore focus",
+      "done": true
+    },
+    {
+      "n": 58,
+      "area": "Navbar",
+      "change": "Softer RollText + focus-visible links",
+      "done": true
+    },
+    {
+      "n": 59,
+      "area": "Footer",
+      "change": "Red Start a project CTA",
+      "done": true
+    },
+    {
+      "n": 60,
+      "area": "Footer",
+      "change": "Thinner Explore directory (Footers complement)",
+      "done": true
+    },
+    {
+      "n": 61,
+      "area": "Footer",
+      "change": "Lower wordmark opacity",
+      "done": true
+    },
+    {
+      "n": 62,
+      "area": "Footer",
+      "change": "WhatsApp aria-labels",
+      "done": true
+    },
+    {
+      "n": 63,
+      "area": "Footer",
+      "change": "Red underline sweep link hover",
+      "done": true
+    },
+    {
+      "n": 64,
+      "area": "Footer",
+      "change": "mailto fallback when no contact handler",
+      "done": true
+    },
+    {
+      "n": 65,
+      "area": "Footer",
+      "change": "Colombo · IST+5:30 microcopy",
+      "done": true
+    },
+    {
+      "n": 66,
+      "area": "Button",
+      "change": "Sora typography for shared Button",
+      "done": true
+    },
+    {
+      "n": 67,
+      "area": "Button",
+      "change": "Reduced-motion disables magnetic/shine",
+      "done": true
+    },
+    {
+      "n": 68,
+      "area": "CSS",
+      "change": "Design tokens ink/surface/ease",
+      "done": true
+    },
+    {
+      "n": 69,
+      "area": "CSS",
+      "change": "Global :focus-visible accent rings",
+      "done": true
+    },
+    {
+      "n": 70,
+      "area": "CSS",
+      "change": ".noise-overlay + .cinematic-section utilities",
+      "done": true
+    },
+    {
+      "n": 71,
+      "area": "Tailwind",
+      "change": "ink/surface/ardeno easing tokens",
+      "done": true
+    },
+    {
+      "n": 72,
+      "area": "FAQ",
+      "change": "Stable ids + aria-labelledby panels",
+      "done": true
+    },
+    {
+      "n": 73,
+      "area": "FAQ",
+      "change": "Category-scoped FAQ ids",
+      "done": true
+    },
+    {
+      "n": 74,
+      "area": "FAQ",
+      "change": "aria-live search result count",
+      "done": true
+    },
+    {
+      "n": 75,
+      "area": "FAQ",
+      "change": "Clear-search control",
+      "done": true
+    },
+    {
+      "n": 76,
+      "area": "FAQ",
+      "change": "Fixed openAIChat aria-label selector",
+      "done": true
+    },
+    {
+      "n": 77,
+      "area": "FAQ",
+      "change": "Reduced-motion accordion",
+      "done": true
+    },
+    {
+      "n": 78,
+      "area": "FAQ",
+      "change": "Expand all / Collapse all",
+      "done": true
+    },
+    {
+      "n": 79,
+      "area": "FAQ",
+      "change": "tablist/tab aria-selected categories",
+      "done": true
+    },
+    {
+      "n": 80,
+      "area": "FAQ",
+      "change": "Arrow key category navigation",
+      "done": true
+    },
+    {
+      "n": 81,
+      "area": "CaseStudiesIndex",
+      "change": "Identity/Website/Launch Story tags",
+      "done": true
+    },
+    {
+      "n": 82,
+      "area": "CaseStudiesIndex",
+      "change": "focus-visible equals hover glow",
+      "done": true
+    },
+    {
+      "n": 83,
+      "area": "HumbleBeginnings",
+      "change": "Portfolio buttons + dialog modal a11y",
+      "done": true
+    },
+    {
+      "n": 84,
+      "area": "HumbleBeginnings",
+      "change": "Dock Escape + aria-expanded",
+      "done": true
+    },
+    {
+      "n": 85,
+      "area": "HumbleBeginnings",
+      "change": "External links noopener + reduced magnetic",
+      "done": true
+    },
+    {
+      "n": 86,
+      "area": "AIWidget",
+      "change": "aria-controls/expanded on FAB",
+      "done": true
+    },
+    {
+      "n": 87,
+      "area": "AIWidget",
+      "change": "Inaccuracy disclaimer near composer",
+      "done": true
+    },
+    {
+      "n": 88,
+      "area": "AIWidget",
+      "change": "aria-live polite messages",
+      "done": true
+    },
+    {
+      "n": 89,
+      "area": "AIWidget",
+      "change": "500-char limit + counter",
+      "done": true
+    },
+    {
+      "n": 90,
+      "area": "App",
+      "change": "Dark Suspense skeletons for non-home routes",
+      "done": true
+    },
+    {
+      "n": 91,
+      "area": "ContactModal",
+      "change": "required attrs + aria-describedby errors",
+      "done": true
+    },
+    {
+      "n": 92,
+      "area": "ContactModal",
+      "change": "Friendlier validation copy",
+      "done": true
+    },
+    {
+      "n": 93,
+      "area": "ContactModal",
+      "change": "Softer budget scope labels",
+      "done": true
+    },
+    {
+      "n": 94,
+      "area": "ServicePage",
+      "change": "Breadcrumbs + semantic lists + section labels",
+      "done": true
+    },
+    {
+      "n": 95,
+      "area": "ServicePage",
+      "change": "Collapsible FAQ + proof strip",
+      "done": true
+    },
+    {
+      "n": 96,
+      "area": "DocsPage",
+      "change": "Search a11y, clear, hash sync, aria-current",
+      "done": true
+    },
+    {
+      "n": 97,
+      "area": "vercel.json",
+      "change": "Cache headers for images/fonts/manifest/og",
+      "done": true
+    },
+    {
+      "n": 98,
+      "area": "projects/data",
+      "change": "Slug ids + kind live/concept/platform",
+      "done": true
+    },
+    {
+      "n": 99,
+      "area": "PageLoader/Brand/Globe",
+      "change": "Faster loader, offscreen pause, lower COBE samples",
+      "done": true
+    },
+    {
+      "n": 100,
+      "area": "Cursor/seo",
+      "change": "Touch/reduced-motion cursor gate + Article dates",
+      "done": true
+    }
+  ]
+}

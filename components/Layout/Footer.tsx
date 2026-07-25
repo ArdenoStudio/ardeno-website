@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Instagram, Linkedin, ArrowUpRight, Facebook } from 'lucide-react';
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
-const FONT_H = "'Instrument Serif', Georgia, serif";
 const FONT_B = "'Sora', sans-serif";
 const FONT_BRAND = "'Bricolage Grotesque', sans-serif";
 
@@ -17,11 +16,14 @@ type FooterLink = {
   external?: boolean;
   caption?: string;
   whatsApp?: boolean;
+  ariaLabel?: string;
 };
 
 type FooterColumn = {
   title: string;
   links: FooterLink[];
+  compactLinks?: FooterLink[];
+  compactLabel?: string;
 };
 
 const XIcon = () => (
@@ -45,21 +47,23 @@ const footerColumns: FooterColumn[] = [
     links: [
       { label: 'Work', href: '#work' },
       { label: 'Services', href: '#services' },
-      { label: 'Booking systems', href: '/services/booking-systems' },
-      { label: 'Business websites', href: '/services/business-websites' },
-      { label: 'Website redesign', href: '/services/website-redesign' },
-      { label: 'AI assistants', href: '/services/ai-lead-assistants' },
       { label: 'Process', href: '#process' },
       { label: 'About', href: '#about' },
+      { label: 'Case studies', href: '/case-studies' },
     ],
   },
   {
     title: 'Studio',
     links: [
-      { label: 'Case studies', href: '/case-studies' },
       { label: 'Founders', href: '/founders.html' },
       { label: 'Brand', href: '/brand' },
-      { label: 'Contact', href: '#contact' },
+    ],
+    compactLabel: 'Services',
+    compactLinks: [
+      { label: 'Booking systems', href: '/services/booking-systems' },
+      { label: 'Business websites', href: '/services/business-websites' },
+      { label: 'Website redesign', href: '/services/website-redesign' },
+      { label: 'AI assistants', href: '/services/ai-lead-assistants' },
     ],
   },
   {
@@ -74,8 +78,22 @@ const footerColumns: FooterColumn[] = [
     title: 'Contact',
     links: [
       { label: 'ardenostudio@gmail.com', href: 'mailto:ardenostudio@gmail.com', external: true },
-      { label: '+94 75 850 4424', href: suvenWhatsApp, external: true, caption: 'Suven Seoras', whatsApp: true },
-      { label: '+94 76 248 5456', href: ovinduWhatsApp, external: true, caption: 'Ovindu Karunaratne', whatsApp: true },
+      {
+        label: '+94 75 850 4424',
+        href: suvenWhatsApp,
+        external: true,
+        caption: 'Suven Seoras',
+        whatsApp: true,
+        ariaLabel: 'Message Suven on WhatsApp',
+      },
+      {
+        label: '+94 76 248 5456',
+        href: ovinduWhatsApp,
+        external: true,
+        caption: 'Ovindu Karunaratne',
+        whatsApp: true,
+        ariaLabel: 'Message Ovindu on WhatsApp',
+      },
       { label: 'Colombo, Sri Lanka', href: '#contact' },
     ],
   },
@@ -85,11 +103,58 @@ const socialLinks = [
   { icon: Instagram, label: 'Instagram', href: 'https://www.instagram.com/ardenostudio/' },
   { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/company/ardentstudiolk' },
   { icon: Facebook, label: 'Facebook', href: 'https://web.facebook.com/people/Ardeno-Studio/61578087120189/' },
-  { icon: WhatsAppIcon, label: 'WhatsApp', href: suvenWhatsApp },
+  { icon: WhatsAppIcon, label: 'Message Suven on WhatsApp', href: suvenWhatsApp },
   { icon: XIcon, label: 'X', href: 'https://x.com/ArdenoStudio' },
 ];
 
+const FooterNavLink: React.FC<{
+  link: FooterLink;
+  columnTitle: string;
+  onNavClick: (e: React.MouseEvent<HTMLAnchorElement>, href: string, external?: boolean) => void;
+  compact?: boolean;
+}> = ({ link, columnTitle, onNavClick, compact = false }) => (
+  <li key={`${columnTitle}-${link.label}`}>
+    <a
+      href={link.href}
+      target={link.external ? '_blank' : undefined}
+      rel={link.external ? 'noopener noreferrer' : undefined}
+      onClick={(e) => onNavClick(e, link.href, link.external)}
+      aria-label={link.ariaLabel}
+      className={`footer-link group inline-flex items-center gap-1.5 leading-none text-zinc-400 transition-colors duration-200 hover:text-white ${
+        compact ? 'text-[12px]' : 'text-[14px]'
+      }`}
+      style={{ fontFamily: FONT_B }}
+    >
+      {link.label}
+      {link.whatsApp && (
+        <span className="text-zinc-500 transition-colors duration-200 group-hover:text-white/80">
+          <WhatsAppIcon />
+        </span>
+      )}
+      {link.external && !link.whatsApp && columnTitle !== 'Contact' && (
+        <ArrowUpRight className="h-3 w-3 opacity-0 transition-opacity duration-200 group-hover:opacity-70" />
+      )}
+    </a>
+    {link.caption && (
+      <p
+        className="mt-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500"
+        style={{ fontFamily: FONT_B }}
+      >
+        {link.caption}
+      </p>
+    )}
+  </li>
+);
+
 export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
+  const handleStartProject = () => {
+    if (onOpenContact) {
+      onOpenContact();
+      return;
+    }
+    window.location.href = 'mailto:ardenostudio@gmail.com';
+  };
+
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, external?: boolean) => {
     if (external || href.startsWith('mailto:') || href.startsWith('tel:')) return;
 
@@ -134,6 +199,29 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
 
   return (
     <footer id="contact" className="relative overflow-hidden bg-[#080809] px-3 pb-3 pt-8 md:px-6 md:pb-6 md:pt-12">
+      <style>{`
+        .footer-link {
+          position: relative;
+          background-image: linear-gradient(#E50914, #E50914);
+          background-position: left 100%;
+          background-repeat: no-repeat;
+          background-size: 0% 1px;
+          transition: color 0.2s ease, background-size 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .footer-link:hover,
+        .footer-link:focus-visible {
+          background-size: 100% 1px;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .footer-link {
+            transition: color 0.2s ease;
+          }
+          .footer-link:hover,
+          .footer-link:focus-visible {
+            background-size: 100% 1px;
+          }
+        }
+      `}</style>
       <motion.div
         initial={{ opacity: 0, y: 28 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -174,8 +262,8 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
 
             <motion.button
               type="button"
-              onClick={() => onOpenContact?.()}
-              className="mt-8 inline-flex items-center gap-2 rounded-[14px] bg-white px-6 py-4 text-[13px] font-semibold text-[#080809] transition-colors duration-200 hover:bg-zinc-200"
+              onClick={handleStartProject}
+              className="mt-8 inline-flex items-center gap-2 rounded-[14px] bg-[#E50914] px-6 py-4 text-[13px] font-semibold text-white transition-colors duration-200 hover:bg-[#ff1a24]"
               style={{ fontFamily: FONT_B }}
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
@@ -194,38 +282,47 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
                 >
                   {column.title}
                 </p>
-                <ul className={column.title === 'Contact' ? 'mt-6 space-y-5' : 'mt-6 space-y-4'}>
+                {column.title === 'Contact' && (
+                  <p
+                    className="mt-3 text-[11px] uppercase tracking-[0.16em] text-zinc-600"
+                    style={{ fontFamily: FONT_B }}
+                  >
+                    Colombo · IST+5:30
+                  </p>
+                )}
+                <ul className={column.title === 'Contact' ? 'mt-4 space-y-5' : 'mt-6 space-y-4'}>
                   {column.links.map((link) => (
-                    <li key={`${column.title}-${link.label}`}>
-                      <a
-                        href={link.href}
-                        target={link.external ? '_blank' : undefined}
-                        rel={link.external ? 'noopener noreferrer' : undefined}
-                        onClick={(e) => handleNavClick(e, link.href, link.external)}
-                        className="group inline-flex items-center gap-1.5 text-[14px] leading-none text-zinc-400 transition-colors duration-200 hover:text-white"
-                        style={{ fontFamily: FONT_B }}
-                      >
-                        {link.label}
-                        {link.whatsApp && (
-                          <span className="text-zinc-500 transition-colors duration-200 group-hover:text-white/80">
-                            <WhatsAppIcon />
-                          </span>
-                        )}
-                        {link.external && !link.whatsApp && column.title !== 'Contact' && (
-                          <ArrowUpRight className="h-3 w-3 opacity-0 transition-opacity duration-200 group-hover:opacity-70" />
-                        )}
-                      </a>
-                      {link.caption && (
-                        <p
-                          className="mt-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500"
-                          style={{ fontFamily: FONT_B }}
-                        >
-                          {link.caption}
-                        </p>
-                      )}
-                    </li>
+                    <FooterNavLink
+                      key={`${column.title}-${link.label}`}
+                      link={link}
+                      columnTitle={column.title}
+                      onNavClick={handleNavClick}
+                    />
                   ))}
                 </ul>
+                {column.compactLinks && column.compactLinks.length > 0 && (
+                  <div className="mt-5 border-t border-white/[0.06] pt-4">
+                    {column.compactLabel && (
+                      <p
+                        className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-600"
+                        style={{ fontFamily: FONT_B }}
+                      >
+                        {column.compactLabel}
+                      </p>
+                    )}
+                    <ul className="space-y-2.5">
+                      {column.compactLinks.map((link) => (
+                        <FooterNavLink
+                          key={`${column.title}-compact-${link.label}`}
+                          link={link}
+                          columnTitle={column.title}
+                          onNavClick={handleNavClick}
+                          compact
+                        />
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -256,14 +353,14 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
 
         <div
           aria-hidden="true"
-          className="relative z-0 mt-10 flex select-none items-center justify-center gap-[clamp(0.9rem,2.4vw,2rem)] overflow-hidden border-t border-white/[0.05] pt-8 text-white/[0.055] md:mt-12 md:pt-10"
+          className="relative z-0 mt-10 flex select-none items-center justify-center gap-[clamp(0.9rem,2.4vw,2rem)] overflow-hidden border-t border-white/[0.05] pt-8 text-white/[0.018] md:mt-12 md:pt-10"
         >
           <img
             src="/ardeno-logo.svg"
             alt=""
             width={190}
             height={190}
-            className="h-[clamp(4.5rem,10vw,9.5rem)] w-auto opacity-70 grayscale"
+            className="h-[clamp(4.5rem,10vw,9.5rem)] w-auto opacity-50 grayscale"
             loading="lazy"
           />
           <span

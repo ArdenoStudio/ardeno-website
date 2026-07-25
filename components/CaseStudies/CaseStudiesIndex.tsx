@@ -13,6 +13,7 @@ interface CaseStudy {
   year: string;
   summary: string;
   href: string;
+  tags: string[];
   thumbnailClass?: string;
   bgImage?: string;
 }
@@ -25,6 +26,7 @@ const CASE_STUDIES: CaseStudy[] = [
     year: '2026',
     summary: "How two people built Sri Lanka's premium web studio from zero in two months.",
     href: '/case-studies/humble-beginnings',
+    tags: ['Identity', 'Website', 'Launch Story'],
     thumbnailClass: 'bg-zinc-900', // text-based placeholder bg
     bgImage: '/case-studies/humble/ardeno-logo.svg',
   },
@@ -109,7 +111,7 @@ export const CaseStudiesIndex: React.FC = () => {
               key={study.id}
               href={study.href}
               onClick={(e) => handleNavClick(e, study.href)}
-              className="group block relative"
+              className="group block relative focus-visible:outline-none"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               initial={{ opacity: 0, y: 40 }}
@@ -119,28 +121,13 @@ export const CaseStudiesIndex: React.FC = () => {
             >
               {/* Thumbnail Area - Glassmorphism & Glow */}
               <div
-                className={`w-full aspect-[4/3] rounded-2xl mb-6 flex items-center justify-center overflow-hidden relative ${study.thumbnailClass || ''} transition-all duration-700 ease-out`}
-                style={{
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  boxShadow: '0 0 0 0 rgba(229,9,20,0)',
-                  backdropFilter: 'blur(12px)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 0 40px -10px rgba(229,9,20,0.5)';
-                  e.currentTarget.style.border = '1px solid rgba(229,9,20,0.4)';
-                  e.currentTarget.style.transform = 'translateY(-4px) scale(1.01)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = '0 0 0 0 rgba(229,9,20,0)';
-                  e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)';
-                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                }}
+                className={`w-full aspect-[4/3] rounded-2xl mb-6 flex items-center justify-center overflow-hidden relative ${study.thumbnailClass || ''} border border-white/[0.08] shadow-none backdrop-blur-md transition-all duration-700 ease-out group-hover:border-[#E50914]/40 group-hover:shadow-[0_0_40px_-10px_rgba(229,9,20,0.5)] group-hover:-translate-y-1 group-hover:scale-[1.01] group-focus-visible:border-[#E50914]/40 group-focus-visible:shadow-[0_0_40px_-10px_rgba(229,9,20,0.5)] group-focus-visible:-translate-y-1 group-focus-visible:scale-[1.01]`}
               >
-                <div className="absolute inset-0 bg-[#E50914]/0 group-hover:bg-[#E50914]/10 transition-colors duration-700 z-10 pointer-events-none mix-blend-screen" />
+                <div className="absolute inset-0 bg-[#E50914]/0 group-hover:bg-[#E50914]/10 group-focus-visible:bg-[#E50914]/10 transition-colors duration-700 z-10 pointer-events-none mix-blend-screen" />
 
                 {/* Cinematic Background Logo */}
                 {study.bgImage && (
-                  <div className="absolute -top-[15%] -right-[15%] w-[130%] h-[130%] opacity-[0.03] group-hover:opacity-[0.07] transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 group-hover:-translate-x-2 pointer-events-none">
+                  <div className="absolute -top-[15%] -right-[15%] w-[130%] h-[130%] opacity-[0.03] group-hover:opacity-[0.07] group-focus-visible:opacity-[0.07] transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 group-hover:-translate-x-2 group-focus-visible:scale-105 group-focus-visible:-translate-x-2 pointer-events-none">
                     <img src={study.bgImage} alt="" className="w-full h-full object-contain filter brightness-0 invert" />
                   </div>
                 )}
@@ -149,10 +136,10 @@ export const CaseStudiesIndex: React.FC = () => {
                 <div className="absolute bottom-0 left-0 w-full h-[60%] bg-gradient-to-t from-zinc-900 via-zinc-900/40 to-transparent pointer-events-none z-10" />
 
                 {/* Ambient backdrop glow */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 bg-[radial-gradient(circle_at_center,rgba(229,9,20,0.15)_0%,transparent_70%)] pointer-events-none" />
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-1000 bg-[radial-gradient(circle_at_center,rgba(229,9,20,0.15)_0%,transparent_70%)] pointer-events-none" />
 
                 <h3
-                  className="font-bold group-hover:scale-[1.03] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] text-center px-8 text-transparent bg-clip-text bg-gradient-to-b from-zinc-300 to-zinc-700 group-hover:from-white group-hover:to-zinc-400 z-20 relative"
+                  className="font-bold group-hover:scale-[1.03] group-focus-visible:scale-[1.03] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] text-center px-8 text-transparent bg-clip-text bg-gradient-to-b from-zinc-300 to-zinc-700 group-hover:from-white group-hover:to-zinc-400 group-focus-visible:from-white group-focus-visible:to-zinc-400 z-20 relative"
                   style={{ fontFamily: FONT_H, fontSize: 'clamp(2rem, 4.5vw, 4rem)', lineHeight: 1, letterSpacing: '-0.02em' }}
                 >
                   {study.title.toUpperCase()}
@@ -160,7 +147,7 @@ export const CaseStudiesIndex: React.FC = () => {
 
                 {/* Hover Reveal Button */}
                 <div
-                  className="absolute bottom-6 right-6 w-14 h-14 rounded-full bg-white overflow-hidden flex items-center justify-center opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] z-20 shadow-[0_10px_30px_rgba(229,9,20,0.3)] hover:scale-110 group/btn"
+                  className="absolute bottom-6 right-6 w-14 h-14 rounded-full bg-white overflow-hidden flex items-center justify-center opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] z-20 shadow-[0_10px_30px_rgba(229,9,20,0.3)] hover:scale-110 group/btn"
                 >
                   <div className="absolute inset-0 flex items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/btn:translate-x-[150%] group-hover/btn:-translate-y-[150%]">
                     <ArrowUpRight className="w-6 h-6 text-black" />
@@ -194,13 +181,22 @@ export const CaseStudiesIndex: React.FC = () => {
                 >
                   {study.summary}
                 </p>
-                <div className="flex items-center gap-4 mt-4">
+                <div className="flex flex-wrap items-center gap-2 mt-4">
                   <span
                     className="text-[11px] tracking-widest uppercase text-[#E50914] border border-[#E50914]/20 bg-[#E50914]/5 px-3 py-1.5 rounded-full"
                     style={{ fontFamily: FONT_B }}
                   >
                     {study.client}
                   </span>
+                  {study.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-[11px] tracking-widest uppercase text-zinc-400 border border-white/[0.08] bg-white/[0.03] px-3 py-1.5 rounded-full"
+                      style={{ fontFamily: FONT_B }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
             </motion.a>

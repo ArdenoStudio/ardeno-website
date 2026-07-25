@@ -20,14 +20,15 @@ export const ProjectMarquee: React.FC = () => {
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-3 rounded-full border border-white/[0.08] bg-white/[0.02] pl-1.5 pr-4 py-1.5 hover:border-[#E50914]/35 hover:bg-[#E50914]/[0.06] transition-all duration-300"
+              aria-label={`View ${project.title} project`}
+              className="group flex items-center gap-3 rounded-full border border-white/[0.06] bg-white/[0.02] pl-1.5 pr-4 py-1.5 hover:border-[#E50914]/35 hover:bg-[#E50914]/[0.06] transition-all duration-300"
             >
-              <span className="relative w-9 h-9 md:w-10 md:h-10 rounded-full overflow-hidden shrink-0 border border-white/10">
+              <span className="relative w-11 h-11 rounded-full overflow-hidden shrink-0 border border-white/[0.08]">
                 <img
                   src={project.image}
                   alt=""
-                  width={40}
-                  height={40}
+                  width={44}
+                  height={44}
                   loading="lazy"
                   decoding="async"
                   className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
