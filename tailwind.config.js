@@ -13,11 +13,17 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Sora', 'sans-serif'],
+        body: ['Sora', 'sans-serif'],
         display: ['Instrument Serif', 'Georgia', 'serif'],
         brand: ['Bricolage Grotesque', 'sans-serif'],
         ui: ['DM Sans', 'sans-serif'],
       },
       colors: {
+        ink: '#080809',
+        surface: {
+          DEFAULT: '#0c0c0e',
+          deep: '#060607',
+        },
         accent: {
           DEFAULT: '#E50914',
           hover: '#B20710',
@@ -27,6 +33,9 @@ export default {
           850: '#1f1f22',
           950: '#09090b',
         },
+      },
+      transitionTimingFunction: {
+        ardeno: 'cubic-bezier(0.16, 1, 0.3, 1)',
       },
       animation: {
         'spin-slow': 'spin 12s linear infinite',

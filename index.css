@@ -5,8 +5,11 @@
 :root {
   --ardeno-ink: #080809;
   --ardeno-surface: #0c0c0e;
+  --ardeno-surface-deep: #060607;
   --ardeno-accent: #E50914;
   --ardeno-accent-soft: rgba(229, 9, 20, 0.12);
+  --ardeno-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ardeno-duration: 0.55s;
   --font-display: "Instrument Serif", Georgia, serif;
   --font-body: "Sora", sans-serif;
   --font-brand: "Bricolage Grotesque", sans-serif;
@@ -39,9 +42,49 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 50;
+  z-index: 40;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
   opacity: 0.04;
+}
+
+.noise-overlay {
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+.cinematic-section {
+  background-color: var(--ardeno-ink);
+  position: relative;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ardeno-accent);
+  outline-offset: 3px;
+}
+
+.footer-link {
+  position: relative;
+  display: inline-block;
+}
+
+.footer-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: var(--ardeno-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ardeno-ease);
+}
+
+.footer-link:hover::after,
+.footer-link:focus-visible::after {
+  transform: scaleX(1);
 }
 
 /* ── Body base ──────────────────────────────────────────── */
@@ -83,7 +126,8 @@ body {
   animation: marquee-scroll 42s linear infinite;
 }
 
-.marquee-track:hover {
+.marquee-track:hover,
+.marquee-track:focus-within {
   animation-play-state: paused;
 }
 

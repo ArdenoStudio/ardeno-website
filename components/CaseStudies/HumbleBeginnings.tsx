@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring, useReducedMotion } from 'framer-motion';
 import {
   ArrowLeft, ArrowUpRight, X,
   Coffee, Plane, Dumbbell, Trophy, Sparkles, Utensils,
@@ -68,12 +68,18 @@ const PORTFOLIO_PROJECTS = [
 const PortfolioGrid: React.FC = () => {
   const [activeId, setActiveId] = useState<number | null>(null);
   const activeProject = PORTFOLIO_PROJECTS.find(p => p.id === activeId);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') setActiveId(null); };
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && activeId !== null) {
+        setActiveId(null);
+        requestAnimationFrame(() => triggerRef.current?.focus());
+      }
+    };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, []);
+  }, [activeId]);
 
   return (
     <div className="portfolio-section-container">
@@ -94,10 +100,17 @@ const PortfolioGrid: React.FC = () => {
       <ul className="portfolio-grid">
         {PORTFOLIO_PROJECTS.map((p, idx) => (
           <li key={p.id} className="p-grid-item">
-            <motion.div
+            <motion.button
+              type="button"
               layoutId={`p-card-${p.id}`}
-              onClick={() => setActiveId(p.id)}
-              className="p-capsule p-grid-capsule"
+              onClick={(e) => {
+                triggerRef.current = e.currentTarget;
+                setActiveId(p.id);
+              }}
+              aria-haspopup="dialog"
+              aria-expanded={activeId === p.id}
+              aria-label={`Open ${p.name} project details`}
+              className="p-capsule p-grid-capsule w-full text-left"
               whileHover={{ y: -5, borderColor: 'rgba(255,255,255,0.15)' }}
             >
               <div className="p-card-header">
@@ -110,7 +123,7 @@ const PortfolioGrid: React.FC = () => {
                 <div className="p-action-circle"><span className="text-white">+</span></div>
               </div>
               <motion.h3 layoutId={`p-name-${p.id}`} className="p-title-display">{p.name}</motion.h3>
-            </motion.div>
+            </motion.button>
           </li>
         ))}
       </ul>
@@ -121,6 +134,9 @@ const PortfolioGrid: React.FC = () => {
           <div className="p-modal-root">
             <motion.div
               layoutId={`p-card-${activeProject.id}`}
+              role="dialog"
+              aria-modal="true"
+              aria-label={activeProject.name}
               className="p-capsule p-modal-capsule"
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
@@ -146,8 +162,14 @@ const PortfolioGrid: React.FC = () => {
                   </div>
 
                   <button
+                    type="button"
                     className="p-close-circle"
-                    onClick={(e) => { e.stopPropagation(); setActiveId(null); }}
+                    aria-label="Close project details"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveId(null);
+                      requestAnimationFrame(() => triggerRef.current?.focus());
+                    }}
                   >
                     <X size={16} strokeWidth={1.5} />
                   </button>
@@ -166,6 +188,8 @@ const PortfolioGrid: React.FC = () => {
                   <div className="flex items-center gap-8 mt-12">
                     <motion.a
                       href={activeProject.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="p-cta-btn"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -186,6 +210,7 @@ const PortfolioGrid: React.FC = () => {
   );
 };
 const MagneticLogo: React.FC<{ src: string; alt: string; className?: string; isNew?: boolean }> = ({ src, alt, className, isNew }) => {
+  const reduced = useReducedMotion() ?? false;
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -198,6 +223,7 @@ const MagneticLogo: React.FC<{ src: string; alt: string; className?: string; isN
   const springRotateY = useSpring(rotateY, { damping: 25, stiffness: 150 });
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (reduced) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
@@ -216,13 +242,17 @@ const MagneticLogo: React.FC<{ src: string; alt: string; className?: string; isN
     <motion.div
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{
-        perspective: 1000,
-        rotateX: springRotateX,
-        rotateY: springRotateY,
-        x: springX,
-        y: springY,
-      }}
+      style={
+        reduced
+          ? { perspective: 1000 }
+          : {
+              perspective: 1000,
+              rotateX: springRotateX,
+              rotateY: springRotateY,
+              x: springX,
+              y: springY,
+            }
+      }
       className={`logo-magnetic-wrap ${className}`}
     >
       <img
@@ -308,6 +338,7 @@ const LogoPanelPro: React.FC<{ isNew?: boolean; badge: string; src: string; desc
 export const HumbleBeginnings: React.FC = () => {
   const [activeNavLabel, setActiveNavLabel] = useState('Overview');
   const [dockExpanded, setDockExpanded] = useState(false);
+  const dockToggleRef = useRef<HTMLButtonElement>(null);
   const dockSections = [
     { id: 'hero', label: 'Overview' },
     { id: 's-origin', label: 'Origin' },
@@ -326,6 +357,18 @@ export const HumbleBeginnings: React.FC = () => {
     window.dispatchEvent(new PopStateEvent('popstate'));
     window.scrollTo(0, 0);
   };
+
+  useEffect(() => {
+    if (!dockExpanded) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setDockExpanded(false);
+        requestAnimationFrame(() => dockToggleRef.current?.focus());
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [dockExpanded]);
 
   useEffect(() => {
     const pref = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -447,10 +490,15 @@ export const HumbleBeginnings: React.FC = () => {
           }}
         >
           {/* Collapsed header — tap to expand/collapse */}
-          <div
+          <button
+            ref={dockToggleRef}
+            type="button"
             className="flex items-center gap-3 w-full justify-center"
             onClick={(e) => { e.stopPropagation(); setDockExpanded(!dockExpanded); }}
-            style={{ padding: dockExpanded ? '14px 16px 8px' : '0', minHeight: '48px' }}
+            aria-expanded={dockExpanded}
+            aria-controls="mobile-nav-dock-panel"
+            aria-label={dockExpanded ? 'Collapse section navigation' : 'Expand section navigation'}
+            style={{ padding: dockExpanded ? '14px 16px 8px' : '0', minHeight: '48px', background: 'transparent', border: 'none', color: 'inherit', cursor: 'pointer' }}
           >
             <div className={`w-1.5 h-1.5 rounded-full bg-accent ${dockExpanded ? '' : 'animate-pulse'}`} />
             <span className="dock-label">{activeNavLabel}</span>
@@ -459,14 +507,17 @@ export const HumbleBeginnings: React.FC = () => {
               style={{ marginLeft: '4px' }}
               animate={{ rotate: dockExpanded ? 180 : 0 }}
               transition={{ duration: 0.3 }}
+              aria-hidden="true"
             >
               <path d="M2 3.5L5 6.5L8 3.5" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
             </motion.svg>
-          </div>
+          </button>
 
           {/* Expanded state — section list */}
           {dockExpanded && (
-            <div style={{
+            <div
+              id="mobile-nav-dock-panel"
+              style={{
               borderTop: '1px solid rgba(255,255,255,0.08)',
               padding: '8px 4px 10px',
               display: 'grid',

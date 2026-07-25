@@ -30,12 +30,12 @@ const fontBody = "var(--font-body)";
 const fontUi = "var(--font-ui)";
 
 const budgetOptions = [
-    "Under LKR 50,000",
-    "LKR 50,000 - 150,000",
-    "LKR 150,000 - 500,000",
-    "LKR 500,000 - 1,000,000",
-    "LKR 1,000,000+",
-    "Let's discuss",
+    { label: "Starter scope", value: "Under LKR 50,000" },
+    { label: "Growth build", value: "LKR 50,000 - 150,000" },
+    { label: "Scale build", value: "LKR 150,000 - 500,000" },
+    { label: "Flagship build", value: "LKR 500,000 - 1,000,000" },
+    { label: "Premier build", value: "LKR 1,000,000+" },
+    { label: "Let's scope it", value: "Let's discuss" },
 ];
 
 const briefNotes = [
@@ -123,10 +123,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
 
     const validate = () => {
         const errs: Partial<typeof fields> = {};
-        if (!fields.name.trim()) errs.name = "Required";
-        if (!fields.email.trim()) errs.email = "Required";
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) errs.email = "Invalid email";
-        if (!fields.message.trim()) errs.message = "Required";
+        if (!fields.name.trim()) errs.name = "Please add your name";
+        if (!fields.email.trim()) errs.email = "Please add your email";
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) errs.email = "Please enter a valid email";
+        if (!fields.message.trim()) errs.message = "Please add a short message";
         return errs;
     };
 
@@ -493,10 +493,16 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                                                                     value={fields.name}
                                                                     onChange={(e) => setFields((f) => ({ ...f, name: e.target.value }))}
                                                                     className="ardeno-field-control"
+                                                                    required
                                                                     aria-invalid={Boolean(errors.name)}
+                                                                    aria-describedby={errors.name ? "contact-name-error" : undefined}
                                                                 />
                                                             </div>
-                                                            {errors.name && <span className="ardeno-error">{errors.name}</span>}
+                                                            {errors.name && (
+                                                                <span id="contact-name-error" className="ardeno-error" role="alert">
+                                                                    {errors.name}
+                                                                </span>
+                                                            )}
                                                         </div>
 
                                                         <div>
@@ -512,10 +518,16 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                                                                     value={fields.email}
                                                                     onChange={(e) => setFields((f) => ({ ...f, email: e.target.value }))}
                                                                     className="ardeno-field-control"
+                                                                    required
                                                                     aria-invalid={Boolean(errors.email)}
+                                                                    aria-describedby={errors.email ? "contact-email-error" : undefined}
                                                                 />
                                                             </div>
-                                                            {errors.email && <span className="ardeno-error">{errors.email}</span>}
+                                                            {errors.email && (
+                                                                <span id="contact-email-error" className="ardeno-error" role="alert">
+                                                                    {errors.email}
+                                                                </span>
+                                                            )}
                                                         </div>
 
                                                         <div>
@@ -552,8 +564,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                                                                         Select a range
                                                                     </option>
                                                                     {budgetOptions.map((opt) => (
-                                                                        <option key={opt} value={opt}>
-                                                                            {opt}
+                                                                        <option key={opt.value} value={opt.value}>
+                                                                            {opt.label}
                                                                         </option>
                                                                     ))}
                                                                 </select>
@@ -575,10 +587,16 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                                                                 onChange={(e) => setFields((f) => ({ ...f, message: e.target.value }))}
                                                                 className="ardeno-field-control min-h-[84px] sm:min-h-[148px]"
                                                                 style={{ resize: "vertical", paddingTop: 16 }}
+                                                                required
                                                                 aria-invalid={Boolean(errors.message)}
+                                                                aria-describedby={errors.message ? "contact-message-error" : undefined}
                                                             />
                                                         </div>
-                                                        {errors.message && <span className="ardeno-error">{errors.message}</span>}
+                                                        {errors.message && (
+                                                            <span id="contact-message-error" className="ardeno-error" role="alert">
+                                                                {errors.message}
+                                                            </span>
+                                                        )}
                                                     </div>
 
                                                     <div className="mt-6">

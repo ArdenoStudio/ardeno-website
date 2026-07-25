@@ -1,11 +1,8 @@
-import React, { useRef, useCallback, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   motion,
   AnimatePresence,
   useReducedMotion,
-  useSpring,
-  useMotionValue,
-  useTransform,
 } from "framer-motion";
 import { Minus, ArrowUpRight, X } from "lucide-react";
 
@@ -30,7 +27,7 @@ const FONT_BODY = "'Sora', sans-serif";
 const SERVICES: Service[] = [
   {
     id: "01",
-    title: "Premium Business Website",
+    title: "Flagship Website",
     href: "/services/business-websites",
     description:
       "A custom-coded website for brands that need to look credible, modern, and ready for real customers.",
@@ -51,7 +48,7 @@ const SERVICES: Service[] = [
   },
   {
     id: "02",
-    title: "Website Redesign Sprint",
+    title: "Redesign Sprint",
     href: "/services/website-redesign",
     description:
       "A focused rebuild for sites that feel outdated, unclear, slow, or weaker than the actual business.",
@@ -71,7 +68,7 @@ const SERVICES: Service[] = [
   },
   {
     id: "03",
-    title: "Booking / Order System",
+    title: "Booking Engine",
     href: "/services/booking-systems",
     description:
       "Practical web systems for restaurants, salons, service teams, clinics, events, and appointment-led businesses.",
@@ -92,7 +89,7 @@ const SERVICES: Service[] = [
   },
   {
     id: "04",
-    title: "AI Lead Assistant",
+    title: "AI Lead Concierge",
     href: "/services/ai-lead-assistants",
     description:
       "A secure AI helper for websites that need to answer questions, qualify leads, or guide visitors after hours.",
@@ -114,10 +111,13 @@ const SERVICES: Service[] = [
 ];
 
 // ─── Modal ────────────────────────────────────────────────────────────────────
-const Modal: React.FC<{ service: Service; onClose: () => void }> = ({
-  service,
-  onClose,
-}) => {
+const Modal: React.FC<{
+  service: Service;
+  onClose: () => void;
+  onOpenContact?: () => void;
+}> = ({ service, onClose, onOpenContact }) => {
+  const titleId = `service-modal-title-${service.id}`;
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -129,6 +129,10 @@ const Modal: React.FC<{ service: Service; onClose: () => void }> = ({
   const handleStartProject = () => {
     onClose();
     setTimeout(() => {
+      if (onOpenContact) {
+        onOpenContact();
+        return;
+      }
       const el =
         document.getElementById("contact") ||
         document.querySelector("footer");
@@ -168,6 +172,9 @@ const Modal: React.FC<{ service: Service; onClose: () => void }> = ({
       />
 
       <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
         className="relative z-10 w-full max-w-[520px] rounded-2xl overflow-hidden flex flex-col"
         initial={{ opacity: 0, scale: 0.95, y: 30 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -205,6 +212,7 @@ const Modal: React.FC<{ service: Service; onClose: () => void }> = ({
                   {service.id}
                 </span>
                 <h3
+                  id={titleId}
                   className="text-[1.35rem] text-white leading-tight tracking-[-0.02em]"
                   style={{ fontFamily: FONT_HEADING, fontWeight: 700 }}
                 >
@@ -214,7 +222,9 @@ const Modal: React.FC<{ service: Service; onClose: () => void }> = ({
             </div>
 
             <button
+              type="button"
               onClick={onClose}
+              aria-label="Close service details"
               className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:text-white transition-colors duration-200 shrink-0 mt-0.5"
               style={{
                 background: "rgba(255,255,255,0.04)",
@@ -341,66 +351,32 @@ const ServiceCard: React.FC<{
   index: number;
   onOpen: () => void;
 }> = ({ service, index, onOpen }) => {
-  const reduced = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
-  const rotateX = useTransform(rawY, [-70, 70], [4, -4]);
-  const rotateY = useTransform(rawX, [-70, 70], [-4, 4]);
-  const springRotX = useSpring(rotateX, { stiffness: 140, damping: 28, mass: 0.5 });
-  const springRotY = useSpring(rotateY, { stiffness: 140, damping: 28, mass: 0.5 });
   const [hovered, setHovered] = useState(false);
 
-  const resetTilt = useCallback(() => {
-    rawX.set(0);
-    rawY.set(0);
-  }, [rawX, rawY]);
-
-  function onMove(e: React.MouseEvent<HTMLDivElement>) {
-    if (reduced || !ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    rawX.set(e.clientX - r.left - r.width / 2);
-    rawY.set(e.clientY - r.top - r.height / 2);
-  }
-
-  function onLeave() {
-    resetTilt();
-    setHovered(false);
-  }
-
-  function handleOpen() {
-    resetTilt();
-    setHovered(false);
-    setTimeout(onOpen, 30);
-  }
-
   return (
-    <motion.div
-      ref={ref}
+    <motion.button
+      type="button"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.7, ease: EASE, delay: index * 0.09 }}
-      style={{
-        rotateX: springRotX,
-        rotateY: springRotY,
-        transformPerspective: 1200,
-        willChange: "transform",
-      }}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      onHoverStart={() => setHovered(true)}
-      className="group relative cursor-pointer"
-      onClick={handleOpen}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
+      onClick={onOpen}
+      aria-haspopup="dialog"
+      aria-label={`Open details for ${service.title}`}
+      className="group relative w-full text-left cursor-pointer bg-transparent border-0 p-0"
     >
-      {/* Border glow */}
+      {/* Premium red edge-light */}
       <motion.div
         className="absolute -inset-[1px] rounded-2xl z-0"
         animate={{ opacity: hovered ? 1 : 0 }}
-        transition={{ duration: 0.45 }}
+        transition={{ duration: 0.4 }}
         style={{
           background:
-            "linear-gradient(135deg, rgba(229,9,20,0.25) 0%, rgba(255,255,255,0.04) 60%, transparent 100%)",
+            "linear-gradient(135deg, rgba(229,9,20,0.45) 0%, rgba(229,9,20,0.12) 38%, rgba(255,255,255,0.04) 70%, transparent 100%)",
         }}
       />
 
@@ -408,65 +384,29 @@ const ServiceCard: React.FC<{
       <div
         className="relative z-10 h-full flex flex-col rounded-2xl overflow-hidden"
         style={{
-          background: hovered ? "rgba(18,18,22,0.8)" : "rgba(12,12,14,0.55)",
+          background: hovered ? "rgba(18,18,22,0.85)" : "rgba(12,12,14,0.55)",
           border: `1px solid ${hovered ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.07)"}`,
           boxShadow: hovered
-            ? "0 28px 56px -14px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1)"
+            ? "0 20px 40px -16px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.08)"
             : "0 4px 20px -4px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06)",
           transition: "background 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease",
         }}
       >
-        {/* Shimmer sweep */}
-        <motion.div
-          className="absolute inset-0 pointer-events-none z-0"
-          initial={{ x: "-110%", opacity: 0 }}
-          animate={hovered ? { x: "110%", opacity: 1 } : { x: "-110%", opacity: 0 }}
-          transition={{ duration: 0.65, ease: "easeInOut" }}
-          style={{
-            background:
-              "linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.04) 50%, transparent 70%)",
-            skewX: "-15deg",
-          }}
-        />
-
-        {/* Subtle red top glow on hover */}
-        <motion.div
-          className="absolute inset-0 pointer-events-none"
-          animate={{ opacity: hovered ? 1 : 0 }}
-          transition={{ duration: 0.5 }}
-          style={{
-            background:
-              "radial-gradient(ellipse at 50% -10%, rgba(229,9,20,0.09) 0%, transparent 55%)",
-          }}
-        />
-
-        {/* Frosted top rim */}
-        <div
-          className="absolute top-0 left-0 right-0 h-px pointer-events-none z-20"
-          style={{
-            background:
-              "linear-gradient(90deg, transparent, rgba(255,255,255,0.12) 30%, rgba(255,255,255,0.16) 50%, rgba(255,255,255,0.12) 70%, transparent)",
-          }}
-        />
-
         <div className="relative z-10 p-6 flex flex-col h-full">
           {/* Top row: index + tag */}
           <div className="flex items-center justify-between mb-7">
-            <motion.span
+            <span
               className="text-[11px] font-bold text-[#E50914] tracking-[0.2em]"
-              style={{ fontFamily: FONT_BODY }}
-              animate={{ opacity: hovered ? 1 : 0.5 }}
-              transition={{ duration: 0.3 }}
+              style={{ fontFamily: FONT_BODY, opacity: hovered ? 1 : 0.55 }}
             >
               {service.id}
-            </motion.span>
+            </span>
             <span
               className="text-[11px] font-semibold tracking-[0.14em] uppercase rounded-full px-2.5 py-1"
               style={{
                 fontFamily: FONT_BODY,
-                color: hovered ? "rgba(200,200,208,1)" : "#888888",
-                border: `1px solid ${hovered ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.09)"}`,
-                transition: "all 0.35s ease",
+                color: "#888888",
+                border: "1px solid rgba(255,255,255,0.09)",
               }}
             >
               {service.tag}
@@ -474,34 +414,25 @@ const ServiceCard: React.FC<{
           </div>
 
           {/* Icon */}
-          <motion.div
+          <div
             className="w-10 h-10 rounded-xl flex items-center justify-center text-[#E50914] mb-5"
-            animate={
-              hovered
-                ? {
-                  y: -2,
-                  borderColor: "rgba(229,9,20,0.28)",
-                  background: "rgba(229,9,20,0.09)",
-                }
-                : {
-                  y: 0,
-                  borderColor: "rgba(255,255,255,0.07)",
-                  background: "rgba(229,9,20,0.04)",
-                }
-            }
-            transition={{ duration: 0.35, ease: EASE }}
-            style={{ border: "1px solid" }}
+            style={{
+              border: "1px solid rgba(255,255,255,0.07)",
+              background: "rgba(229,9,20,0.04)",
+            }}
           >
             {service.icon}
-          </motion.div>
+          </div>
 
-          {/* Title */}
-          <h3
+          {/* Title — lifts on hover */}
+          <motion.h3
             className="text-[1.15rem] text-white leading-snug mb-3 tracking-[-0.015em]"
             style={{ fontFamily: FONT_HEADING, fontWeight: 700 }}
+            animate={{ y: hovered ? -3 : 0 }}
+            transition={{ duration: 0.32, ease: EASE }}
           >
             {service.title}
-          </h3>
+          </motion.h3>
 
           {/* Description */}
           <p
@@ -515,12 +446,11 @@ const ServiceCard: React.FC<{
             {service.description}
           </p>
 
-          {/* Footer — replaces the disconnected arrow */}
+          {/* Footer */}
           <div
             className="mt-6 pt-5 flex items-center justify-between"
             style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
           >
-            {/* "Learn more" text link — slides in on hover */}
             <div className="flex items-center gap-2 overflow-hidden">
               <motion.div
                 className="h-px bg-[#E50914] origin-left"
@@ -541,44 +471,28 @@ const ServiceCard: React.FC<{
               </motion.span>
             </div>
 
-            {/* Arrow button */}
-            <motion.div
+            <div
               className="w-7 h-7 rounded-full flex items-center justify-center"
-              animate={
-                hovered
-                  ? {
-                    borderColor: "rgba(229,9,20,0.4)",
-                    color: "#E50914",
-                    scale: 1.1,
-                    background: "rgba(229,9,20,0.07)",
-                  }
-                  : {
-                    borderColor: "rgba(255,255,255,0.08)",
-                    color: "rgb(60,60,70)",
-                    scale: 1,
-                    background: "rgba(255,255,255,0.02)",
-                  }
-              }
-              transition={{ duration: 0.25, ease: EASE }}
-              style={{ border: "1px solid" }}
+              style={{
+                border: `1px solid ${hovered ? "rgba(229,9,20,0.4)" : "rgba(255,255,255,0.08)"}`,
+                color: hovered ? "#E50914" : "rgb(60,60,70)",
+                background: hovered ? "rgba(229,9,20,0.07)" : "rgba(255,255,255,0.02)",
+                transition: "all 0.28s ease",
+              }}
             >
-              <motion.span
-                animate={{ x: hovered ? 1 : 0, y: hovered ? -1 : 0 }}
-                transition={{ duration: 0.2 }}
-                style={{ display: "inline-flex" }}
-              >
-                <ArrowUpRight size={12} />
-              </motion.span>
-            </motion.div>
+              <ArrowUpRight size={12} />
+            </div>
           </div>
         </div>
       </div>
-    </motion.div>
+    </motion.button>
   );
 };
 
 // ─── Services Section ─────────────────────────────────────────────────────────
-export const Services: React.FC = () => {
+export const Services: React.FC<{ onOpenContact?: () => void }> = ({
+  onOpenContact,
+}) => {
   const reduced = useReducedMotion();
   const [activeId, setActiveId] = useState<string | null>(null);
   const activeService = SERVICES.find((s) => s.id === activeId) ?? null;
@@ -717,6 +631,7 @@ export const Services: React.FC = () => {
             key={activeService.id}
             service={activeService}
             onClose={() => setActiveId(null)}
+            onOpenContact={onOpenContact}
           />
         )}
       </AnimatePresence>
