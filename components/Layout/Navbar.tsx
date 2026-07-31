@@ -13,29 +13,36 @@ interface NavbarProps {
   onOpenModal: () => void;
 }
 
-const RollText: React.FC<{ text: string; reduced: boolean }> = ({ text, reduced }) => (
-  <span className="relative inline-flex">
-    {Array.from(text).map((ch, idx) => {
-      if (ch === " ") return <span key={`sp-${idx}`} className="w-[0.3em]" />;
-      const delay = reduced ? 0 : idx * 28;
-      return (
-        <span
-          key={`${ch}-${idx}`}
-          className="relative inline-block overflow-hidden"
-          style={{ height: "1.1em", lineHeight: 1 }}
-        >
+const RollText: React.FC<{ text: string; reduced: boolean }> = ({ text, reduced }) => {
+  if (reduced) return <span>{text}</span>;
+
+  return (
+    <span className="relative inline-flex">
+      {Array.from(text).map((ch, idx) => {
+        if (ch === " ") return <span key={`sp-${idx}`} className="w-[0.3em]" />;
+        const delay = idx * 18;
+        return (
           <span
-            className="block will-change-transform transition-transform duration-[420ms] ease-[cubic-bezier(0.16,1,0.3,1)] [transform:translateY(0%)] group-hover:[transform:translateY(-50%)]"
-            style={{ transitionDelay: `${delay}ms` }}
+            key={`${ch}-${idx}`}
+            className="relative inline-block overflow-hidden"
+            style={{ height: "1.1em", lineHeight: 1 }}
           >
-            <span className="block leading-none py-[0.05em]">{ch}</span>
-            <span className="block leading-none py-[0.05em]">{ch}</span>
+            <span
+              className="block will-change-transform transition-transform duration-[320ms] ease-[cubic-bezier(0.16,1,0.3,1)] [transform:translateY(0%)] group-hover:[transform:translateY(-50%)] group-focus-visible:[transform:translateY(-50%)]"
+              style={{ transitionDelay: `${delay}ms` }}
+            >
+              <span className="block leading-none py-[0.05em]">{ch}</span>
+              <span className="block leading-none py-[0.05em]">{ch}</span>
+            </span>
           </span>
-        </span>
-      );
-    })}
-  </span>
-);
+        );
+      })}
+    </span>
+  );
+};
+
+const NAV_FONT = "var(--font-body)";
+const MOBILE_DRAWER_ID = "mobile-nav-drawer";
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
   const reduced = useReducedMotion() ?? false;
@@ -51,6 +58,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
   const clickLockUntilRef = useRef<number>(0);
   const sectionTopsRef = useRef<{ href: string; top: number }[]>([]);
   const lastActiveCalcRef = useRef(0);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
 
   const setScrolledState = (next: boolean) => {
     isScrolledRef.current = next;
@@ -68,6 +77,63 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
     } else {
       document.body.classList.remove('nav-open');
     }
+  }, [mobileOpen]);
+
+  const closeMobileMenu = () => {
+    setMobileOpen(false);
+    requestAnimationFrame(() => menuButtonRef.current?.focus());
+  };
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        closeMobileMenu();
+        return;
+      }
+
+      if (e.key !== "Tab" || !drawerRef.current) return;
+
+      const focusable = Array.from(
+        drawerRef.current.querySelectorAll(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((node): node is HTMLElement => {
+        if (!(node instanceof HTMLElement)) return false;
+        return !node.hasAttribute("disabled") && node.offsetParent !== null;
+      });
+
+      if (!focusable.length) {
+        e.preventDefault();
+        return;
+      }
+
+      const first: HTMLElement = focusable[0];
+      const last: HTMLElement = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    const t = window.setTimeout(() => {
+      const first = drawerRef.current?.querySelector<HTMLElement>(
+        'a[href], button:not([disabled])'
+      );
+      first?.focus();
+    }, 50);
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.clearTimeout(t);
+    };
   }, [mobileOpen]);
 
   const TOP_NAV_HEIGHT = 80;
@@ -460,7 +526,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                         <a
                           href={item.href}
                           onClick={(e) => handleNavClick(e, item.href)}
-                          className="group relative flex items-center px-4 py-1.5 rounded-full transition-colors duration-300"
+                          className="group relative flex items-center px-4 py-1.5 rounded-full transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
                           style={{ textDecoration: "none" }}
                         >
                           {isActive && (
@@ -477,9 +543,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                             />
                           )}
                           <span
-                            className="relative z-10 text-[10px] font-semibold tracking-[0.2em] uppercase transition-colors duration-300"
+                            className="relative z-10 text-[10px] font-semibold tracking-[0.2em] uppercase transition-colors duration-300 group-focus-visible:text-white"
                             style={{
-                              fontFamily: "'DM Sans', sans-serif",
+                              fontFamily: NAV_FONT,
                               color: isActive ? "#ffffff" : "rgba(255,255,255,0.78)",
                             }}
                           >
@@ -541,6 +607,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                       fontWeight: 600,
                       letterSpacing: "0.08em",
                       color: "#fff",
+                      fontFamily: NAV_FONT,
                     }}
                   >
                     DOCS
@@ -554,12 +621,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                   </motion.span>
                 </motion.a>
 
-                <motion.button
+                <motion.a
+                  href="https://ardeno-portal.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onMouseEnter={() => setPortalHov(true)}
                   onMouseLeave={() => setPortalHov(false)}
-                  onClick={() => {
-                    window.open("https://ardeno-portal.vercel.app", "_blank", "noopener,noreferrer");
-                  }}
                   style={{
                     position: "relative",
                     overflow: "hidden",
@@ -573,6 +640,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                     alignItems: "center",
                     gap: 6,
                     height: 36,
+                    textDecoration: "none",
+                    fontFamily: NAV_FONT,
                   }}
                   animate={{
                     borderColor: portalHov ? "rgba(255,255,255,0.26)" : "rgba(255,255,255,0.10)",
@@ -611,7 +680,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                   >
                     <ArrowUpRight size={13} color="#fff" />
                   </motion.span>
-                </motion.button>
+                </motion.a>
 
                 <motion.button
                   onMouseEnter={() => setTalkHov(true)}
@@ -662,6 +731,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                       color: talkHov ? "#E50914" : "#fff",
                       transition: "color 0.3s ease",
                       lineHeight: 1,
+                      fontFamily: NAV_FONT,
                     }}
                   >
                     START PROJECT
@@ -681,8 +751,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
               </div>
 
               <button
+                ref={menuButtonRef}
                 className="md:hidden flex flex-col gap-[5px] p-2 relative z-[70]"
                 aria-label={mobileOpen ? "Close menu" : "Open menu"}
+                aria-expanded={mobileOpen}
+                aria-controls={MOBILE_DRAWER_ID}
                 onClick={() => setMobileOpen((v) => !v)}
                 type="button"
               >
@@ -724,9 +797,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}
               style={{ background: "rgba(4,4,5,0.7)", backdropFilter: "blur(6px)" }}
-              onClick={() => setMobileOpen(false)}
+              onClick={closeMobileMenu}
             />
             <motion.div
+              id={MOBILE_DRAWER_ID}
+              ref={drawerRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation menu"
               className="fixed top-0 right-0 bottom-0 z-[65] md:hidden w-[75vw] max-w-[320px] flex flex-col"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -746,12 +824,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
               <div className="flex items-center justify-between px-6 pt-6 pb-8">
                 <span
                   className="text-[9px] tracking-[0.25em] uppercase text-zinc-600"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  style={{ fontFamily: NAV_FONT }}
                 >
                   Menu
                 </span>
                 <button
-                  onClick={() => setMobileOpen(false)}
+                  type="button"
+                  onClick={closeMobileMenu}
+                  aria-label="Close menu"
                   className="w-8 h-8 rounded-full border border-white/[0.08] flex items-center justify-center text-zinc-500 hover:text-white hover:border-white/20 transition-all"
                   style={{ background: "rgba(255,255,255,0.03)" }}
                 >
@@ -794,7 +874,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                       <span
                         className="text-[11px] font-semibold tracking-[0.2em] uppercase"
                         style={{
-                          fontFamily: "'DM Sans', sans-serif",
+                          fontFamily: NAV_FONT,
                           color: isActive ? "#ffffff" : "rgba(255,255,255,0.78)",
                         }}
                       >
@@ -803,7 +883,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                       <span
                         className="ml-auto text-[9px]"
                         style={{
-                          fontFamily: "'DM Sans', sans-serif",
+                          fontFamily: NAV_FONT,
                           color: isActive ? "rgba(229,9,20,0.6)" : "rgba(255,255,255,0.35)",
                         }}
                       >
@@ -839,7 +919,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                   <span
                     className="text-[11px] font-semibold tracking-[0.2em] uppercase"
                     style={{
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: NAV_FONT,
                       color: "rgba(255,255,255,0.78)",
                     }}
                   >
@@ -861,9 +941,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                 <div className="h-px bg-white/[0.05] mb-6" />
                 <a
                   href="https://ardeno-portal.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 rounded-full py-3 mb-3"
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: NAV_FONT,
                     fontSize: 11,
                     fontWeight: 600,
                     letterSpacing: "0.08em",
@@ -875,13 +957,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                   PORTAL <ArrowUpRight size={13} />
                 </a>
                 <motion.button
+                  type="button"
                   onClick={() => {
-                    setMobileOpen(false);
+                    closeMobileMenu();
                     onOpenModal();
                   }}
                   className="w-full flex items-center justify-center gap-2 rounded-full py-3"
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: NAV_FONT,
                     fontSize: 11,
                     fontWeight: 700,
                     letterSpacing: "0.08em",

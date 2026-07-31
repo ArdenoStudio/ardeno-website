@@ -44,6 +44,11 @@
   opacity: 0.04;
 }
 
+:focus-visible {
+  outline: 2px solid var(--ardeno-accent);
+  outline-offset: 3px;
+}
+
 /* ── Body base ──────────────────────────────────────────── */
 body {
   background-color: var(--ardeno-ink);
@@ -83,7 +88,8 @@ body {
   animation: marquee-scroll 42s linear infinite;
 }
 
-.marquee-track:hover {
+.marquee-track:hover,
+.marquee-track:focus-within {
   animation-play-state: paused;
 }
 
