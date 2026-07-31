@@ -114,6 +114,7 @@ const App: React.FC = () => {
   const [contactOpen, setContactOpen] = useState(false);
   const [route, setRoute] = useState<Route>(getRoute);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const pendingHomeHashRef = useRef<string | null>(null);
   const showSpeedInsights = import.meta.env.PROD && !['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
   const servicePageKey = SERVICE_ROUTE_PAGES[route];
 
@@ -131,20 +132,8 @@ const App: React.FC = () => {
     const onDocsExit = (e: CustomEvent<{ hash?: string }>) => {
       const hash = e.detail?.hash || '';
       window.history.pushState({}, '', hash ? '/' + hash : '/');
+      pendingHomeHashRef.current = hash ? hash.replace(/^#/, '') : null;
       setRoute('home');
-
-      if (hash) {
-        setTimeout(() => {
-          const el = document.getElementById(hash.replace('#', ''));
-          if (el) {
-            const offset = 80;
-            const bodyRect = document.body.getBoundingClientRect().top;
-            const elementRect = el.getBoundingClientRect().top;
-            const offsetPosition = elementRect - bodyRect - offset;
-            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-          }
-        }, 500);
-      }
     };
 
     window.addEventListener('popstate', onPopState);
@@ -159,6 +148,12 @@ const App: React.FC = () => {
     if (route !== 'home') {
       setHomeSectionsReady(false);
       return;
+    }
+
+    // Hash jumps (docs/service breadcrumbs) target lazy below-fold sections — mount them now.
+    if (pendingHomeHashRef.current) {
+      setHomeSectionsReady(true);
+      preloadChunks();
     }
 
     const el = sentinelRef.current;
@@ -176,6 +171,39 @@ const App: React.FC = () => {
     io.observe(el);
     return () => io.disconnect();
   }, [route]);
+
+  useEffect(() => {
+    if (route !== 'home' || !homeSectionsReady) return;
+    const id = pendingHomeHashRef.current;
+    if (!id) return;
+
+    let cancelled = false;
+    let attempts = 0;
+
+    const scrollToTarget = () => {
+      if (cancelled) return;
+      const el = document.getElementById(id);
+      if (el) {
+        pendingHomeHashRef.current = null;
+        const offset = 80;
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = el.getBoundingClientRect().top;
+        const offsetPosition = elementRect - bodyRect - offset;
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+        return;
+      }
+      if (attempts++ < 60) {
+        window.setTimeout(scrollToTarget, 50);
+        return;
+      }
+      pendingHomeHashRef.current = null;
+    };
+
+    scrollToTarget();
+    return () => {
+      cancelled = true;
+    };
+  }, [route, homeSectionsReady]);
 
   useEffect(() => {
     if (!loaded) return;

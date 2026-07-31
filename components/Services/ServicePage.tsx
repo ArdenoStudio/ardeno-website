@@ -135,11 +135,7 @@ export const ServicePage: React.FC<ServicePageProps> = ({ pageKey, onOpenContact
 
   const handleServicesClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    window.history.pushState({}, '', '/');
-    window.dispatchEvent(new PopStateEvent('popstate'));
-    window.setTimeout(() => {
-      document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 50);
+    window.dispatchEvent(new CustomEvent('docs:exit', { detail: { hash: '#services' } }));
   };
 
   return (

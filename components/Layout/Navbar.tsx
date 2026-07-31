@@ -87,6 +87,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
   useEffect(() => {
     if (!mobileOpen) return;
 
+    const getFocusable = () => {
+      if (!drawerRef.current) return [] as HTMLElement[];
+      return Array.from(
+        drawerRef.current.querySelectorAll(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((node): node is HTMLElement => {
+        if (!(node instanceof HTMLElement)) return false;
+        return !node.hasAttribute("disabled") && node.offsetParent !== null;
+      });
+    };
+
+    const focusFirst = () => {
+      const focusable = getFocusable();
+      focusable[0]?.focus();
+    };
+
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
@@ -96,43 +113,41 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
 
       if (e.key !== "Tab" || !drawerRef.current) return;
 
-      const focusable = Array.from(
-        drawerRef.current.querySelectorAll(
-          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
-        )
-      ).filter((node): node is HTMLElement => {
-        if (!(node instanceof HTMLElement)) return false;
-        return !node.hasAttribute("disabled") && node.offsetParent !== null;
-      });
-
+      const focusable = getFocusable();
       if (!focusable.length) {
         e.preventDefault();
         return;
       }
 
-      const first: HTMLElement = focusable[0];
-      const last: HTMLElement = focusable[focusable.length - 1];
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+      const inDrawer = active instanceof Node && drawerRef.current.contains(active);
 
-      if (e.shiftKey && document.activeElement === first) {
+      // Pull focus back if Tab somehow lands outside the dialog (e.g. hamburger).
+      if (!inDrawer) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+        return;
+      }
+
+      if (e.shiftKey && active === first) {
         e.preventDefault();
         last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
+      } else if (!e.shiftKey && active === last) {
         e.preventDefault();
         first.focus();
       }
     };
 
     window.addEventListener("keydown", onKeyDown);
-    const t = window.setTimeout(() => {
-      const first = drawerRef.current?.querySelector<HTMLElement>(
-        'a[href], button:not([disabled])'
-      );
-      first?.focus();
-    }, 50);
+    // Focus immediately so Tab cannot escape into background before the old 50ms delay.
+    focusFirst();
+    const t = window.requestAnimationFrame(focusFirst);
 
     return () => {
       window.removeEventListener("keydown", onKeyDown);
-      window.clearTimeout(t);
+      window.cancelAnimationFrame(t);
     };
   }, [mobileOpen]);
 
