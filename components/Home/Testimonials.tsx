@@ -34,13 +34,11 @@ const founders = [
     name: "Suven Seoras",
     role: "Co-founder / Product and engineering",
     href: "/founders.html#suven-seoras",
-    initials: "SS",
   },
   {
     name: "Ovindu Karunaratne",
     role: "Co-founder / Design and client direction",
     href: "/founders.html#ovindu-karunaratne",
-    initials: "OK",
   },
 ];
 
@@ -62,7 +60,7 @@ export const Testimonials: React.FC = () => (
       >
         <div>
           <div className="mb-8 flex items-center gap-3">
-            <Minus aria-hidden className="h-3.5 w-3.5 shrink-0 text-[#E50914] stroke-[1.5]" />
+            <Minus className="h-3.5 w-3.5 shrink-0 text-[#E50914] stroke-[1.5]" />
             <span
               className="text-[13px] font-medium uppercase tracking-[0.22em] text-zinc-400"
               style={{ fontFamily: FONT_B }}
@@ -86,7 +84,9 @@ export const Testimonials: React.FC = () => (
             className="mt-6 max-w-lg text-[15px] leading-[1.85] text-zinc-400"
             style={{ fontFamily: FONT_B }}
           >
-            Until client quotes are public, we show trust through live builds, direct access, and launch discipline.
+            We are not filling this section with fake client quotes. Until there are
+            public testimonials to show, we earn trust through live builds, clear process,
+            direct founder access, and launch checks that protect your site.
           </p>
 
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -94,28 +94,18 @@ export const Testimonials: React.FC = () => (
               <a
                 key={founder.name}
                 href={founder.href}
-                aria-label={`Read about ${founder.name}`}
                 className="group rounded-2xl border border-white/[0.075] bg-white/[0.025] p-5 transition-colors hover:border-[#E50914]/30"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-start gap-3.5">
-                    <span
-                      aria-hidden
-                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.04] text-[11px] font-semibold tracking-[0.08em] text-zinc-300 transition-colors group-hover:border-[#E50914]/35 group-hover:text-white"
-                      style={{ fontFamily: FONT_B }}
-                    >
-                      {founder.initials}
-                    </span>
-                    <div>
-                      <p className="text-[18px] leading-tight text-white" style={{ fontFamily: FONT_H }}>
-                        {founder.name}
-                      </p>
-                      <p className="mt-2 text-[12px] leading-[1.6] text-zinc-500" style={{ fontFamily: FONT_B }}>
-                        {founder.role}
-                      </p>
-                    </div>
+                  <div>
+                    <p className="text-[18px] leading-tight text-white" style={{ fontFamily: FONT_H }}>
+                      {founder.name}
+                    </p>
+                    <p className="mt-2 text-[12px] leading-[1.6] text-zinc-500" style={{ fontFamily: FONT_B }}>
+                      {founder.role}
+                    </p>
                   </div>
-                  <ArrowUpRight aria-hidden className="h-4 w-4 shrink-0 text-zinc-600 transition-colors group-hover:text-[#E50914]" />
+                  <ArrowUpRight className="h-4 w-4 shrink-0 text-zinc-600 transition-colors group-hover:text-[#E50914]" />
                 </div>
               </a>
             ))}
@@ -133,7 +123,7 @@ export const Testimonials: React.FC = () => (
               className="rounded-2xl border border-white/[0.075] bg-[#0d0d10]/80 p-6"
             >
               <div className="mb-7 flex h-11 w-11 items-center justify-center rounded-xl border border-[#E50914]/20 bg-[#E50914]/[0.07] text-[#E50914]">
-                <Icon aria-hidden size={19} strokeWidth={1.7} />
+                <Icon size={19} strokeWidth={1.7} />
               </div>
               <h3 className="text-[1.25rem] leading-tight text-white" style={{ fontFamily: FONT_H }}>
                 {title}

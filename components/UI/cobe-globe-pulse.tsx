@@ -94,7 +94,7 @@ export function GlobePulse({
         theta: initialTheta, 
         dark: 1, 
         diffuse: 1.5,
-        mapSamples: 16000,
+        mapSamples: 32000, // Doubled samples for ultra-crisp coastlines
         mapBrightness: 8.5,
         baseColor: [0.1, 0.1, 0.12],
         markerColor: [0.9, 0.04, 0.08],

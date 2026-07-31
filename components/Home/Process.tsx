@@ -12,48 +12,11 @@ import {
   useInView,
 } from "framer-motion";
 import { Minus } from "lucide-react";
-import { AnimatedBeam } from "../UI/AnimatedBeam";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const FONT_H = "'Instrument Serif', Georgia, serif";
 const FONT_B = "'Sora', sans-serif";
-
-const ProcessBeamStrip: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const n1 = useRef<HTMLDivElement>(null);
-  const n2 = useRef<HTMLDivElement>(null);
-  const n3 = useRef<HTMLDivElement>(null);
-  const n4 = useRef<HTMLDivElement>(null);
-  const nodes = [n1, n2, n3, n4];
-  const labels = ["Discover", "Wireframe", "Design", "Launch"];
-
-  return (
-    <div
-      ref={containerRef}
-      className="relative mb-12 hidden md:flex items-center justify-between gap-4 px-2 py-6"
-      aria-hidden
-    >
-      <AnimatedBeam containerRef={containerRef} fromRef={n1} toRef={n2} curvature={28} delay={0} />
-      <AnimatedBeam containerRef={containerRef} fromRef={n2} toRef={n3} curvature={28} delay={0.35} />
-      <AnimatedBeam containerRef={containerRef} fromRef={n3} toRef={n4} curvature={28} delay={0.7} />
-      {labels.map((label, i) => (
-        <div key={label} className="relative z-10 flex flex-col items-center gap-2">
-          <div
-            ref={nodes[i]}
-            className="h-2.5 w-2.5 rounded-full border border-[#E50914]/50 bg-[#E50914]/25 shadow-[0_0_12px_rgba(229,9,20,0.35)]"
-          />
-          <span
-            className="text-[10px] uppercase tracking-[0.18em] text-zinc-500"
-            style={{ fontFamily: FONT_B }}
-          >
-            {label}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-};
 
 const STEPS = [
   {
@@ -63,6 +26,7 @@ const STEPS = [
     chips: ["Stakeholder interviews", "Competitor audit", "KPI framework"],
     chipsMobile: ["Stakeholder", "Competitor audit"],
     duration: "1–2 wks",
+    progress: 100,
   },
   {
     num: "02",
@@ -71,6 +35,7 @@ const STEPS = [
     chips: ["Journey mapping", "Low-fi wireframes", "User testing"],
     chipsMobile: ["Journey mapping", "User testing"],
     duration: "2–3 wks",
+    progress: 100,
   },
   {
     num: "03",
@@ -79,16 +44,46 @@ const STEPS = [
     chips: ["Design system", "Motion spec", "Figma prototype"],
     chipsMobile: ["Design system", "Motion spec"],
     duration: "2–4 wks",
+    progress: 100,
   },
   {
     num: "04",
     title: "Development & Launch",
-    desc: "Engineering robust, scalable solutions on modern frameworks — performance optimized, SEO ready, and built to scale from day one.",
+    desc: "Engineering robust, scalable solutions on modern frameworks — performance optimised, SEO ready, and built to scale from day one.",
     chips: ["React / Next.js", "CI/CD pipeline", "Lighthouse 95+"],
     chipsMobile: ["React / Next.js", "Lighthouse 95+"],
     duration: "4–6 wks",
+    progress: 100,
   },
 ] as const;
+
+// ─── Perf-safe animated counter — writes directly to DOM, zero re-renders ────
+const AnimatedCounter = memo(({ value }: { value: number }) => {
+  const spanRef = useRef<HTMLSpanElement>(null);
+  const rafRef = useRef<number>(0);
+  const prevRef = useRef(0);
+
+  useEffect(() => {
+    const start = prevRef.current;
+    const end = value;
+    if (start === end) return;
+    prevRef.current = end;
+    const t0 = performance.now();
+    const dur = 550;
+    const tick = (now: number) => {
+      const p = Math.min((now - t0) / dur, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      if (spanRef.current)
+        spanRef.current.textContent = String(Math.round(start + (end - start) * e));
+      if (p < 1) rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [value]);
+
+  return <span ref={spanRef}>{value}</span>;
+});
+AnimatedCounter.displayName = "AnimatedCounter";
 
 // ─── Scroll sentinel — triggers when element centre crosses viewport midpoint ─
 const ScrollSentinel = memo(({
@@ -153,32 +148,17 @@ const StepRow = memo(({
 
   // Memoised hover handler — stable reference, no lambda on every render
   const handleEnter = useCallback(() => onHover(index), [onHover, index]);
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        onHover(index);
-      }
-    },
-    [onHover, index]
-  );
 
   return (
     <motion.div
-      role="button"
-      tabIndex={0}
-      aria-pressed={isActive}
-      aria-label={`Step ${step.num}: ${step.title}`}
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.65, ease: EASE, delay: index * 0.07 }}
       // pl-12 on mobile (saves ~1rem), pl-16 on desktop
-      className="relative pl-12 md:pl-16 group outline-none focus-visible:ring-1 focus-visible:ring-[#E50914]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#080809] rounded-sm"
+      className="relative pl-12 md:pl-16 group"
       onMouseEnter={handleEnter}
-      onFocus={handleEnter}
-      onKeyDown={handleKeyDown}
-      style={{ cursor: "pointer" }}
+      style={{ cursor: "default" }}
     >
       {/* Scroll sentinel — only active on mobile (lg hidden) */}
       <div className="lg:hidden">
@@ -409,6 +389,15 @@ StepRow.displayName = "StepRow";
 
 // ─── Dashboard — memoised, only re-renders when activeStep changes ─────────────
 const Dashboard = memo(({ activeStep }: { activeStep: number }) => {
+  const reduced = useReducedMotion();
+  const overallProgress = Math.round(
+    STEPS.reduce((acc, s, i) => {
+      if (i < activeStep) return acc + 100;
+      if (i === activeStep) return acc + s.progress;
+      return acc;
+    }, 0) / STEPS.length
+  );
+
   return (
     <div className="sticky top-24">
       {/* Stacked shadow cards */}
@@ -541,6 +530,7 @@ const Dashboard = memo(({ activeStep }: { activeStep: number }) => {
             {STEPS.map((step, i) => {
               const done = i < activeStep;
               const active = i === activeStep;
+              const barW = done ? 100 : active ? step.progress : 0;
 
               return (
                 <div key={step.num} className="flex items-start gap-3">
@@ -581,7 +571,7 @@ const Dashboard = memo(({ activeStep }: { activeStep: number }) => {
                     )}
                   </div>
 
-                  {/* Duration row */}
+                  {/* Progress bar row */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1.5">
                       <span
@@ -611,7 +601,7 @@ const Dashboard = memo(({ activeStep }: { activeStep: number }) => {
                           transition: "color 0.4s ease",
                         }}
                       >
-                        {step.duration}
+                        {done ? "100%" : active ? `${step.progress}%` : "—"}
                       </span>
                     </div>
                     <div
@@ -628,7 +618,7 @@ const Dashboard = memo(({ activeStep }: { activeStep: number }) => {
                               : "transparent",
                         }}
                         initial={{ width: "0%" }}
-                        animate={{ width: done || active ? "100%" : "0%" }}
+                        animate={{ width: `${barW}%` }}
                         transition={{ duration: 0.9, ease: EASE, delay: 0.08 }}
                       />
                     </div>
@@ -669,18 +659,19 @@ const Dashboard = memo(({ activeStep }: { activeStep: number }) => {
                 className="text-[8px] tracking-[0.25em] uppercase text-zinc-600 mb-1"
                 style={{ fontFamily: FONT_B }}
               >
-                Phase duration
+                Overall progress
               </div>
               <div
-                className="text-[1.35rem] leading-none"
+                className="text-[2rem] leading-none tabular-nums"
                 style={{
                   fontFamily: FONT_H,
                   fontWeight: 700,
                   color: "#E50914",
-                  letterSpacing: "-0.02em",
+                  letterSpacing: "-0.03em",
                 }}
               >
-                {STEPS[activeStep]?.duration}
+                <AnimatedCounter value={overallProgress} />
+                <span className="text-[1.1rem]">%</span>
               </div>
             </div>
           </div>
@@ -693,6 +684,7 @@ Dashboard.displayName = "Dashboard";
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 export const Process: React.FC = () => {
+  const reduced = useReducedMotion();
   const [activeStep, setActiveStep] = useState(0);
 
   // Stable callback — never recreated
@@ -705,7 +697,13 @@ export const Process: React.FC = () => {
       className="relative w-full overflow-hidden bg-[#080809] py-28 md:py-36"
     >
       {/* Grain */}
-      <div className="noise-overlay absolute inset-0 z-[1]" />
+      <div
+        className="pointer-events-none absolute inset-0 z-[1] opacity-[0.028]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          backgroundSize: "128px",
+        }}
+      />
 
       {/* Ambient glow — CSS only, no Framer animation */}
       <div
@@ -751,19 +749,25 @@ export const Process: React.FC = () => {
               letterSpacing: "-0.025em",
               lineHeight: 1.05,
               color: "#fff",
-              maxWidth: "18ch",
+              maxWidth: "16ch",
             }}
           >
-            Strategy first.{" "}
+            We don't just{" "}
             <em
               className="not-italic"
               style={{ color: "#8c8c96", fontWeight: 300 }}
             >
-              Then interface,
+              build.
             </em>
             <br />
+            We engineer{" "}
             <span className="relative inline-block">
-              systems, launch.
+              <em
+                className="not-italic"
+                style={{ color: "#8c8c96", fontWeight: 300 }}
+              >
+                success.
+              </em>
               <motion.span
                 className="absolute left-0 bottom-0.5 h-[2px] rounded-full"
                 style={{
@@ -793,8 +797,6 @@ export const Process: React.FC = () => {
             </p>
           </motion.div>
         </div>
-
-        <ProcessBeamStrip />
 
         {/* Two column */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-12 lg:gap-16 items-start">

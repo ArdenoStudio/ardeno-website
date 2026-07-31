@@ -714,15 +714,9 @@
   .p-grid-capsule {
     padding: 32px;
     height: 200px;
-    width: 100%;
     cursor: pointer;
     justify-content: space-between;
     transition: background 0.4s ease, border-color 0.4s ease;
-    color: inherit;
-    font: inherit;
-    text-align: left;
-    appearance: none;
-    -webkit-appearance: none;
   }
   .p-grid-item { list-style: none; }
 

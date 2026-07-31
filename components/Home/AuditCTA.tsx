@@ -3,8 +3,10 @@ import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowUpRight,
   FileText,
+  Gauge,
   Minus,
   MousePointerClick,
+  Search,
   ShieldCheck,
   Smartphone,
 } from "lucide-react";
@@ -16,6 +18,8 @@ const FONT_B = "var(--font-body)";
 const auditChecks = [
   { label: "Design trust", icon: ShieldCheck },
   { label: "Mobile clarity", icon: Smartphone },
+  { label: "Speed signals", icon: Gauge },
+  { label: "SEO basics", icon: Search },
   { label: "Conversion path", icon: MousePointerClick },
   { label: "Content clarity", icon: FileText },
 ];
@@ -44,7 +48,7 @@ export const AuditCTA: React.FC<{ onOpenContact?: () => void }> = ({ onOpenConta
         >
           <div>
             <div className="flex items-center gap-3 mb-7">
-              <Minus aria-hidden className="w-3.5 h-3.5 text-[#E50914] stroke-[1.5] shrink-0" />
+              <Minus className="w-3.5 h-3.5 text-[#E50914] stroke-[1.5] shrink-0" />
               <span
                 className="text-[12px] tracking-[0.22em] uppercase text-zinc-400"
                 style={{ fontFamily: FONT_B, fontWeight: 600 }}
@@ -61,7 +65,7 @@ export const AuditCTA: React.FC<{ onOpenContact?: () => void }> = ({ onOpenConta
                 fontWeight: 400,
               }}
             >
-              If the site feels average, the business pays for it.
+              Your website might be costing you leads.
             </h2>
 
             <p
@@ -76,72 +80,46 @@ export const AuditCTA: React.FC<{ onOpenContact?: () => void }> = ({ onOpenConta
               <button
                 type="button"
                 onClick={onOpenContact}
-                className="inline-flex items-center justify-center gap-2.5 rounded-full bg-[#E50914] px-6 py-3.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#ff1420] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E50914] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080809]"
+                className="inline-flex items-center justify-center gap-2.5 rounded-full bg-[#E50914] px-6 py-3.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#ff1420]"
                 style={{ fontFamily: FONT_B }}
               >
                 Request Free Audit
-                <ArrowUpRight aria-hidden size={15} />
+                <ArrowUpRight size={15} />
               </button>
               <button
                 type="button"
                 onClick={() => document.getElementById("work")?.scrollIntoView({ behavior: "smooth" })}
-                className="inline-flex items-center justify-center gap-2.5 rounded-full border border-white/[0.12] px-6 py-3.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-zinc-300 transition-colors hover:border-white/25 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#080809]"
+                className="inline-flex items-center justify-center gap-2.5 rounded-full border border-white/[0.12] px-6 py-3.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-zinc-300 transition-colors hover:border-white/25 hover:text-white"
                 style={{ fontFamily: FONT_B }}
               >
                 View Work
-                <ArrowUpRight aria-hidden size={15} />
+                <ArrowUpRight size={15} />
               </button>
             </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.65, ease: EASE }}
-            className="relative overflow-hidden rounded-sm border border-white/[0.08] bg-[#0c0c0e]"
-          >
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-[#E50914]/60 to-transparent"
-            />
-            <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-3.5">
-              <span
-                className="text-[10px] uppercase tracking-[0.2em] text-zinc-500"
-                style={{ fontFamily: FONT_B }}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {auditChecks.map(({ label, icon: Icon }, index) => (
+              <motion.div
+                key={label}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.55, ease: EASE, delay: index * 0.05 }}
+                className="flex min-h-[88px] items-center gap-4 rounded-2xl border border-white/[0.075] bg-white/[0.025] px-5 py-4"
               >
-                Diagnostic strip
-              </span>
-              <span
-                className="text-[10px] uppercase tracking-[0.16em] text-[#E50914]/80"
-                style={{ fontFamily: FONT_B }}
-              >
-                Audit receipt
-              </span>
-            </div>
-            <ol className="divide-y divide-white/[0.06]">
-              {auditChecks.map(({ label, icon: Icon }, index) => (
-                <li
-                  key={label}
-                  className="flex items-center gap-4 px-5 py-4"
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#E50914]/20 bg-[#E50914]/[0.07] text-[#E50914]">
+                  <Icon size={18} strokeWidth={1.7} />
+                </span>
+                <span
+                  className="text-[13px] font-medium uppercase tracking-[0.12em] text-zinc-300"
+                  style={{ fontFamily: FONT_B }}
                 >
-                  <span
-                    className="w-7 shrink-0 text-[11px] tabular-nums text-zinc-600"
-                    style={{ fontFamily: FONT_B }}
-                  >
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <Icon aria-hidden size={15} strokeWidth={1.6} className="shrink-0 text-[#E50914]/70" />
-                  <span
-                    className="text-[13px] font-medium tracking-[0.04em] text-zinc-300"
-                    style={{ fontFamily: FONT_B }}
-                  >
-                    {label}
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </motion.div>
+                  {label}
+                </span>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>

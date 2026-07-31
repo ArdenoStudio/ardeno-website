@@ -1,21 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 export const Cursor: React.FC = () => {
-  const reduced = useReducedMotion();
-  const [enabled, setEnabled] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
-    const finePointer = window.matchMedia('(pointer: fine)').matches;
-    const noTouch = window.matchMedia('(hover: hover)').matches;
-    setEnabled(finePointer && noTouch && !reduced);
-  }, [reduced]);
-
-  useEffect(() => {
-    if (!enabled) return;
-
     const mouseMove = (e: MouseEvent) => {
       setMousePosition({
         x: e.clientX,
@@ -45,9 +35,7 @@ export const Cursor: React.FC = () => {
       window.removeEventListener('mousemove', mouseMove);
       window.removeEventListener('mouseover', mouseOver);
     };
-  }, [enabled]);
-
-  if (!enabled) return null;
+  }, []);
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[9999] mix-blend-difference custom-cursor">

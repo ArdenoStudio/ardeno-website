@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import React, { useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
     ArrowLeft,
     ArrowUpRight,
@@ -11,7 +11,6 @@ import {
     Search,
     ShieldCheck,
     WalletCards,
-    X,
     type LucideIcon,
 } from 'lucide-react';
 import { Footer } from '../Layout/Footer';
@@ -174,41 +173,32 @@ const SUPPORT_ROUTES = [
     { label: 'Start a project', action: 'contact', icon: ArrowUpRight },
 ];
 
-const slugify = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-
-const AccordionItem: React.FC<{
-    item: FAQItem;
-    index: number;
-    categorySlug: string;
-    open: boolean;
-    onToggle: () => void;
-    reducedMotion: boolean;
-}> = ({ item, index, categorySlug, open, onToggle, reducedMotion }) => {
-    const triggerId = `faq-${categorySlug}-${index}-trigger`;
-    const answerId = `faq-${categorySlug}-${index}-answer`;
-    const panelDuration = reducedMotion ? 0 : 0.34;
-    const iconDuration = reducedMotion ? 0 : 0.24;
+const AccordionItem: React.FC<{ item: FAQItem; index: number; defaultOpen?: boolean }> = ({
+    item,
+    index,
+    defaultOpen = false,
+}) => {
+    const [open, setOpen] = useState(defaultOpen);
+    const id = item.q.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
     return (
         <motion.div
-            initial={reducedMotion ? false : { opacity: 0, y: 14 }}
+            initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: reducedMotion ? 0 : 0.5, ease: EASE, delay: reducedMotion ? 0 : index * 0.04 }}
-            className={`faq-question-row${open ? ' is-open' : ''}`}
-            data-open={open}
+            transition={{ duration: 0.5, ease: EASE, delay: index * 0.04 }}
+            className="faq-question-row"
         >
             <button
                 type="button"
-                id={triggerId}
-                onClick={onToggle}
+                onClick={() => setOpen((v) => !v)}
                 className="faq-question-button group"
                 aria-expanded={open}
-                aria-controls={answerId}
+                aria-controls={`${id}-answer`}
             >
                 <span className="faq-question-text">{item.q}</span>
                 <span className="faq-question-icon" aria-hidden="true">
-                    <motion.span animate={{ rotate: open ? 45 : 0 }} transition={{ duration: iconDuration, ease: EASE }}>
+                    <motion.span animate={{ rotate: open ? 45 : 0 }} transition={{ duration: 0.24, ease: EASE }}>
                         <ArrowUpRight className="h-4 w-4" />
                     </motion.span>
                 </span>
@@ -217,13 +207,11 @@ const AccordionItem: React.FC<{
             <AnimatePresence initial={false}>
                 {open && (
                     <motion.div
-                        id={answerId}
-                        role="region"
-                        aria-labelledby={triggerId}
-                        initial={reducedMotion ? { opacity: 1 } : { height: 0, opacity: 0 }}
-                        animate={reducedMotion ? { opacity: 1 } : { height: 'auto', opacity: 1 }}
-                        exit={reducedMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
-                        transition={{ duration: panelDuration, ease: EASE }}
+                        id={`${id}-answer`}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.34, ease: EASE }}
                         style={{ overflow: 'hidden' }}
                     >
                         <p className="faq-answer">{item.a}</p>
@@ -237,8 +225,6 @@ const AccordionItem: React.FC<{
 export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
     const [activeCategory, setActiveCategory] = useState(0);
     const [query, setQuery] = useState('');
-    const [openMap, setOpenMap] = useState<Record<string, boolean>>({});
-    const reducedMotion = useReducedMotion() ?? false;
 
     const normalizedQuery = query.trim().toLowerCase();
     const totalQuestions = FAQS.reduce((total, category) => total + category.items.length, 0);
@@ -259,98 +245,6 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
     const active = FAQS[activeCategory] ?? FAQS[0];
     const displayedCategories = normalizedQuery ? filteredCategories : [active];
     const displayedCount = displayedCategories.reduce((total, category) => total + category.items.length, 0);
-    const activeCategorySlug = slugify(active.label);
-
-    const itemKey = (categorySlug: string, index: number) => `${categorySlug}-${index}`;
-
-    useEffect(() => {
-        if (normalizedQuery) {
-            const next: Record<string, boolean> = {};
-            filteredCategories.forEach((category) => {
-                const categorySlug = slugify(category.label);
-                category.items.forEach((_, index) => {
-                    next[itemKey(categorySlug, index)] = index === 0;
-                });
-            });
-            setOpenMap(next);
-            return;
-        }
-
-        const next: Record<string, boolean> = {};
-        active.items.forEach((_, index) => {
-            next[itemKey(activeCategorySlug, index)] = index === 0;
-        });
-        setOpenMap(next);
-    }, [normalizedQuery, activeCategory, activeCategorySlug, active.items, filteredCategories]);
-
-    const currentCategoryKeys = useMemo(() => {
-        if (normalizedQuery) {
-            return filteredCategories.flatMap((category) => {
-                const categorySlug = slugify(category.label);
-                return category.items.map((_, index) => itemKey(categorySlug, index));
-            });
-        }
-        return active.items.map((_, index) => itemKey(activeCategorySlug, index));
-    }, [normalizedQuery, filteredCategories, active.items, activeCategorySlug]);
-
-    const allExpanded = currentCategoryKeys.length > 0 && currentCategoryKeys.every((key) => openMap[key]);
-
-    const focusCategoryTab = useCallback((index: number) => {
-        const tab = document.getElementById(`faq-tab-${slugify(FAQS[index]?.label ?? '')}`);
-        tab?.focus();
-    }, []);
-
-    const handleCategoryKeyDown = useCallback(
-        (event: React.KeyboardEvent<HTMLDivElement>) => {
-            if (normalizedQuery) return;
-
-            const { key } = event;
-            if (!['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(key)) return;
-
-            event.preventDefault();
-            const lastIndex = FAQS.length - 1;
-            let nextIndex = activeCategory;
-
-            if (key === 'ArrowDown' || key === 'ArrowRight') {
-                nextIndex = activeCategory >= lastIndex ? 0 : activeCategory + 1;
-            } else if (key === 'ArrowUp' || key === 'ArrowLeft') {
-                nextIndex = activeCategory <= 0 ? lastIndex : activeCategory - 1;
-            } else if (key === 'Home') {
-                nextIndex = 0;
-            } else if (key === 'End') {
-                nextIndex = lastIndex;
-            }
-
-            setQuery('');
-            setActiveCategory(nextIndex);
-            focusCategoryTab(nextIndex);
-        },
-        [activeCategory, focusCategoryTab, normalizedQuery]
-    );
-
-    const toggleItem = (key: string) => {
-        setOpenMap((prev) => ({ ...prev, [key]: !prev[key] }));
-    };
-
-    const expandAll = () => {
-        setOpenMap((prev) => {
-            const next = { ...prev };
-            currentCategoryKeys.forEach((key) => {
-                next[key] = true;
-            });
-            return next;
-        });
-    };
-
-    const collapseAll = () => {
-        setOpenMap((prev) => {
-            const next = { ...prev };
-            currentCategoryKeys.forEach((key) => {
-                next[key] = false;
-            });
-            return next;
-        });
-    };
 
     const navigateHome = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
         e.preventDefault();
@@ -369,7 +263,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
     };
 
     const openAIChat = () => {
-        const isOpen = document.querySelector('[role="dialog"][aria-label*="Ardeno AI assistant"]');
+        const isOpen = document.querySelector('[role="dialog"][aria-label="AI assistant"]');
         if (isOpen) return;
         const fab = document.getElementById('ardeno-ai-fab') as HTMLButtonElement | null;
         fab?.click();
@@ -383,8 +277,6 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
 
         startProject();
     };
-
-    const clearSearch = () => setQuery('');
 
     return (
         <div className="faq-page bg-[#050506] text-white" style={{ fontFamily: FONT_BODY }}>
@@ -629,30 +521,10 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
           color: #fff;
           font-family: ${FONT_BODY};
           font-size: 13px;
-          padding: 0 44px 0 44px;
+          padding: 0 16px 0 44px;
         }
         .faq-search-input::placeholder {
           color: rgba(255,255,255,0.32);
-        }
-        .faq-search-clear {
-          position: absolute;
-          right: 10px;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 30px;
-          height: 30px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 999px;
-          border: 1px solid rgba(255,255,255,0.1);
-          background: rgba(255,255,255,0.045);
-          color: rgba(255,255,255,0.55);
-        }
-        .faq-search-clear:hover {
-          color: #fff;
-          border-color: rgba(229,9,20,0.35);
-          background: rgba(229,9,20,0.12);
         }
         .faq-category-list {
           display: grid;
@@ -673,8 +545,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
           text-align: left;
         }
         .faq-category-button:hover,
-        .faq-category-button[data-active="true"],
-        .faq-category-button[aria-selected="true"] {
+        .faq-category-button[data-active="true"] {
           color: #fff;
           border-color: rgba(229,9,20,0.26);
           background: rgba(229,9,20,0.075);
@@ -725,34 +596,6 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
           gap: 24px;
           margin-bottom: 26px;
         }
-        .faq-expand-controls {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 8px;
-        }
-        .faq-expand-button {
-          min-height: 36px;
-          padding: 0 14px;
-          border-radius: 999px;
-          border: 1px solid rgba(255,255,255,0.1);
-          background: rgba(255,255,255,0.03);
-          color: rgba(255,255,255,0.62);
-          font-family: ${FONT_UI};
-          font-size: 11px;
-          font-weight: 800;
-          text-transform: uppercase;
-        }
-        .faq-expand-button:hover {
-          color: #fff;
-          border-color: rgba(229,9,20,0.35);
-          background: rgba(229,9,20,0.1);
-        }
-        .faq-result-count {
-          margin-top: 10px;
-          font-size: 12px;
-          color: rgba(255,255,255,0.42);
-        }
         .faq-category-heading {
           font-family: ${FONT_DISPLAY};
           font-size: 3.2rem;
@@ -763,24 +606,11 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
         .faq-question-group + .faq-question-group {
           margin-top: 44px;
         }
-        .faq-accordion {
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 16px;
-          background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(8,8,9,0.55));
-          overflow: hidden;
-          box-shadow: inset 0 1px 0 rgba(255,255,255,0.035), 0 18px 50px rgba(0,0,0,0.22);
-        }
         .faq-question-row {
-          border-top: 1px solid rgba(255,255,255,0.08);
-          background: transparent;
-          transition: background 0.2s ease;
+          border-top: 1px solid rgba(255,255,255,0.09);
         }
-        .faq-question-row:first-child {
-          border-top: 0;
-        }
-        .faq-question-row.is-open {
-          background: linear-gradient(90deg, rgba(229,9,20,0.1), rgba(229,9,20,0.02) 42%, transparent);
-          box-shadow: inset 3px 0 0 #E50914;
+        .faq-question-row:last-child {
+          border-bottom: 1px solid rgba(255,255,255,0.09);
         }
         .faq-question-button {
           width: 100%;
@@ -788,21 +618,17 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
           align-items: flex-start;
           justify-content: space-between;
           gap: 24px;
-          padding: 22px 20px;
+          padding: 24px 0;
           text-align: left;
           color: rgba(255,255,255,0.84);
         }
-        .faq-question-button:hover,
-        .faq-question-row.is-open .faq-question-button {
+        .faq-question-button:hover {
           color: #fff;
         }
         .faq-question-text {
           font-size: 18px;
           font-weight: 650;
           line-height: 1.45;
-        }
-        .faq-question-row.is-open .faq-question-text {
-          color: #fff;
         }
         .faq-question-icon {
           flex: 0 0 auto;
@@ -815,35 +641,18 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
           border: 1px solid rgba(255,255,255,0.1);
           background: rgba(255,255,255,0.025);
           color: rgba(255,255,255,0.5);
-          transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
         }
-        .faq-question-button:hover .faq-question-icon,
-        .faq-question-row.is-open .faq-question-icon {
+        .faq-question-button:hover .faq-question-icon {
           color: ${RED};
-          border-color: rgba(229,9,20,0.4);
-          background: rgba(229,9,20,0.12);
+          border-color: rgba(229,9,20,0.3);
+          background: rgba(229,9,20,0.075);
         }
         .faq-answer {
           max-width: 780px;
-          padding: 0 58px 24px 20px;
+          padding: 0 58px 26px 0;
           font-size: 14px;
           line-height: 1.9;
           color: rgba(255,255,255,0.62);
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .faq-nav-button,
-          .faq-primary-button,
-          .faq-secondary-button,
-          .faq-category-button,
-          .faq-support-button,
-          .faq-question-button,
-          .faq-question-icon,
-          .faq-question-row {
-            transition: none;
-          }
-          .faq-primary-button:hover {
-            transform: none;
-          }
         }
         .faq-empty {
           border: 1px solid rgba(255,255,255,0.09);
@@ -923,16 +732,13 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
           }
           .faq-question-button {
             gap: 16px;
-            padding: 18px 16px;
+            padding: 22px 0;
           }
           .faq-question-text {
             font-size: 16px;
           }
           .faq-answer {
-            padding: 0 16px 20px;
-          }
-          .faq-expand-controls {
-            width: 100%;
+            padding-right: 0;
           }
         }
       `}</style>
@@ -1050,25 +856,9 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
                                     placeholder="Search pricing, timelines, ownership"
                                     type="search"
                                 />
-                                {query.length > 0 && (
-                                    <button
-                                        type="button"
-                                        className="faq-search-clear"
-                                        onClick={clearSearch}
-                                        aria-label="Clear search"
-                                    >
-                                        <X className="h-3.5 w-3.5" />
-                                    </button>
-                                )}
                             </div>
 
-                            <div
-                                className="faq-category-list"
-                                role="tablist"
-                                aria-label="FAQ categories"
-                                aria-orientation="vertical"
-                                onKeyDown={handleCategoryKeyDown}
-                            >
+                            <div className="faq-category-list">
                                 {FAQS.map((category, index) => {
                                     const Icon = category.icon;
                                     const isActive = !normalizedQuery && activeCategory === index;
@@ -1076,13 +866,8 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
                                         <button
                                             key={category.label}
                                             type="button"
-                                            role="tab"
-                                            id={`faq-tab-${slugify(category.label)}`}
                                             className="faq-category-button"
                                             data-active={isActive}
-                                            aria-selected={isActive}
-                                            aria-controls="faq-panel"
-                                            tabIndex={isActive ? 0 : -1}
                                             onClick={() => {
                                                 setQuery('');
                                                 setActiveCategory(index);
@@ -1119,7 +904,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
                             </div>
                         </aside>
 
-                        <div className="min-w-0" id="faq-panel" role="tabpanel" aria-labelledby={`faq-tab-${activeCategorySlug}`}>
+                        <div className="min-w-0">
                             <div className="faq-content-header">
                                 <div className="min-w-0">
                                     <p className="mb-3 text-[11px] font-bold uppercase text-[#E50914]" style={{ fontFamily: FONT_UI }}>
@@ -1129,82 +914,45 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
                                         {normalizedQuery ? 'Matching answers' : active.label}
                                     </h2>
                                     <p className="mt-3 max-w-xl text-[14px] leading-7 text-white/50">
-                                        {normalizedQuery ? `Results for "${query}".` : active.summary}
-                                    </p>
-                                    <p className="faq-result-count" aria-live="polite" aria-atomic="true">
-                                        Showing {displayedCount} answer{displayedCount === 1 ? '' : 's'}
+                                        {normalizedQuery ? `Showing ${displayedCount} answer${displayedCount === 1 ? '' : 's'} for "${query}".` : active.summary}
                                     </p>
                                 </div>
-                                <div className="faq-expand-controls">
-                                    {!normalizedQuery && (
-                                        <span className="rounded-full border border-white/[0.1] bg-white/[0.035] px-4 py-2 text-[12px] text-white/55">
-                                            {active.items.length} answers
-                                        </span>
-                                    )}
-                                    {displayedCount > 0 && (
-                                        <>
-                                            <button
-                                                type="button"
-                                                className="faq-expand-button"
-                                                onClick={expandAll}
-                                                disabled={allExpanded}
-                                                aria-disabled={allExpanded}
-                                            >
-                                                Expand all
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className="faq-expand-button"
-                                                onClick={collapseAll}
-                                                disabled={currentCategoryKeys.every((key) => !openMap[key])}
-                                            >
-                                                Collapse all
-                                            </button>
-                                        </>
-                                    )}
-                                </div>
+                                {!normalizedQuery && (
+                                    <span className="rounded-full border border-white/[0.1] bg-white/[0.035] px-4 py-2 text-[12px] text-white/55">
+                                        {active.items.length} answers
+                                    </span>
+                                )}
                             </div>
 
                             {displayedCategories.length ? (
                                 <AnimatePresence mode="wait">
                                     <motion.div
                                         key={normalizedQuery ? normalizedQuery : active.label}
-                                        initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+                                        initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        exit={reducedMotion ? undefined : { opacity: 0, y: -6 }}
-                                        transition={{ duration: reducedMotion ? 0 : 0.28, ease: EASE }}
+                                        exit={{ opacity: 0, y: -6 }}
+                                        transition={{ duration: 0.28, ease: EASE }}
                                     >
-                                        {displayedCategories.map((category) => {
-                                            const categorySlug = slugify(category.label);
-                                            return (
-                                                <div className="faq-question-group" key={category.label}>
-                                                    {normalizedQuery && (
-                                                        <div className="mb-4 flex items-center gap-3">
-                                                            <span className="h-px w-7 bg-[#E50914]" />
-                                                            <p className="text-[12px] font-bold uppercase text-white/55" style={{ fontFamily: FONT_UI }}>
-                                                                {category.label}
-                                                            </p>
-                                                        </div>
-                                                    )}
-                                                    <div className="faq-accordion">
-                                                        {category.items.map((item, index) => {
-                                                            const key = itemKey(categorySlug, index);
-                                                            return (
-                                                                <AccordionItem
-                                                                    key={`${category.label}-${item.q}`}
-                                                                    item={item}
-                                                                    index={index}
-                                                                    categorySlug={categorySlug}
-                                                                    open={Boolean(openMap[key])}
-                                                                    onToggle={() => toggleItem(key)}
-                                                                    reducedMotion={reducedMotion}
-                                                                />
-                                                            );
-                                                        })}
+                                        {displayedCategories.map((category, categoryIndex) => (
+                                            <div className="faq-question-group" key={category.label}>
+                                                {normalizedQuery && (
+                                                    <div className="mb-4 flex items-center gap-3">
+                                                        <span className="h-px w-7 bg-[#E50914]" />
+                                                        <p className="text-[12px] font-bold uppercase text-white/55" style={{ fontFamily: FONT_UI }}>
+                                                            {category.label}
+                                                        </p>
                                                     </div>
-                                                </div>
-                                            );
-                                        })}
+                                                )}
+                                                {category.items.map((item, index) => (
+                                                    <AccordionItem
+                                                        key={`${category.label}-${item.q}`}
+                                                        item={item}
+                                                        index={index}
+                                                        defaultOpen={!normalizedQuery && categoryIndex === 0 && index === 0}
+                                                    />
+                                                ))}
+                                            </div>
+                                        ))}
                                     </motion.div>
                                 </AnimatePresence>
                             ) : (

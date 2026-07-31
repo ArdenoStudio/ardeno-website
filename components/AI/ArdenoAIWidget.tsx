@@ -75,8 +75,6 @@ const STARTER_PROMPTS: QuickAction[] = [
 
 const STORAGE_KEY = "ardeno_ai_messages_v7";
 const OPEN_KEY = "ardeno_ai_open_v7";
-const AI_PANEL_ID = "ardeno-ai-panel";
-const CHAR_LIMIT = 500;
 
 const genId = () => Math.random().toString(36).slice(2, 9);
 
@@ -755,27 +753,6 @@ const STYLES = `
     font-weight: 800;
   }
 
-  .aw-disclaimer {
-    margin: 0 0 8px;
-    padding-inline: 4px;
-    font-family: var(--aw-body);
-    font-size: 11px;
-    line-height: 1.45;
-    color: rgba(255, 255, 255, 0.38);
-  }
-
-  .aw-char-count {
-    font-variant-numeric: tabular-nums;
-  }
-
-  .aw-char-count.near-limit {
-    color: rgba(255, 180, 80, 0.9);
-  }
-
-  .aw-char-count.at-limit {
-    color: rgba(255, 77, 87, 0.95);
-  }
-
   .aw-reduced .aw-fab,
   .aw-reduced .aw-quick,
   .aw-reduced .aw-icon-button,
@@ -842,8 +819,7 @@ const STYLES = `
     }
 
     .aw-compose-meta {
-      flex-wrap: wrap;
-      gap: 4px 10px;
+      display: none;
     }
   }
 `;
@@ -916,9 +892,6 @@ const ArdenoAIWidget: React.FC = () => {
     const abortRef = useRef<AbortController | null>(null);
 
     const isInputEmpty = useMemo(() => input.trim().length === 0, [input]);
-    const charCount = input.length;
-    const nearLimit = charCount >= CHAR_LIMIT - 50;
-    const atLimit = charCount >= CHAR_LIMIT;
 
     const close = useCallback(() => {
         abortRef.current?.abort();
@@ -1028,7 +1001,7 @@ const ArdenoAIWidget: React.FC = () => {
     }, [close, open]);
 
     const sendPrompt = async (value: string) => {
-        const trimmed = value.trim().slice(0, CHAR_LIMIT);
+        const trimmed = value.trim();
         if (!trimmed || loading) return;
 
         const userMsg: Message = {
@@ -1132,8 +1105,6 @@ const ArdenoAIWidget: React.FC = () => {
                 type="button"
                 onClick={toggle}
                 aria-label={open ? "Close AI assistant" : "Open AI assistant"}
-                aria-expanded={open}
-                aria-controls={AI_PANEL_ID}
                 className="aw-fab aw-fab-wrapper"
                 whileTap={reduced ? undefined : { scale: 0.98 }}
                 style={{
@@ -1214,7 +1185,6 @@ const ArdenoAIWidget: React.FC = () => {
             <AnimatePresence>
                 {open && (
                     <motion.div
-                        id={AI_PANEL_ID}
                         role="dialog"
                         aria-label="Ardeno AI assistant"
                         aria-modal="true"
@@ -1261,7 +1231,7 @@ const ArdenoAIWidget: React.FC = () => {
                                 </div>
                             </header>
 
-                            <div className="aw-scroll" aria-live="polite" aria-relevant="additions">
+                            <div className="aw-scroll">
                                 {messages.length === 0 && (
                                     <>
                                         <motion.section
@@ -1378,23 +1348,18 @@ const ArdenoAIWidget: React.FC = () => {
                             </div>
 
                             <footer className="aw-compose">
-                                <p className="aw-disclaimer">
-                                    AI may be inaccurate — contact us for final scope.
-                                </p>
                                 <div className={`aw-input-wrap${focused ? " focused" : ""}`}>
                                     <textarea
                                         ref={textareaRef}
                                         value={input}
-                                        onChange={(e) => setInput(e.target.value.slice(0, CHAR_LIMIT))}
+                                        onChange={(e) => setInput(e.target.value)}
                                         onKeyDown={onInputKeyDown}
                                         onFocus={() => setFocused(true)}
                                         onBlur={() => setFocused(false)}
                                         placeholder="Tell us what you want to build..."
                                         disabled={loading}
                                         rows={1}
-                                        maxLength={CHAR_LIMIT}
                                         className="aw-input"
-                                        aria-describedby="aw-char-count"
                                     />
 
                                     <button
@@ -1415,12 +1380,7 @@ const ArdenoAIWidget: React.FC = () => {
 
                                 <div className="aw-compose-meta">
                                     <span>Server-side Ardeno context</span>
-                                    <span
-                                        id="aw-char-count"
-                                        className={`aw-char-count${atLimit ? " at-limit" : nearLimit ? " near-limit" : ""}`}
-                                    >
-                                        {charCount}/{CHAR_LIMIT}
-                                    </span>
+                                    <strong>Ardeno Studio</strong>
                                 </div>
                             </footer>
                         </div>

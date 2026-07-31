@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 
@@ -113,73 +113,44 @@ const AnimatedLogo: React.FC<AnimatedLogoProps> = ({
   className,
   reduced,
 }) => {
-  const rootRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     if (reduced) return;
 
     const canvas = canvasRef.current;
-    const root = rootRef.current;
-    if (!canvas || !root) return;
+    if (!canvas) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     let frame = 0;
     let active = true;
-    let inView = true;
-    let mask: HTMLCanvasElement | null = null;
     const image = new Image();
 
-    const stopLoop = () => {
-      if (frame) {
-        window.cancelAnimationFrame(frame);
-        frame = 0;
-      }
-    };
-
-    const render = (now: number) => {
-      if (!active || !mask || !inView) {
-        frame = 0;
-        return;
-      }
-      drawLogoTexture(ctx, mask, tone, now / 1000);
-      frame = window.requestAnimationFrame(render);
-    };
-
-    const startLoop = () => {
-      if (!active || !mask || !inView || frame) return;
-      frame = window.requestAnimationFrame(render);
-    };
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        inView = entry?.isIntersecting ?? false;
-        if (inView) startLoop();
-        else stopLoop();
-      },
-      { rootMargin: "80px", threshold: 0.01 }
-    );
-    observer.observe(root);
-
     image.onload = () => {
-      mask = createLogoMask(image, width, height);
+      const mask = createLogoMask(image, width, height);
       if (!mask) return;
-      startLoop();
+
+      const render = (now: number) => {
+        if (!active) return;
+        drawLogoTexture(ctx, mask, tone, now / 1000);
+        frame = window.requestAnimationFrame(render);
+      };
+
+      frame = window.requestAnimationFrame(render);
     };
 
     image.src = src;
 
     return () => {
       active = false;
-      observer.disconnect();
-      stopLoop();
+      if (frame) window.cancelAnimationFrame(frame);
     };
-  }, [reduced, src, tone, width, height]);
+  }, [reduced, src, tone]);
 
   return (
-    <div ref={rootRef} className={`relative ${className}`}>
+    <div className={`relative ${className}`}>
       <img
         src={src}
         alt={alt}
@@ -206,18 +177,6 @@ const AnimatedLogo: React.FC<AnimatedLogoProps> = ({
 export const BrandIdentity: React.FC = () => {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const [pathname, setPathname] = useState(() =>
-    typeof window !== "undefined" ? window.location.pathname : "/brand"
-  );
-  const showBackToSite = pathname !== "/" && pathname !== "";
-
-  useEffect(() => {
-    const syncPath = () => setPathname(window.location.pathname);
-    syncPath();
-    window.addEventListener("popstate", syncPath);
-    return () => window.removeEventListener("popstate", syncPath);
-  }, []);
-
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
@@ -282,17 +241,15 @@ export const BrandIdentity: React.FC = () => {
                 We can use the glossy Ardeno renders as a premium identity moment across the homepage, loader, and future product portals.
               </p>
 
-              {showBackToSite && (
-                <a
-                  href="/"
-                  onClick={handleBackHome}
-                  className="mt-7 inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.035] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-white/20 hover:bg-white/[0.07]"
-                  style={{ fontFamily: FONT_B }}
-                >
-                  <ArrowLeft size={14} strokeWidth={1.8} />
-                  Back to site
-                </a>
-              )}
+              <a
+                href="/"
+                onClick={handleBackHome}
+                className="mt-7 inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.035] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-white/20 hover:bg-white/[0.07]"
+                style={{ fontFamily: FONT_B }}
+              >
+                <ArrowLeft size={14} strokeWidth={1.8} />
+                Back to site
+              </a>
 
               <div className="mt-8 grid max-w-md grid-cols-3 border-y border-white/[0.08] py-5">
                 {[
