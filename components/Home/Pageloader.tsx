@@ -78,46 +78,25 @@ const GRAIN_BG =
   "numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E" +
   "%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
 
-const prefersReducedMotion = () => {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-};
-
 // --- Components ---
-const StaggerWord = memo<{
-  text: string;
-  baseDelay: number;
-  charStyle: React.CSSProperties;
-  animName?: string;
-  reduceMotion?: boolean;
-}>(
-  ({ text, baseDelay, charStyle, animName = "avl-charIn", reduceMotion = false }) => {
-    if (reduceMotion) {
-      return (
-        <span style={{ display: "inline-block", ...charStyle, opacity: 1 }}>
-          {text}
+const StaggerWord = memo<{ text: string; baseDelay: number; charStyle: React.CSSProperties; animName?: string }>(
+  ({ text, baseDelay, charStyle, animName = "avl-charIn" }) => (
+    <span style={{ display: "inline-block", overflow: "hidden" }}>
+      {text.split("").map((ch, i) => (
+        <span
+          key={i}
+          style={{
+            ...charStyle,
+            display: "inline-block",
+            opacity: 0,
+            animation: `${animName} 0.58s cubic-bezier(0.16,1,0.3,1) ${baseDelay + i * 0.045}s forwards`,
+          }}
+        >
+          {ch === " " ? "\u00A0" : ch}
         </span>
-      );
-    }
-
-    return (
-      <span style={{ display: "inline-block", overflow: "hidden" }}>
-        {text.split("").map((ch, i) => (
-          <span
-            key={i}
-            style={{
-              ...charStyle,
-              display: "inline-block",
-              opacity: 0,
-              animation: `${animName} 0.58s cubic-bezier(0.16,1,0.3,1) ${baseDelay + i * 0.045}s forwards`,
-            }}
-          >
-            {ch === " " ? "\u00A0" : ch}
-          </span>
-        ))}
-      </span>
-    );
-  }
+      ))}
+    </span>
+  )
 );
 StaggerWord.displayName = "StaggerWord";
 
@@ -143,18 +122,15 @@ const SvgDefs = memo(() => (
 ));
 SvgDefs.displayName = "SvgDefs";
 
-const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number; reduceMotion?: boolean }>(
-  ({ exiting, flashRed, progress, reduceMotion = false }) => (
+const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number }>(
+  ({ exiting, flashRed, progress }) => (
     <div
       className="avl-glass-overlay"
       style={{
         ...FULL_COVER,
-        animation: reduceMotion
-          ? undefined
-          : exiting
-            ? "avl-fadeOutPhase 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards"
-            : "avl-fadeInPhase 1s ease-out forwards",
-        opacity: reduceMotion ? 1 : undefined,
+        animation: exiting
+          ? "avl-fadeOutPhase 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards"
+          : "avl-fadeInPhase 1s ease-out forwards",
         zIndex: 3,
         perspective: "1000px"
       }}
@@ -167,7 +143,7 @@ const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number
         style={{
           ...FULL_COVER,
           background: "radial-gradient(circle at 50% 45%, rgba(229,9,20,0.15) 0%, transparent 50%)",
-          animation: reduceMotion ? undefined : "avl-breathe 5s ease-in-out infinite",
+          animation: "avl-breathe 5s ease-in-out infinite",
           pointerEvents: "none",
         }}
       />
@@ -178,10 +154,8 @@ const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number
           {/* Logo */}
           <div style={{
             width: 80, height: 80, marginBottom: 8,
-            opacity: reduceMotion ? 1 : 0,
-            animation: reduceMotion
-              ? undefined
-              : "avl-crownReveal 0.42s cubic-bezier(0.16,1,0.3,1) 0.02s forwards",
+            opacity: 0,
+            animation: "avl-crownReveal 0.42s cubic-bezier(0.16,1,0.3,1) 0.02s forwards",
           }}>
             <svg viewBox="200 580 360 340" style={{ width: "100%", height: "100%", overflow: "visible" }}>
               <SvgDefs />
@@ -194,21 +168,13 @@ const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number
                 stroke="url(#avl-aStroke)"
                 strokeWidth="3.5"
                 strokeLinecap="round"
-                style={
-                  reduceMotion
-                    ? { strokeDasharray: 2000, strokeDashoffset: 0 }
-                    : { strokeDasharray: 2000, animation: "avl-drawPath 0.62s cubic-bezier(0.2,1,0.4,1) 0.1s forwards" }
-                }
+                style={{ strokeDasharray: 2000, animation: "avl-drawPath 0.62s cubic-bezier(0.2,1,0.4,1) 0.1s forwards" }}
               />
               <path
                 d={A_MARK_PATH}
                 fill="url(#avl-aGrad)"
                 filter="url(#avl-aGlow)"
-                style={
-                  reduceMotion
-                    ? { opacity: 1, transformOrigin: "center" }
-                    : { opacity: 0, transformOrigin: "center", animation: "avl-fillFade 0.48s cubic-bezier(0.16,1,0.3,1) 0.44s forwards" }
-                }
+                style={{ opacity: 0, transformOrigin: "center", animation: "avl-fillFade 0.48s cubic-bezier(0.16,1,0.3,1) 0.44s forwards" }}
               />
             </svg>
           </div>
@@ -218,7 +184,6 @@ const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number
             <StaggerWord
               text="ARDENO"
               baseDelay={0.28}
-              reduceMotion={reduceMotion}
               charStyle={{
                 fontFamily: "'Bricolage Grotesque', sans-serif",
                 fontSize: "clamp(24px, 8vw, 34px)",
@@ -231,7 +196,6 @@ const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number
             <StaggerWord
               text="STUDIO"
               baseDelay={0.54}
-              reduceMotion={reduceMotion}
               charStyle={{
                 fontFamily: "'Sora', sans-serif",
                 fontSize: "clamp(10px, 4vw, 14px)",
@@ -322,13 +286,12 @@ const shouldSkipLoader = () => {
 
 export const PageLoader: React.FC<{ onComplete?: () => void; minDuration?: number }> = ({
   onComplete,
-  minDuration = 900,
+  minDuration = 1500,
 }) => {
   const [done, setDone] = useState(shouldSkipLoader);
   const [progress, setProgress] = useState(0);
   const [exiting, setExiting] = useState(false);
   const [flashRed, setFlashRed] = useState(false);
-  const [reduceMotion] = useState(prefersReducedMotion);
 
   const rafRef = useRef(0);
   const lastProgressRef = useRef(0);
@@ -399,12 +362,7 @@ export const PageLoader: React.FC<{ onComplete?: () => void; minDuration?: numbe
         pointerEvents: exiting ? "none" : "all"
       }}
     >
-      <ArdenoPhase
-        exiting={exiting}
-        flashRed={reduceMotion ? false : flashRed}
-        progress={progress}
-        reduceMotion={reduceMotion}
-      />
+      <ArdenoPhase exiting={exiting} flashRed={flashRed} progress={progress} />
     </div>
   );
 };

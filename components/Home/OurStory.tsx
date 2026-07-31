@@ -37,7 +37,7 @@ export const OurStory: React.FC = () => {
       <div className="relative z-10 container mx-auto px-6 md:px-12">
         <FadeUp>
           <div className="flex items-center gap-3 mb-10">
-            <Minus aria-hidden className="w-3.5 h-3.5 text-[#E50914] stroke-[1.5] shrink-0" />
+            <Minus className="w-3.5 h-3.5 text-[#E50914] stroke-[1.5] shrink-0" />
             <span
               className="text-[13px] tracking-[0.22em] uppercase"
               style={{ fontFamily: FONT_B, fontWeight: 500, color: '#a0a0a0' }}
@@ -73,36 +73,20 @@ export const OurStory: React.FC = () => {
                 <div className="w-6 h-px bg-[#E50914] mb-5 opacity-65" />
                 <div className="space-y-6">
                   <p className="leading-[1.85] text-[15px] text-[#bdbdc5]" style={{ fontFamily: FONT_B }}>
-                    Ardeno started because too many agency sites felt interchangeable.
-                    We wanted work with a clearer point of view — sites that sound like
-                    the business behind them.
+                    Ardeno was founded on a simple belief: most websites look the same because
+                    most agencies play it safe. We build for businesses that want more identity,
+                    more presence, and more results.
                   </p>
                   <p className="leading-[1.85] text-[15px] text-[#bdbdc5]" style={{ fontFamily: FONT_B }}>
-                    Every project is treated like the only one. No templates, no shortcuts,
-                    and no &quot;that&apos;ll do.&quot; We obsess over details because details are what
-                    people remember.
+                    Every project is treated like the only one. No templates, no shortcuts, and
+                    no &quot;that&apos;ll do.&quot; We obsess over details because details are what people remember.
                   </p>
                   <p className="leading-[1.85] text-[15px] text-[#bdbdc5]" style={{ fontFamily: FONT_B }}>
-                    Based in Colombo and working globally, we&apos;ve built for hospitality,
-                    retail, aviation, and professional services — brands that need presence
-                    with substance.
+                    Based in Colombo and working globally, we&apos;ve helped brands across hospitality,
+                    retail, aviation, and professional services build digital presences that reflect
+                    their ambition.
                   </p>
                 </div>
-
-                <aside className="mt-8 border-l-2 border-[#E50914] pl-5">
-                  <p
-                    className="mb-2 text-[10px] uppercase tracking-[0.2em] text-[#E50914]/90"
-                    style={{ fontFamily: FONT_B, fontWeight: 600 }}
-                  >
-                    Director&apos;s note
-                  </p>
-                  <p
-                    className="text-[14px] leading-[1.75] text-zinc-400"
-                    style={{ fontFamily: FONT_B }}
-                  >
-                    If the first screen does not earn trust, nothing below it can recover the visit.
-                  </p>
-                </aside>
               </div>
             </FadeUp>
           </div>
@@ -159,6 +143,17 @@ export const OurStory: React.FC = () => {
                   />
                 </div>
               </div>
+            </div>
+
+            <div
+              className="absolute -bottom-4 -right-2 md:-right-4 rounded-2xl border border-white/[0.08] bg-[#0c0c0e]/95 backdrop-blur-xl px-4 py-3 shadow-[0_20px_50px_rgba(0,0,0,0.45)]"
+            >
+              <p className="text-[9px] tracking-[0.2em] uppercase text-zinc-500 mb-1" style={{ fontFamily: FONT_B }}>
+                Industries
+              </p>
+              <p className="text-[13px] text-white" style={{ fontFamily: FONT_B }}>
+                Hospitality · Fitness · Aviation · Luxury
+              </p>
             </div>
           </FadeUp>
         </div>

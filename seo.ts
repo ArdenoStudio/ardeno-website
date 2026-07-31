@@ -199,13 +199,7 @@ export const buildStructuredData = (route: SeoRouteKey) => {
   }
 
   if (seo.type === "article") {
-    const datePublished =
-      route === "cs-humble-beginnings"
-        ? "2026-05-28"
-        : ("datePublished" in seo && typeof seo.datePublished === "string" && seo.datePublished) ||
-          seo.lastmod ||
-          "2026-01-01";
-    const dateModified = seo.lastmod || datePublished;
+    const date = route === "cs-humble-beginnings" ? "2026-05-28" : seo.lastmod;
     graph.push({
       "@type": "Article",
       "@id": `${canonical}#article`,
@@ -214,8 +208,8 @@ export const buildStructuredData = (route: SeoRouteKey) => {
       image: SITE.image,
       author: { "@id": `${SITE.url}/#organization` },
       publisher: { "@id": `${SITE.url}/#organization` },
-      datePublished,
-      dateModified,
+      datePublished: date,
+      dateModified: seo.lastmod,
       mainEntityOfPage: { "@id": pageId },
     });
   }
@@ -241,19 +235,6 @@ export const applySeoToDocument = (route: SeoRouteKey) => {
   setMeta('meta[property="og:image"]', { property: "og:image", content: image });
   setMeta('meta[property="og:url"]', { property: "og:url", content: canonical });
   setMeta('meta[property="og:type"]', { property: "og:type", content: seo.type === "article" ? "article" : "website" });
-  if (seo.type === "article") {
-    const published =
-      route === "cs-humble-beginnings"
-        ? "2026-05-28"
-        : ("datePublished" in seo && typeof seo.datePublished === "string" && seo.datePublished) ||
-          seo.lastmod ||
-          "2026-01-01";
-    setMeta('meta[property="article:published_time"]', { property: "article:published_time", content: published });
-    setMeta('meta[property="article:modified_time"]', {
-      property: "article:modified_time",
-      content: seo.lastmod || published,
-    });
-  }
   setMeta('meta[name="twitter:card"]', { name: "twitter:card", content: "summary_large_image" });
   setMeta('meta[name="twitter:title"]', { name: "twitter:title", content: seo.title });
   setMeta('meta[name="twitter:description"]', { name: "twitter:description", content: seo.description });

@@ -665,9 +665,7 @@ const SidebarContent: React.FC<{
                         return (
                             <button
                                 key={item.id}
-                                type="button"
                                 onClick={() => onNavigate(item.id)}
-                                aria-current={isActive ? 'page' : undefined}
                                 style={{
                                     display: 'flex',
                                     alignItems: 'center',
@@ -823,47 +821,16 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
         }
     }, [sidebarOpen]);
 
-    const syncHash = (id: string) => {
-        const nextHash = `#${id}`;
-        if (window.location.hash === nextHash) return;
-        window.history.pushState({}, '', `${window.location.pathname}${nextHash}`);
-    };
-
     const navigate = (id: string) => {
         setActiveId(id);
         setSidebarOpen(false);
         setSearchQuery('');
-        syncHash(id);
     };
 
     // ✅ breadcrumb click targets
     const exitDocs = (hash?: string) => {
         window.dispatchEvent(new CustomEvent('docs:exit', hash ? { detail: { hash } } : undefined));
     };
-
-    useEffect(() => {
-        const fromHash = window.location.hash.replace(/^#/, '');
-        if (fromHash && ALL_ITEMS.some((item) => item.id === fromHash)) {
-            setActiveId(fromHash);
-        }
-    }, []);
-
-    useEffect(() => {
-        const onPopState = () => {
-            const fromHash = window.location.hash.replace(/^#/, '');
-            if (fromHash && ALL_ITEMS.some((item) => item.id === fromHash)) {
-                setActiveId(fromHash);
-                return;
-            }
-            if (!fromHash) setActiveId('overview');
-        };
-        window.addEventListener('popstate', onPopState);
-        window.addEventListener('hashchange', onPopState);
-        return () => {
-            window.removeEventListener('popstate', onPopState);
-            window.removeEventListener('hashchange', onPopState);
-        };
-    }, []);
 
     useEffect(() => {
         const h = (e: KeyboardEvent) => {
@@ -1167,11 +1134,8 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                 {/* Hamburger — hidden on desktop via CSS */}
                 <button
                     id="docs-sidebar-toggle"
-                    type="button"
                     onClick={() => setSidebarOpen((v) => !v)}
                     aria-label="Toggle sidebar"
-                    aria-expanded={sidebarOpen}
-                    aria-controls="docs-mobile-sidebar"
                     className="docs-mobile-btn"
                     style={{
                         display: 'flex',
@@ -1263,55 +1227,27 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                     />
                     <input
                         id="docs-search-input"
-                        type="search"
-                        aria-label="Search documentation"
+                        type="text"
                         placeholder="Search docs..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onFocus={() => setSearchFocused(true)}
                         onBlur={() => setSearchFocused(false)}
-                        className="docs-search-input"
                         style={{
                             width: '100%',
                             minHeight: 38,
-                            padding: searchQuery ? '8px 40px 8px 38px' : '8px 14px 8px 38px',
+                            padding: '8px 14px 8px 38px',
                             borderRadius: 999,
                             background: searchFocused ? 'rgba(255,255,255,0.07)' : PANEL,
                             border: `1px solid ${searchFocused ? RED_DIM : BORDER}`,
                             color: '#fff',
                             fontFamily: FONT_BODY,
                             fontSize: 12,
+                            outline: 'none',
                             transition: 'all 0.25s ease',
                             boxSizing: 'border-box',
                         }}
                     />
-                    {searchQuery ? (
-                        <button
-                            type="button"
-                            aria-label="Clear search"
-                            onClick={() => setSearchQuery('')}
-                            className="docs-search-clear"
-                            style={{
-                                position: 'absolute',
-                                right: 8,
-                                top: '50%',
-                                transform: 'translateY(-50%)',
-                                width: 26,
-                                height: 26,
-                                borderRadius: 999,
-                                border: `1px solid ${BORDER}`,
-                                background: PANEL,
-                                color: 'rgba(255,255,255,0.7)',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                cursor: 'pointer',
-                                padding: 0,
-                            }}
-                        >
-                            <X size={12} />
-                        </button>
-                    ) : null}
                 </div>
             </header>
 
@@ -1360,7 +1296,6 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                                 style={{ position: 'fixed', inset: 0, zIndex: 70, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(4px)' }}
                             />
                             <motion.aside
-                                id="docs-mobile-sidebar"
                                 initial={{ x: '-100%' }}
                                 animate={{ x: 0 }}
                                 exit={{ x: '-100%' }}
@@ -1524,15 +1459,6 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
 
             {/* Scoped responsive CSS */}
             <style>{`
-        .docs-search-input:focus-visible {
-          outline: 2px solid rgba(229,9,20,0.9);
-          outline-offset: 3px;
-          border-color: rgba(229,9,20,0.45) !important;
-        }
-        .docs-search-clear:focus-visible {
-          outline: 2px solid rgba(229,9,20,0.9);
-          outline-offset: 2px;
-        }
         .docs-content-wrap {
           width: min(100%, 980px);
           margin: 0 auto;

@@ -216,41 +216,26 @@ const App: React.FC = () => {
     </motion.div>
   );
 
-  const routeSkeleton = (
-    <div
-      className="flex min-h-[50vh] items-center justify-center bg-[#080809]"
-      role="status"
-      aria-label="Loading"
-    >
-      <div className="flex w-40 flex-col items-center gap-3">
-        <div className="h-px w-full overflow-hidden rounded-full bg-white/[0.06]">
-          <div className="h-full w-1/2 animate-pulse rounded-full bg-[#E50914]/70" />
-        </div>
-        <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-white/25" />
-      </div>
-    </div>
-  );
-
   return (
     <div className="bg-zinc-950 text-white min-h-screen overflow-x-clip selection:bg-accent selection:text-white relative">
       <PageLoader onComplete={() => setLoaded(true)} minDuration={900} />
 
       <>
         {route === 'docs' && (
-          <Suspense key="docs" fallback={routeSkeleton}>
+          <Suspense key="docs" fallback={null}>
             <DocsPage onOpenContact={() => setContactOpen(true)} />
           </Suspense>
         )}
 
         {route === 'faq' && pageShell(
-          <Suspense key="faq" fallback={routeSkeleton}>
+          <Suspense key="faq" fallback={null}>
             <FAQPage onOpenContact={() => setContactOpen(true)} />
           </Suspense>,
           { hideNav: true }
         )}
 
         {route === 'case-studies' && pageShell(
-          <Suspense key="case-studies" fallback={routeSkeleton}>
+          <Suspense key="case-studies" fallback={null}>
             <CaseStudiesIndex />
           </Suspense>,
           { hideNav: true }
@@ -268,14 +253,14 @@ const App: React.FC = () => {
         )}
 
         {route === 'cs-humble-beginnings' && pageShell(
-          <Suspense key="cs-humble-beginnings" fallback={routeSkeleton}>
+          <Suspense key="cs-humble-beginnings" fallback={null}>
             <HumbleBeginnings />
           </Suspense>,
           { hideNav: true }
         )}
 
         {servicePageKey && pageShell(
-          <Suspense key={route} fallback={routeSkeleton}>
+          <Suspense key={route} fallback={null}>
             <ServicePage pageKey={servicePageKey} onOpenContact={() => setContactOpen(true)} />
           </Suspense>,
           { hideNav: true }
@@ -302,7 +287,7 @@ const App: React.FC = () => {
               <>
                 <Suspense fallback={null}><AuditCTA onOpenContact={() => setContactOpen(true)} /></Suspense>
                 <Suspense fallback={null}><FeaturedWork /></Suspense>
-                <Suspense fallback={null}><Services onOpenContact={() => setContactOpen(true)} /></Suspense>
+                <Suspense fallback={null}><Services /></Suspense>
                 <Suspense fallback={null}><Process /></Suspense>
                 <Suspense fallback={null}><OurStory /></Suspense>
                 <Suspense fallback={null}><Testimonials /></Suspense>
