@@ -1,0 +1,309 @@
+{
+  "pages": {
+    "service-booking-systems": {
+      "path": "/services/booking-systems",
+      "kind": "service",
+      "icon": "calendar",
+      "eyebrow": "Booking Systems",
+      "shortLabel": "Booking systems",
+      "title": "Custom booking systems for appointment-led businesses.",
+      "intro": "Ardeno Studio builds custom booking systems for restaurants, salons, clinics, events, service teams, consultants, and other businesses that need a cleaner way to collect appointment or reservation requests online.",
+      "summary": "The first version does not need to be overcomplicated. A strong booking system should make the customer journey clear, capture the right details, notify the business, keep admin records readable, and create a reliable handoff for confirmations, reminders, payments, or calendar sync when those extras are needed.",
+      "idealFor": [
+        "Salons, clinics, consultants, workshops, restaurants, venues, private services, and appointment-led local businesses.",
+        "Teams currently taking bookings through scattered calls, WhatsApp messages, social DMs, or manual spreadsheets.",
+        "Businesses that want a custom booking flow instead of forcing their process into a generic template."
+      ],
+      "outcomes": [
+        "Clear booking or reservation form",
+        "Service, package, date, and time handling",
+        "Customer contact and requirement capture",
+        "Business notifications and admin records",
+        "Confirmation, reminder, payment, or calendar options when useful",
+        "Privacy-aware data handling and production checks"
+      ],
+      "sections": [
+        {
+          "title": "How can I build a custom booking system for my business?",
+          "body": [
+            "Start by mapping the real booking journey before choosing software. The important questions are what the customer selects, what information the business needs, how staff confirm availability, what the customer receives after submitting, and what the admin team must track later.",
+            "Ardeno turns that map into a browser-based booking flow. Depending on the business, the first release can be a controlled request-and-confirmation system, a more automated appointment flow, or a custom portal with dashboards, reminders, payments, and customer records."
+          ],
+          "bullets": [
+            "Define the services, packages, durations, and customer fields.",
+            "Choose whether bookings are request-based, auto-confirmed, or staff-approved.",
+            "Set up notifications for the customer and the business team.",
+            "Keep the admin view simple enough for daily use."
+          ]
+        },
+        {
+          "title": "What features should a professional booking system include?",
+          "body": [
+            "A professional booking system should reduce back-and-forth, not create more work. Ardeno usually starts with a clear front-end flow, server-side validation, confirmation copy, staff notifications, and records the business can search or review.",
+            "More advanced builds can add role-based admin access, availability rules, deposits, payment links, customer accounts, reminders, calendar sync, analytics, and reports. Those features are added when they support the actual operation."
+          ],
+          "bullets": [
+            "Mobile-first booking forms that are easy to complete.",
+            "Admin-friendly records with customer, service, date, time, and status.",
+            "Email or WhatsApp-ready handoff paths for confirmations.",
+            "Validation, abuse checks, and safe handling of customer details."
+          ]
+        }
+      ],
+      "process": [
+        "Audit the current booking process and pain points.",
+        "Design the customer flow and admin handoff.",
+        "Build the form, logic, notifications, and records.",
+        "Test the flow on mobile, desktop, and edge cases.",
+        "Launch with clear handover notes for daily use."
+      ],
+      "faqs": [
+        {
+          "question": "Can I automate customer appointments on my website?",
+          "answer": "Yes. A website can automate appointment requests, confirmations, notifications, reminders, and admin records. Ardeno usually recommends starting with a controlled flow before adding complex real-time scheduling or payments."
+        },
+        {
+          "question": "Do I need payments in the first version?",
+          "answer": "Not always. Many businesses should first validate the booking flow, staff process, and customer demand. Deposits or payment links can be added when they clearly reduce no-shows or admin work."
+        }
+      ],
+      "related": [
+        { "label": "Business websites", "href": "/services/business-websites" },
+        { "label": "AI lead assistants", "href": "/services/ai-lead-assistants" },
+        { "label": "FAQ", "href": "/faq" }
+      ]
+    },
+    "service-business-websites": {
+      "path": "/services/business-websites",
+      "kind": "service",
+      "icon": "monitor",
+      "eyebrow": "Business Websites",
+      "shortLabel": "Business websites",
+      "title": "Professional business websites that make the company easier to trust.",
+      "intro": "Ardeno Studio builds custom-coded business websites for brands that need a credible first impression, clear service pages, fast mobile performance, and practical conversion paths such as calls, forms, WhatsApp, bookings, or enquiries.",
+      "summary": "A professional business website should explain what the company does, who it serves, why the offer is credible, what proof exists, and what the visitor should do next. Ardeno treats those pages as sales infrastructure, not decoration.",
+      "idealFor": [
+        "Local businesses that need a serious online presence before running ads, outreach, or SEO.",
+        "Service companies whose current website does not explain the offer clearly enough.",
+        "Brands that want custom design, code ownership, and launch checks instead of a generic template."
+      ],
+      "outcomes": [
+        "Homepage and core service pages",
+        "Responsive custom-coded interface",
+        "Clear calls to action and contact paths",
+        "Metadata, sitemap, structured data, and llms.txt support",
+        "Performance, accessibility, and launch checks",
+        "Handover without platform lock-in"
+      ],
+      "sections": [
+        {
+          "title": "How do I start building a professional business website?",
+          "body": [
+            "Start with the business goal, target customer, services, proof, brand assets, required pages, and the action visitors should take. A good website plan is specific: it knows which questions the buyer has and what evidence will help them move forward.",
+            "Ardeno turns that plan into page structure, copy direction, interface design, responsive development, metadata, testing, and handover. The result should be easy for customers to understand and easy for the business to keep using."
+          ],
+          "bullets": [
+            "Clarify the offer and primary conversion action.",
+            "Shape service pages around real buyer questions.",
+            "Use proof, examples, process, and FAQs to build trust.",
+            "Launch with crawlable metadata and production checks."
+          ]
+        },
+        {
+          "title": "How can I increase sales through my company website?",
+          "body": [
+            "A company website increases sales when visitors quickly understand the offer, trust the business, see proof, and have an easy next step. The design matters, but clarity and conversion flow matter more.",
+            "Ardeno improves this through stronger first impressions, sharper service pages, mobile-friendly layouts, lead capture, booking or order paths, better calls to action, and analytics-ready launch checks."
+          ],
+          "bullets": [
+            "Make the offer understandable in the first screen.",
+            "Add service-specific pages that match customer intent.",
+            "Use proof, process, reviews, case studies, or examples.",
+            "Make contact, enquiry, booking, or WhatsApp actions obvious."
+          ]
+        },
+        {
+          "title": "Should I use a website builder or custom development?",
+          "body": [
+            "Use a website builder when the site is mostly a simple brochure, the budget is tight, the business needs to launch quickly, and there is no custom logic beyond normal pages, forms, images, and basic content updates.",
+            "Custom development becomes worth it when the website is part of how the business sells or operates. That includes booking systems, order flows, dashboards, customer portals, AI assistants, custom integrations, unique brand presentation, and performance-sensitive public pages."
+          ],
+          "bullets": [
+            "Choose a builder for a simple brochure or early validation site.",
+            "Choose custom development for stronger brand control, code ownership, and long-term flexibility.",
+            "Do not force booking, ordering, dashboards, portals, or automations into a generic template.",
+            "Start with the smallest custom version that solves the real business problem."
+          ]
+        }
+      ],
+      "process": [
+        "Define the business goal, audience, offer, pages, and proof.",
+        "Design the first impression and conversion path.",
+        "Build responsive pages with metadata and structured data.",
+        "Check speed, mobile layout, forms, and crawlability.",
+        "Hand over the site with ownership and next-step notes."
+      ],
+      "faqs": [
+        {
+          "question": "Is a custom business website better than a website builder?",
+          "answer": "A builder can be fine for a simple brochure, a fast experiment, or a very early business. Custom development is better when the business needs stronger brand differentiation, code ownership, faster interaction, service-specific content, booking or order flows, dashboards, portals, AI assistants, integrations, or long-term flexibility."
+        },
+        {
+          "question": "Can the site be optimized for AI and search visibility?",
+          "answer": "Yes. Ardeno adds crawlable page content, metadata, sitemap entries, structured data, FAQ content, and an llms.txt file so search engines and AI systems can understand the business more clearly."
+        }
+      ],
+      "related": [
+        { "label": "Website redesign", "href": "/services/website-redesign" },
+        { "label": "FAQ", "href": "/faq" },
+        { "label": "Docs", "href": "/docs" }
+      ]
+    },
+    "service-website-redesign": {
+      "path": "/services/website-redesign",
+      "kind": "service",
+      "icon": "refresh",
+      "eyebrow": "Website Redesign",
+      "shortLabel": "Website redesign",
+      "title": "Website redesigns for sites that no longer match the business.",
+      "intro": "Ardeno Studio redesigns existing websites that feel outdated, unclear, slow, hard to use, or weaker than the real company behind them.",
+      "summary": "A redesign should not only make the site look newer. It should fix the first impression, page structure, service clarity, mobile experience, technical foundation, and conversion path while preserving anything that already works.",
+      "idealFor": [
+        "Businesses with an existing site that looks dated or generic.",
+        "Teams getting traffic but not enough enquiries, calls, bookings, or trust.",
+        "Brands preparing for ads, SEO, partnerships, or a stronger public launch."
+      ],
+      "outcomes": [
+        "Current-site audit and priority findings",
+        "Sharper page structure and copy direction",
+        "Updated visual system and responsive design",
+        "Improved calls to action and contact paths",
+        "Performance, metadata, and crawlability pass",
+        "Launch checklist and handover notes"
+      ],
+      "sections": [
+        {
+          "title": "When should a business redesign its website?",
+          "body": [
+            "A redesign is worth considering when the site does not reflect the quality of the business, visitors cannot understand the offer quickly, mobile layouts feel awkward, pages load slowly, or the calls to action are hidden.",
+            "Ardeno starts by separating useful assets from weak structure. Existing brand material, photos, copy, domain authority, or content can be preserved when useful, while the design and technical foundation are rebuilt around a clearer customer journey."
+          ],
+          "bullets": [
+            "Weak first impression compared with competitors.",
+            "Unclear services, pricing signals, proof, or next steps.",
+            "Poor mobile layout, slow loading, or outdated visuals.",
+            "Missing SEO basics, structured data, sitemap, or useful service pages."
+          ]
+        },
+        {
+          "title": "What changes during a redesign sprint?",
+          "body": [
+            "A redesign sprint focuses on the pages and issues that matter most. That usually means the homepage, service pages, navigation, calls to action, contact flow, proof sections, FAQ content, metadata, and launch checks.",
+            "The goal is to make the website feel current, credible, and easier to act on without adding unnecessary complexity."
+          ],
+          "bullets": [
+            "Audit what exists before changing visuals.",
+            "Rebuild high-impact pages first.",
+            "Tighten copy around buyer intent and trust.",
+            "Verify the live output after build, not only the design."
+          ]
+        }
+      ],
+      "process": [
+        "Review the current website, analytics signals, and business goals.",
+        "Identify design, content, trust, performance, and conversion gaps.",
+        "Redesign the priority pages and user paths.",
+        "Rebuild the front end and metadata foundation.",
+        "Test mobile, forms, SEO files, and handover."
+      ],
+      "faqs": [
+        {
+          "question": "Will Ardeno keep useful parts of the old site?",
+          "answer": "Yes. A redesign does not mean deleting everything. Useful copy, proof, images, domains, content, or technical pieces can be preserved when they support the new direction."
+        },
+        {
+          "question": "Can a redesign help with local marketing?",
+          "answer": "Yes. Local businesses usually need clear service pages, Google and social profile consistency, proof, fast mobile pages, local SEO basics, and conversion paths such as calls, forms, WhatsApp, or bookings."
+        }
+      ],
+      "related": [
+        { "label": "Business websites", "href": "/services/business-websites" },
+        { "label": "Booking systems", "href": "/services/booking-systems" },
+        { "label": "FAQ", "href": "/faq" }
+      ]
+    },
+    "service-ai-lead-assistants": {
+      "path": "/services/ai-lead-assistants",
+      "kind": "service",
+      "icon": "bot",
+      "eyebrow": "AI Lead Assistants",
+      "shortLabel": "AI lead assistants",
+      "title": "AI lead assistants that answer questions and qualify enquiries.",
+      "intro": "Ardeno Studio builds practical AI assistants for websites that need to answer common visitor questions, guide users to the right service, collect project context, and hand qualified leads to the business.",
+      "summary": "The useful version of AI on a business website is not a gimmick. It should stay inside clear boundaries, use server-side protection, avoid exposing secrets, answer from approved business context, and move visitors toward a real conversion path.",
+      "idealFor": [
+        "Service businesses that receive repeated questions before a lead is ready to contact.",
+        "Websites that need after-hours support without promising full customer-service automation.",
+        "Teams that want to qualify enquiries before calls, forms, or WhatsApp handoff."
+      ],
+      "outcomes": [
+        "Website AI chat or FAQ assistant",
+        "Approved business knowledge and guardrails",
+        "Lead qualification questions and handoff",
+        "Server-side API proxy and key protection",
+        "Rate limiting, validation, and abuse controls",
+        "Privacy-aware logging and launch checks"
+      ],
+      "sections": [
+        {
+          "title": "What can an AI lead assistant do on a website?",
+          "body": [
+            "A website AI lead assistant can answer common questions, explain services, guide users to the right page, collect project context, and hand off to a form, email, WhatsApp, or booking flow. It is strongest when the business has clear approved content.",
+            "Ardeno keeps the assistant practical. It should not invent offers, expose private data, or replace important human decisions. The assistant should reduce friction before the lead reaches the business."
+          ],
+          "bullets": [
+            "Answer FAQs about services, timelines, ownership, and process.",
+            "Ask qualifying questions before sending an enquiry.",
+            "Route users to booking, contact, service, or guide pages.",
+            "Work with safe server-side keys instead of browser-exposed credentials."
+          ]
+        },
+        {
+          "title": "How should AI be added safely?",
+          "body": [
+            "AI should be added behind a protected API route with validation, rate limiting, allowed origins, abuse checks, and careful prompt context. The public website should never expose provider secrets or raw internal notes.",
+            "For many businesses, the best first version is a focused assistant that answers from site content, asks a few useful lead questions, and hands off to a normal human follow-up."
+          ],
+          "bullets": [
+            "Use server-side API handling for model calls.",
+            "Limit the assistant to approved business context.",
+            "Add clear handoff paths for human follow-up.",
+            "Treat private customer details carefully."
+          ]
+        }
+      ],
+      "process": [
+        "Define the assistant's approved scope and handoff goal.",
+        "Prepare clean business context and FAQ content.",
+        "Build the chat UI and protected server-side endpoint.",
+        "Add guardrails, validation, rate limits, and abuse checks.",
+        "Test answers, edge cases, privacy behavior, and conversion handoff."
+      ],
+      "faqs": [
+        {
+          "question": "Can an AI assistant replace a contact form?",
+          "answer": "It can support a contact form, but it should not always replace one. The strongest flow is often AI guidance plus a clear form, email, WhatsApp, or booking handoff."
+        },
+        {
+          "question": "Will the AI know everything about the business?",
+          "answer": "Only if the approved context is prepared well. Ardeno recommends limiting the assistant to verified services, FAQs, process details, and safe lead qualification rather than letting it guess."
+        }
+      ],
+      "related": [
+        { "label": "Booking systems", "href": "/services/booking-systems" },
+        { "label": "Business websites", "href": "/services/business-websites" },
+        { "label": "FAQ", "href": "/faq" }
+      ]
+    }
+  }
+}

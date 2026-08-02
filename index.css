@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ardeno-ink: #080809;
+  --ardeno-surface: #0c0c0e;
+  --ardeno-accent: #E50914;
+  --ardeno-accent-soft: rgba(229, 9, 20, 0.12);
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-body: "Sora", sans-serif;
+  --font-brand: "Bricolage Grotesque", sans-serif;
+  --font-ui: "DM Sans", sans-serif;
+}
+
+/* ── Custom scrollbar ───────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #E50914;
+}
+
+/* ── Grain overlay ──────────────────────────────────────── */
+.grain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.04;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ardeno-accent);
+  outline-offset: 3px;
+}
+
+/* ── Body base ──────────────────────────────────────────── */
+body {
+  background-color: var(--ardeno-ink);
+  font-family: var(--font-body);
+}
+
+/* ── Text glow utility ──────────────────────────────────── */
+.text-glow {
+  text-shadow: 0 0 30px rgba(229, 9, 20, 0.3);
+}
+
+/* ── Ardeno logo wordmark font ──────────────────────────── */
+.font-bricolage-condensed {
+  font-family: var(--font-brand);
+  font-variation-settings: "wdth" 75, "wght" 650;
+}
+
+/* ── Hero mesh background ───────────────────────────────── */
+.hero-mesh {
+  background:
+    radial-gradient(ellipse 80% 60% at 85% 20%, rgba(229, 9, 20, 0.09) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(229, 9, 20, 0.04) 0%, transparent 50%),
+    var(--ardeno-ink);
+}
+
+/* ── Project marquee ────────────────────────────────────── */
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll 42s linear infinite;
+}
+
+.marquee-track:hover,
+.marquee-track:focus-within {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* ── Subtle image reveal ────────────────────────────────── */
+.image-reveal {
+  mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+}
+
+body.project-modal-open .ardeno-cookie-banner,
+body.contact-modal-open .ardeno-cookie-banner {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
