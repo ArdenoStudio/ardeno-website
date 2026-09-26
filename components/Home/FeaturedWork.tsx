@@ -132,7 +132,7 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
             src={project.image} alt={project.title}
             width={1200} height={800}
             loading="lazy" decoding="async"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-top"
             style={{ opacity: 1 }}
             initial={{ scale: 1.08 }} animate={{ scale: 1 }}
             transition={{ duration: 0.8, ease: EXPO }}
@@ -362,7 +362,7 @@ const AllProjectsModal = ({ onClose, onSelectProject, projects }: { onClose: () 
                 onClick={() => { onSelectProject(p.id); onClose(); }}
                 className="group relative block w-full cursor-pointer aspect-[4/5] rounded-3xl overflow-hidden border border-white/5 text-left"
               >
-                <img src={p.image} alt={p.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <img src={p.image} alt={p.title} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
                 <div className="absolute bottom-0 left-0 right-0 p-8">
                   <p className="text-[10px] tracking-[0.2em] uppercase text-zinc-400 mb-2 font-medium">{p.category}</p>
@@ -437,7 +437,7 @@ const StickyProjectPreview = ({
           height={960}
           loading="lazy"
           decoding="async"
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover object-top"
         />
         <div
           className="absolute inset-0"
@@ -677,7 +677,7 @@ export const FeaturedWork: React.FC = () => {
                     {/* Mobile thumbnail — wider, 16:9-ish, rounded */}
                     <div className="lg:hidden w-[72px] h-[56px] rounded-xl overflow-hidden shrink-0"
                       style={{ border: "1px solid rgba(255,255,255,0.07)" }}>
-                      <img src={project.image} alt={project.title} width={72} height={56} loading="lazy" decoding="async" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
+                      <img src={project.image} alt={project.title} width={72} height={56} loading="lazy" decoding="async" className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
 
                     {/* Title + Category + mobile index */}

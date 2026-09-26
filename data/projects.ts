@@ -77,7 +77,7 @@ export const PROJECTS: Project[] = [
     outcome: "A modern decision and discovery surface for exploring Sri Lanka with clarity, authentic recommendations, and seamless trip planning.",
     role: "Product strategy, destination UX, interactive UI design, frontend build",
     year: "2026",
-    url: "https://lankawa-one.vercel.app/",
+    url: "https://lankawa.vercel.app/",
   },
   {
     id: "1",
