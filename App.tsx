@@ -10,6 +10,8 @@ import { trackUtmParams } from './components/UI/trackUtm';
 import { applySeoToDocument, SeoRouteKey } from './seo';
 import type { ServicePageKey } from './components/Services/ServicePage';
 
+const ArdenoWebsite = lazy(() => import('./components/Website/ArdenoWebsite'));
+
 // ─── Lazy-loaded below-fold sections ─────────────────────────────────────────
 const FeaturedWork = lazy(() =>
   import('./components/Home/FeaturedWork').then(m => ({ default: m.FeaturedWork }))
@@ -344,4 +346,20 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+const Website: React.FC = () => {
+  const [pathname, setPathname] = useState(window.location.pathname);
+  useEffect(() => {
+    const syncRoute = () => setPathname(window.location.pathname);
+    window.addEventListener('popstate', syncRoute);
+    window.addEventListener('docs:exit', syncRoute);
+    return () => {
+      window.removeEventListener('popstate', syncRoute);
+      window.removeEventListener('docs:exit', syncRoute);
+    };
+  }, []);
+  return pathname === '/' || pathname === '/index.html'
+    ? <Suspense fallback={<div className="min-h-dvh bg-stone-100" aria-label="Loading Ardeno Studio" />}><ArdenoWebsite /></Suspense>
+    : <App />;
+};
+
+export default Website;

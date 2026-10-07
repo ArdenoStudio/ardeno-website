@@ -1,0 +1,107 @@
+/* Shared interaction layer: drawn underlines, ink fills, sliding indicators and springy press states.
+   Uses the spring easings defined in navigation.css. Hover effects only apply on devices that can hover,
+   and they also run on keyboard focus. */
+
+/* ── Drawn underline: wrap link text in <span class="ul"> ─────────────────────────────── */
+.ul{position:relative;display:inline-block}
+.ul::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1.5px;background:currentColor;transform:scaleX(0);transform-origin:right center;transition:transform 560ms var(--spring-soft)}
+.footer-top nav a:hover{text-decoration:none}
+.studio-people .text-button{text-decoration:none}
+.studio-people .text-button .ul::before{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:currentColor;opacity:.35}
+
+/* ── Header navigation: on hover each letter rolls up in turn with a spring, and rolls back in turn ── */
+.nav-roll>span{transition:transform 520ms var(--spring-pull)}
+.roll-text{display:inline-block}
+.roll-letters{display:flex}
+.roll-letter{position:relative;display:block;box-sizing:content-box;height:calc(var(--roll-lh,1.45) * 1em);line-height:var(--roll-lh,1.45);padding:var(--roll-pad,.2em) 0;margin:calc(var(--roll-pad,.2em) * -1) 0;overflow:hidden}
+.roll-letter>span{display:block;transition:transform 560ms var(--spring-pull);transition-delay:calc(var(--i) * 34ms)}
+.roll-letter>span+span{position:absolute;left:0;top:calc(var(--roll-lh,1.45) * 1em + var(--roll-pad,.2em))}
+.site-header .desktop-nav .roll-letter>span{color:var(--ink)}
+
+/* ── Work filters: the selection outline slides between options ──────────────────────────── */
+.work-filters{position:relative}
+.work-filters button{transition:color 240ms ease,transform 520ms var(--spring-pull)}
+.work-filters button:active{transform:scale(.94);transition-duration:140ms}
+.work-filters button.is-active{border-color:transparent}
+.filter-indicator{position:absolute;left:0;top:0;width:var(--iw,0);height:var(--ih,0);border:1px solid var(--ink);border-radius:999px;transform:translate(var(--ix,0px),var(--iy,0px));opacity:var(--io,0);pointer-events:none}
+.work-filters[data-ready] .filter-indicator{transition:transform 560ms var(--spring-pull),width 560ms var(--spring-pull),height 560ms var(--spring-pull),opacity 200ms ease}
+
+/* ── Primary buttons and the contact ring (see contact.css): ink fill from the pointer, spring press ───── */
+.site-button,.contact-arrow,.contact-chip{--fx:50%;--fy:50%;--fd:560px;position:relative;isolation:isolate;overflow:hidden}
+.site-button::before,.contact-arrow::before,.contact-chip::before{content:"";position:absolute;z-index:-1;left:var(--fx);top:var(--fy);width:var(--fd);height:var(--fd);margin:calc(var(--fd)/-2) 0 0 calc(var(--fd)/-2);border-radius:50%;background:var(--btn-fill,#ff3301);transform:scale(0);transition:transform 640ms cubic-bezier(.22,.9,.3,1);pointer-events:none}
+.site-button{transition:transform 520ms var(--spring-pull),color 300ms ease}
+.site-button svg{flex:none;transition:transform 560ms var(--spring-pull)}
+.site-button:not(:disabled):active{transform:scale(.96);transition-duration:140ms,300ms}
+
+/* ── Icon buttons (menu, close) ──────────────────────────────────────────────────────────── */
+.icon-button{transition:transform 520ms var(--spring-pull)}
+.icon-button:active{transform:scale(.88);transition-duration:140ms}
+.modal-close svg{transition:transform 560ms var(--spring-pull)}
+
+/* ── Arrows beside text links and text buttons nudge on hover ───────────────────────────── */
+:is(.text-button,.work-outro a,.service-content button,.contact-mail>a,.footer-top nav a,.footer-bottom>a,.founder-grid>a)>svg,.trust-strip>a>span:last-child{transition:transform 520ms var(--spring-pull)}
+
+/* ── Work cards ──────────────────────────────────────────────────────────────────────────── */
+.project-visual{transition:transform 520ms var(--spring-pull)}
+.project-visual:active{transform:scale(.985);transition-duration:140ms}
+.project-visual img{transition:transform 560ms var(--spring-pull)}
+.project-open{transition:transform 560ms var(--spring-pull),background-color 300ms ease,color 300ms ease}
+.project-open svg{transition:transform 560ms var(--spring-pull)}
+
+/* ── Accordions and founder rows ─────────────────────────────────────────────────────────── */
+.service-plus{transition:background-color 300ms ease,color 300ms ease,border-color 300ms ease}
+.service-plus svg,.faq-trigger svg{transition:transform 560ms var(--spring-pull)}
+.service-trigger .service-heading{transition:transform 560ms var(--spring-pull)}
+.founder-grid>a{transition:transform 560ms var(--spring-pull)}
+.founder-initial{transition:background-color 300ms ease}
+
+/* ── FAQ and services accordions: the height springs open, the content eases in behind it,
+      and the divider above an open FAQ question draws in ──────────────────────────────────── */
+.faq-answer,.service-content{overflow:hidden}
+.faq-answer[data-state=open],.service-content[data-state=open]{animation:accordion-open 560ms var(--spring-soft)}
+.faq-answer[data-state=closed],.service-content[data-state=closed]{animation:accordion-close 340ms cubic-bezier(.4,0,.2,1)}
+.faq-answer[data-state=open]>p,.service-content[data-state=open]>div{animation:accordion-reveal 620ms var(--spring-pull) 80ms both}
+.faq-answer[data-state=closed]>p,.service-content[data-state=closed]>div{animation:accordion-hide 220ms ease-in both}
+@keyframes accordion-open{from{height:0}to{height:var(--radix-accordion-content-height)}}
+@keyframes accordion-close{from{height:var(--radix-accordion-content-height)}to{height:0}}
+@keyframes accordion-reveal{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+@keyframes accordion-hide{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-6px)}}
+.faq-item{position:relative}
+.faq-item::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left center;transition:transform 640ms var(--spring-soft)}
+.faq-item[data-state=open]::before{transform:scaleX(1)}
+.faq-question{display:block;transition:transform 560ms var(--spring-pull)}
+
+@media(hover:hover){
+  .nav-roll-link:is(:hover,:focus-visible) .roll-letter>span{transform:translateY(-100%)}
+  :is(a,button):is(:hover,:focus-visible) .ul::after{transform:scaleX(1);transform-origin:left center}
+  .project-card:hover .project-caption .ul::after{transform:scaleX(1);transform-origin:left center}
+  .work-filters button:hover{color:var(--ink)}
+
+  .site-button:not(:disabled):is(:hover,:focus-visible){transform:translateY(-2px);color:#151613}
+  .site-button:not(:disabled):is(:hover,:focus-visible)::before{transform:scale(1)}
+  .site-button:not(:disabled):is(:hover,:focus-visible) svg{transform:translate(2px,-1px) rotate(45deg)}
+
+  .modal-close:is(:hover,:focus-visible) svg{transform:rotate(90deg)}
+
+  :is(.text-button,.work-outro a,.service-content button,.contact-mail>a,.footer-top nav a,.footer-bottom>a,.founder-grid>a):is(:hover,:focus-visible)>svg,.trust-strip>a:is(:hover,:focus-visible)>span:last-child{transform:translate(3px,-3px)}
+
+  .project-visual:is(:hover,:focus-visible) img{transform:translateY(-8px)}
+  .project-visual:is(:hover,:focus-visible) .project-open{transform:scale(1.14);background:var(--accent);color:#151613}
+  .project-visual:is(:hover,:focus-visible) .project-open svg{transform:rotate(45deg)}
+
+  .service-trigger:hover .service-heading{transform:translateX(8px)}
+  .service-trigger:hover .service-plus{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .faq-trigger[data-state=closed]:hover svg{transform:scale(1.25)}
+  .faq-trigger:is(:hover,:focus-visible) .faq-question{transform:translateX(8px)}
+  .founder-grid>a:is(:hover,:focus-visible){transform:translateX(6px)}
+  .founder-grid>a:is(:hover,:focus-visible) .founder-initial{background:var(--accent)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .ul::after,.nav-roll>span,.roll-letter>span,.work-filters button,.work-filters[data-ready] .filter-indicator,
+  .site-button,.site-button::before,.site-button svg,.contact-arrow,.contact-arrow::before,.contact-arrow svg,.contact-chip,.contact-chip::before,.icon-button,.modal-close svg,
+  :is(.text-button,.work-outro a,.service-content button,.contact-mail>a,.footer-top nav a,.footer-bottom>a,.founder-grid>a)>svg,.trust-strip>a>span:last-child,
+  .project-visual,.project-visual img,.project-open,.project-open svg,.service-plus,.service-plus svg,.faq-trigger svg,.service-trigger .service-heading,
+  .founder-grid>a,.founder-initial,.faq-item::before,.faq-question{transition:none}
+  .faq-answer,.service-content,.faq-answer>p,.service-content>div{animation:none!important}
+}

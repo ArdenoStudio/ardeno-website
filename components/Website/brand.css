@@ -1,0 +1,35 @@
+/* Header lockup, built from the official master (see brandLockup.ts). Following the brand guidelines: the A is as tall as the
+   wordmark's visible height, the gap is 0.32 times the symbol height, the letters keep their natural spacing, and the full
+   lockup is never narrower than 160px. The mark and the wordmark are two SVGs with the same height and the master's own
+   coordinates, so they line up exactly; do not nudge them with margins.
+   The mark never moves. The wordmark rolls out of it on load, collapses into it when the page scrolls, and rolls out again at the top.
+   data-state on .brand-lockup is intro (just loaded, mark alone), collapsed (scrolled) or restored (wordmark showing).
+   Spring easings come from navigation.css. */
+.brand-lockup{--h:34.7px;display:inline-flex;align-items:center;color:var(--ink);white-space:nowrap}
+.brand-mark{display:block;flex:none;width:var(--h);height:var(--h)}
+.brand-mark path{fill:var(--accent)}
+
+/* The wordmark: its width opens from nothing and the letters roll in from the first to the last. "studio" never moves; it fades in last. */
+.brand-word{display:inline-grid;grid-template-columns:1fr;transition:grid-template-columns 560ms cubic-bezier(.22,.9,.3,1)}
+/* The small left padding tops the master's gap (0.31 times the symbol height) up to the 0.32 in the written guidelines. */
+.brand-word-clip{display:flex;align-items:flex-start;min-width:0;overflow:hidden;padding:10px 0 10px calc(var(--h) * .0103);margin:-10px 0}
+.brand-wordmark{display:block;flex:none;width:calc(var(--h) * 468.94 / 116);height:var(--h);overflow:visible}
+.brand-glyph{transition:transform 600ms var(--spring-pull) calc(100ms + var(--i) * 45ms)}
+.brand-glyph path{fill:var(--ink)}
+.brand-sub{align-self:flex-start;margin:calc(var(--h) * .085) 0 0 calc(var(--h) * .17);font-family:var(--font-ui);font-size:8px;font-weight:500;line-height:1;transition:opacity 260ms ease 420ms}
+
+/* Mark alone: the letters are rolled up out of sight, the width is closed and "studio" is hidden. */
+.brand-lockup:is([data-state=collapsed],[data-state=intro]) .brand-word{grid-template-columns:0fr}
+.brand-lockup:is([data-state=collapsed],[data-state=intro]) .brand-glyph{transform:translateY(-120px)}
+.brand-lockup:is([data-state=collapsed],[data-state=intro]) .brand-sub{opacity:0}
+/* Collapsing on scroll: the letters roll away from the last to the first and "studio" fades, then the width closes. */
+.brand-lockup[data-state=collapsed] .brand-word{transition-delay:420ms}
+.brand-lockup[data-state=collapsed] .brand-glyph{transition-delay:calc((5 - var(--i)) * 45ms)}
+.brand-lockup[data-state=collapsed] .brand-sub{transition-duration:180ms;transition-delay:0ms}
+
+@media(max-width:1000px){.brand-sub{display:none}}
+/* The full lockup must stay at least 160px wide, so the symbol is a little larger on phones. */
+@media(max-width:760px){.brand-lockup{--h:32.6px}}
+/* Too narrow for a 160px lockup beside the buttons: show the symbol alone (its minimum is 24px high). */
+@media(max-width:340px){.brand-word{display:none}}
+@media(prefers-reduced-motion:reduce){.brand-word,.brand-glyph,.brand-sub{transition:none}}

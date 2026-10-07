@@ -20,10 +20,10 @@ import {
 
 // Typography / colour tokens
 // Match Hero typography
-const FONT_DISPLAY = "'Instrument Serif', Georgia, serif"; // Hero headline font
-const FONT_BODY = "'Sora', system-ui, -apple-system, 'Segoe UI', sans-serif"; // clean UI/body font
-const FONT_BRAND = "'Bricolage Grotesque', sans-serif";
-const FONT_UI = "'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif";
+const FONT_DISPLAY = "'Cal Sans', sans-serif"; // Hero headline font
+const FONT_BODY = "'Inter Variable', 'Inter', system-ui, sans-serif"; // clean UI/body font
+const FONT_BRAND = 'var(--font-brand)';
+const FONT_UI = "'Inter Variable', 'Inter', system-ui, sans-serif";
 const RED = '#E50914';
 const RED_DIM = 'rgba(229,9,20,0.18)';
 const RED_GLOW = 'rgba(229,9,20,0.10)';
@@ -1201,7 +1201,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                     style={{ display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none', flexShrink: 0 }}
                 >
                     <img src="/ardeno-logo.svg" alt="Ardeno Studio" style={{ height: 30, width: 'auto' }} />
-                    <span style={{ fontFamily: FONT_BRAND, fontSize: 14, fontWeight: 800, color: '#fff', letterSpacing: '0.04em' }}>ARDENO</span>
+                    <span style={{ fontFamily: FONT_BRAND, fontSize: 14, fontWeight: 400, color: '#fff' }}>ardeno</span>
                     <span
                         className="docs-header-ext"
                         style={{ fontFamily: FONT_UI, fontSize: 11, color: 'rgba(255,255,255,0.38)', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 800 }}

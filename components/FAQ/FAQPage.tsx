@@ -332,9 +332,9 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
         .faq-header-title {
           font-family: ${FONT_BRAND};
           font-size: 13px;
-          font-weight: 800;
+          font-weight: 400;
           color: #fff;
-          text-transform: uppercase;
+          text-transform: none;
         }
         .faq-header-subtitle {
           font-family: ${FONT_UI};
@@ -748,7 +748,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
                     <a href="/" onClick={navigateHome} className="flex min-w-0 items-center gap-3 no-underline">
                         <img src="/ardeno-logo.svg" alt="Ardeno Studio" className="h-9 w-auto flex-shrink-0" draggable={false} />
                         <span className="min-w-0">
-                            <span className="faq-header-title block">ARDENO</span>
+                            <span className="faq-header-title block">ardeno</span>
                             <span className="faq-header-subtitle block">/ FAQ</span>
                         </span>
                     </a>

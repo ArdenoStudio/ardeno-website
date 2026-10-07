@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight, ArrowLeft } from 'lucide-react';
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
-const FONT_H = "'Instrument Serif', Georgia, serif";
-const FONT_B = "'Sora', sans-serif";
+const FONT_H = "'Cal Sans', sans-serif";
+const FONT_B = "'Inter Variable', 'Inter', system-ui, sans-serif";
 
 interface CaseStudy {
   id: string;
@@ -91,7 +91,7 @@ export const CaseStudiesIndex: React.FC = () => {
               fontWeight: 400,
             }}
           >
-            Case <em style={{ fontStyle: 'italic', color: '#8c8c96', fontWeight: 400 }}>Studies.</em>
+            Case <em style={{ fontStyle: 'normal', color: '#8c8c96', fontWeight: 400 }}>Studies.</em>
           </h1>
           <p
             className="mt-6 max-w-2xl text-[15px] leading-[1.8] text-zinc-500"

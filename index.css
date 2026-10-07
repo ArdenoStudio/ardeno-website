@@ -7,10 +7,10 @@
   --ardeno-surface: #0c0c0e;
   --ardeno-accent: #E50914;
   --ardeno-accent-soft: rgba(229, 9, 20, 0.12);
-  --font-display: "Instrument Serif", Georgia, serif;
-  --font-body: "Sora", sans-serif;
-  --font-brand: "Bricolage Grotesque", sans-serif;
-  --font-ui: "DM Sans", sans-serif;
+  --font-display: "Cal Sans", sans-serif;
+  --font-body: "Cal Sans", sans-serif;
+  --font-brand: "Cal Sans", sans-serif;
+  --font-ui: "Cal Sans", sans-serif;
 }
 
 /* ── Custom scrollbar ───────────────────────────────────── */

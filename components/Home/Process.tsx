@@ -15,8 +15,8 @@ import { Minus } from "lucide-react";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
-const FONT_H = "'Instrument Serif', Georgia, serif";
-const FONT_B = "'Sora', sans-serif";
+const FONT_H = "'Cal Sans', sans-serif";
+const FONT_B = "'Inter Variable', 'Inter', system-ui, sans-serif";
 
 const STEPS = [
   {

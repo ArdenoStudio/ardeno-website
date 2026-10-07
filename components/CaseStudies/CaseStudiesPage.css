@@ -13,8 +13,8 @@
     --text-dim:   #71717a;
     --accent:     #E50914;
     --accent-dim: rgba(229,9,20,0.10);
-    --cond:       'Instrument Serif', Georgia, serif;
-    --body:       'Sora', sans-serif;
+    --cond:       'Cal Sans', sans-serif;
+    --body:       'Inter Variable', 'Inter', system-ui, sans-serif;
     --mono:       monospace;
     background: var(--ink);
     color: var(--text);
@@ -1089,7 +1089,7 @@
     font-size: 24px;
     line-height: 1.4;
     font-family: var(--cond);
-    font-style: italic;
+    font-style: normal;
     color: #fff;
     margin: 48px 0 0;
     padding-left: 24px;

@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import { Instagram, Linkedin, ArrowUpRight, Facebook } from 'lucide-react';
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
-const FONT_H = "'Instrument Serif', Georgia, serif";
-const FONT_B = "'Sora', sans-serif";
-const FONT_BRAND = "'Bricolage Grotesque', sans-serif";
+const FONT_H = "'Cal Sans', sans-serif";
+const FONT_B = "'Inter Variable', 'Inter', system-ui, sans-serif";
+const FONT_BRAND = 'var(--font-brand)';
 
 interface FooterProps {
   onOpenContact?: () => void;
@@ -162,9 +162,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
               aria-label="Go to Ardeno Studio home"
             >
               <img src="/ardeno-logo.svg" alt="" width={48} height={48} className="h-12 w-auto" loading="lazy" />
-              <span className="flex flex-col uppercase text-white" style={{ fontFamily: FONT_BRAND }}>
-                <span className="text-[12px] leading-none tracking-[0.16em]">Ardeno</span>
-                <span className="mt-1 text-[15px] font-black leading-none tracking-[0.12em]">Studio</span>
+              <span className="flex flex-col text-white" style={{ fontFamily: FONT_BRAND }}>
+                <span className="text-[12px] font-normal leading-none">ardeno</span>
+                <span className="mt-1 text-[15px] font-normal leading-none">studio</span>
               </span>
             </a>
 
@@ -267,10 +267,10 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
             loading="lazy"
           />
           <span
-            className="whitespace-nowrap text-[clamp(4rem,12.8vw,13rem)] font-black uppercase leading-none tracking-[0.01em]"
-            style={{ fontFamily: FONT_BRAND, fontVariationSettings: '"wdth" 82, "wght" 900' }}
+            className="whitespace-nowrap text-[clamp(4rem,12.8vw,13rem)] font-normal leading-none"
+            style={{ fontFamily: FONT_BRAND }}
           >
-            Ardeno
+            ardeno
           </span>
         </div>
       </motion.div>

@@ -23,12 +23,18 @@
     "video:render": "remotion render video/index.ts ArdenoWebsiteDemo public/demo-video/ardeno-studio-demo.mp4 --codec=h264 --overwrite"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource/cal-sans": "^5.3.0",
+    "@radix-ui/react-accordion": "^1.2.21",
+    "@radix-ui/react-dialog": "^1.2.0",
     "@vercel/speed-insights": "^2.0.0",
+    "clsx": "^2.1.1",
     "cobe": "^2.0.1",
     "framer-motion": "^12.34.2",
     "lucide-react": "^0.574.0",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
     "@remotion/cli": "^4.0.464",
