@@ -1,0 +1,85 @@
+/* Footer: big links, a conversation form, a social row, and the reversed lockup (A in Signal, letters in paper) across
+   the full width, as the brand guidelines ask for on ink. Everything rises in once when .ar-footer gets data-in
+   (useReveal). Spring easings come from navigation.css. */
+.ar-footer{--paper-text:#f4f4f2;position:relative;display:flex;flex-direction:column;min-height:min(100svh,1000px);padding-top:clamp(64px,8vw,120px);padding-bottom:24px;background:var(--ink,#20211f);color:var(--paper-text)}
+
+.ar-footer-top{display:grid;grid-template-columns:1fr minmax(300px,460px);gap:48px 96px;align-items:start}
+.ar-footer-nav{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.ar-footer-link{--roll-lh:1.12;--roll-pad:.03em;min-height:0;font-family:var(--font-display);font-size:clamp(44px,5.6vw,80px);line-height:1;color:var(--paper-text)}
+.ar-footer-cta p{margin:0 0 32px;font-size:clamp(18px,1.6vw,24px);line-height:1.4;color:#d8d9d4}
+.ar-footer-cta form{display:flex;align-items:center;gap:16px;padding-bottom:12px;border-bottom:1px solid rgba(244,244,242,.25);transition:border-color 300ms ease}
+.ar-footer-cta form:focus-within{border-color:var(--paper-text)}
+.ar-footer-cta input{flex:1;min-width:0;min-height:44px;border:0;background:transparent;color:var(--paper-text);font:inherit;font-size:18px}
+.ar-footer-cta input:focus,.ar-footer-cta input:focus-visible{outline:none}
+.ar-footer-cta input::placeholder{color:#8d8e86}
+.ar-footer-cta form button{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;color:#b4b5ad;transition:transform 560ms var(--spring-pull),background-color 300ms ease,color 300ms ease}
+.ar-footer-cta form button:active{transform:scale(.92);transition-duration:140ms}
+.ar-footer-contact{display:flex;flex-wrap:wrap;align-items:center;gap:4px 20px;margin-top:12px}
+.ar-footer-mail{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:13px;color:#b4b5ad}
+
+/* Copy button: a small outlined pill. The icon and label roll over to "Copied" (or "Copy failed") on a spring. */
+.ar-copy{--s:0;position:relative;display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:0 14px 0 12px;border:1px solid rgba(244,244,242,.28);border-radius:999px;font-size:12px;color:#d8d9d4;transition:transform 560ms var(--spring-pull),background-color 300ms ease,border-color 300ms ease,color 300ms ease}
+.ar-copy::after{content:"";position:absolute;inset:-6px}
+.ar-copy:active{transform:scale(.94);transition-duration:140ms}
+.ar-copy[data-state=copied]{--s:1;border-color:var(--accent,#ff3301);background:var(--accent,#ff3301);color:#151613;animation:ar-copy-pop 640ms var(--spring-snap)}
+.ar-copy[data-state=failed]{--s:2;border-color:#d8d9d4}
+.ar-copy-icon{position:relative;display:block;width:15px;height:15px;overflow:hidden}
+.ar-copy-icon svg{position:absolute;inset:0;transform:translateY(calc((var(--n,0) - var(--s)) * 120%));transition:transform 520ms var(--spring-pull)}
+.ar-copy-icon svg:first-child{--n:0}
+.ar-copy-icon svg:last-child{--n:1}
+.ar-copy[data-state=failed] .ar-copy-icon svg:first-child{transform:none}
+.ar-copy[data-state=failed] .ar-copy-icon svg:last-child{transform:translateY(120%)}
+.ar-copy-label{display:grid;overflow:hidden;height:1.4em;line-height:1.4;text-align:center}
+.ar-copy-label>span{grid-area:1/1;transform:translateY(calc((var(--n,0) - var(--s)) * 100%));transition:transform 520ms var(--spring-pull)}
+@keyframes ar-copy-pop{from{transform:scale(.9)}to{transform:scale(1)}}
+
+.ar-footer-social{display:flex;align-items:center;gap:48px;margin-top:clamp(64px,9vw,128px)}
+.ar-footer-rule{flex:1;height:1px;background:rgba(244,244,242,.2)}
+.ar-footer-social nav{display:flex;flex-wrap:wrap;gap:8px 40px}
+.ar-footer-social a{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#d8d9d4}
+
+.ar-footer-mark{margin-top:clamp(48px,6vw,88px)}
+.ar-footer-mark svg{display:block;width:100%;height:auto;overflow:hidden}
+.ar-footer-a{fill:var(--accent,#ff3301);opacity:0;transition:opacity 700ms ease 200ms}
+.ar-glyph{transform:translateY(150px);transition:transform 900ms var(--spring-pull) calc(300ms + var(--i) * 70ms)}
+.ar-glyph path{fill:var(--paper-text)}
+
+.ar-footer-meta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 32px;margin-top:16px;font-size:12px;color:#b4b5ad}
+.ar-footer-meta a{display:inline-flex;align-items:center;gap:8px;min-height:44px;color:#d8d9d4}
+.ar-clock{display:inline-flex;align-items:baseline;gap:8px;white-space:nowrap}
+.ar-clock-city{color:#b4b5ad}
+.ar-clock-time{display:inline-block;min-width:7.2em;color:#d8d9d4}
+.ar-clock-colon{animation:ar-colon 1s steps(1,end) infinite}
+@keyframes ar-colon{0%{opacity:1}50%{opacity:.25}}
+
+.ar-footer-mail svg,.ar-footer-social a svg,.ar-footer-meta a svg{flex:none;transition:transform 520ms var(--spring-pull)}
+
+/* Entrance: elements marked .ar-r rise and fade in, staggered by --d (ms). */
+.ar-r{opacity:0;transform:translateY(24px)}
+.ar-footer[data-in] .ar-r{opacity:1;transform:none;transition:opacity 700ms ease calc(var(--d,0) * 1ms),transform 900ms var(--spring-soft) calc(var(--d,0) * 1ms)}
+.ar-footer[data-in] .ar-footer-a{opacity:1}
+.ar-footer[data-in] .ar-glyph{transform:none}
+
+@media(hover:hover){
+.ar-copy:hover{border-color:var(--paper-text);background:rgba(244,244,242,.08)}
+.ar-copy[data-state=copied]:hover{border-color:var(--accent,#ff3301);background:var(--accent,#ff3301)}
+.ar-footer-cta form button:hover{background:var(--accent,#ff3301);color:#151613;transform:scale(1.08)}
+:is(.ar-footer-mail,.ar-footer-social a,.ar-footer-meta a):is(:hover,:focus-visible) svg{transform:translate(2px,-2px)}
+}
+
+@media(max-width:900px){.ar-footer-top{grid-template-columns:1fr;gap:56px}}
+@media(max-width:760px){
+.ar-footer{min-height:0;padding-top:64px}
+.ar-footer-social{flex-direction:column;align-items:flex-start;gap:8px;margin-top:64px}
+.ar-footer-rule{display:none}
+.ar-footer-social nav{gap:0 32px}
+.ar-footer-meta{flex-direction:column;align-items:flex-start;gap:0}
+}
+
+@media(prefers-reduced-motion:reduce){
+.ar-r{opacity:1;transform:none}
+.ar-footer-a{opacity:1}
+.ar-glyph{transform:none}
+.ar-footer .ar-r,.ar-footer-a,.ar-glyph,.ar-footer-cta form,.ar-footer-cta form button,.ar-footer-mail svg,.ar-footer-social a svg,.ar-footer-meta a svg,.ar-copy,.ar-copy-icon svg,.ar-copy-label>span{transition:none!important}
+.ar-copy[data-state=copied],.ar-clock-colon{animation:none!important}
+}

@@ -12,10 +12,10 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Sora', 'sans-serif'],
-        display: ['Instrument Serif', 'Georgia', 'serif'],
-        brand: ['Bricolage Grotesque', 'sans-serif'],
-        ui: ['DM Sans', 'sans-serif'],
+        sans: ['Cal Sans', 'sans-serif'],
+        display: ['Cal Sans', 'sans-serif'],
+        brand: ['Cal Sans', 'sans-serif'],
+        ui: ['Cal Sans', 'sans-serif'],
       },
       colors: {
         accent: {

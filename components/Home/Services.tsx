@@ -23,8 +23,8 @@ type Service = {
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-const FONT_HEADING = "'Instrument Serif', Georgia, serif";
-const FONT_BODY = "'Sora', sans-serif";
+const FONT_HEADING = "'Cal Sans', sans-serif";
+const FONT_BODY = "'Inter Variable', 'Inter', system-ui, sans-serif";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const SERVICES: Service[] = [

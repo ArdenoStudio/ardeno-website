@@ -25,13 +25,21 @@
   <meta name="twitter:title" content="Ardeno Studio Founders | Suven Seoras and Ovindu Karunaratne" />
   <meta name="twitter:description" content="Meet Suven Seoras and Ovindu Karunaratne, the co-founders of Ardeno Studio, a Colombo-based web design and development studio." />
   <meta name="twitter:image" content="https://www.ardenostudio.online/og-image.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..144,75..100,400;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&family=Sora:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
   <style>
+    @font-face {
+      font-family: "Cal Sans";
+      src: url("/brand/cal-sans-latin-400-normal.woff") format("woff");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Inter Variable";
+      src: url("/brand/inter-latin-wght-normal.woff2") format("woff2-variations");
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
     :root {
       color-scheme: dark;
       --bg: #080809;
@@ -43,9 +51,9 @@
       --line: rgba(255,255,255,0.08);
       --red: #e50914;
       --red-soft: rgba(229,9,20,0.1);
-      --display: "Instrument Serif", Georgia, serif;
-      --body: "Sora", "DM Sans", Arial, sans-serif;
-      --brand: "Bricolage Grotesque", "Sora", sans-serif;
+      --display: "Cal Sans", sans-serif;
+      --body: "Inter Variable", "Inter", system-ui, sans-serif;
+      --brand: "Cal Sans", sans-serif;
     }
 
     * {
@@ -131,18 +139,19 @@
       border-left: 1px solid rgba(255,255,255,0.14);
       font-family: var(--brand);
       line-height: 0.9;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
+      text-transform: none;
+      letter-spacing: normal;
+      font-synthesis: none;
     }
 
     .brand-wordmark span:first-child {
       font-size: 10px;
-      font-weight: 500;
+      font-weight: 400;
     }
 
     .brand-wordmark span:last-child {
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 400;
     }
 
     .nav-actions {
@@ -259,7 +268,7 @@
 
     h1 em {
       color: #777780;
-      font-style: italic;
+      font-style: normal;
       font-weight: 400;
     }
 
@@ -740,8 +749,8 @@
       <a class="brand-link" href="/" aria-label="Back to Ardeno Studio homepage">
         <img src="/ardeno-logo.svg" alt="" width="42" height="42" />
         <span class="brand-wordmark" aria-hidden="true">
-          <span>Ardeno</span>
-          <span>Studio</span>
+          <span>ardeno</span>
+          <span>studio</span>
         </span>
       </a>
 

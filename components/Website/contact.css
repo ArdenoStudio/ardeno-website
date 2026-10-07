@@ -1,0 +1,85 @@
+/* Contact band: the closing call to action. The headline is a single button with the ring arrow inline after "next?".
+   When the band first scrolls into view (useReveal sets data-in on the section) the kicker, the two headline lines and the
+   bottom row rise in one after another; the ring leans toward the pointer as it nears (useMagnet) and fills with ink on hover.
+   Small text is Deep ink, which the brand guide specifies for small text on orange (4.95:1; Ink on Signal is 4.41:1, which is
+   only fine for the large headline). Spring easings come from navigation.css; the ink fill base is in interactions.css. */
+.contact-section{--small:var(--deep-ink,#151613);max-width:none;padding-top:75px;padding-bottom:65px;background:var(--accent);color:var(--accent-ink)}
+.contact-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 32px}
+.contact-kicker,.contact-status{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--small)}
+/* The reply promise next to the studio's live time (the footer's ColomboClock, recoloured). The dot gives off a slow ring. */
+.contact-status .status-dot{position:relative}
+.contact-status .status-dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:currentColor;animation:contact-live 2.6s ease-out infinite}
+.contact-status .ar-clock{gap:6px}
+.contact-status .ar-clock-city,.contact-status .ar-clock-time{min-width:0;color:inherit}
+@keyframes contact-live{0%{transform:scale(1);opacity:.5}75%,100%{transform:scale(3.4);opacity:0}}
+
+/* ── Headline: one button, two masked lines, the ring inline ───────────────────────────────── */
+.contact-title{margin:clamp(32px,3.6vw,52px) 0 clamp(36px,4vw,60px);font-family:var(--font-display);font-size:clamp(52px,7.8vw,122px);font-weight:600;line-height:1.02}
+.contact-headline{display:block;width:fit-content;max-width:100%;padding:0;border:0;border-radius:.12em;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+/* Each line is a mask. Only the top and bottom edges clip, so the ring can lean sideways; the padding keeps descenders (the y in Ready) inside. */
+.contact-line{display:block;margin:-.1em 0 -.18em;padding:.1em 0 .18em;clip-path:inset(0 -100vmax)}
+.contact-line-in{display:block;white-space:nowrap}
+
+/* An inline-block with overflow hidden has its bottom edge as its baseline, so the ring stands on the text baseline; the arrow is centred by position. */
+.contact-arrow{--btn-fill:var(--accent-ink,#20211f);display:inline-block;width:max(.72em,36px);height:max(.72em,36px);margin-left:.2em;vertical-align:baseline;border:1px solid currentColor;border-radius:50%;translate:var(--lx,0px) var(--ly,0px);transition:translate 560ms var(--spring-pull),transform 520ms var(--spring-pull),color 300ms ease,border-color 300ms ease}
+.contact-arrow svg{position:absolute;left:27%;top:27%;width:46%;height:46%;stroke-width:1;transition:transform 560ms var(--spring-pull)}
+.contact-headline:active .contact-arrow{transform:scale(.94);transition-duration:140ms}
+.contact-headline:focus-visible .contact-arrow{transform:scale(1.06);color:var(--accent);border-color:var(--accent-ink,#20211f)}
+.contact-headline:focus-visible .contact-arrow::before{transform:scale(1)}
+.contact-headline:focus-visible .contact-arrow svg{transform:rotate(45deg)}
+
+/* ── Bottom row: the intro on the left, the email and its copy button on the right ─────────── */
+.contact-bottom{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:28px 48px}
+.contact-ask{display:grid;flex:1 1 520px;gap:22px;min-width:0}
+.contact-intro{max-width:22em;margin:0;font-size:clamp(15px,1.5vw,22px);line-height:1.4;color:var(--small)}
+/* Quick starts: outlined pills that fill with ink from the pointer, like the site's other buttons. */
+.contact-start{display:flex;flex-wrap:wrap;gap:8px}
+.contact-chip{--btn-fill:var(--small);display:inline-flex;align-items:center;min-height:40px;padding:0 18px;border:1px solid var(--small);border-radius:999px;background:transparent;color:var(--small);font-size:14px;line-height:1;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform 520ms var(--spring-pull),color 300ms ease}
+.contact-chip:active{transform:scale(.96);transition-duration:140ms,300ms}
+.contact-mail{display:flex;flex-wrap:wrap;align-items:center;gap:4px 20px}
+.contact-mail>a{display:inline-flex;align-items:center;gap:12px;min-height:44px;font-size:clamp(14px,1.05vw,16px);color:var(--small)}
+
+/* The copy button from the footer, drawn in Deep ink on the orange (a Signal fill would vanish here). */
+.contact-section .ar-copy{border-color:var(--small);color:var(--small)}
+.contact-section .ar-copy[data-state=copied]{border-color:var(--small);background:var(--small);color:var(--accent)}
+.contact-section .ar-copy[data-state=failed]{border-color:var(--small)}
+
+/* ── Entrance, once, when the band first scrolls into view ─────────────────────────────────── */
+@media(prefers-reduced-motion:no-preference){
+  .contact-line-in{transform:translateY(135%);transition:transform 1000ms var(--spring-soft) calc(var(--d,0) * 1ms)}
+  .contact-section[data-in] .contact-line-in{transform:none}
+  .contact-section .cr{opacity:0;translate:0 22px;transition:opacity 700ms ease calc(var(--d,0) * 1ms),translate 900ms var(--spring-soft) calc(var(--d,0) * 1ms)}
+  .contact-section[data-in] .cr{opacity:1;translate:0 0}
+}
+
+@media(hover:hover){
+  .contact-headline:hover .contact-arrow{transform:scale(1.06);color:var(--accent);border-color:var(--accent-ink,#20211f)}
+  .contact-headline:hover .contact-arrow::before{transform:scale(1)}
+  .contact-headline:hover .contact-arrow svg{transform:rotate(45deg)}
+  .contact-chip:is(:hover,:focus-visible){transform:translateY(-2px);color:var(--accent)}
+  .contact-chip:is(:hover,:focus-visible)::before{transform:scale(1)}
+  .contact-section .ar-copy:hover{border-color:var(--small);background:rgba(21,22,19,.1)}
+  .contact-section .ar-copy[data-state=copied]:hover{background:var(--small)}
+}
+
+@media(max-width:1100px){
+  .contact-section{padding-top:85px;padding-bottom:85px}
+  .contact-title{font-size:80px}
+}
+@media(max-width:800px){
+  .contact-title{font-size:64px}
+}
+@media(max-width:580px){
+  .contact-section{padding-top:50px;padding-bottom:45px}
+  .contact-kicker,.contact-status{font-size:11px}
+  .contact-title{margin:30px 0;font-size:clamp(36px,11.6vw,54px)}
+  .contact-bottom{display:grid;grid-template-columns:1fr;gap:18px;align-items:start}
+  .contact-intro{font-size:15px}
+  .contact-chip{min-height:44px;padding:0 16px;font-size:13px}
+  .contact-mail>a{font-size:13px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .contact-arrow,.contact-arrow svg,.contact-chip{transition:none}
+  .contact-status .status-dot::after{animation:none}
+}

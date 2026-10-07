@@ -193,9 +193,9 @@ export const ServicePage: React.FC<ServicePageProps> = ({ pageKey, onOpenContact
           display: block;
           font-family: ${FONT_BRAND};
           font-size: 13px;
-          font-weight: 800;
+          font-weight: 400;
           color: #fff;
-          text-transform: uppercase;
+          text-transform: none;
         }
         .service-header-subtitle {
           display: block;
@@ -608,7 +608,7 @@ export const ServicePage: React.FC<ServicePageProps> = ({ pageKey, onOpenContact
           >
             <img src="/ardeno-logo.svg" alt="Ardeno Studio" className="h-9 w-auto flex-shrink-0" draggable={false} />
             <span className="min-w-0">
-              <span className="service-header-title">ARDENO</span>
+              <span className="service-header-title">ardeno</span>
               <span className="service-header-subtitle">/ {isGuide ? 'Guide' : 'Service'}</span>
             </span>
           </a>

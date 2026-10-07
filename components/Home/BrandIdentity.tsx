@@ -283,10 +283,10 @@ export const BrandIdentity: React.FC = () => {
               />
               <div className="relative flex aspect-[1.32] items-center justify-center p-8 md:p-12">
                 <AnimatedLogo
-                  src="/brand/ardeno-gloss-lockup.png"
-                  alt="Ardeno Studio glossy identity lockup"
-                  width={1066}
-                  height={1060}
+                  src="/brand/ardeno-lockup-reversed.svg"
+                  alt="Original Ardeno A with the lowercase Cal Sans wordmark"
+                  width={585}
+                  height={116}
                   tone="lockup"
                   reduced={reduced}
                   className="w-full max-w-[560px]"

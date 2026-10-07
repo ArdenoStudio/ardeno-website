@@ -480,7 +480,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                 />
 
                 <motion.div
-                  className="hidden sm:flex shrink-0 flex-col overflow-hidden whitespace-nowrap leading-[0.9] uppercase text-white"
+                  className="hidden sm:flex shrink-0 flex-col overflow-hidden whitespace-nowrap leading-[0.9] text-white"
                   initial={false}
                   animate={{
                     opacity: isScrolled ? 0 : 1,
@@ -490,28 +490,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
                   transition={navSpring}
                   aria-hidden={isScrolled}
                   style={{
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                    fontFamily: 'var(--font-brand)',
+                    fontWeight: 400,
                     willChange: "width, opacity, transform",
                   }}
                 >
                   <span
                     className="text-[10px]"
                     style={{
-                      letterSpacing: "0.14em",
-                      fontVariationSettings: '"wdth" 75, "wght" 400',
+                      letterSpacing: "normal",
                     }}
                   >
-                    ARDENO
+                    ardeno
                   </span>
                   <span
                     className="text-[13px]"
                     style={{
-                      letterSpacing: "0.1em",
-                      fontVariationSettings: '"wdth" 75, "wght" 900',
+                      letterSpacing: "normal",
                       marginTop: "1px",
                     }}
                   >
-                    STUDIO
+                    studio
                   </span>
                 </motion.div>
               </a>

@@ -122,7 +122,7 @@ const CookieBanner: React.FC = () => {
 
                                 <h3
                                     className="text-[1.48rem] leading-none tracking-[-0.02em] text-white sm:text-[1.9rem]"
-                                    style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
+                                    style={{ fontFamily: "'Cal Sans', sans-serif" }}
                                 >
                                     A smoother <span style={{ color: "#8c8c96" }}>experience</span>
                                 </h3>
@@ -130,7 +130,7 @@ const CookieBanner: React.FC = () => {
                                 <p
                                     className="mt-2 text-[12px] leading-5 text-zinc-400 sm:text-[13px] sm:leading-6"
                                     style={{
-                                        fontFamily: "'DM Sans', sans-serif",
+                                        fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif",
                                         letterSpacing: "0.02em",
                                     }}
                                 >
@@ -145,7 +145,7 @@ const CookieBanner: React.FC = () => {
                                     onClick={accept}
                                     className="min-h-[44px] min-w-0 rounded-full px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-white transition-all duration-200 sm:min-w-[112px] sm:px-6 sm:tracking-[0.2em]"
                                     style={{
-                                        fontFamily: "'DM Sans', sans-serif",
+                                        fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif",
                                         background: "#E50914",
                                         border: "1px solid rgba(229,9,20,0.6)",
                                     }}
@@ -166,7 +166,7 @@ const CookieBanner: React.FC = () => {
                                     onClick={reject}
                                     className="min-h-[44px] min-w-0 rounded-full px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-white transition-all duration-200 sm:min-w-[112px] sm:px-6 sm:tracking-[0.2em]"
                                     style={{
-                                        fontFamily: "'DM Sans', sans-serif",
+                                        fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif",
                                         background: "rgba(255,255,255,0.04)",
                                         border: "1px solid rgba(255,255,255,0.12)",
                                     }}

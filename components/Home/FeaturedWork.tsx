@@ -459,7 +459,7 @@ const StickyProjectPreview = ({
             transition={{ delay: 0.14, duration: 0.32, ease: EXPO }}
             className="pointer-events-auto flex items-center gap-2 rounded-full px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white"
             style={{
-              fontFamily: "'Sora', sans-serif",
+              fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif",
               background: "rgba(229,9,20,0.9)",
               border: "1px solid rgba(255,255,255,0.16)",
               boxShadow: "0 14px 42px rgba(229,9,20,0.32)",
@@ -474,18 +474,18 @@ const StickyProjectPreview = ({
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 p-6">
-          <p className="mb-1.5 text-[11px] uppercase tracking-[0.22em] text-zinc-400" style={{ fontFamily: "'Sora', sans-serif" }}>
+          <p className="mb-1.5 text-[11px] uppercase tracking-[0.22em] text-zinc-400" style={{ fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif" }}>
             {project.category}
           </p>
           {project.status && (
-            <p className="mb-2 text-[9px] uppercase tracking-[0.18em] text-[#E50914]" style={{ fontFamily: "'Sora', sans-serif" }}>
+            <p className="mb-2 text-[9px] uppercase tracking-[0.18em] text-[#E50914]" style={{ fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif" }}>
               {project.status}
             </p>
           )}
           <h4
             className="text-white"
             style={{
-              fontFamily: "'Instrument Serif', Georgia, serif",
+              fontFamily: "'Cal Sans', sans-serif",
               fontSize: "clamp(1.8rem,2.4vw,2.6rem)",
               lineHeight: 1,
               fontWeight: 400,
@@ -593,29 +593,29 @@ export const FeaturedWork: React.FC = () => {
           <div>
             <div className="flex items-center gap-3 mb-5">
               <div style={{ width: 20, height: 1, background: "#E50914" }} />
-              <span className="text-[13px] tracking-[0.22em] text-zinc-400 uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
+              <span className="text-[13px] tracking-[0.22em] text-zinc-400 uppercase" style={{ fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif" }}>
                 Selected Builds
               </span>
             </div>
             <h2
               className="leading-[0.92] tracking-[-0.025em] text-white"
-              style={{ fontSize: "clamp(2.6rem,5.5vw,5rem)", fontFamily: "'Instrument Serif', Georgia, serif", fontWeight: 400 }}
+              style={{ fontSize: "clamp(2.6rem,5.5vw,5rem)", fontFamily: "'Cal Sans', sans-serif", fontWeight: 400 }}
             >
               Proof-led
               <br />
               <em className="not-italic text-zinc-500" style={{ fontWeight: 300 }}>Portfolio</em>
             </h2>
-            <p className="mt-5 max-w-lg text-[14px] leading-[1.8] text-zinc-500" style={{ fontFamily: "'Sora', sans-serif" }}>
+            <p className="mt-5 max-w-lg text-[14px] leading-[1.8] text-zinc-500" style={{ fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif" }}>
               These are Ardeno-built platforms, live concept builds, and showcase projects. We label them clearly, then show the problem, solution, and build role behind each one.
             </p>
           </div>
 
           {/* Counter */}
           <div className="hidden md:flex flex-col items-end gap-1 select-none">
-            <span className="text-[10px] text-zinc-600 tracking-[0.25em] uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>Total</span>
+            <span className="text-[10px] text-zinc-600 tracking-[0.25em] uppercase" style={{ fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif" }}>Total</span>
             <span
               className="text-[3.5rem] leading-none font-light"
-              style={{ color: "rgba(255,255,255,0.06)", fontFamily: "'Instrument Serif', Georgia, serif" }}
+              style={{ color: "rgba(255,255,255,0.06)", fontFamily: "'Cal Sans', sans-serif" }}
             >
               {String(PROJECTS.length).padStart(2, "0")}
             </span>
@@ -667,7 +667,7 @@ export const FeaturedWork: React.FC = () => {
                     {/* Index — hidden on mobile, shown md+ */}
                     <motion.span
                       className="hidden lg:block text-[11px] shrink-0 w-8 tabular-nums"
-                      style={{ fontFamily: "'Sora', sans-serif", color: "rgb(82,82,91)" }}
+                      style={{ fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif", color: "rgb(82,82,91)" }}
                       animate={{ color: isHovered ? "#E50914" : "rgb(82,82,91)" }}
                       transition={{ duration: 0.2 }}
                     >
@@ -683,14 +683,14 @@ export const FeaturedWork: React.FC = () => {
                     {/* Title + Category + mobile index */}
                     <div className="min-w-0 flex-1">
                       {/* Mobile index inline */}
-                      <span className="lg:hidden text-[11px] text-zinc-600 tracking-[0.2em] tabular-nums" style={{ fontFamily: "'Sora', sans-serif" }}>
+                      <span className="lg:hidden text-[11px] text-zinc-600 tracking-[0.2em] tabular-nums" style={{ fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif" }}>
                         {String(index + 1).padStart(2, "0")}
                       </span>
                       <motion.h3
                         className="leading-[1.05] tracking-[-0.025em]"
                         style={{
                           fontSize: "clamp(1.25rem,3vw,2.85rem)",
-                          fontFamily: "'Instrument Serif', Georgia, serif",
+                          fontFamily: "'Cal Sans', sans-serif",
                           fontWeight: 400,
                           color: "rgba(255,255,255,0.92)",
                           wordBreak: "break-word",
@@ -701,11 +701,11 @@ export const FeaturedWork: React.FC = () => {
                         {project.title}
                       </motion.h3>
                       <div className="mt-1 flex flex-wrap items-center gap-2">
-                        <p className="text-[12px] text-zinc-400 tracking-[0.14em] uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
+                        <p className="text-[12px] text-zinc-400 tracking-[0.14em] uppercase" style={{ fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif" }}>
                           {project.category}
                         </p>
                         {project.status && (
-                          <span className="rounded-full border border-white/[0.08] px-2 py-0.5 text-[8px] uppercase tracking-[0.14em] text-zinc-500" style={{ fontFamily: "'Sora', sans-serif" }}>
+                          <span className="rounded-full border border-white/[0.08] px-2 py-0.5 text-[8px] uppercase tracking-[0.14em] text-zinc-500" style={{ fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif" }}>
                             {project.status}
                           </span>
                         )}
@@ -718,7 +718,7 @@ export const FeaturedWork: React.FC = () => {
                         <motion.span
                           key={tag}
                           className="text-[10px] px-3 py-1.5 rounded-full tracking-[0.1em]"
-                          style={{ fontFamily: "'Sora', sans-serif", border: "1px solid rgba(255,255,255,0.12)", color: "rgba(161,161,170,1)" }}
+                          style={{ fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif", border: "1px solid rgba(255,255,255,0.12)", color: "rgba(161,161,170,1)" }}
                           animate={isHovered
                             ? { borderColor: "rgba(229,9,20,0.35)", color: "rgba(244,244,245,1)" }
                             : { borderColor: "rgba(255,255,255,0.12)", color: "rgba(161,161,170,1)" }
@@ -731,7 +731,7 @@ export const FeaturedWork: React.FC = () => {
                       {project.tags.length > 2 && (
                         <motion.span
                           className="text-[10px] px-2.5 py-1.5 rounded-full tracking-[0.1em]"
-                          style={{ fontFamily: "'Sora', sans-serif", border: "1px solid rgba(255,255,255,0.08)", color: "rgba(82,82,91,1)" }}
+                          style={{ fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif", border: "1px solid rgba(255,255,255,0.08)", color: "rgba(82,82,91,1)" }}
                           animate={isHovered ? { color: "rgba(161,161,170,1)" } : { color: "rgba(82,82,91,1)" }}
                           transition={{ duration: 0.2 }}
                         >
@@ -751,13 +751,13 @@ export const FeaturedWork: React.FC = () => {
                         <span
                           key={tag}
                           className="text-[9px] px-2.5 py-1 rounded-full tracking-[0.1em] text-zinc-400"
-                          style={{ fontFamily: "'Sora', sans-serif", border: "1px solid rgba(255,255,255,0.08)" }}
+                          style={{ fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif", border: "1px solid rgba(255,255,255,0.08)" }}
                         >
                           {tag}
                         </span>
                       ))}
                       {project.tags.length > 2 && (
-                        <span className="text-[9px] px-2 py-1 rounded-full text-zinc-600" style={{ fontFamily: "'Sora', sans-serif", border: "1px solid rgba(255,255,255,0.06)" }}>
+                        <span className="text-[9px] px-2 py-1 rounded-full text-zinc-600" style={{ fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif", border: "1px solid rgba(255,255,255,0.06)" }}>
                           +{project.tags.length - 2}
                         </span>
                       )}
@@ -792,7 +792,7 @@ export const FeaturedWork: React.FC = () => {
             onClick={() => setShowAll(true)}
             aria-label="View all projects"
             className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors duration-300 bg-transparent border-none p-0"
-            style={{ fontFamily: "'Sora', sans-serif" }}
+            style={{ fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif" }}
           >
             <span className="text-[11px] tracking-[0.22em] uppercase">View All Projects</span>
             <motion.span
@@ -806,7 +806,7 @@ export const FeaturedWork: React.FC = () => {
               </svg>
             </motion.span>
           </motion.button>
-          <span className="text-[10px] text-zinc-700 tracking-[0.18em] uppercase" style={{ fontFamily: "'Sora', sans-serif" }}>
+          <span className="text-[10px] text-zinc-700 tracking-[0.18em] uppercase" style={{ fontFamily: "'Inter Variable', 'Inter', system-ui, sans-serif" }}>
             {new Date().getFullYear()} — Ardeno
           </span>
         </div>

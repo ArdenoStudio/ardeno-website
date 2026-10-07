@@ -182,26 +182,25 @@ const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number
           {/* Texts */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
             <StaggerWord
-              text="ARDENO"
+              text="ardeno"
               baseDelay={0.28}
               charStyle={{
-                fontFamily: "'Bricolage Grotesque', sans-serif",
+                fontFamily: "var(--font-brand)",
                 fontSize: "clamp(24px, 8vw, 34px)",
-                fontWeight: 700,
+                fontWeight: 400,
                 color: "#ffffff",
-                letterSpacing: "0.12em",
-                fontVariationSettings: '"wdth" 75, "wght" 700',
+                letterSpacing: "normal",
               }}
             />
             <StaggerWord
-              text="STUDIO"
+              text="studio"
               baseDelay={0.54}
               charStyle={{
-                fontFamily: "'Sora', sans-serif",
+                fontFamily: "var(--font-brand)",
                 fontSize: "clamp(10px, 4vw, 14px)",
-                fontWeight: 500,
+                fontWeight: 400,
                 color: "rgba(229,9,20,0.85)",
-                letterSpacing: "0.45em",
+                letterSpacing: "normal",
               }}
               animName="avl-charInUp"
             />
@@ -211,7 +210,7 @@ const ArdenoPhase = memo<{ exiting: boolean; flashRed: boolean; progress: number
 
       {/* Progress Bar Container - highly refined */}
       <div style={{ position: "absolute", bottom: 40, left: "50%", transform: "translateX(-50%)", width: 280, display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
-        <p style={{ fontFamily: "'Sora', sans-serif", fontSize: 10, letterSpacing: "0.3em", color: "rgba(255,255,255,0.4)" }}>
+        <p style={{ fontFamily: "var(--font-brand)", fontSize: 10, letterSpacing: "0.3em", color: "rgba(255,255,255,0.4)" }}>
           {progress < 100 ? "LOADING" : "READY"}
         </p>
         <div

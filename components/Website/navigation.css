@@ -1,0 +1,68 @@
+/* Ardeno navigation: centered identity, a hanging orange tab, always visible and compact once scrolled. */
+.site-header-space{height:98px}
+.site-header{position:fixed;inset:0 0 auto;z-index:40;display:block;min-height:0;padding:0 max(24px,4.5%);border:0;border-bottom:1px solid transparent;background:var(--paper);--nav-ease:300ms cubic-bezier(.2,.8,.2,1);transition:border-color var(--nav-ease)}
+.site-header-inner{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:26px;max-width:1638px;margin:0 auto;height:98px;transition:height var(--nav-ease)}
+.site-header.is-compact{border-bottom-color:var(--line)}
+.site-header.is-compact .site-header-inner{height:74px}
+.site-header .header-brand{display:inline-flex;justify-self:center;align-items:center;min-height:44px}
+.site-header .site-wordmark{font-size:40px;font-weight:400}
+.site-header .site-wordmark>span{font-size:8px;margin-top:6px;display:inline}
+.site-header .desktop-nav{display:flex;gap:26px;font-size:13px;justify-self:start}
+.site-header .desktop-nav a{min-height:44px}
+.nav-roll-link{display:inline-flex;align-items:center;min-height:44px}
+.site-header .desktop-nav a:hover{text-decoration:none}
+.nav-roll{position:relative;display:block;overflow:hidden;height:1.45em;line-height:1.45}
+.nav-roll>span{display:block;transition:transform 160ms ease-out}
+.nav-roll>span+span{position:absolute;top:100%;left:0;color:inherit;white-space:nowrap}
+:is(.nav-roll-link,.header-contact):is(:hover,:focus-visible) .nav-roll>span{transform:translateY(-100%)}
+.site-header .desktop-nav .nav-roll>span{color:var(--ink)}
+.site-header .header-actions{justify-self:end;align-self:stretch;gap:30px;align-items:center}
+.header-socials{display:flex;align-items:center;gap:14px;font-size:13px}
+.site-header .header-contact{align-self:start;display:flex;align-items:flex-end;justify-content:center;gap:12px;min-height:82px;padding:20px;border:0;border-radius:0 0 12px 12px;background:var(--accent);color:#151613;font-size:13px;font-weight:400;white-space:nowrap;transition:min-height var(--nav-ease),padding-bottom var(--nav-ease)}
+.site-header.is-compact .header-contact{min-height:62px;padding-bottom:16px}
+/* Spring easings shared by the site (tab, hero buttons), plus the hanging-tab motion (desktop only): drops in and swings like a hanging tag, then springs down a little when pulled.
+   Real damped-spring curves (CSS linear() easing); browsers without it fall back to a plain overshoot curve. */
+:root{--spring-drop:cubic-bezier(.34,1.4,.64,1);--spring-swing:cubic-bezier(.34,1.4,.64,1);--spring-pull:cubic-bezier(.34,1.4,.64,1);--spring-soft:cubic-bezier(.3,1.05,.5,1);--spring-snap:cubic-bezier(.3,1.5,.5,1)}
+@supports (animation-timing-function:linear(0,1)){:root{--spring-drop:linear(0,0.032,0.113,0.228,0.36,0.497,0.63,0.752,0.857,0.945,1.014,1.065,1.099,1.119,1.126,1.124,1.115,1.102,1.085,1.068,1.051,1.035,1.021,1.01,1,0.993,0.988,0.985,0.984,0.984,0.985,0.987,0.989,0.991,0.993,0.995,1);--spring-swing:linear(0,0.027,0.104,0.223,0.374,0.547,0.731,0.915,1.089,1.245,1.376,1.477,1.545,1.578,1.577,1.546,1.488,1.409,1.314,1.209,1.101,0.996,0.9,0.816,0.749,0.7,0.671,0.662,0.671,0.698,0.738,0.79,0.848,0.911,0.973,1.032,1.084,1.128,1.162,1.185,1.196,1.195,1.184,1.165,1.138,1.105,1.07,1.033,0.998,0.965,0.937,0.915,0.898,0.889,0.886,0.889,0.898,0.912,0.929,0.949,0.97,0.991,1.011,1.029,1.044,1.055,1.063,1.066,1.066,1.062,1.055,1.046,1.035,1.023,1.011,0.999,0.988,0.979,0.971,0.965,0.962,0.961,0.962,0.966,0.97,0.976,0.983,0.99,0.997,1.004,1.01,1.015,1.019,1.021,1.022,1.022,1.021,1.019,1.016,1.012,1.008,1.004,1,0.996,0.993,0.99,0.988,0.987,0.987,0.987,1);--spring-pull:linear(0,0.034,0.124,0.249,0.394,0.544,0.688,0.817,0.928,1.016,1.083,1.128,1.153,1.163,1.159,1.146,1.127,1.103,1.079,1.055,1.034,1.015,1,0.988,0.98,0.976,0.974,0.974,0.976,0.979,0.982,0.986,0.99,0.994,0.997,1,1.002,1.003,1.004,1.004,1);--spring-soft:linear(0,0.038,0.13,0.249,0.376,0.498,0.61,0.706,0.787,0.852,0.903,0.941,0.969,0.988,1.001,1.009,1.013,1.015,1.015,1.014,1.012,1.01,1.008,1.007,1.005,1.004,1.003,1.002,1.001,1.001,1,1,1,1,1,1,1,1,1,1,1);--spring-snap:linear(0,0.025,0.094,0.195,0.318,0.453,0.59,0.723,0.846,0.955,1.047,1.12,1.174,1.21,1.229,1.233,1.226,1.208,1.184,1.154,1.123,1.091,1.06,1.031,1.007,0.986,0.97,0.958,0.95,0.946,0.946,0.948,0.952,0.958,0.965,0.973,0.98,0.987,0.994,0.999,1.004,1.008,1.01,1.012,1.013,1.013,1.012,1.011,1.01,1.008,1.006,1.004,1.003,1.001,1,0.999,0.998,0.998,0.997,0.997,1)}}
+@keyframes tab-drop{from{translate:0 -100%}to{translate:0 0}}
+@keyframes tab-swing{from{rotate:9deg}to{rotate:0deg}}
+@media(min-width:761px){
+.site-header .header-contact{position:relative;transform-origin:50% 0;animation:tab-drop 850ms var(--spring-drop) .3s backwards,tab-swing 1900ms var(--spring-swing) .55s backwards;transition:min-height 520ms var(--spring-pull),padding-bottom 520ms var(--spring-pull),transform 560ms var(--spring-pull)}
+.site-header .header-contact::before{content:"";position:absolute;inset:auto 0 100%;height:24px;background:inherit}
+.site-header .header-contact:is(:hover,:focus-visible){transform:translateY(8px)}
+.site-header .header-contact svg{transition:transform 460ms var(--spring-pull)}
+.site-header .header-contact:is(:hover,:focus-visible) svg{transform:translate(2px,-1px) rotate(45deg)}
+}
+@media(prefers-reduced-motion:reduce){.site-header,.site-header-inner,.site-header .header-contact{animation:none;transition:none}.site-header .header-contact:is(:hover,:focus-visible){transform:none}}
+.header-contact svg{flex:none;transition:transform 160ms ease-out}
+.header-contact:hover svg{transform:translate(2px,-2px)}
+.site-header .mobile-menu{display:none}
+.menu-lines{display:flex;flex-direction:column;gap:6px;width:24px}
+.menu-lines>span{width:100%;height:2px;background:currentColor}
+.site-nav-overlay{position:fixed;inset:0;z-index:50;background:#20211f33}
+.site-nav-panel{--paper:#f4f4f2;--ink:#20211f;--muted:#62635f;--line:#d8d9d4;--accent:#ff3301;position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;min-height:100dvh;max-height:100dvh;overflow-y:auto;padding:max(14px,env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left));background:var(--paper);color:var(--ink);font-family:var(--font-ui);font-synthesis:none;outline:none;animation:nav-panel-enter 180ms ease-out}
+.site-nav-panel *{box-sizing:border-box}
+.site-nav-panel :is(a,button):focus-visible{outline:2px solid var(--ink);outline-offset:5px}
+.site-nav-top{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.site-nav-top .site-wordmark{font-size:34px;font-weight:400}
+.site-nav-top .site-wordmark>span{display:none}
+.site-nav-top .header-actions{gap:8px}
+.site-nav-top .header-contact{display:flex;align-items:center;gap:10px;min-height:44px;padding:12px 14px;border:0;border-radius:6px;background:var(--accent);color:#151613;font-size:12px}
+.site-nav-links{display:flex;flex-direction:column;margin:56px 0 48px}
+.site-nav-links>a{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:90px;padding:18px 0;border-bottom:1px solid var(--line);font-size:38px;line-height:1.15}
+.site-nav-links>a>span{display:flex;align-items:center;gap:18px}
+.site-nav-links small{font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}
+.site-nav-links svg{color:var(--accent);flex:none;transition:transform 160ms ease-out}
+.site-nav-links>a:is(:hover,:focus-visible) svg{transform:translate(3px,-3px)}
+.site-nav-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-top:auto;padding-top:24px;font-size:12px}
+.site-nav-bottom p{color:var(--muted);font-size:11px;line-height:1.6;margin:0}
+.site-nav-bottom nav{display:flex;flex-direction:column;gap:2px}
+.site-nav-bottom a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:40px}
+@keyframes nav-panel-enter{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1000px) and (min-width:761px){.site-header{padding:0 24px}.site-header-inner{gap:16px}.site-header .desktop-nav{gap:18px;font-size:12px}.site-header .header-actions{gap:20px}.header-socials{gap:10px;font-size:12px}.site-header .site-wordmark{font-size:35px}.site-header .header-contact{padding-left:15px;padding-right:15px;gap:8px}.site-header .site-wordmark>span{display:none}}
+@media(max-width:760px){.site-header-space{height:82px}.site-header{padding:max(0px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) 0 max(20px,env(safe-area-inset-left))}.site-header-inner{display:flex;justify-content:space-between;gap:14px;height:82px}.site-header.is-compact .site-header-inner{height:68px}.site-header .desktop-nav,.header-socials{display:none}.site-header .site-wordmark{font-size:34px}.site-header .site-wordmark>span{display:none}.site-header .header-actions{align-self:center;gap:8px}.site-header .header-contact,.site-header.is-compact .header-contact{align-self:center;align-items:center;min-height:44px;border-radius:6px;padding:12px 14px;font-size:12px;gap:8px}.site-header .mobile-menu{display:inline-flex;min-width:44px;min-height:44px}.site-header.is-compact{padding-top:0}}
+@media(max-width:360px){.site-header{padding-left:18px;padding-right:14px}.site-header .site-wordmark{font-size:29px}.site-header .header-actions{gap:2px}.site-header .header-contact{padding:12px;font-size:11px}.site-nav-panel{padding-left:20px;padding-right:16px}.site-nav-top{gap:8px}.site-nav-top .site-wordmark{font-size:29px}.site-nav-top .header-actions{gap:2px}.site-nav-top .header-contact{padding:12px;font-size:11px}.site-nav-links>a{font-size:34px;min-height:82px}.site-nav-links{margin-top:40px}}
+@media(max-width:310px){.site-header .site-wordmark,.site-nav-top .site-wordmark{font-size:25px}}
+@media(max-height:600px){.site-nav-links{margin-top:24px;margin-bottom:20px}.site-nav-links>a{min-height:65px;padding:12px 0;font-size:30px}}
+@media(prefers-reduced-motion:reduce){.site-nav-panel,.site-nav-panel *{animation:none!important;transition:none!important}}
+@media(max-width:760px){.site-header-space{height:calc(82px + env(safe-area-inset-top))}.site-header.is-compact{padding-top:env(safe-area-inset-top)}}
