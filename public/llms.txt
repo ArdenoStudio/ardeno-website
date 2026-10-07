@@ -59,17 +59,15 @@ Use a website builder for simple brochure sites, fast experiments, and tight bud
 
 ## Portfolio and platform examples
 
-- Octane: fuel price intelligence platform concept under Ardeno.
-- PropertyLK: property intelligence platform concept under Ardeno.
-- Motormila LK: vehicle market intelligence platform concept under Ardeno.
-- Lankawa: travel & destination intelligence platform concept under Ardeno.
-- Cinnamon Oak Cafe: cafe and dining web presence concept.
-- Lanka Fitness: health and wellness membership concept.
-- Lanka Motion: sports and expo event concept.
-- Luxe Lanka: luxury and salon booking concept.
-- Urban Kitchen: restaurant and food ordering concept.
-- Global Jet Concierge: private aviation and concierge concept.
-
+- Serendib Trading: automotive import & B2B procurement catalog.
+- Wax In The City SL: boutique aesthetic & salon booking experience.
+- Ceylon Hygiene Solutions: commercial hygiene & janitorial B2B portal.
+- Octane: Sri Lanka fuel price intelligence platform with open API.
+- PropertyLK: Sri Lanka real-estate price intelligence and valuation platform.
+- Motormila LK: Sri Lanka vehicle market intelligence cockpit and comparison tools.
+- Lankawa: Sri Lanka national civic intelligence platform — unifying economy, 25 districts, disasters, and public data with source provenance on every number.
+- Koel: Telegram-first Colombo Stock Exchange price & disclosure alert platform.
+- Dinaya: booking & operations SaaS for Sri Lankan SMBs and salons.
 ## Frequently answered questions
 
 ### How much does a website from Ardeno cost?

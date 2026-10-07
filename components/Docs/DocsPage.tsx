@@ -24,17 +24,17 @@ const FONT_DISPLAY = "'Cal Sans', sans-serif"; // Hero headline font
 const FONT_BODY = "'Inter Variable', 'Inter', system-ui, sans-serif"; // clean UI/body font
 const FONT_BRAND = 'var(--font-brand)';
 const FONT_UI = "'Inter Variable', 'Inter', system-ui, sans-serif";
-const RED = '#E50914';
-const RED_DIM = 'rgba(229,9,20,0.18)';
-const RED_GLOW = 'rgba(229,9,20,0.10)';
-const BG_MAIN = '#050506';
-const BG_SIDEBAR = 'rgba(10,10,11,0.92)';
-const BORDER = 'rgba(255,255,255,0.09)';
-const BORDER_STRONG = 'rgba(255,255,255,0.14)';
-const TEXT_SOFT = 'rgba(255,255,255,0.62)';
-const TEXT_DIM = 'rgba(255,255,255,0.38)';
-const PANEL = 'rgba(255,255,255,0.035)';
-const PANEL_HOVER = 'rgba(255,255,255,0.055)';
+const RED = '#ff3301';
+const RED_DIM = 'rgba(255, 51, 1, 0.18)';
+const RED_GLOW = 'rgba(255, 51, 1, 0.10)';
+const BG_MAIN = '#f4f4f2';
+const BG_SIDEBAR = 'rgba(244, 244, 242, 0.92)';
+const BORDER = 'rgba(32, 33, 31, 0.1)';
+const BORDER_STRONG = 'rgba(32, 33, 31, 0.14)';
+const TEXT_SOFT = 'rgba(32, 33, 31, 0.62)';
+const TEXT_DIM = 'rgba(32, 33, 31, 0.38)';
+const PANEL = 'rgba(32, 33, 31, 0.035)';
+const PANEL_HOVER = 'rgba(32, 33, 31, 0.055)';
 
 // ─── Sidebar data ──────────────────────────────────────────────────────────
 interface SidebarItem {
@@ -128,7 +128,7 @@ function DocContent({
                 style={{
                     fontFamily: FONT_DISPLAY,
                     fontWeight: 700,
-                    color: '#fff',
+                    color: '#20211f',
                     letterSpacing: 0,
                     lineHeight: 1.02,
                     marginBottom: 18,
@@ -170,7 +170,7 @@ function DocContent({
                                 height: 40,
                                 borderRadius: 8,
                                 border: `1px solid ${BORDER_STRONG}`,
-                                background: 'linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.018))',
+                                background: 'linear-gradient(180deg, rgba(32, 33, 31, 0.065), rgba(32, 33, 31, 0.018))',
                                 color: RED,
                                 display: 'flex',
                                 alignItems: 'center',
@@ -179,7 +179,7 @@ function DocContent({
                                 fontSize: 11,
                                 fontWeight: 800,
                                 letterSpacing: '0.08em',
-                                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
+                                boxShadow: 'inset 0 1px 0 rgba(32, 33, 31, 0.05)',
                             }}
                         >
                             {String(i + 1).padStart(2, '0')}
@@ -191,7 +191,7 @@ function DocContent({
                                     fontFamily: FONT_BRAND,
                                     fontSize: 22,
                                     fontWeight: 700,
-                                    color: '#fff',
+                                    color: '#20211f',
                                     marginBottom: 9,
                                     letterSpacing: 0,
                                     lineHeight: 1.18,
@@ -204,7 +204,7 @@ function DocContent({
                                 style={{
                                     fontFamily: FONT_BODY,
                                     fontSize: 14,
-                                    color: 'rgba(255,255,255,0.54)',
+                                    color: 'rgba(32, 33, 31, 0.54)',
                                     lineHeight: 1.85,
                                     maxWidth: 720,
                                 }}
@@ -287,9 +287,9 @@ const PAGE_CONTENT: Record<string, React.ReactNode> = {
                     marginTop: '2rem',
                     padding: '0.85rem 1.1rem',
                     borderRadius: 999,
-                    border: '1px solid rgba(229,9,20,0.32)',
-                    background: 'rgba(229,9,20,0.09)',
-                    color: '#fff',
+                    border: '1px solid rgba(255, 51, 1, 0.32)',
+                    background: 'rgba(255, 51, 1, 0.09)',
+                    color: '#20211f',
                     fontFamily: FONT_BODY,
                     fontSize: 11,
                     fontWeight: 700,
@@ -514,16 +514,16 @@ const QuickCard: React.FC<{
                 width: '100%',
                 minHeight: 188,
                 borderRadius: 8,
-                border: `1px solid ${hov ? 'rgba(229,9,20,0.35)' : BORDER}`,
+                border: `1px solid ${hov ? 'rgba(255, 51, 1, 0.35)' : BORDER}`,
                 background: hov
-                    ? 'linear-gradient(180deg, rgba(229,9,20,0.13), rgba(255,255,255,0.035))'
-                    : 'linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02))',
+                    ? 'linear-gradient(180deg, rgba(255, 51, 1, 0.13), rgba(32, 33, 31, 0.035))'
+                    : 'linear-gradient(180deg, rgba(32, 33, 31, 0.055), rgba(32, 33, 31, 0.02))',
                 padding: '20px',
                 cursor: 'pointer',
                 transition: 'all 0.25s ease',
                 textAlign: 'left',
                 whiteSpace: 'normal',
-                boxShadow: hov ? '0 18px 60px rgba(0,0,0,0.26), inset 0 1px 0 rgba(255,255,255,0.06)' : 'inset 0 1px 0 rgba(255,255,255,0.045)',
+                boxShadow: hov ? '0 18px 60px rgba(0,0,0,0.26), inset 0 1px 0 rgba(32, 33, 31, 0.06)' : 'inset 0 1px 0 rgba(32, 33, 31, 0.045)',
             }}
         >
             <div
@@ -531,12 +531,12 @@ const QuickCard: React.FC<{
                     width: 36,
                     height: 36,
                     borderRadius: 8,
-                    border: `1px solid ${hov ? 'rgba(229,9,20,0.36)' : 'rgba(255,255,255,0.08)'}`,
-                    background: hov ? 'rgba(229,9,20,0.16)' : 'rgba(255,255,255,0.04)',
+                    border: `1px solid ${hov ? 'rgba(255, 51, 1, 0.36)' : 'rgba(32, 33, 31, 0.08)'}`,
+                    background: hov ? 'rgba(255, 51, 1, 0.16)' : 'rgba(32, 33, 31, 0.04)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: hov ? RED : 'rgba(255,255,255,0.4)',
+                    color: hov ? RED : 'rgba(32, 33, 31, 0.4)',
                     marginBottom: 14,
                     transition: 'all 0.25s ease',
                 }}
@@ -549,7 +549,7 @@ const QuickCard: React.FC<{
                     fontFamily: FONT_BRAND,
                     fontSize: 17,
                     fontWeight: 700,
-                    color: '#fff',
+                    color: '#20211f',
                     marginBottom: 8,
                     letterSpacing: 0,
                     lineHeight: 1.15,
@@ -562,7 +562,7 @@ const QuickCard: React.FC<{
                 style={{
                     fontFamily: FONT_BODY,
                     fontSize: 12,
-                    color: 'rgba(255,255,255,0.52)',
+                    color: 'rgba(32, 33, 31, 0.52)',
                     lineHeight: 1.7,
                     marginBottom: 16,
                 }}
@@ -578,7 +578,7 @@ const QuickCard: React.FC<{
                     fontFamily: FONT_BODY,
                     fontSize: 11,
                     fontWeight: 700,
-                    color: hov ? RED : 'rgba(255,255,255,0.35)',
+                    color: hov ? RED : 'rgba(32, 33, 31, 0.35)',
                     letterSpacing: '0.10em',
                     textTransform: 'uppercase',
                     transition: 'color 0.2s ease',
@@ -605,9 +605,9 @@ const SidebarContent: React.FC<{
                 style={{
                     borderRadius: 8,
                     border: `1px solid ${BORDER}`,
-                    background: 'linear-gradient(180deg, rgba(255,255,255,0.052), rgba(255,255,255,0.018))',
+                    background: 'linear-gradient(180deg, rgba(32, 33, 31, 0.052), rgba(32, 33, 31, 0.018))',
                     padding: 16,
-                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.045)',
+                    boxShadow: 'inset 0 1px 0 rgba(32, 33, 31, 0.045)',
                 }}
             >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 16 }}>
@@ -625,14 +625,14 @@ const SidebarContent: React.FC<{
                     </span>
                     <span style={{ width: 7, height: 7, borderRadius: '50%', background: RED, boxShadow: `0 0 18px ${RED}` }} />
                 </div>
-                <p style={{ fontFamily: FONT_BRAND, fontSize: 20, lineHeight: 1.05, color: '#fff', margin: 0, letterSpacing: 0 }}>
+                <p style={{ fontFamily: FONT_BRAND, fontSize: 20, lineHeight: 1.05, color: '#20211f', margin: 0, letterSpacing: 0 }}>
                     Process, scope, pricing, and legal clarity.
                 </p>
             </div>
         </div>
 
         {!hasMatchingItems && searchQuery && (
-            <p style={{ fontFamily: FONT_BODY, fontSize: 12, color: 'rgba(255,255,255,0.28)', padding: '0 20px' }}>
+            <p style={{ fontFamily: FONT_BODY, fontSize: 12, color: 'rgba(32, 33, 31, 0.28)', padding: '0 20px' }}>
                 No results for &quot;{searchQuery}&quot;
             </p>
         )}
@@ -644,7 +644,7 @@ const SidebarContent: React.FC<{
             return (
                 <div key={section.group} style={{ marginBottom: 28 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '0 20px', marginBottom: 6 }}>
-                        <span style={{ color: 'rgba(255,255,255,0.25)' }}>{section.icon}</span>
+                        <span style={{ color: 'rgba(32, 33, 31, 0.25)' }}>{section.icon}</span>
                         <span
                             style={{
                                 fontFamily: FONT_UI,
@@ -652,7 +652,7 @@ const SidebarContent: React.FC<{
                                 fontWeight: 800,
                                 letterSpacing: '0.2em',
                                 textTransform: 'uppercase',
-                                color: 'rgba(255,255,255,0.33)',
+                                color: 'rgba(32, 33, 31, 0.33)',
                             }}
                         >
                             {section.group}
@@ -674,7 +674,7 @@ const SidebarContent: React.FC<{
                                     width: '100%',
                                     padding: '8px 20px',
                                     paddingLeft: isActive ? 17 : 20,
-                                    background: isActive ? 'linear-gradient(90deg, rgba(229,9,20,0.13), rgba(229,9,20,0.02))' : 'transparent',
+                                    background: isActive ? 'linear-gradient(90deg, rgba(255, 51, 1, 0.13), rgba(255, 51, 1, 0.02))' : 'transparent',
                                     border: 'none',
                                     borderLeft: isActive ? `3px solid ${RED}` : '3px solid transparent',
                                     cursor: 'pointer',
@@ -682,7 +682,7 @@ const SidebarContent: React.FC<{
                                     transition: 'all 0.18s ease',
                                 }}
                                 onMouseEnter={(e) => {
-                                    if (!isActive) (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)';
+                                    if (!isActive) (e.currentTarget as HTMLButtonElement).style.background = 'rgba(32, 33, 31, 0.03)';
                                 }}
                                 onMouseLeave={(e) => {
                                     if (!isActive) (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
@@ -693,7 +693,7 @@ const SidebarContent: React.FC<{
                                         fontFamily: FONT_BODY,
                                         fontSize: 12,
                                         fontWeight: isActive ? 600 : 400,
-                                        color: isActive ? '#fff' : 'rgba(255,255,255,0.54)',
+                                        color: isActive ? '#20211f' : 'rgba(32, 33, 31, 0.54)',
                                         transition: 'color 0.15s ease',
                                         lineHeight: 1.45,
                                     }}
@@ -733,7 +733,7 @@ const DocPager: React.FC<{ activeId: string; onNavigate: (id: string) => void }>
     const btnStyle: React.CSSProperties = {
         fontFamily: FONT_BODY,
         fontSize: 12,
-        color: 'rgba(255,255,255,0.62)',
+        color: 'rgba(32, 33, 31, 0.62)',
         background: PANEL,
         border: `1px solid ${BORDER}`,
         borderRadius: 8,
@@ -756,13 +756,13 @@ const DocPager: React.FC<{ activeId: string; onNavigate: (id: string) => void }>
                     style={btnStyle}
                     onMouseEnter={(e) => {
                         const b = e.currentTarget as HTMLButtonElement;
-                        b.style.color = '#fff';
+                        b.style.color = '#20211f';
                         b.style.borderColor = RED_DIM;
                         b.style.background = PANEL_HOVER;
                     }}
                     onMouseLeave={(e) => {
                         const b = e.currentTarget as HTMLButtonElement;
-                        b.style.color = 'rgba(255,255,255,0.62)';
+                        b.style.color = 'rgba(32, 33, 31, 0.62)';
                         b.style.borderColor = BORDER;
                         b.style.background = PANEL;
                     }}
@@ -779,13 +779,13 @@ const DocPager: React.FC<{ activeId: string; onNavigate: (id: string) => void }>
                     style={btnStyle}
                     onMouseEnter={(e) => {
                         const b = e.currentTarget as HTMLButtonElement;
-                        b.style.color = '#fff';
+                        b.style.color = '#20211f';
                         b.style.borderColor = RED_DIM;
                         b.style.background = PANEL_HOVER;
                     }}
                     onMouseLeave={(e) => {
                         const b = e.currentTarget as HTMLButtonElement;
-                        b.style.color = 'rgba(255,255,255,0.62)';
+                        b.style.color = 'rgba(32, 33, 31, 0.62)';
                         b.style.borderColor = BORDER;
                         b.style.background = PANEL;
                     }}
@@ -889,10 +889,10 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                         gap: 10,
                         marginBottom: 22,
                         border: `1px solid ${BORDER}`,
-                        background: 'rgba(255,255,255,0.035)',
+                        background: 'rgba(32, 33, 31, 0.035)',
                         borderRadius: 999,
                         padding: '8px 12px',
-                        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
+                        boxShadow: 'inset 0 1px 0 rgba(32, 33, 31, 0.05)',
                     }}
                 >
                     <Sparkles size={13} color={RED} />
@@ -903,7 +903,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                             fontWeight: 800,
                             letterSpacing: '0.18em',
                             textTransform: 'uppercase',
-                            color: 'rgba(255,255,255,0.64)',
+                            color: 'rgba(32, 33, 31, 0.64)',
                         }}
                     >
                         Ardeno Studio Docs
@@ -915,7 +915,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                     style={{
                         fontFamily: FONT_DISPLAY,
                         fontWeight: 700,
-                        color: '#fff',
+                        color: '#20211f',
                         letterSpacing: 0,
                         lineHeight: 0.96,
                         marginBottom: 22,
@@ -928,7 +928,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                     style={{
                         fontFamily: FONT_BODY,
                         fontSize: 16,
-                        color: 'rgba(255,255,255,0.66)',
+                        color: 'rgba(32, 33, 31, 0.66)',
                         lineHeight: 1.85,
                         maxWidth: 690,
                         marginBottom: 28,
@@ -949,16 +949,16 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                             minHeight: 46,
                             padding: '0 20px',
                             borderRadius: 999,
-                            border: '1px solid rgba(229,9,20,0.46)',
+                            border: '1px solid rgba(255, 51, 1, 0.46)',
                             background: RED,
-                            color: '#fff',
+                            color: '#20211f',
                             fontFamily: FONT_UI,
                             fontSize: 11,
                             fontWeight: 800,
                             letterSpacing: '0.14em',
                             textTransform: 'uppercase',
                             cursor: 'pointer',
-                            boxShadow: '0 18px 44px rgba(229,9,20,0.18)',
+                            boxShadow: '0 18px 44px rgba(255, 51, 1, 0.18)',
                         }}
                     >
                         Start a Project <ArrowUpRight size={13} />
@@ -975,8 +975,8 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                             padding: '0 18px',
                             borderRadius: 999,
                             border: `1px solid ${BORDER_STRONG}`,
-                            background: 'rgba(255,255,255,0.035)',
-                            color: 'rgba(255,255,255,0.78)',
+                            background: 'rgba(32, 33, 31, 0.035)',
+                            color: 'rgba(32, 33, 31, 0.78)',
                             fontFamily: FONT_UI,
                             fontSize: 11,
                             fontWeight: 800,
@@ -997,7 +997,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                     ['90+', 'Performance baseline'],
                 ].map(([value, label]) => (
                     <div key={label}>
-                        <strong style={{ display: 'block', fontFamily: FONT_BRAND, fontSize: 30, color: '#fff', lineHeight: 1 }}>{value}</strong>
+                        <strong style={{ display: 'block', fontFamily: FONT_BRAND, fontSize: 30, color: '#20211f', lineHeight: 1 }}>{value}</strong>
                         <span
                             style={{
                                 display: 'block',
@@ -1054,7 +1054,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                         >
                             Browse by Intent
                         </p>
-                        <h2 style={{ fontFamily: FONT_BRAND, fontSize: 24, lineHeight: 1.08, letterSpacing: 0, color: '#fff', margin: 0 }}>
+                        <h2 style={{ fontFamily: FONT_BRAND, fontSize: 24, lineHeight: 1.08, letterSpacing: 0, color: '#20211f', margin: 0 }}>
                             Jump straight to the part of the engagement you are deciding on.
                         </h2>
                     </div>
@@ -1069,7 +1069,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                                     style={{
                                         fontFamily: FONT_BODY,
                                         fontSize: 12,
-                                        color: 'rgba(255,255,255,0.62)',
+                                        color: 'rgba(32, 33, 31, 0.62)',
                                         background: PANEL,
                                         border: `1px solid ${BORDER}`,
                                         borderRadius: 999,
@@ -1079,13 +1079,13 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                                     }}
                                     onMouseEnter={(e) => {
                                         const b = e.currentTarget as HTMLButtonElement;
-                                        b.style.color = '#fff';
+                                        b.style.color = '#20211f';
                                         b.style.borderColor = RED_DIM;
                                         b.style.background = RED_GLOW;
                                     }}
                                     onMouseLeave={(e) => {
                                         const b = e.currentTarget as HTMLButtonElement;
-                                        b.style.color = 'rgba(255,255,255,0.62)';
+                                        b.style.color = 'rgba(32, 33, 31, 0.62)';
                                         b.style.borderColor = BORDER;
                                         b.style.background = PANEL;
                                     }}
@@ -1103,7 +1103,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
         activeId === 'overview'
             ? overviewContent
             : PAGE_CONTENT[activeId] ?? (
-                <p style={{ color: 'rgba(255,255,255,0.3)', fontFamily: FONT_BODY, fontSize: 14 }}>Content coming soon…</p>
+                <p style={{ color: 'rgba(32, 33, 31, 0.3)', fontFamily: FONT_BODY, fontSize: 14 }}>Content coming soon…</p>
             );
 
     return (
@@ -1126,7 +1126,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                     zIndex: -2,
                     pointerEvents: 'none',
                     background:
-                        'linear-gradient(115deg, rgba(229,9,20,0.10) 0%, rgba(5,5,6,0) 32%), linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0) 24%), #050506',
+                        'linear-gradient(115deg, rgba(255, 51, 1, 0.05) 0%, rgba(244, 244, 242, 0) 32%), linear-gradient(180deg, rgba(32, 33, 31, 0.02), rgba(32, 33, 31, 0) 24%), #f4f4f2',
                 }}
             />
             <div
@@ -1136,9 +1136,9 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                     inset: 0,
                     zIndex: -1,
                     pointerEvents: 'none',
-                    opacity: 0.22,
+                    opacity: 0.18,
                     backgroundImage:
-                        'linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
+                        'linear-gradient(rgba(32, 33, 31, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(32, 33, 31, 0.03) 1px, transparent 1px)',
                     backgroundSize: '88px 88px',
                     maskImage: 'linear-gradient(to bottom, black, transparent 72%)',
                     WebkitMaskImage: 'linear-gradient(to bottom, black, transparent 72%)',
@@ -1153,7 +1153,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                     right: 0,
                     zIndex: 80,
                     height: 72,
-                    background: 'rgba(5,5,6,0.78)',
+                    background: 'rgba(244, 244, 242, 0.88)',
                     backdropFilter: 'blur(22px)',
                     WebkitBackdropFilter: 'blur(22px)',
                     borderBottom: `1px solid ${BORDER}`,
@@ -1161,7 +1161,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                     alignItems: 'center',
                     padding: '0 24px',
                     gap: 16,
-                    boxShadow: '0 20px 70px rgba(0,0,0,0.24)',
+                    boxShadow: '0 1px 8px rgba(32, 33, 31, 0.04)',
                 }}
             >
                 {/* Hamburger — hidden on desktop via CSS */}
@@ -1182,7 +1182,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                         borderRadius: 8,
                         border: `1px solid ${BORDER}`,
                         background: PANEL,
-                        color: 'rgba(255,255,255,0.68)',
+                        color: 'rgba(32, 33, 31, 0.68)',
                         cursor: 'pointer',
                         flexShrink: 0,
                     }}
@@ -1201,10 +1201,10 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                     style={{ display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none', flexShrink: 0 }}
                 >
                     <img src="/ardeno-logo.svg" alt="Ardeno Studio" style={{ height: 30, width: 'auto' }} />
-                    <span style={{ fontFamily: FONT_BRAND, fontSize: 14, fontWeight: 400, color: '#fff' }}>ardeno</span>
+                    <span style={{ fontFamily: FONT_BRAND, fontSize: 14, fontWeight: 400, color: '#20211f' }}>ardeno</span>
                     <span
                         className="docs-header-ext"
-                        style={{ fontFamily: FONT_UI, fontSize: 11, color: 'rgba(255,255,255,0.38)', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 800 }}
+                        style={{ fontFamily: FONT_UI, fontSize: 11, color: 'rgba(32, 33, 31, 0.38)', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 800 }}
                     >
                         / DOCS
                     </span>
@@ -1226,7 +1226,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                         fontSize: 11,
                         letterSpacing: '0.14em',
                         textTransform: 'uppercase',
-                        color: 'rgba(255,255,255,0.62)',
+                        color: 'rgba(32, 33, 31, 0.62)',
                         textDecoration: 'none',
                         display: 'flex',
                         alignItems: 'center',
@@ -1240,8 +1240,8 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                         border: `1px solid ${BORDER}`,
                         background: PANEL,
                     }}
-                    onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#fff')}
-                    onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,255,255,0.62)')}
+                    onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#20211f')}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = 'rgba(32, 33, 31, 0.62)')}
                 >
                     <ArrowLeft size={13} />
                     <span>Site</span>
@@ -1256,7 +1256,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                             left: 14,
                             top: '50%',
                             transform: 'translateY(-50%)',
-                            color: searchFocused ? 'rgba(255,255,255,0.62)' : 'rgba(255,255,255,0.32)',
+                            color: searchFocused ? 'rgba(32, 33, 31, 0.62)' : 'rgba(32, 33, 31, 0.32)',
                             pointerEvents: 'none',
                             transition: 'color 0.2s',
                         }}
@@ -1276,9 +1276,9 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                             minHeight: 38,
                             padding: searchQuery ? '8px 40px 8px 38px' : '8px 14px 8px 38px',
                             borderRadius: 999,
-                            background: searchFocused ? 'rgba(255,255,255,0.07)' : PANEL,
+                            background: searchFocused ? 'rgba(32, 33, 31, 0.07)' : PANEL,
                             border: `1px solid ${searchFocused ? RED_DIM : BORDER}`,
-                            color: '#fff',
+                            color: '#20211f',
                             fontFamily: FONT_BODY,
                             fontSize: 12,
                             transition: 'all 0.25s ease',
@@ -1301,7 +1301,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                                 borderRadius: 999,
                                 border: `1px solid ${BORDER}`,
                                 background: PANEL,
-                                color: 'rgba(255,255,255,0.7)',
+                                color: 'rgba(32, 33, 31, 0.7)',
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -1411,7 +1411,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                                 borderRadius: 999,
                                 padding: '8px 10px',
                                 maxWidth: '100%',
-                                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.045)',
+                                boxShadow: 'inset 0 1px 0 rgba(32, 33, 31, 0.045)',
                             }}
                         >
                             <button
@@ -1422,7 +1422,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                                     fontSize: 10,
                                     letterSpacing: '0.12em',
                                     textTransform: 'uppercase',
-                                    color: 'rgba(255,255,255,0.42)',
+                                    color: 'rgba(32, 33, 31, 0.42)',
                                     fontWeight: 800,
                                     background: 'transparent',
                                     border: 'none',
@@ -1430,13 +1430,13 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                                     cursor: 'pointer',
                                     whiteSpace: 'nowrap',
                                 }}
-                                onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.65)')}
-                                onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.42)')}
+                                onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = 'rgba(32, 33, 31, 0.65)')}
+                                onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = 'rgba(32, 33, 31, 0.42)')}
                             >
                                 Docs
                             </button>
 
-                            <ChevronRight size={11} style={{ color: 'rgba(255,255,255,0.2)', flexShrink: 0 }} />
+                            <ChevronRight size={11} style={{ color: 'rgba(32, 33, 31, 0.2)', flexShrink: 0 }} />
 
                             <button
                                 type="button"
@@ -1451,7 +1451,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                                     fontSize: 10,
                                     letterSpacing: '0.12em',
                                     textTransform: 'uppercase',
-                                    color: 'rgba(255,255,255,0.42)',
+                                    color: 'rgba(32, 33, 31, 0.42)',
                                     fontWeight: 800,
                                     background: 'transparent',
                                     border: 'none',
@@ -1459,13 +1459,13 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                                     cursor: 'pointer',
                                     whiteSpace: 'nowrap',
                                 }}
-                                onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.65)')}
-                                onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.42)')}
+                                onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = 'rgba(32, 33, 31, 0.65)')}
+                                onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = 'rgba(32, 33, 31, 0.42)')}
                             >
                                 {currentSection?.group ?? 'Getting Started'}
                             </button>
 
-                            <ChevronRight size={11} style={{ color: 'rgba(255,255,255,0.2)', flexShrink: 0 }} />
+                            <ChevronRight size={11} style={{ color: 'rgba(32, 33, 31, 0.2)', flexShrink: 0 }} />
 
                             <span
                                 className="docs-breadcrumb-current"
@@ -1474,7 +1474,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
                                     fontSize: 10,
                                     letterSpacing: '0.12em',
                                     textTransform: 'uppercase',
-                                    color: '#fff',
+                                    color: '#20211f',
                                     fontWeight: 800,
                                     minWidth: 0,
                                 }}
@@ -1525,12 +1525,12 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
             {/* Scoped responsive CSS */}
             <style>{`
         .docs-search-input:focus-visible {
-          outline: 2px solid rgba(229,9,20,0.9);
+          outline: 2px solid rgba(255, 51, 1, 0.9);
           outline-offset: 3px;
-          border-color: rgba(229,9,20,0.45) !important;
+          border-color: rgba(255, 51, 1, 0.45) !important;
         }
         .docs-search-clear:focus-visible {
-          outline: 2px solid rgba(229,9,20,0.9);
+          outline: 2px solid rgba(255, 51, 1, 0.9);
           outline-offset: 2px;
         }
         .docs-content-wrap {
@@ -1554,7 +1554,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
         }
         .docs-overview-hero {
           padding: 26px 0 36px;
-          border-bottom: 1px solid rgba(255,255,255,0.09);
+          border-bottom: 1px solid rgba(32, 33, 31, 0.09);
         }
         .docs-proof-strip {
           display: grid;
@@ -1562,10 +1562,10 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
           gap: 12px;
           margin-top: 20px;
           padding: 18px 0;
-          border-bottom: 1px solid rgba(255,255,255,0.09);
+          border-bottom: 1px solid rgba(32, 33, 31, 0.09);
         }
         .docs-proof-strip > div {
-          border-left: 1px solid rgba(255,255,255,0.09);
+          border-left: 1px solid rgba(32, 33, 31, 0.09);
           padding-left: 18px;
         }
         .docs-proof-strip > div:first-child {
@@ -1629,7 +1629,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
           .docs-proof-strip > div:first-child {
             border-left: 0;
             padding: 16px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.09);
+            border-bottom: 1px solid rgba(32, 33, 31, 0.09);
           }
           .docs-proof-strip > div:last-child { border-bottom: 0; }
           .docs-breadcrumb {
@@ -1665,7 +1665,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
         .docs-sidebar-desktop::-webkit-scrollbar-track,
         .docs-mobile-drawer::-webkit-scrollbar-track { background: transparent; }
         .docs-sidebar-desktop::-webkit-scrollbar-thumb,
-        .docs-mobile-drawer::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+        .docs-mobile-drawer::-webkit-scrollbar-thumb { background: rgba(32, 33, 31, 0.08); border-radius: 2px; }
       `}</style>
         </div>
     );
