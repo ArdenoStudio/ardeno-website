@@ -10,6 +10,7 @@ import './interactions.css';
 import './brand.css';
 import './footer.css';
 import './contact.css';
+import './built.css';
 
 export default function ArdenoWebsite() {
   const [contact, setContact] = useState(false);

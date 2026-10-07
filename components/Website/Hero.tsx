@@ -4,7 +4,9 @@ import { PROJECTS, type Project } from '../../data/projects';
 import { burstSparks } from './clickSpark';
 
 // Back-to-front order of the fanned project cards; the last one sits on top.
-const FAN_IDS = ['octane', 'motormila-lk', 'propertylk'];
+const FAN_IDS = ['ceylon-hygiene', 'koel-cse', 'dinaya-lk'];
+// A card is partly covered by the next one, so its label is the short name the studio uses where the full title is long.
+const FAN_LABELS: Record<string, string> = { 'ceylon-hygiene': 'CHS', 'dinaya-lk': 'Dinaya.lk' };
 const FAN_PROJECTS = FAN_IDS
   .map((id) => PROJECTS.find((project) => project.id === id))
   .filter((project): project is Project => Boolean(project));
@@ -137,7 +139,7 @@ export function Hero({ onContact }: { onContact: () => void }) {
               </a>
             </div>
           </div>
-          <ul className="editorial-fan" aria-label="Platforms we have built">
+          <ul className="editorial-fan" aria-label="Platforms and sites we have built">
             {FAN_PROJECTS.map((project) => (
               <li key={project.id}>
                 <a
@@ -147,7 +149,7 @@ export function Hero({ onContact }: { onContact: () => void }) {
                   aria-label={`${project.title}, ${project.category}${project.url ? ' (opens in a new tab)' : ''}`}
                 >
                   <img src={project.image} alt="" width={1280} height={800} loading="lazy" decoding="async" />
-                  <span className="editorial-card-label">{project.title}<ArrowUpRight size={12} aria-hidden="true" /></span>
+                  <span className="editorial-card-label">{FAN_LABELS[project.id] ?? project.title}<ArrowUpRight size={12} aria-hidden="true" /></span>
                 </a>
               </li>
             ))}

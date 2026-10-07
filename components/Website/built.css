@@ -1,0 +1,69 @@
+/* "Built by Ardeno": the studio's own platforms as a strip of hairline-separated cards, with a pixel shimmer that ripples out
+   from the middle of a card on hover (PixelCanvas) and a Signal ring around it. The hairlines are borders on the cards. Content edges
+   follow the page column, like the header. Spring easings come from navigation.css. */
+.built-strip{padding-inline:max(4.5%,calc((100vw - 1638px)/2));border-block:1px solid var(--line)}
+/* The hairlines are borders, not a 1px gap over a Line background: a border is never thinner than one device pixel, but a 1px gap is
+   0.75 of a pixel at 75% browser zoom and then vanishes at some columns (a divider went missing in Chrome that way). Every card has a
+   left border (for the first card it is the intro's line), cards under the first row have a top border, and the grid has the closing
+   border on the right. The nth-child rules that take the borders off the first column depend on the number of columns and cards, like
+   the media queries below. */
+.built-grid{display:grid;grid-template-columns:minmax(200px,.9fr) repeat(5,minmax(0,1fr));border-right:1px solid var(--line)}
+.built-intro,.built-card{background:var(--paper)}
+
+.built-intro{grid-row:span 2;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:12px;padding:26px 20px 26px 0}
+.built-badge{display:inline-flex;align-items:center;margin:0;padding:5px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;box-shadow:0 1px 2px rgba(32,33,31,.06);font-family:var(--font-ui);font-size:12px;font-weight:500;line-height:1.4;color:var(--muted)}
+.built-intro p{margin:0;font-size:12px;line-height:1.8;color:var(--muted)}
+.built-intro strong{font-weight:500;color:var(--ink)}
+
+.built-card{box-sizing:border-box;border-left:1px solid var(--line);position:relative;isolation:isolate;display:grid;place-content:center;justify-items:center;gap:4px;min-height:112px;padding:22px 20px;overflow:hidden;text-align:center;color:var(--muted);transition:background-color 300ms ease,box-shadow 300ms ease}
+.built-card:nth-child(n+7){border-top:1px solid var(--line)}
+.pixel-canvas{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.pixel-canvas canvas{display:block;image-rendering:pixelated}
+.built-name{position:relative;z-index:1;font-family:var(--font-display);font-size:clamp(18px,1.7vw,26px);line-height:1.1;transition:transform 560ms var(--spring-pull),color 300ms ease}
+/* A platform's own logo: grey and a little faded at rest, in its real colours on hover (the way the pasted component treats logos). */
+.built-logo{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;padding-bottom:3px;font-family:var(--font-display);font-size:clamp(17px,1.5vw,22px);line-height:1;color:var(--ink);filter:grayscale(1);opacity:.68;transition:transform 560ms var(--spring-pull),filter 300ms ease,opacity 300ms ease}
+.built-logo img{display:block;max-width:100%;height:auto}
+/* A mark beside a name, sized and spaced as Dinaya's own login page does it: mark 1.35em square, 0.38em gap, mark 0.05em low, name on a one-em line. */
+.built-logo.has-text{gap:.38em}
+.built-logo.has-text img{width:1.35em;height:1.35em;flex:none;transform:translateY(.05em)}
+.built-logo.has-text span{line-height:1}
+.built-kind{position:relative;z-index:1;font-size:11px;line-height:1.4;color:var(--muted)}
+.built-arrow{position:absolute;z-index:1;top:14px;right:14px;opacity:.45;transition:transform 520ms var(--spring-pull),opacity 300ms ease,color 300ms ease}
+.ardeno-site .built-card:focus-visible{outline-offset:-6px}
+.built-card:focus-visible{z-index:2;background:#fff;box-shadow:0 8px 24px -8px color-mix(in srgb,var(--accent) 28%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--accent) 42%,transparent)}
+.built-card:focus-visible .built-name{transform:scale(1.06);color:var(--ink)}
+.built-card:focus-visible .built-logo{transform:scale(1.06);filter:none;opacity:1}
+.built-card:focus-visible .built-arrow{opacity:1;color:var(--accent);transform:translate(2px,-2px)}
+
+@media(hover:hover){
+  .built-card:hover{z-index:2;background:#fff;box-shadow:0 8px 24px -8px color-mix(in srgb,var(--accent) 28%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--accent) 42%,transparent)}
+  .built-card:hover .built-name{transform:scale(1.06);color:var(--ink)}
+  .built-card:hover .built-logo{transform:scale(1.06);filter:none;opacity:1}
+  .built-card:hover .built-arrow{opacity:1;color:var(--accent);transform:translate(2px,-2px)}
+}
+
+/* Ten cards: two rows of five beside the intro. From 1180px down the intro takes two cells of a four-column grid (two cards beside it,
+   then two rows of four) and from 700px down it is a row of its own above five rows of two. A different number of cards needs these
+   columns and the nth-child rules changed, or cells are left empty and borders end up in the wrong places. */
+@media(max-width:1180px){
+  .built-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .built-intro{grid-row:auto;grid-column:span 2;padding:20px 20px 20px 0}
+  .built-card{min-height:96px}
+  .built-card:nth-child(4n){border-left:0}
+  .built-card:nth-child(n+4){border-top:1px solid var(--line)}
+}
+@media(max-width:1100px){
+  .built-strip{padding-inline:4%}
+}
+@media(max-width:700px){
+  .built-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .built-intro{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:8px 16px;padding:20px 0}
+  .built-card{border-top:1px solid var(--line)}
+  .built-card:nth-child(2n){border-left:0}
+}
+@media(max-width:580px){
+  .built-strip{padding-inline:6%}
+  .built-card{min-height:92px;padding:18px 14px}
+  .built-name{font-size:20px}
+  .built-logo{font-size:17px}
+}

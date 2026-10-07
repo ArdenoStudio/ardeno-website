@@ -175,6 +175,111 @@ export const PROJECTS: Project[] = [
     year: "2025",
     url: "https://global-jet-concierge.vercel.app/",
   },
+  {
+    id: "dinaya-lk",
+    title: "Dinaya",
+    category: "Booking Pages",
+    image: "/images/dinaya.jpg",
+    tags: ["Booking Platform", "Deposits", "Reminders"],
+    description:
+      "A booking-page platform for Sri Lankan service businesses: one shareable link where clients pick a time, pay a deposit and get reminders, with LKR pricing and PayHere payments.",
+    status: "Ardeno platform",
+    problem:
+      "Service businesses in Sri Lanka often take bookings through WhatsApp threads, which means double bookings, missed deposits and a lot of back-and-forth.",
+    solution:
+      "Built a booking-page product around one shareable link: services and availability, deposits through PayHere, automatic reminders, calendar sync and LKR pricing, with a live example booking page on the home screen.",
+    outcome:
+      "A real booking page a service business can set up in minutes and share on Instagram or WhatsApp.",
+    year: "2026",
+    url: "https://dinaya-lk.vercel.app/",
+  },
+  {
+    id: "koel-cse",
+    title: "koel",
+    category: "CSE Alerts on Telegram",
+    image: "/images/koel.jpg",
+    tags: ["Telegram Bot", "Market Alerts", "CSE Data"],
+    description:
+      "A Colombo Stock Exchange alerts platform: watch symbols, set price, move and disclosure rules, and get pinged on Telegram the moment one fires, even with the tab closed.",
+    status: "Ardeno platform",
+    problem:
+      "Following the Colombo Stock Exchange means checking prices and disclosures again and again, and browser-tab alerts stop working the moment the tab is closed.",
+    solution:
+      "Built a Telegram bot with a web dashboard behind it: symbol watchlists, rules for price, move and disclosure events, a market browser, learning guides and pricing.",
+    outcome:
+      "Alerts that reach you on Telegram when a rule fires, with a dashboard for managing the rules.",
+    year: "2026",
+    url: "https://koel-cse.vercel.app/",
+  },
+  {
+    id: "serendib-trading",
+    title: "Serendib Trading",
+    category: "Vehicle Imports",
+    image: "/images/serendib-trading.jpg",
+    tags: ["Vehicle Listings", "Showroom", "Finance Enquiries"],
+    description:
+      "A showroom website for a Dehiwala vehicle importer: browse inspected UK and Japan imports by body type and make, see featured arrivals, and reach the team about finance, trade-ins and viewings.",
+    status: "Live website",
+    problem:
+      "Buyers weighing an imported vehicle want to see what is in stock, where it came from and how it can be financed before they visit the showroom.",
+    solution:
+      "A dark, showroom-led site with featured arrivals, browsing by body type and make, a gallery, finance and contact paths, and a welcome panel that points visitors to the collection, a payment estimate or a viewing.",
+    outcome: "One place to browse inspected UK and Japan imports and reach the Dehiwala showroom.",
+    year: "2026",
+    url: "https://serendibtrading.lk/",
+  },
+  {
+    id: "ceylon-stories",
+    title: "Ceylon Stories",
+    category: "Gallery Café & Tea House",
+    image: "/images/ceylon-stories.jpg",
+    tags: ["Menu", "Table Booking", "Gallery"],
+    description:
+      "A website for a gallery café and tea house on Marine Drive, Colombo: rotating exhibitions, Dilmah reserve teas, a seasonal menu and table booking.",
+    status: "Live website",
+    problem:
+      "A café that is also a gallery needs its menu, exhibitions and booking to feel as considered as the room itself.",
+    solution:
+      "A warm editorial site with a tea-leaf pattern backdrop, a hero that pairs Ceylon tea with curated art, a What’s New menu with specials, a gallery, and reserve-a-table paths including WhatsApp.",
+    outcome: "A website that carries the café’s atmosphere from the first screen to the booking button.",
+    year: "2026",
+    url: "https://ceylon-stories-gallery-cafe.vercel.app/",
+  },
+  {
+    id: "ceylon-hygiene",
+    title: "Ceylon Hygiene Solutions",
+    category: "Janitorial Services",
+    image: "/images/ceylon-hygiene.jpg",
+    tags: ["Service Pages", "Quote Requests", "Client Showcase"],
+    description:
+      "A website for a Colombo janitorial service: daily care for offices and commercial premises, uniformed teams, site-specific checklists and a notable-clients section, with quote and WhatsApp paths.",
+    status: "Live website",
+    problem:
+      "Businesses choosing a cleaning partner want to see what is covered, how the team works and who else trusts them before they ask for a quote.",
+    solution:
+      "A clear service site: what the team offers (floors, workplaces, washrooms, glass and touchpoints, pantries, manpower), a four-step way of working, the sectors served, notable clients and a Get a quote path with WhatsApp.",
+    outcome:
+      "A straightforward route from what the service covers to a quote request for Colombo businesses.",
+    year: "2026",
+    url: "https://www.ceylonhygienesolutions.lk/",
+  },
+  {
+    id: "wax-in-the-city",
+    title: "Wax In The City",
+    category: "Waxing & Skin Care",
+    image: "/images/wax-in-the-city.jpg",
+    tags: ["Booking", "Treatment Menu", "Two Locations"],
+    description:
+      "A website for a ladies-only waxing and skin care studio in Colombo: treatment menu, studio hygiene protocol, two locations and appointment booking.",
+    status: "Live website",
+    problem:
+      "A private, ladies-only studio has to earn trust before the first visit: cleanliness, privacy and what a treatment involves.",
+    solution:
+      "A dark, quiet site built around the studio protocol (fresh wax setup, disposable covers, aftercare), a focused treatment menu, a gallery, both studios (Battaramulla and Nugegoda) and a book-appointment path.",
+    outcome: "A calm, trust-first page that shows how a visit works before anyone books.",
+    year: "2026",
+    url: "https://waxinthecity.lk/",
+  },
 ];
 
 export const HERO_FEATURED =

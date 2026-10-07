@@ -39,7 +39,7 @@
 .modal-close svg{transition:transform 560ms var(--spring-pull)}
 
 /* ── Arrows beside text links and text buttons nudge on hover ───────────────────────────── */
-:is(.text-button,.work-outro a,.service-content button,.contact-mail>a,.footer-top nav a,.footer-bottom>a,.founder-grid>a)>svg,.trust-strip>a>span:last-child{transition:transform 520ms var(--spring-pull)}
+:is(.text-button,.work-outro a,.service-content button,.contact-mail>a,.footer-top nav a,.footer-bottom>a,.founder-grid>a)>svg{transition:transform 520ms var(--spring-pull)}
 
 /* ── Work cards ──────────────────────────────────────────────────────────────────────────── */
 .project-visual{transition:transform 520ms var(--spring-pull)}
@@ -83,7 +83,7 @@
 
   .modal-close:is(:hover,:focus-visible) svg{transform:rotate(90deg)}
 
-  :is(.text-button,.work-outro a,.service-content button,.contact-mail>a,.footer-top nav a,.footer-bottom>a,.founder-grid>a):is(:hover,:focus-visible)>svg,.trust-strip>a:is(:hover,:focus-visible)>span:last-child{transform:translate(3px,-3px)}
+  :is(.text-button,.work-outro a,.service-content button,.contact-mail>a,.footer-top nav a,.footer-bottom>a,.founder-grid>a):is(:hover,:focus-visible)>svg{transform:translate(3px,-3px)}
 
   .project-visual:is(:hover,:focus-visible) img{transform:translateY(-8px)}
   .project-visual:is(:hover,:focus-visible) .project-open{transform:scale(1.14);background:var(--accent);color:#151613}
@@ -100,7 +100,7 @@
 @media(prefers-reduced-motion:reduce){
   .ul::after,.nav-roll>span,.roll-letter>span,.work-filters button,.work-filters[data-ready] .filter-indicator,
   .site-button,.site-button::before,.site-button svg,.contact-arrow,.contact-arrow::before,.contact-arrow svg,.contact-chip,.contact-chip::before,.icon-button,.modal-close svg,
-  :is(.text-button,.work-outro a,.service-content button,.contact-mail>a,.footer-top nav a,.footer-bottom>a,.founder-grid>a)>svg,.trust-strip>a>span:last-child,
+  :is(.text-button,.work-outro a,.service-content button,.contact-mail>a,.footer-top nav a,.footer-bottom>a,.founder-grid>a)>svg,
   .project-visual,.project-visual img,.project-open,.project-open svg,.service-plus,.service-plus svg,.faq-trigger svg,.service-trigger .service-heading,
   .founder-grid>a,.founder-initial,.faq-item::before,.faq-question{transition:none}
   .faq-answer,.service-content,.faq-answer>p,.service-content>div{animation:none!important}

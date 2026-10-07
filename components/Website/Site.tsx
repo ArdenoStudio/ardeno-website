@@ -4,13 +4,16 @@ import * as Accordion from '@radix-ui/react-accordion';
 import { ArrowRight, ArrowUpRight, Check, Copy, Plus, X } from 'lucide-react';
 import { PROJECTS, type Project } from '../../data/projects';
 import { burstSparks, burstSparksAt } from './clickSpark';
+import { PixelCanvas } from './PixelCanvas';
 import { useMagnet, useReveal, useSiteInteractions, useSlidingIndicator } from './interactions';
 import { LOCKUP } from './brandLockup';
 import { Hero } from './Hero';
 import { StickerPlayground } from './StickerPlayground';
 import { cn, navigation } from './utils';
 
-export const showcase = [...PROJECTS.slice(0, 4), PROJECTS[4], PROJECTS[7]].filter(Boolean);
+// The Work section, in order: the platforms, the live websites, then two studio concepts (ids 1 and 4).
+const SHOWCASE_IDS = ['octane', 'propertylk', 'motormila-lk', 'lankawa', 'dinaya-lk', 'koel-cse', 'serendib-trading', 'ceylon-stories', 'ceylon-hygiene', 'wax-in-the-city', '1', '4'];
+export const showcase = SHOWCASE_IDS.map(id => PROJECTS.find(project => project.id === id)).filter((project): project is Project => Boolean(project));
 
 export function Wordmark() { return <span className="site-wordmark">ardeno<span>studio</span></span>; }
 
@@ -110,6 +113,10 @@ function SectionLabel({ number, children }: { number: string; children: React.Re
   return <div className="section-label"><span className="tabular-nums">{number}</span><span>{children}</span><span className="section-label-line" /></div>;
 }
 
+// Filter name -> the status it shows (All work shows everything).
+const WORK_FILTERS: Record<string, string> = { Platforms: 'Ardeno platform', Websites: 'Live website', Concepts: 'Studio concept' };
+const WORK_LABELS = ['All work', ...Object.keys(WORK_FILTERS)];
+
 function Work() {
   const [filter, setFilter] = useState('All work');
   const [selected, setSelected] = useState<Project | null>(null);
@@ -120,19 +127,19 @@ function Work() {
     projectTrigger.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setSelected(project);
   };
-  const filtered = showcase.filter(project => filter === 'All work' || (filter === 'Platforms' ? project.status === 'Ardeno platform' : project.status === 'Studio concept'));
+  const filtered = showcase.filter(project => filter === 'All work' || project.status === WORK_FILTERS[filter]);
   return <section id="work" className="site-section work-section">
     <SectionLabel number="01">Selected work</SectionLabel>
-    <div className="section-heading"><h2><>Independent ideas.<br /><span>Made real.</span></></h2><div className="heading-aside"><p>Real platforms and studio concepts.<br />Different challenges. The same care.</p><div ref={filtersRef} className="work-filters" aria-label="Filter selected work">{['All work', 'Platforms', 'Concepts'].map(value => <button key={value} onClick={() => setFilter(value)} aria-pressed={filter === value} className={cn(filter === value && 'is-active')}>{value}</button>)}<span className="filter-indicator" aria-hidden="true" /></div></div></div>
+    <div className="section-heading"><h2><>Independent ideas.<br /><span>Made real.</span></></h2><div className="heading-aside"><p>Real platforms, live websites and studio concepts.<br />Different challenges. The same care.</p><div ref={filtersRef} className="work-filters" aria-label="Filter selected work">{WORK_LABELS.map(value => <button key={value} onClick={() => setFilter(value)} aria-pressed={filter === value} className={cn(filter === value && 'is-active')}>{value}</button>)}<span className="filter-indicator" aria-hidden="true" /></div></div></div>
     <div className="project-grid" aria-live="polite">{filtered.map((project) => <article className={cn('project-card', `project-${project.id}`)} key={project.id}>
       <button className="project-visual" onClick={() => openProject(project)} aria-label={`View ${project.title} project`}>
-        <span className="project-status">{project.status === 'Ardeno platform' ? 'Live platform' : 'Studio concept'}</span>
+        <span className="project-status">{project.status === 'Ardeno platform' ? 'Live platform' : project.status === 'Live website' ? 'Live website' : 'Studio concept'}</span>
         <img src={project.image} alt={`${project.title} website preview`} width="1280" height="800" loading="lazy" decoding="async" />
         <span className="project-open"><ArrowUpRight size={24} /></span>
       </button><div className="project-caption"><div><h3><button onClick={() => openProject(project)}><span className="ul">{project.title}</span></button></h3><p>{project.category}</p></div><span className="project-year tabular-nums">{project.year}</span></div>
     </article>)}</div>
     <div className="work-outro"><p>A new idea belongs here, too.</p><a href="#contact"><span className="ul">Let’s talk about yours</span><ArrowUpRight size={18} /></a></div>
-    <Dialog.Root open={Boolean(selected)} onOpenChange={open => { if (!open) setSelected(null); }}><Dialog.Portal><Dialog.Overlay className="studio-overlay" /><Dialog.Content className="studio-modal project-modal" onCloseAutoFocus={event => { event.preventDefault(); projectTrigger.current?.focus(); }}><Dialog.Close asChild><button className="modal-close icon-button" aria-label="Close project"><X size={20} /></button></Dialog.Close>{selected && <><div className="project-modal-image"><img src={selected.image} alt={`${selected.title} website`} width="1280" height="800" /></div><div className="project-modal-copy"><span className="modal-eyebrow">{selected.status} · {selected.year}</span><Dialog.Title>{selected.title}</Dialog.Title><Dialog.Description>{selected.description}</Dialog.Description><div className="project-detail-grid"><div><h3>The challenge</h3><p>{selected.problem}</p></div><div><h3>Our approach</h3><p>{selected.solution}</p></div></div><div className="project-outcome"><h3>The result</h3><p>{selected.outcome}</p></div><div className="project-tags">{selected.tags.map(tag => <span key={tag}>{tag}</span>)}</div>{selected.url && <a href={selected.url} target="_blank" rel="noopener noreferrer" className="site-button">{selected.status === 'Ardeno platform' ? 'Explore live platform' : 'Explore the concept'}<ArrowUpRight size={18} /></a>}</div></>}</Dialog.Content></Dialog.Portal></Dialog.Root>
+    <Dialog.Root open={Boolean(selected)} onOpenChange={open => { if (!open) setSelected(null); }}><Dialog.Portal><Dialog.Overlay className="studio-overlay" /><Dialog.Content className="studio-modal project-modal" onCloseAutoFocus={event => { event.preventDefault(); projectTrigger.current?.focus(); }}><Dialog.Close asChild><button className="modal-close icon-button" aria-label="Close project"><X size={20} /></button></Dialog.Close>{selected && <><div className="project-modal-image"><img src={selected.image} alt={`${selected.title} website`} width="1280" height="800" /></div><div className="project-modal-copy"><span className="modal-eyebrow">{selected.status} · {selected.year}</span><Dialog.Title>{selected.title}</Dialog.Title><Dialog.Description>{selected.description}</Dialog.Description><div className="project-detail-grid"><div><h3>The challenge</h3><p>{selected.problem}</p></div><div><h3>Our approach</h3><p>{selected.solution}</p></div></div><div className="project-outcome"><h3>The result</h3><p>{selected.outcome}</p></div><div className="project-tags">{selected.tags.map(tag => <span key={tag}>{tag}</span>)}</div>{selected.url && <a href={selected.url} target="_blank" rel="noopener noreferrer" className="site-button">{selected.status === 'Ardeno platform' ? 'Explore live platform' : selected.status === 'Live website' ? 'Visit the live site' : 'Explore the concept'}<ArrowUpRight size={18} /></a>}</div></>}</Dialog.Content></Dialog.Portal></Dialog.Root>
   </section>;
 }
 
@@ -400,8 +407,52 @@ function Footer({ onContact }: { onContact: (email?: string) => void }) {
   </footer>;
 }
 
-function TrustStrip() {
-  return <div className="trust-strip"><span>A small studio.<br /><strong>With work out in the world.</strong></span><a href="#work"><span className="ul">octane</span><span>↗</span></a><a href="#work"><span className="ul">PropertyLK</span><span>↗</span></a><a href="#work"><span className="ul">motormila</span><span>↗</span></a><a href="#work"><span className="ul">lankawa</span><span>↗</span></a></div>;
+// "Built by Ardeno": the sites the studio has built (the platforms and live websites in data/projects.ts) as a strip of cards.
+// A card opens the live platform, and hovering it ripples a pixel shimmer out from its middle (PixelCanvas). Styles are in built.css.
+// Every card comes from the project data, in the order of BUILT_IDS. LOOKS gives a platform its own face where
+// it has one (files in public/images/logos): a logo instead of its name and its own shimmer colours.
+// Logos are grey and a little faded at rest and in their own colours on hover (the black ones just fade). Without a look, a card shows
+// the name with Signal orange shimmer.
+type Look = { logo?: { src: string; width: number; height: number; text?: string }; pixels?: string[] };
+type Built = { id: string; title: string; category: string; url?: string } & Look;
+const PIXEL_COLORS = ['#ff3301', '#ff6a45', '#ffa088']; // Signal and two tints of it
+const LOOKS: Record<string, Look> = {
+  // Octane's italic wordmark as octane-smoky.vercel.app publishes it (the viewBox trimmed to the letters); one flat amber for the dots
+  octane: { logo: { src: '/images/logos/octane-logo.svg', width: 92, height: 27 }, pixels: ['#F7A711'] },
+  // Dinaya's paperclip mark beside its wordmark (dinaya-lk.vercel.app sets it as the text "Dinaya.lk" in Cal Sans), spaced as on its login
+  // page (.has-text in built.css); dots in the blue of its button
+  'dinaya-lk': { logo: { src: '/images/logos/dinaya-mark.svg', width: 27, height: 27, text: 'Dinaya.lk' }, pixels: ['#2566e9', '#608fef', '#99b7f5'] },
+  // koel's wordmark exactly as koel-cse.vercel.app publishes it; one flat dark tan for the dots
+  'koel-cse': { logo: { src: '/images/logos/koel-logo.svg', width: 64, height: 28 }, pixels: ['#A0805A'] },
+  // The last four each show the logo their own site publishes (Serendib's crest as it is; Ceylon Stories' black badge and Wax In The
+  // City's maroon emblem scaled down from 4500px and 1200px PNGs to 288px WebP; CHS's mark with its path numbers rounded), with shimmer
+  // in the brand's own colour and two tints of it: Serendib gold #D4AF37 (its buttons), Ceylon Stories olive green #5B6D43 (its colour
+  // logo), CHS navy #063362 (its mark), Wax maroon #8B1235 (its buttons).
+  'serendib-trading': { logo: { src: '/images/logos/serendib-logo.png', width: 60, height: 60 }, pixels: ['#D4AF37', '#E0C56D', '#EBD9A1'] },
+  'ceylon-stories': { logo: { src: '/images/logos/ceylon-stories-logo.webp', width: 64, height: 64 }, pixels: ['#5B6D43', '#879476', '#B2BAA7'] },
+  'ceylon-hygiene': { logo: { src: '/images/logos/chs-mark.svg', width: 52, height: 43 }, pixels: ['#063362', '#496A8C', '#8A9FB5'] },
+  'wax-in-the-city': { logo: { src: '/images/logos/wax-in-the-city-logo.webp', width: 60, height: 60 }, pixels: ['#8B1235', '#AA526C', '#C890A0'] },
+};
+const BUILT_IDS = ['octane', 'propertylk', 'motormila-lk', 'lankawa', 'dinaya-lk', 'koel-cse', 'serendib-trading', 'ceylon-stories', 'ceylon-hygiene', 'wax-in-the-city'];
+
+function BuiltStrip() {
+  const platforms: Built[] = BUILT_IDS.map(id => PROJECTS.find(project => project.id === id)).filter((project): project is Project => Boolean(project)).map(project => ({ ...project, ...LOOKS[project.id] }));
+  return <section className="built-strip" aria-labelledby="built-title">
+    <div className="built-grid">
+      <div className="built-intro">
+        <h2 className="built-badge" id="built-title">Built by Ardeno</h2>
+        <p>A small studio.<br /><strong>With work out in the world.</strong></p>
+      </div>
+      {platforms.map(project => <a key={project.id} className="built-card" href={project.url ?? '#work'} {...(project.url ? { target: '_blank', rel: 'noopener noreferrer' } : {})} aria-label={`${project.title}, ${project.category}${project.url ? ' (opens in a new tab)' : ''}`}>
+        <PixelCanvas colors={project.pixels ?? PIXEL_COLORS} />
+        {project.logo
+          ? <span className={project.logo.text ? 'built-logo has-text' : 'built-logo'}><img src={project.logo.src} alt="" width={project.logo.width} height={project.logo.height} loading="lazy" decoding="async" />{project.logo.text && <span>{project.logo.text}</span>}</span>
+          : <span className="built-name">{project.title}</span>}
+        <span className="built-kind">{project.category}</span>
+        <ArrowUpRight className="built-arrow" size={14} aria-hidden="true" />
+      </a>)}
+    </div>
+  </section>;
 }
 
 export function Site({ onContact }: { onContact: (email?: string, message?: string) => void }) {
@@ -412,7 +463,7 @@ export function Site({ onContact }: { onContact: (email?: string, message?: stri
     <SiteHeader onContact={onContact} />
     <main>
       <Hero onContact={onContact} />
-      <TrustStrip />
+      <BuiltStrip />
       <Work />
       <Services onContact={onContact} />
       <Approach />
