@@ -11,8 +11,8 @@ import { Hero } from './Hero';
 import { StickerPlayground } from './StickerPlayground';
 import { cn, navigation } from './utils';
 
-// The Work section, in order: the platforms, the live websites, then two studio concepts (ids 1 and 4).
-const SHOWCASE_IDS = ['octane', 'propertylk', 'motormila-lk', 'lankawa', 'dinaya-lk', 'koel-cse', 'serendib-trading', 'ceylon-stories', 'ceylon-hygiene', 'wax-in-the-city', '1', '4'];
+// The Work section, in order: the platforms, then the live websites.
+const SHOWCASE_IDS = ['octane', 'propertylk', 'motormila', 'lankawa', 'dinaya-lk', 'koel-cse', 'serendib-trading', 'ceylon-stories', 'ceylon-hygiene', 'wax-in-the-city'];
 export const showcase = SHOWCASE_IDS.map(id => PROJECTS.find(project => project.id === id)).filter((project): project is Project => Boolean(project));
 
 export function Wordmark() { return <span className="site-wordmark">ardeno<span>studio</span></span>; }
@@ -114,7 +114,7 @@ function SectionLabel({ number, children }: { number: string; children: React.Re
 }
 
 // Filter name -> the status it shows (All work shows everything).
-const WORK_FILTERS: Record<string, string> = { Platforms: 'Ardeno platform', Websites: 'Live website', Concepts: 'Studio concept' };
+const WORK_FILTERS: Record<string, string> = { Platforms: 'Ardeno platform', Websites: 'Live website' };
 const WORK_LABELS = ['All work', ...Object.keys(WORK_FILTERS)];
 
 function Work() {
@@ -130,7 +130,7 @@ function Work() {
   const filtered = showcase.filter(project => filter === 'All work' || project.status === WORK_FILTERS[filter]);
   return <section id="work" className="site-section work-section">
     <SectionLabel number="01">Selected work</SectionLabel>
-    <div className="section-heading"><h2><>Independent ideas.<br /><span>Made real.</span></></h2><div className="heading-aside"><p>Real platforms, live websites and studio concepts.<br />Different challenges. The same care.</p><div ref={filtersRef} className="work-filters" aria-label="Filter selected work">{WORK_LABELS.map(value => <button key={value} onClick={() => setFilter(value)} aria-pressed={filter === value} className={cn(filter === value && 'is-active')}>{value}</button>)}<span className="filter-indicator" aria-hidden="true" /></div></div></div>
+    <div className="section-heading"><h2><>Independent ideas.<br /><span>Made real.</span></></h2><div className="heading-aside"><p>Real platforms and live websites.<br />Different challenges. The same care.</p><div ref={filtersRef} className="work-filters" aria-label="Filter selected work">{WORK_LABELS.map(value => <button key={value} onClick={() => setFilter(value)} aria-pressed={filter === value} className={cn(filter === value && 'is-active')}>{value}</button>)}<span className="filter-indicator" aria-hidden="true" /></div></div></div>
     <div className="project-grid" aria-live="polite">{filtered.map((project) => <article className={cn('project-card', `project-${project.id}`)} key={project.id}>
       <button className="project-visual" onClick={() => openProject(project)} aria-label={`View ${project.title} project`}>
         <span className="project-status">{project.status === 'Ardeno platform' ? 'Live platform' : project.status === 'Live website' ? 'Live website' : 'Studio concept'}</span>
@@ -419,6 +419,8 @@ const PIXEL_COLORS = ['#ff3301', '#ff6a45', '#ffa088']; // Signal and two tints 
 const LOOKS: Record<string, Look> = {
   // Octane's italic wordmark as octane-smoky.vercel.app publishes it (the viewBox trimmed to the letters); one flat amber for the dots
   octane: { logo: { src: '/images/logos/octane-logo.svg', width: 92, height: 27 }, pixels: ['#F7A711'] },
+  // Motormila's Apex M mark beside its name; dots in its electric blue and tints
+  motormila: { logo: { src: '/images/logos/motormila-mark.png', width: 32, height: 32, text: 'Motormila' }, pixels: ['#0A7AFF', '#4098FF', '#80BCFF'] },
   // Dinaya's paperclip mark beside its wordmark (dinaya-lk.vercel.app sets it as the text "Dinaya.lk" in Cal Sans), spaced as on its login
   // page (.has-text in built.css); dots in the blue of its button
   'dinaya-lk': { logo: { src: '/images/logos/dinaya-mark.svg', width: 27, height: 27, text: 'Dinaya.lk' }, pixels: ['#2566e9', '#608fef', '#99b7f5'] },
@@ -433,7 +435,7 @@ const LOOKS: Record<string, Look> = {
   'ceylon-hygiene': { logo: { src: '/images/logos/chs-mark.svg', width: 52, height: 43 }, pixels: ['#063362', '#496A8C', '#8A9FB5'] },
   'wax-in-the-city': { logo: { src: '/images/logos/wax-in-the-city-logo.webp', width: 60, height: 60 }, pixels: ['#8B1235', '#AA526C', '#C890A0'] },
 };
-const BUILT_IDS = ['octane', 'propertylk', 'motormila-lk', 'lankawa', 'dinaya-lk', 'koel-cse', 'serendib-trading', 'ceylon-stories', 'ceylon-hygiene', 'wax-in-the-city'];
+const BUILT_IDS = ['octane', 'propertylk', 'motormila', 'lankawa', 'dinaya-lk', 'koel-cse', 'serendib-trading', 'ceylon-stories', 'ceylon-hygiene', 'wax-in-the-city'];
 
 function BuiltStrip() {
   const platforms: Built[] = BUILT_IDS.map(id => PROJECTS.find(project => project.id === id)).filter((project): project is Project => Boolean(project)).map(project => ({ ...project, ...LOOKS[project.id] }));

@@ -4,9 +4,13 @@ import { PROJECTS, type Project } from '../../data/projects';
 import { burstSparks } from './clickSpark';
 
 // Back-to-front order of the fanned project cards; the last one sits on top.
-const FAN_IDS = ['ceylon-hygiene', 'koel-cse', 'dinaya-lk'];
+const FAN_IDS = ['serendib-trading', 'wax-in-the-city', 'ceylon-hygiene'];
 // A card is partly covered by the next one, so its label is the short name the studio uses where the full title is long.
-const FAN_LABELS: Record<string, string> = { 'ceylon-hygiene': 'CHS', 'dinaya-lk': 'Dinaya.lk' };
+const FAN_LABELS: Record<string, string> = {
+  'serendib-trading': 'Serendib',
+  'wax-in-the-city': 'Wax in the City',
+  'ceylon-hygiene': 'CHS',
+};
 const FAN_PROJECTS = FAN_IDS
   .map((id) => PROJECTS.find((project) => project.id === id))
   .filter((project): project is Project => Boolean(project));

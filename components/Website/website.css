@@ -42,7 +42,7 @@
 .project-visual:hover img{transform:translateY(-6px)}
 .project-octane .project-visual{background:#eee0c8}
 .project-propertylk .project-visual{background:#ced8d3}
-.project-motormila-lk .project-visual{background:#d7d9e5}
+.project-motormila .project-visual{background:#d7d9e5}
 .project-lankawa .project-visual{background:#d1e0e4}
 .project-dinaya-lk .project-visual{background:#d5def4}
 .project-koel-cse .project-visual{background:#e4dccf}
@@ -50,9 +50,6 @@
 .project-ceylon-stories .project-visual{background:#d3e2da}
 .project-ceylon-hygiene .project-visual{background:#d2dde9}
 .project-wax-in-the-city .project-visual{background:#ecd9de}
-.project-1 .project-visual{background:#dacfc3}
-.project-4 .project-visual{background:#e0d6d1}
-.project-1 .project-visual img,.project-4 .project-visual img{width:100%;height:100%;left:0;top:0;border-radius:0}
 .project-status{position:absolute;top:18px;left:20px;z-index:10;font-size:10px;display:flex;align-items:center;gap:5px;padding:6px 10px;background:#ffffffdb;color:#31332f;border-radius:999px}
 .project-status:before{content:"";height:4px;width:4px;background:currentColor;border-radius:50%}
 .project-open{position:absolute;bottom:18px;right:20px;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff;color:#222;z-index:10}

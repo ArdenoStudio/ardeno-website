@@ -40,7 +40,7 @@ const STATIC_ROUTE_CONTENT = {
     "Ceylon Hygiene Solutions: commercial hygiene & janitorial B2B portal.",
     "Octane: Sri Lanka fuel price intelligence platform.",
     "PropertyLK: Sri Lanka property market intelligence platform.",
-    "Motormila LK: vehicle market intelligence platform.",
+    "Motormila: vehicle market intelligence platform.",
     "Lankawa: Sri Lanka national civic intelligence & public data platform.",
     "Koel: Telegram-first Colombo Stock Exchange price & disclosure alert platform.",
     "Dinaya: booking & operations SaaS for Sri Lankan SMBs."
@@ -57,7 +57,7 @@ const STATIC_ROUTE_CONTENT = {
     "Ceylon Hygiene Solutions: commercial hygiene & janitorial B2B portal.",
     "Octane: Sri Lanka fuel price intelligence platform.",
     "PropertyLK: Sri Lanka property market intelligence platform.",
-    "Motormila LK: vehicle market intelligence platform.",
+    "Motormila: vehicle market intelligence platform.",
     "Lankawa: Sri Lanka national civic intelligence & public data platform.",
     "Koel: Telegram-first Colombo Stock Exchange price & disclosure alert platform.",
     "Dinaya: booking & operations SaaS for Sri Lankan SMBs."
@@ -80,7 +80,7 @@ const STATIC_ROUTE_CONTENT = {
     "Ceylon Hygiene Solutions: commercial hygiene & janitorial B2B portal.",
     "Octane: Sri Lanka fuel price intelligence platform.",
     "PropertyLK: Sri Lanka property market intelligence platform.",
-    "Motormila LK: vehicle market intelligence platform.",
+    "Motormila: vehicle market intelligence platform.",
     "Lankawa: Sri Lanka national civic intelligence & public data platform.",
     "Koel: Telegram-first Colombo Stock Exchange price & disclosure alert platform.",
     "Dinaya: booking & operations SaaS for Sri Lankan SMBs."
@@ -118,7 +118,7 @@ const STATIC_ROUTE_CONTENT = {
     "Ceylon Hygiene Solutions: commercial hygiene & janitorial B2B portal.",
     "Octane: Sri Lanka fuel price intelligence platform.",
     "PropertyLK: Sri Lanka property market intelligence platform.",
-    "Motormila LK: vehicle market intelligence platform.",
+    "Motormila: vehicle market intelligence platform.",
     "Lankawa: Sri Lanka national civic intelligence & public data platform.",
     "Koel: Telegram-first Colombo Stock Exchange price & disclosure alert platform.",
     "Dinaya: booking & operations SaaS for Sri Lankan SMBs."

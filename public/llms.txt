@@ -64,7 +64,7 @@ Use a website builder for simple brochure sites, fast experiments, and tight bud
 - Ceylon Hygiene Solutions: commercial hygiene & janitorial B2B portal.
 - Octane: Sri Lanka fuel price intelligence platform with open API.
 - PropertyLK: Sri Lanka real-estate price intelligence and valuation platform.
-- Motormila LK: Sri Lanka vehicle market intelligence cockpit and comparison tools.
+- Motormila: Sri Lanka vehicle market intelligence cockpit and comparison tools.
 - Lankawa: Sri Lanka national civic intelligence platform — unifying economy, 25 districts, disasters, and public data with source provenance on every number.
 - Koel: Telegram-first Colombo Stock Exchange price & disclosure alert platform.
 - Dinaya: booking & operations SaaS for Sri Lankan SMBs and salons.
