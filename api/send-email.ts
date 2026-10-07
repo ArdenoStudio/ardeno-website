@@ -20,7 +20,7 @@ type LeadPayload = {
   name: string;
   email: string;
   company: string;
-  budget: string;
+  phone: string;
   message: string;
   pagePath: string;
   pageUrl: string;
@@ -37,7 +37,7 @@ const parseLead = (body: Record<string, unknown>): LeadPayload | null => {
   const email = asString(body.email, 254);
   const message = asString(body.message, 4_000);
   const company = optionalString(body.company, 120);
-  const budget = optionalString(body.budget, 80);
+  const phone = optionalString(body.phone, 80);
   const pagePath = optionalString(body.page_path, 200);
   const pageUrl = optionalString(body.page_url, 500);
   const referrer = optionalString(body.referrer, 500);
@@ -50,7 +50,7 @@ const parseLead = (body: Record<string, unknown>): LeadPayload | null => {
   if (!name || !email || !message || !emailPattern.test(email)) return null;
   if (
     company === null ||
-    budget === null ||
+    phone === null ||
     pagePath === null ||
     pageUrl === null ||
     referrer === null ||
@@ -67,7 +67,7 @@ const parseLead = (body: Record<string, unknown>): LeadPayload | null => {
     name,
     email,
     company,
-    budget,
+    phone,
     message,
     pagePath,
     pageUrl,
@@ -84,7 +84,7 @@ const leadHtml = (lead: LeadPayload) => {
   const lines = escapeHtml(lead.message).replace(/\n/g, '<br/>');
   const metaRows = [
     ['Company', lead.company || 'Not provided'],
-    ['Budget', lead.budget || 'Not specified'],
+    ['Phone / WhatsApp', lead.phone || 'Not specified'],
     ['Page', lead.pagePath || 'Unknown'],
     ['Page URL', lead.pageUrl || 'Unknown'],
     ['Referrer', lead.referrer || 'direct'],

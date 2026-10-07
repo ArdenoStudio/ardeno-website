@@ -127,7 +127,7 @@ const validLead = (overrides = {}) => ({
   name: 'Alice Example',
   email: 'alice@example.com',
   company: 'Example Co',
-  budget: 'LKR 150,000 - 500,000',
+  phone: '+94 77 123 4567',
   message: 'We need a production website.',
   page_path: '/',
   page_url: 'https://www.ardenostudio.online/',

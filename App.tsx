@@ -11,6 +11,7 @@ import { applySeoToDocument, SeoRouteKey } from './seo';
 import type { ServicePageKey } from './components/Services/ServicePage';
 
 const ArdenoWebsite = lazy(() => import('./components/Website/ArdenoWebsite'));
+import { ContactDialog } from './components/Website/ContactDialog';
 
 // ─── Lazy-loaded below-fold sections ─────────────────────────────────────────
 const FeaturedWork = lazy(() =>
@@ -348,18 +349,50 @@ const App: React.FC = () => {
 
 const Website: React.FC = () => {
   const [pathname, setPathname] = useState(window.location.pathname);
+  const [docsContactOpen, setDocsContactOpen] = useState(false);
+
   useEffect(() => {
     const syncRoute = () => setPathname(window.location.pathname);
+    const onDocsExit = (e: Event) => {
+      const customEvent = e as CustomEvent<{ hash?: string }>;
+      const hash = customEvent.detail?.hash || '';
+      window.history.pushState({}, '', hash ? '/' + hash : '/');
+      setPathname('/');
+    };
     window.addEventListener('popstate', syncRoute);
-    window.addEventListener('docs:exit', syncRoute);
+    window.addEventListener('docs:exit', onDocsExit);
     return () => {
       window.removeEventListener('popstate', syncRoute);
-      window.removeEventListener('docs:exit', syncRoute);
+      window.removeEventListener('docs:exit', onDocsExit);
     };
   }, []);
-  return pathname === '/' || pathname === '/index.html'
-    ? <Suspense fallback={<div className="min-h-dvh bg-stone-100" aria-label="Loading Ardeno Studio" />}><ArdenoWebsite /></Suspense>
-    : <App />;
+
+  const isLegacy = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('legacy') === 'true';
+
+  if (isLegacy) {
+    return <App />;
+  }
+
+  if (pathname.startsWith('/docs')) {
+    return (
+      <div className="min-h-screen bg-[var(--ardeno-paper)] text-[var(--ardeno-ink)] selection:bg-[var(--ardeno-accent)] selection:text-white">
+        <Suspense fallback={<div className="min-h-dvh bg-[#f4f4f2]" aria-label="Loading documentation" />}>
+          <DocsPage onOpenContact={() => setDocsContactOpen(true)} />
+        </Suspense>
+        <ContactDialog
+          open={docsContactOpen}
+          onOpenChange={setDocsContactOpen}
+          returnFocus={() => {}}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <Suspense fallback={<div className="min-h-dvh bg-[#f4f4f2]" aria-label="Loading Ardeno Studio" />}>
+      <ArdenoWebsite />
+    </Suspense>
+  );
 };
 
 export default Website;

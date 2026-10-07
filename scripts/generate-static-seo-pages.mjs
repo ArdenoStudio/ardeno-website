@@ -35,11 +35,16 @@ const STATIC_ROUTE_CONTENT = {
         "The studio treats a website as a sales and operations surface: fast enough to trust, clear enough to understand, and practical enough to capture enquiries, bookings, or order intent."
       ],
       list: [
-        "Premium business websites with responsive design, metadata, launch checks, and conversion basics.",
-        "Booking and order systems for restaurants, salons, clinics, events, service teams, and appointment-led businesses.",
-        "Website redesign sprints for brands whose current site feels slow, unclear, outdated, or weaker than the actual business.",
-        "AI lead assistants that answer visitor questions, qualify enquiries, and guide people after hours."
-      ]
+    "Serendib Trading: automotive import & B2B procurement catalog.",
+    "Wax In The City SL: boutique aesthetic & salon booking experience.",
+    "Ceylon Hygiene Solutions: commercial hygiene & janitorial B2B portal.",
+    "Octane: Sri Lanka fuel price intelligence platform.",
+    "PropertyLK: Sri Lanka property market intelligence platform.",
+    "Motormila LK: vehicle market intelligence platform.",
+    "Lankawa: Sri Lanka national civic intelligence & public data platform.",
+    "Koel: Telegram-first Colombo Stock Exchange price & disclosure alert platform.",
+    "Dinaya: booking & operations SaaS for Sri Lankan SMBs."
+  ]
     },
     {
       title: "Buyer questions Ardeno answers",
@@ -47,14 +52,16 @@ const STATIC_ROUTE_CONTENT = {
         "Customers usually ask whether they should use a website builder, how much custom development costs, what a professional booking system includes, and how a company website can increase sales. Ardeno answers those questions directly in its FAQ and project documentation."
       ],
       list: [
-        "How can I build a custom booking system for my business?",
-        "What features should a professional booking system include?",
-        "Can I automate customer appointments on my website?",
-        "How do I choose between custom development and website builders?",
-        "What digital marketing strategies work best for local businesses?",
-        "How can I increase sales through my company website?",
-        "How do I start building a professional business website?"
-      ]
+    "Serendib Trading: automotive import & B2B procurement catalog.",
+    "Wax In The City SL: boutique aesthetic & salon booking experience.",
+    "Ceylon Hygiene Solutions: commercial hygiene & janitorial B2B portal.",
+    "Octane: Sri Lanka fuel price intelligence platform.",
+    "PropertyLK: Sri Lanka property market intelligence platform.",
+    "Motormila LK: vehicle market intelligence platform.",
+    "Lankawa: Sri Lanka national civic intelligence & public data platform.",
+    "Koel: Telegram-first Colombo Stock Exchange price & disclosure alert platform.",
+    "Dinaya: booking & operations SaaS for Sri Lankan SMBs."
+  ]
     }
   ],
   docs: [
@@ -68,11 +75,16 @@ const STATIC_ROUTE_CONTENT = {
     {
       title: "What clients get",
       list: [
-        "A custom-coded responsive website or web system aligned to the business goal.",
-        "Basic SEO setup, metadata, structured data, sitemap, robots.txt, and AI-readable llms.txt support.",
-        "Production launch checks for security headers, crawlability, forms, and core route metadata.",
-        "Clear handover details so the client understands ownership, hosting, maintenance, and future changes."
-      ]
+    "Serendib Trading: automotive import & B2B procurement catalog.",
+    "Wax In The City SL: boutique aesthetic & salon booking experience.",
+    "Ceylon Hygiene Solutions: commercial hygiene & janitorial B2B portal.",
+    "Octane: Sri Lanka fuel price intelligence platform.",
+    "PropertyLK: Sri Lanka property market intelligence platform.",
+    "Motormila LK: vehicle market intelligence platform.",
+    "Lankawa: Sri Lanka national civic intelligence & public data platform.",
+    "Koel: Telegram-first Colombo Stock Exchange price & disclosure alert platform.",
+    "Dinaya: booking & operations SaaS for Sri Lankan SMBs."
+  ]
     }
   ],
   faq: [
@@ -88,7 +100,7 @@ const STATIC_ROUTE_CONTENT = {
     {
       title: "Brand identity",
       body: [
-        "Ardeno Studio uses a dark-first, high-contrast identity built around a sharp red accent, polished logo renders, editorial typography, and a premium web-studio tone. The brand is meant to feel intentional, technical, and commercially serious rather than template-driven.",
+        "Ardeno Studio uses a tactile, editorial identity built around a signature Signal orange accent (#ff3301), warm Paper tones (#f4f4f2), deep Ink (#20211f), polished renders, and Cal Sans display typography.",
         "The identity supports the same promise as the service offer: custom design, careful implementation, fast loading, and clean handover for businesses that do not want a generic website."
       ]
     }
@@ -101,14 +113,16 @@ const STATIC_ROUTE_CONTENT = {
         "The portfolio includes business websites, booking concepts, market-intelligence platforms, restaurant/order flows, salon booking concepts, and AI-assisted lead experiences."
       ],
       list: [
-        "Octane: Sri Lanka fuel price intelligence concept.",
-        "PropertyLK: Sri Lanka property market intelligence concept.",
-        "Motormila LK: vehicle market intelligence platform concept.",
-        "Lankawa: travel & destination intelligence platform concept.",
-        "Urban Kitchen: restaurant and food ordering concept.",
-        "Luxe Lanka: luxury and salon booking concept.",
-        "Global Jet Concierge: private aviation and concierge web concept."
-      ]
+    "Serendib Trading: automotive import & B2B procurement catalog.",
+    "Wax In The City SL: boutique aesthetic & salon booking experience.",
+    "Ceylon Hygiene Solutions: commercial hygiene & janitorial B2B portal.",
+    "Octane: Sri Lanka fuel price intelligence platform.",
+    "PropertyLK: Sri Lanka property market intelligence platform.",
+    "Motormila LK: vehicle market intelligence platform.",
+    "Lankawa: Sri Lanka national civic intelligence & public data platform.",
+    "Koel: Telegram-first Colombo Stock Exchange price & disclosure alert platform.",
+    "Dinaya: booking & operations SaaS for Sri Lankan SMBs."
+  ]
     }
   ],
   "cs-humble-beginnings": [

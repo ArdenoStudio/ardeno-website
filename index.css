@@ -5,7 +5,7 @@
 :root {
   --ardeno-ink: #080809;
   --ardeno-surface: #0c0c0e;
-  --ardeno-accent: #E50914;
+  --ardeno-accent: #ff3301;
   --ardeno-accent-soft: rgba(229, 9, 20, 0.12);
   --font-display: "Cal Sans", sans-serif;
   --font-body: "Cal Sans", sans-serif;
@@ -50,10 +50,7 @@
 }
 
 /* ── Body base ──────────────────────────────────────────── */
-body {
-  background-color: var(--ardeno-ink);
-  font-family: var(--font-body);
-}
+body { background-color: var(--ardeno-paper); color: var(--ardeno-ink); }
 
 /* ── Text glow utility ──────────────────────────────────── */
 .text-glow {

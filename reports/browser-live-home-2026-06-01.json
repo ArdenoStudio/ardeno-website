@@ -1,0 +1,370 @@
+{
+  "capturedAt": "2026-06-01T09:44:28.175Z",
+  "data": {
+    "url": "https://www.ardenostudio.online/",
+    "title": "Ardeno Studio | Web Design and Development in Sri Lanka",
+    "paints": {
+      "first-paint": 30636,
+      "first-contentful-paint": 30636
+    },
+    "auditPerf": {
+      "lcp": 31384,
+      "cls": 0.00018055066219078796,
+      "longTasks": 7,
+      "longTaskDuration": 743
+    },
+    "transferSize": 1069087,
+    "decodedBodySize": 1477456,
+    "resourceCount": 37,
+    "topResources": [
+      {
+        "name": "https://www.ardenostudio.online/ardeno-logo.png",
+        "initiatorType": "other",
+        "transferSize": 396156,
+        "encodedBodySize": 395856,
+        "decodedBodySize": 395856,
+        "duration": 634.2999999988824,
+        "startTime": 30899.800000000745
+      },
+      {
+        "name": "https://www.ardenostudio.online/assets/index-C_QOpyYz.js",
+        "initiatorType": "script",
+        "transferSize": 133227,
+        "encodedBodySize": 132927,
+        "decodedBodySize": 407461,
+        "duration": 640.8999999985099,
+        "startTime": 320.7000000011176
+      },
+      {
+        "name": "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=720&auto=format&fit=crop&q=72",
+        "initiatorType": "img",
+        "transferSize": 103645,
+        "encodedBodySize": 103345,
+        "decodedBodySize": 103345,
+        "duration": 397.40000000037253,
+        "startTime": 30766.800000000745
+      },
+      {
+        "name": "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=900&auto=format&fit=crop&q=72",
+        "initiatorType": "img",
+        "transferSize": 68578,
+        "encodedBodySize": 68278,
+        "decodedBodySize": 68278,
+        "duration": 414.09999999962747,
+        "startTime": 30584.200000001118
+      },
+      {
+        "name": "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=900&auto=format&fit=crop&q=72",
+        "initiatorType": "img",
+        "transferSize": 68578,
+        "encodedBodySize": 68278,
+        "decodedBodySize": 68278,
+        "duration": 204.7999999988824,
+        "startTime": 32244.800000000745
+      },
+      {
+        "name": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=720&auto=format&fit=crop&q=72",
+        "initiatorType": "img",
+        "transferSize": 49357,
+        "encodedBodySize": 49057,
+        "decodedBodySize": 49057,
+        "duration": 142.5,
+        "startTime": 31392.200000001118
+      },
+      {
+        "name": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=720&auto=format&fit=crop&q=72",
+        "initiatorType": "img",
+        "transferSize": 45569,
+        "encodedBodySize": 45269,
+        "decodedBodySize": 45269,
+        "duration": 498.30000000074506,
+        "startTime": 30767.5
+      },
+      {
+        "name": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=720&auto=format&fit=crop&q=72",
+        "initiatorType": "img",
+        "transferSize": 43239,
+        "encodedBodySize": 42939,
+        "decodedBodySize": 42939,
+        "duration": 417.90000000037253,
+        "startTime": 30767
+      },
+      {
+        "name": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=720&auto=format&fit=crop&q=72",
+        "initiatorType": "img",
+        "transferSize": 43239,
+        "encodedBodySize": 42939,
+        "decodedBodySize": 42939,
+        "duration": 162.2000000011176,
+        "startTime": 35209.5
+      },
+      {
+        "name": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=720&auto=format&fit=crop&q=72",
+        "initiatorType": "img",
+        "transferSize": 42294,
+        "encodedBodySize": 41994,
+        "decodedBodySize": 41994,
+        "duration": 542.3000000007451,
+        "startTime": 30767.599999999627
+      },
+      {
+        "name": "https://www.ardenostudio.online/assets/index-Ckt04kYp.css",
+        "initiatorType": "link",
+        "transferSize": 11499,
+        "encodedBodySize": 11199,
+        "decodedBodySize": 61844,
+        "duration": 362.09999999962747,
+        "startTime": 320.90000000037253
+      },
+      {
+        "name": "https://www.ardenostudio.online/assets/ArdenoAIWidget-BwMFiq7l.js",
+        "initiatorType": "script",
+        "transferSize": 8661,
+        "encodedBodySize": 8361,
+        "decodedBodySize": 28904,
+        "duration": 376.19999999925494,
+        "startTime": 34878.300000000745
+      },
+      {
+        "name": "https://www.ardenostudio.online/assets/FeaturedWork-D-A6dJp4.js",
+        "initiatorType": "script",
+        "transferSize": 6513,
+        "encodedBodySize": 6213,
+        "decodedBodySize": 22086,
+        "duration": 373,
+        "startTime": 30897.400000000373
+      },
+      {
+        "name": "https://www.ardenostudio.online/assets/ContactModal-DuV7Ya7t.js",
+        "initiatorType": "script",
+        "transferSize": 6326,
+        "encodedBodySize": 6026,
+        "decodedBodySize": 18998,
+        "duration": 371.80000000074506,
+        "startTime": 30562.599999999627
+      },
+      {
+        "name": "https://www.ardenostudio.online/assets/Process-Bd9nMeZ4.js",
+        "initiatorType": "script",
+        "transferSize": 5940,
+        "encodedBodySize": 5640,
+        "decodedBodySize": 16637,
+        "duration": 373.19999999925494,
+        "startTime": 30897.800000000745
+      }
+    ],
+    "horizontalOverflow": false,
+    "innerWidth": 1440,
+    "scrollWidth": 1434
+  },
+  "network": [
+    {
+      "url": "https://www.ardenostudio.online/ardeno-logo.png",
+      "type": "Other",
+      "encodedDataLength": 396299,
+      "status": 200,
+      "mime": "image/png",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/assets/index-C_QOpyYz.js",
+      "type": "Script",
+      "encodedDataLength": 133204,
+      "status": 200,
+      "mime": "application/javascript",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=720&auto=format&fit=crop&q=72",
+      "type": "Image",
+      "encodedDataLength": 103646,
+      "status": 200,
+      "mime": "image/avif",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=900&auto=format&fit=crop&q=72",
+      "type": "Image",
+      "encodedDataLength": 68781,
+      "status": 200,
+      "mime": "image/avif",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=900&auto=format&fit=crop&q=72",
+      "type": "Image",
+      "encodedDataLength": 68604,
+      "status": 200,
+      "mime": "image/avif",
+      "protocol": "h3"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=720&auto=format&fit=crop&q=72",
+      "type": "Image",
+      "encodedDataLength": 49259,
+      "status": 200,
+      "mime": "image/avif",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=720&auto=format&fit=crop&q=72",
+      "type": "Image",
+      "encodedDataLength": 45425,
+      "status": 200,
+      "mime": "image/avif",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=720&auto=format&fit=crop&q=72",
+      "type": "Image",
+      "encodedDataLength": 43265,
+      "status": 200,
+      "mime": "image/avif",
+      "protocol": "h3"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=720&auto=format&fit=crop&q=72",
+      "type": "Image",
+      "encodedDataLength": 43129,
+      "status": 200,
+      "mime": "image/avif",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=720&auto=format&fit=crop&q=72",
+      "type": "Image",
+      "encodedDataLength": 42169,
+      "status": 200,
+      "mime": "image/avif",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/assets/index-Ckt04kYp.css",
+      "type": "Stylesheet",
+      "encodedDataLength": 11426,
+      "status": 200,
+      "mime": "text/css",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/assets/ArdenoAIWidget-BwMFiq7l.js",
+      "type": "Script",
+      "encodedDataLength": 9091,
+      "status": 200,
+      "mime": "application/javascript",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/assets/FeaturedWork-D-A6dJp4.js",
+      "type": "Script",
+      "encodedDataLength": 6381,
+      "status": 200,
+      "mime": "application/javascript",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/assets/ContactModal-DuV7Ya7t.js",
+      "type": "Script",
+      "encodedDataLength": 6190,
+      "status": 200,
+      "mime": "application/javascript",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/assets/Process-Bd9nMeZ4.js",
+      "type": "Script",
+      "encodedDataLength": 5775,
+      "status": 200,
+      "mime": "application/javascript",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/assets/Services-iACCySK5.js",
+      "type": "Script",
+      "encodedDataLength": 5568,
+      "status": 200,
+      "mime": "application/javascript",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/_vercel/speed-insights/script.js",
+      "type": "Script",
+      "encodedDataLength": 4984,
+      "status": 200,
+      "mime": "application/javascript",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/assets/Footer-BKFxisN-.js",
+      "type": "Script",
+      "encodedDataLength": 4440,
+      "status": 200,
+      "mime": "application/javascript",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/",
+      "type": "Document",
+      "encodedDataLength": 3920,
+      "status": 200,
+      "mime": "text/html",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/assets/AuditCTA-C_4uPHiz.js",
+      "type": "Script",
+      "encodedDataLength": 2811,
+      "status": 200,
+      "mime": "application/javascript",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/assets/Testimonials-BdkncFAl.js",
+      "type": "Script",
+      "encodedDataLength": 2754,
+      "status": 200,
+      "mime": "application/javascript",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/assets/OurStory-BoXf1yjv.js",
+      "type": "Script",
+      "encodedDataLength": 2121,
+      "status": 200,
+      "mime": "application/javascript",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/site.webmanifest",
+      "type": "Manifest",
+      "encodedDataLength": 1398,
+      "status": 200,
+      "mime": "application/manifest+json",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/assets/FinalCTA-C6qdyf7L.js",
+      "type": "Script",
+      "encodedDataLength": 1299,
+      "status": 200,
+      "mime": "application/javascript",
+      "protocol": "h2"
+    },
+    {
+      "url": "https://www.ardenostudio.online/assets/wallet-cards-CrSuE3uX.js",
+      "type": "Script",
+      "encodedDataLength": 1184,
+      "status": 200,
+      "mime": "application/javascript",
+      "protocol": "h2"
+    }
+  ],
+  "logs": [
+    {
+      "kind": "log",
+      "level": "error",
+      "text": "Failed to load resource: net::ERR_TIMED_OUT",
+      "url": "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..144,75..100,400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&family=Sora:wght@300;400;500;600;700&display=swap"
+    }
+  ]
+}

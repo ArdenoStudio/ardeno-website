@@ -10,7 +10,7 @@ import { Hero } from './Hero';
 import { StickerPlayground } from './StickerPlayground';
 import { cn, navigation } from './utils';
 
-export const showcase = [...PROJECTS.slice(0, 4), PROJECTS[4], PROJECTS[7]].filter(Boolean);
+export const showcase = PROJECTS;
 
 export function Wordmark() { return <span className="site-wordmark">ardeno<span>studio</span></span>; }
 
@@ -120,13 +120,17 @@ function Work() {
     projectTrigger.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setSelected(project);
   };
-  const filtered = showcase.filter(project => filter === 'All work' || (filter === 'Platforms' ? project.status === 'Ardeno platform' : project.status === 'Studio concept'));
+  const filtered = PROJECTS.filter((project) => {
+    if (filter === "Client work") return project.status === "Client project";
+    if (filter === "Platforms") return project.status === "Ardeno platform";
+    return true;
+  });
   return <section id="work" className="site-section work-section">
     <SectionLabel number="01">Selected work</SectionLabel>
-    <div className="section-heading"><h2><>Independent ideas.<br /><span>Made real.</span></></h2><div className="heading-aside"><p>Real platforms and studio concepts.<br />Different challenges. The same care.</p><div ref={filtersRef} className="work-filters" aria-label="Filter selected work">{['All work', 'Platforms', 'Concepts'].map(value => <button key={value} onClick={() => setFilter(value)} aria-pressed={filter === value} className={cn(filter === value && 'is-active')}>{value}</button>)}<span className="filter-indicator" aria-hidden="true" /></div></div></div>
+    <div className="section-heading"><h2><>Independent ideas.<br /><span>Made real.</span></></h2><div className="heading-aside"><p>Client work and studio platforms.<br />Different challenges. The same care.</p><div ref={filtersRef} className="work-filters" aria-label="Filter selected work">{['All work', 'Client work', 'Platforms'].map(value => <button key={value} onClick={() => setFilter(value)} aria-pressed={filter === value} className={cn(filter === value && 'is-active')}>{value}</button>)}<span className="filter-indicator" aria-hidden="true" /></div></div></div>
     <div className="project-grid" aria-live="polite">{filtered.map((project) => <article className={cn('project-card', `project-${project.id}`)} key={project.id}>
       <button className="project-visual" onClick={() => openProject(project)} aria-label={`View ${project.title} project`}>
-        <span className="project-status">{project.status === 'Ardeno platform' ? 'Live platform' : 'Studio concept'}</span>
+        <span className="project-status">{project.status === 'Client project' ? 'Client project' : 'Live platform'}</span>
         <img src={project.image} alt={`${project.title} website preview`} width="1280" height="800" loading="lazy" decoding="async" />
         <span className="project-open"><ArrowUpRight size={24} /></span>
       </button><div className="project-caption"><div><h3><button onClick={() => openProject(project)}><span className="ul">{project.title}</span></button></h3><p>{project.category}</p></div><span className="project-year tabular-nums">{project.year}</span></div>
