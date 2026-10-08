@@ -224,7 +224,7 @@ function FoundersHero({ onContact }: { onContact: () => void }) {
   );
 }
 
-function FounderChapter({ founder, flipped }: { founder: Founder; flipped: boolean }) {
+function FounderChapter({ founder, flipped }: { founder: Founder; flipped: boolean; key?: string }) {
   return (
     <article id={founder.id} className={`founder-chapter f-rise${flipped ? ' is-flipped' : ''}`}>
       <div className="founder-portrait-col">
