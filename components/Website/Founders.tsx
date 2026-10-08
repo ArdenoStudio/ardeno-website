@@ -6,6 +6,7 @@ import { ContactDialog } from './ContactDialog';
 import { PixelCanvas } from './PixelCanvas';
 import { burstSparks } from './clickSpark';
 import { useSiteInteractions, useReveal } from './interactions';
+import { placeFill, useDotGlow } from './Hero';
 import './website.css';
 import './navigation.css';
 import './hero.css';
@@ -110,71 +111,6 @@ const TIMELINE = [
 
 const VALUES = ['Character.', 'Clarity.', 'Purpose.', 'Craft.', 'Colombo \u2197 Everywhere.'];
 
-// ─── Small helpers ───────────────────────────────────────────────────────────
-
-// Records where the pointer crosses the pill's edge, so the ink fill grows from (and shrinks back to) that point.
-function placeFill(event: React.PointerEvent<HTMLElement>) {
-  const el = event.currentTarget;
-  const box = el.getBoundingClientRect();
-  el.style.setProperty('--fx', `${Math.round(event.clientX - box.left)}px`);
-  el.style.setProperty('--fy', `${Math.round(event.clientY - box.top)}px`);
-  el.style.setProperty('--fd', `${Math.ceil(Math.hypot(box.width, box.height) * 2)}px`);
-}
-
-// Moves a soft orange spotlight (a masked copy of the dotted lettering) to the pointer.
-function useDotGlow(hostRef: React.RefObject<HTMLElement>, glowRef: React.RefObject<SVGSVGElement>) {
-  useEffect(() => {
-    const host = hostRef.current;
-    const glow = glowRef.current;
-    if (!host || !glow || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-
-    const ease = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 0.18;
-    let pointer: { x: number; y: number } | null = null;
-    let x = 0;
-    let y = 0;
-    let frame = 0;
-
-    const paint = () => {
-      frame = 0;
-      if (!pointer) return;
-      const box = glow.getBoundingClientRect();
-      const tx = pointer.x - box.left;
-      const ty = pointer.y - box.top;
-      x += (tx - x) * ease;
-      y += (ty - y) * ease;
-      glow.style.setProperty('--mx', `${x.toFixed(1)}px`);
-      glow.style.setProperty('--my', `${y.toFixed(1)}px`);
-      if (Math.abs(tx - x) > 0.4 || Math.abs(ty - y) > 0.4) frame = requestAnimationFrame(paint);
-    };
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(paint);
-    };
-    const move = (event: PointerEvent) => {
-      if (!pointer) {
-        const box = glow.getBoundingClientRect();
-        x = event.clientX - box.left;
-        y = event.clientY - box.top;
-        glow.setAttribute('data-on', '');
-      }
-      pointer = { x: event.clientX, y: event.clientY };
-      schedule();
-    };
-    const leave = () => {
-      pointer = null;
-      glow.removeAttribute('data-on');
-    };
-
-    host.addEventListener('pointermove', move);
-    host.addEventListener('pointerleave', leave);
-    window.addEventListener('scroll', schedule, { passive: true });
-    return () => {
-      host.removeEventListener('pointermove', move);
-      host.removeEventListener('pointerleave', leave);
-      window.removeEventListener('scroll', schedule);
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, [hostRef, glowRef]);
-}
 
 function DotLines({ glowRef }: { glowRef?: React.Ref<SVGSVGElement> }) {
   const words = (

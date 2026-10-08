@@ -12,14 +12,18 @@
 }
 
 /* ── Reveal ─────────────────────────────────────────────────────────────── */
-.f-section .f-rise {
-  opacity: 0;
-  translate: 0 26px;
-  transition: opacity 700ms ease, translate 900ms var(--spring-soft);
-}
-.f-section[data-in] .f-rise {
-  opacity: 1;
-  translate: 0 0;
+/* Hidden state only under no-preference (mirrors the contact band): useReveal
+   sets data-in immediately for reduced motion, so content is simply visible. */
+@media(prefers-reduced-motion:no-preference){
+  .f-section .f-rise {
+    opacity: 0;
+    translate: 0 26px;
+    transition: opacity 700ms ease, translate 900ms var(--spring-soft);
+  }
+  .f-section[data-in] .f-rise {
+    opacity: 1;
+    translate: 0 0;
+  }
 }
 
 /* ── Hero ───────────────────────────────────────────────────────────────── */
@@ -369,6 +373,11 @@
 }
 @keyframes founders-ticker {
   to { transform: translateX(-50%); }
+}
+@media(prefers-reduced-motion:reduce){
+  .ticker-track{animation:none}
+  .founder-card-visual,.founder-card-caption svg{transition:none}
+  .founder-card:is(:hover,:focus-visible) .founder-card-visual{transform:rotate(var(--tilt))}
 }
 
 /* ── Responsive ─────────────────────────────────────────────────────────── */

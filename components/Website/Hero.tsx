@@ -25,7 +25,7 @@ function DotLines({ className, svgRef }: { className: string; svgRef?: React.Ref
 }
 
 // Records where the pointer crosses the pill's edge, so the ink fill grows from (and shrinks back to) that point.
-function placeFill(event: React.PointerEvent<HTMLElement>) {
+export function placeFill(event: React.PointerEvent<HTMLElement>) {
   const el = event.currentTarget;
   const box = el.getBoundingClientRect();
   el.style.setProperty('--fx', `${Math.round(event.clientX - box.left)}px`);
@@ -53,7 +53,7 @@ function exploreWork(event: React.MouseEvent<HTMLAnchorElement>) {
 }
 
 // Moves a soft orange spotlight (a masked copy of the dotted lettering) to the pointer.
-function useDotGlow(hostRef: React.RefObject<HTMLElement>, glowRef: React.RefObject<SVGSVGElement>) {
+export function useDotGlow(hostRef: React.RefObject<HTMLElement>, glowRef: React.RefObject<SVGSVGElement>) {
   useEffect(() => {
     const host = hostRef.current;
     const glow = glowRef.current;
