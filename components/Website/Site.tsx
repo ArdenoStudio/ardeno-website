@@ -205,8 +205,8 @@ function Studio({ onContact, canvasRef }: { onContact: () => void; canvasRef: Re
       <div className="studio-people">
         <p className="studio-people-label">The people behind the pixels</p>
         <div className="founder-grid">
-          <a href="/founders.html#suven-seoras"><span className="founder-initial">SS</span><span><strong>Suven Seoras</strong><small>Product & engineering</small></span><ArrowUpRight size={17} /></a>
-          <a href="/founders.html#ovindu-karunaratne"><span className="founder-initial">OK</span><span><strong>Ovindu Karunaratne</strong><small>Design & client direction</small></span><ArrowUpRight size={17} /></a>
+          <a href="/founders#suven-seoras"><span className="founder-initial">SS</span><span><strong>Suven Seoras</strong><small>Product & engineering</small></span><ArrowUpRight size={17} /></a>
+          <a href="/founders#ovindu-karunaratne"><span className="founder-initial">OK</span><span><strong>Ovindu Karunaratne</strong><small>Design & client direction</small></span><ArrowUpRight size={17} /></a>
         </div>
         <button className="text-button" onClick={onContact}><span className="ul">Meet your next creative partners</span><ArrowUpRight size={18} /></button>
       </div>

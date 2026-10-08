@@ -315,7 +315,20 @@ export default function FoundersPage() {
     document.title = 'Founders — Ardeno Studio';
     if (window.location.hash) {
       const id = window.location.hash.slice(1);
-      window.requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView());
+      window.requestAnimationFrame(() => {
+        document.getElementById(id)?.scrollIntoView();
+        // Safety net: reveal anything already in view. On some mobile browsers the
+        // IntersectionObserver behind useReveal doesn't fire after a programmatic
+        // anchor jump until the user scrolls — this guarantees content is visible.
+        window.requestAnimationFrame(() => {
+          document.querySelectorAll('.f-section:not([data-in])').forEach((section) => {
+            const rect = section.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+              section.setAttribute('data-in', '');
+            }
+          });
+        });
+      });
     }
   }, []);
 
