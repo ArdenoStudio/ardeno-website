@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import '@fontsource/cal-sans/latin-400.css';
 import '@fontsource-variable/inter/wght.css';
-import './index.css';
 import App from './App';
 
 const rootElement = document.getElementById('root');
