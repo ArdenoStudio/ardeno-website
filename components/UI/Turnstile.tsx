@@ -79,7 +79,7 @@ export const Turnstile: React.FC<TurnstileProps> = ({ onVerify, onExpire }) => {
         <div
             ref={containerRef}
             id={`turnstile-${id}`}
-            className="min-h-[65px]"
+            style={{ minHeight: 65 }}
         />
     );
 };
