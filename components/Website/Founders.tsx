@@ -53,7 +53,7 @@ const FOUNDERS: Founder[] = [
     tags: ['TypeScript', 'React', 'Python', 'Machine learning', 'Data pipelines'],
     links: [
       { label: 'GitHub', href: 'https://github.com/SuvenSeo' },
-      { label: 'Instagram', href: 'https://www.instagram.com/s.suven.s/' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/suvenseoras/' },
     ],
     ask: [
       ['Why is my site slow?', 'He\u2019ll find the bottleneck before your coffee cools.'],
