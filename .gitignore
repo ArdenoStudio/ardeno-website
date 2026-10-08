@@ -38,3 +38,9 @@ dist-ssr
 
 # Local verification artifacts
 reports/*.png
+
+# Local design and verification captures
+tmp/
+output/brand/
+output/website/
+/namecheap-nameservers-confirmation.png

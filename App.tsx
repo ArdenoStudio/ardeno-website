@@ -4,15 +4,15 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Navbar } from './components/Layout/Navbar';
 import { Hero } from './components/Home/Hero';
 import { ProjectMarquee } from './components/Home/ProjectMarquee';
-import { PageLoader } from './components/Home/Pageloader';
 import CookieBanner from './components/UI/CookieBanner';
 import { trackUtmParams } from './components/UI/trackUtm';
 import { applySeoToDocument, SeoRouteKey } from './seo';
 import type { ServicePageKey } from './components/Services/ServicePage';
+import { usePageNavigation, requestPageNavigation } from './components/Website/pageNavigation';
 
 const ArdenoWebsite = lazy(() => import('./components/Website/ArdenoWebsite'));
 const FoundersPage = lazy(() => import('./components/Website/Founders'));
-import { ContactDialog } from './components/Website/ContactDialog';
+const LoaderLab = import.meta.env.DEV ? lazy(() => import('./.Codex-design/lab/page')) : null;
 
 // ─── Lazy-loaded below-fold sections ─────────────────────────────────────────
 const FeaturedWork = lazy(() =>
@@ -112,7 +112,6 @@ const getRoute = (): Route => {
 };
 
 const App: React.FC = () => {
-  const [loaded, setLoaded] = useState(false);
   const [assistantReady, setAssistantReady] = useState(false);
   const [homeSectionsReady, setHomeSectionsReady] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
@@ -210,8 +209,6 @@ const App: React.FC = () => {
   }, [route, homeSectionsReady]);
 
   useEffect(() => {
-    if (!loaded) return;
-
     const win = window as Window & {
       requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number;
       cancelIdleCallback?: (handle: number) => void;
@@ -232,7 +229,7 @@ const App: React.FC = () => {
         win.cancelIdleCallback?.(idleId);
       }
     };
-  }, [loaded]);
+  }, []);
 
   // ── Shared wrapper for standalone pages ──
   const pageShell = (children: React.ReactNode, options?: { hideNav?: boolean }) => (
@@ -250,8 +247,6 @@ const App: React.FC = () => {
 
   return (
     <div className="bg-zinc-950 text-white min-h-screen overflow-x-clip selection:bg-accent selection:text-white relative">
-      <PageLoader onComplete={() => setLoaded(true)} minDuration={900} />
-
       <>
         {route === 'docs' && (
           <Suspense key="docs" fallback={null}>
@@ -306,10 +301,6 @@ const App: React.FC = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6 }}
             className="relative z-10"
-            style={{
-              opacity: loaded ? 1 : 0,
-              pointerEvents: loaded ? 'auto' : 'none',
-            }}
           >
             <Navbar onOpenModal={() => setContactOpen(true)} />
             <Hero onOpenContact={() => setContactOpen(true)} />
@@ -349,59 +340,34 @@ const App: React.FC = () => {
 };
 
 const Website: React.FC = () => {
-  const [pathname, setPathname] = useState(window.location.pathname);
-  const [docsContactOpen, setDocsContactOpen] = useState(false);
-
-  useEffect(() => {
-    const syncRoute = () => setPathname(window.location.pathname);
-    const onDocsExit = (e: Event) => {
-      const customEvent = e as CustomEvent<{ hash?: string }>;
-      const hash = customEvent.detail?.hash || '';
-      window.history.pushState({}, '', hash ? '/' + hash : '/');
-      setPathname('/');
-    };
-    window.addEventListener('popstate', syncRoute);
-    window.addEventListener('docs:exit', onDocsExit);
-    return () => {
-      window.removeEventListener('popstate', syncRoute);
-      window.removeEventListener('docs:exit', onDocsExit);
-    };
-  }, []);
-
+  const isLoaderLab = import.meta.env.DEV && new URLSearchParams(window.location.search).get('design_lab') === 'loaders';
   const isLegacy = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('legacy') === 'true';
+  const { location: { pathname }, announcement, phase, nativeMotion, transitionProps } = usePageNavigation(!isLegacy && !isLoaderLab);
+  useEffect(() => {
+    if (!isLegacy && pathname.startsWith('/docs')) applySeoToDocument('docs');
+  }, [pathname, isLegacy]);
 
+  if (isLoaderLab && LoaderLab) return <Suspense fallback={<div className="min-h-dvh bg-[#f4f4f2]" />}><LoaderLab /></Suspense>;
   if (isLegacy) {
     return <App />;
   }
 
-  if (pathname.startsWith('/docs')) {
-    return (
+  const pageContent = pathname.startsWith('/docs') ? (
       <div className="min-h-screen bg-[var(--ardeno-paper)] text-[var(--ardeno-ink)] selection:bg-[var(--ardeno-accent)] selection:text-white">
         <Suspense fallback={<div className="min-h-dvh bg-[#f4f4f2]" aria-label="Loading documentation" />}>
-          <DocsPage onOpenContact={() => setDocsContactOpen(true)} />
+          <DocsPage onOpenContact={() => requestPageNavigation('/contact')} />
         </Suspense>
-        <ContactDialog
-          open={docsContactOpen}
-          onOpenChange={setDocsContactOpen}
-          returnFocus={() => {}}
-        />
       </div>
-    );
-  }
-
-  if (pathname.startsWith('/founders')) {
-    return (
+    ) : pathname.replace(/\/+$/, '') === '/founders' ? (
       <Suspense fallback={<div className="min-h-dvh bg-[#f4f4f2]" aria-label="Loading founders" />}>
         <FoundersPage />
       </Suspense>
-    );
-  }
-
-  return (
+    ) : (
     <Suspense fallback={<div className="min-h-dvh bg-[#f4f4f2]" aria-label="Loading Ardeno Studio" />}>
-      <ArdenoWebsite />
+      <ArdenoWebsite pathname={pathname} />
     </Suspense>
   );
+  return <>{announcement}<motion.div className="page-flow" data-phase={phase} data-native-transition={nativeMotion} {...transitionProps}>{pageContent}</motion.div></>;
 };
 
 export default Website;

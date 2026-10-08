@@ -5,6 +5,8 @@ const DIST = path.resolve("dist");
 const INDEX = path.join(DIST, "index.html");
 const seoConfig = JSON.parse(await fs.readFile(path.resolve("seo-routes.json"), "utf8"));
 const servicePages = JSON.parse(await fs.readFile(path.resolve("service-pages.json"), "utf8")).pages;
+const projects = JSON.parse(await fs.readFile(path.resolve("data/projects.json"), "utf8"));
+const projectsByRoute = new Map(projects.map((project) => [`project-${project.id}`, project]));
 const SITE = seoConfig.site;
 
 const absoluteUrl = (pathOrUrl) => {
@@ -27,6 +29,24 @@ const escapeHtml = (value) =>
     .replaceAll(">", "&gt;");
 
 const STATIC_ROUTE_CONTENT = {
+  founders: [
+    {
+      title: "The people behind the pixels",
+      body: [
+        "Ardeno Studio is an independent design and development studio in Colombo, founded by Suven Seoras and Ovindu Karunaratne. Clients work directly with the two founders, from the first conversation to the details of delivery and support after launch.",
+        "Suven leads product and engineering: architecture, platforms, performance, AI systems, and data pipelines. His work includes the technical foundations of Ardeno platforms such as Motormila, Koel, and Dinaya.",
+        "Ovindu leads design and client direction: brand identity, user experience, design systems, delivery, and the relationship behind the work. He shaped the Signal design language of Ardeno's website.",
+      ],
+    },
+    {
+      title: "How we work together",
+      body: [
+        "The people on the call are the people doing the work. Design and engineering develop together, with the founders carrying a project from first sketch to launch and staying available for support afterwards.",
+        "The studio's story began in Colombo in 2026. Its body of work includes client websites for Wax In The City, Serendib Trading, and Ceylon Hygiene Solutions, alongside digital platforms for vehicle data, booking, stock alerts, and civic intelligence.",
+        "Explore the founders' GitHub and LinkedIn profiles on this page, browse the project archive, or use the contact page to start a conversation about your website, brand, or digital product.",
+      ],
+    },
+  ],
   home: [
     {
       title: "What Ardeno Studio builds",
@@ -234,7 +254,70 @@ const renderEntitySummary = (topic = "custom-coded websites, booking systems, we
       <p style="margin:0">Primary website: https://www.ardenostudio.online/. Contact: ardenostudio@gmail.com. Founders: Suven Seoras and Ovindu Karunaratne.</p>
     </article>`;
 
+const renderProjectLinks = (currentId) =>
+  `<article style="margin:0 0 28px">
+    <h2 style="margin:0 0 12px;color:#fff;font-size:20px;font-weight:600">${currentId ? "More projects" : "All projects"}</h2>
+    <ul style="margin:0;padding-left:20px">
+      ${projects.filter((project) => project.id !== currentId).map((project) => {
+        const route = seoConfig.routes[`project-${project.id}`];
+        return `<li style="margin:0 0 12px"><a href="${escapeAttr(route.path)}" style="color:#fff">${escapeHtml(project.title)}</a> — ${escapeHtml(project.category)}. ${escapeHtml(project.status)}.</li>`;
+      }).join("")}
+    </ul>
+  </article>`;
+
+const renderProjectsStaticContent = () =>
+  `<article style="margin:0 0 28px">
+    <h2 style="margin:0 0 12px;color:#fff;font-size:20px;font-weight:600">Websites, platforms, and studio concepts</h2>
+    <p style="margin:0 0 14px">The full Ardeno Studio portfolio brings together live business websites and Ardeno digital platforms. Each project page explains the challenge, approach, and result. Project status identifies live websites and Ardeno platforms. CHS also documents proposed brand application concepts.</p>
+    ${projects.map((project) => {
+      const route = seoConfig.routes[`project-${project.id}`];
+      return `<section style="margin:0 0 24px">
+        <h3 style="margin:0 0 6px;font-size:18px"><a href="${escapeAttr(route.path)}" style="color:#fff">${escapeHtml(project.title)}</a></h3>
+        <p style="margin:0 0 8px">${escapeHtml(project.category)} · ${escapeHtml(project.status)} · ${escapeHtml(project.year)}</p>
+        <p style="margin:0">${escapeHtml(project.description)}</p>
+      </section>`;
+    }).join("")}
+  </article>`;
+
+const renderProjectStaticContent = (project) => {
+  const sections = [
+    { title: "Project overview", body: [project.description, `${project.category} · ${project.status} · ${project.year}`], list: project.tags },
+    { title: "The challenge", body: [project.problem] },
+    { title: "Our approach", body: [project.solution] },
+    { title: "The result", body: [project.outcome] },
+    ...(project.role ? [{ title: "Ardeno's role", body: [project.role] }] : []),
+  ];
+  const conceptNote = project.status?.toLowerCase().includes("concept")
+    ? `<p style="margin:0 0 24px">This is a studio concept demonstrating Ardeno's design and development approach.</p>`
+    : "";
+
+  return `${renderSections(sections)}
+    ${conceptNote}
+    ${project.url ? `<p style="margin:0 0 28px"><a href="${escapeAttr(project.url)}" style="color:#fff">Visit ${escapeHtml(project.title)}</a></p>` : ""}
+    <p style="margin:0 0 28px"><a href="/projects" style="color:#fff">Back to all projects</a></p>
+    ${renderProjectLinks(project.id)}`;
+};
+
 const renderStaticContent = (key) => {
+  if (key === 'contact') {
+    return `<section data-static-content style="margin-top:40px;max-width:820px;font-size:14px;line-height:1.7">
+      <h2>It starts with hello.</h2>
+      <p>A new idea, a fresh start, or something you are still figuring out. Ardeno Studio welcomes enquiries about websites, brand identity, booking and order systems, redesigns, and digital products. A rough sketch is enough to start a conversation; the founders will work out the details with you.</p>
+      <h2>Tell us what you have in mind</h2>
+      <p>The enquiry form asks for your name, email address and a short project description. Company, phone or WhatsApp number, and budget range are optional. Budget choices include under LKR 50,000, LKR 50,000–150,000, LKR 150,000–500,000, LKR 500,000–1,000,000, LKR 1,000,000+, and “Let’s discuss”. If the scope is still taking shape, choose “Let’s discuss” or leave the budget blank.</p>
+      <h2>Speak directly with the founders</h2>
+      <p>Ardeno is an independent studio based in Colombo, Sri Lanka, working with clients locally and globally. We reply within 24 hours. You can send a brief through the form, email us directly, or start a WhatsApp conversation. We use enquiry details only to respond to your project.</p>
+      <p><a href="mailto:ardenostudio@gmail.com">Email ardenostudio@gmail.com</a> · <a href="https://wa.me/94758504424">Contact Ardeno on WhatsApp</a></p>
+      <p><a href="/projects">Explore the work</a> · <a href="/docs">Read about our process</a></p>
+    </section>`;
+  }
+  const project = projectsByRoute.get(key);
+  if (key === "projects" || project) {
+    return `<section data-static-content style="margin-top:40px;max-width:900px;color:#d6d6d6;font-size:14px;line-height:1.7">
+      ${project ? renderProjectStaticContent(project) : renderProjectsStaticContent()}
+    </section>`;
+  }
+
   const servicePage = servicePages[key];
   if (servicePage) {
     return `<section data-static-content style="margin-top:40px;max-width:900px;color:#d6d6d6;font-size:14px;line-height:1.7">
@@ -243,13 +326,14 @@ const renderStaticContent = (key) => {
     </section>`;
   }
 
-  const sections = STATIC_ROUTE_CONTENT[key] ?? STATIC_ROUTE_CONTENT.home;
+  const sections = STATIC_ROUTE_CONTENT[key] ?? [];
   const routeSpecific =
     key === "faq" ? renderFaqStaticContent() : key === "home" ? renderHomeServiceStaticContent() : "";
 
   return `<section data-static-content style="margin-top:40px;max-width:820px;color:#d6d6d6;font-size:14px;line-height:1.7">
       ${renderSections(sections)}
       ${routeSpecific}
+      ${key === "home" || key === "case-studies" ? '<p style="margin:0 0 28px"><a href="/projects" style="color:#fff">Explore all Ardeno Studio projects</a></p>' : ""}
       ${renderEntitySummary()}
     </section>`;
 };
@@ -276,6 +360,7 @@ const upsert = (html, pattern, tag) => {
 };
 
 const buildStructuredData = (key, route) => {
+  const project = projectsByRoute.get(key);
   const canonical = absoluteUrl(route.path);
   const pageBase = canonical.replace(/\/$/, "");
   const breadcrumbItems = [
@@ -287,16 +372,25 @@ const buildStructuredData = (key, route) => {
     },
   ];
 
-  if (route.path !== "/") {
+  if (project) {
     breadcrumbItems.push({
       "@type": "ListItem",
       position: 2,
+      name: "Projects",
+      item: absoluteUrl("/projects"),
+    });
+  }
+
+  if (route.path !== "/") {
+    breadcrumbItems.push({
+      "@type": "ListItem",
+      position: project ? 3 : 2,
       name: route.title.split("|")[0].trim(),
       item: canonical,
     });
   }
 
-  const pageType = key === "case-studies" ? "CollectionPage" : key === "faq" ? "FAQPage" : "WebPage";
+  const pageType = key === 'contact' ? 'ContactPage' : route.type === "collection" ? "CollectionPage" : key === "faq" ? "FAQPage" : "WebPage";
   const pageName = route.title.split("|")[0].trim();
   const graph = [
     {
@@ -315,8 +409,8 @@ const buildStructuredData = (key, route) => {
       },
       sameAs: SITE.sameAs,
       founder: [
-        { "@id": `${SITE.url}/founders.html#suven-seoras` },
-        { "@id": `${SITE.url}/founders.html#ovindu-karunaratne` },
+        { "@id": `${SITE.url}/founders#suven-seoras` },
+        { "@id": `${SITE.url}/founders#ovindu-karunaratne` },
       ],
     },
     {
@@ -343,10 +437,45 @@ const buildStructuredData = (key, route) => {
       about: { "@id": `${SITE.url}/#organization` },
       publisher: { "@id": `${SITE.url}/#organization` },
       breadcrumb: { "@id": `${pageBase}#breadcrumb` },
-      image: SITE.image,
+      image: absoluteUrl(route.image ?? SITE.image),
       inLanguage: "en-LK",
     },
   ];
+
+  if (key === "projects") {
+    const listId = `${canonical}#projects-list`;
+    graph[3].mainEntity = { "@id": listId };
+    graph.push({
+      "@type": "ItemList",
+      "@id": listId,
+      name: "Ardeno Studio projects",
+      numberOfItems: projects.length,
+      itemListElement: projects.map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.title,
+        url: absoluteUrl(seoConfig.routes[`project-${item.id}`].path),
+      })),
+    });
+  }
+
+  if (project) {
+    const workId = `${canonical}#project`;
+    graph[3].mainEntity = { "@id": workId };
+    graph.push({
+      "@type": "CreativeWork",
+      "@id": workId,
+      name: project.title,
+      description: project.description,
+      url: canonical,
+      image: absoluteUrl(project.image),
+      genre: project.category,
+      keywords: project.tags.join(", "),
+      creativeWorkStatus: project.status,
+      creator: { "@id": `${SITE.url}/#organization` },
+      mainEntityOfPage: { "@id": `${pageBase}#webpage` },
+    });
+  }
 
   if (key === "home") {
     graph.push({
@@ -449,6 +578,7 @@ const applySeo = (html, key, route) => {
   const escapedTitle = escapeAttr(route.title);
   const escapedDescription = escapeAttr(route.description);
   const type = route.type === "article" ? "article" : "website";
+  const image = escapeAttr(absoluteUrl(route.image ?? SITE.image));
   const jsonLd = JSON.stringify(buildStructuredData(key, route));
 
   let next = html.replace(/<title>.*?<\/title>/is, `<title>${escapedTitle}</title>`);
@@ -459,12 +589,12 @@ const applySeo = (html, key, route) => {
   next = upsert(next, tagPatterns.ogSiteName, `<meta property="og:site_name" content="${escapeAttr(SITE.name)}" />`);
   next = upsert(next, tagPatterns.ogTitle, `<meta property="og:title" content="${escapedTitle}" />`);
   next = upsert(next, tagPatterns.ogDescription, `<meta property="og:description" content="${escapedDescription}" />`);
-  next = upsert(next, tagPatterns.ogImage, `<meta property="og:image" content="${SITE.image}" />`);
+  next = upsert(next, tagPatterns.ogImage, `<meta property="og:image" content="${image}" />`);
   next = upsert(next, tagPatterns.ogUrl, `<meta property="og:url" content="${canonical}" />`);
   next = upsert(next, tagPatterns.ogType, `<meta property="og:type" content="${type}" />`);
   next = upsert(next, tagPatterns.twitterTitle, `<meta name="twitter:title" content="${escapedTitle}" />`);
   next = upsert(next, tagPatterns.twitterDescription, `<meta name="twitter:description" content="${escapedDescription}" />`);
-  next = upsert(next, tagPatterns.twitterImage, `<meta name="twitter:image" content="${SITE.image}" />`);
+  next = upsert(next, tagPatterns.twitterImage, `<meta name="twitter:image" content="${image}" />`);
   next = next.replace(
     /<script\s+id="structured-data"\s+type="application\/ld\+json">[\s\S]*?<\/script>/i,
     `<script id="structured-data" type="application/ld+json">${jsonLd}</script>`

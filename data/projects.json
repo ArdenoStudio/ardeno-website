@@ -1,0 +1,187 @@
+[
+  {
+    "id": "octane",
+    "title": "Octane",
+    "category": "Fuel Price Intelligence",
+    "image": "/images/octane.jpg",
+    "tags": [
+      "Data Platform",
+      "Public API",
+      "Price Alerts"
+    ],
+    "description": "A live Sri Lanka fuel price platform with CPC price tracking, revision history, alerts, trip-cost tools, and developer API access.",
+    "status": "Ardeno platform",
+    "problem": "Fuel price updates affect drivers, businesses, and logistics teams quickly, but price history and cost planning are usually scattered across notices and posts.",
+    "solution": "Built a public price-intelligence interface around CPC prices, daily revisions, threshold alerts, trip-cost calculation, multilingual access, and API-ready data.",
+    "outcome": "A practical utility platform that turns fuel-price changes into something people can check, plan around, and build with.",
+    "role": "Product strategy, data UX, frontend build, API presentation",
+    "year": "2026",
+    "url": "https://octane-smoky.vercel.app/"
+  },
+  {
+    "id": "propertylk",
+    "title": "PropertyLK",
+    "category": "Property Intelligence",
+    "image": "/images/propertylk.jpg",
+    "tags": [
+      "Market Data",
+      "Listings",
+      "AI Estimate"
+    ],
+    "description": "A Sri Lanka property market intelligence platform with district-level data, listing signals, trend views, and estimate workflows.",
+    "status": "Ardeno platform",
+    "problem": "Property buyers and teams need market context, but listing data is noisy, fragmented, and hard to compare across districts.",
+    "solution": "Created a data-led property dashboard with cleaned listing signals, market heatmaps, pipeline freshness, price trends, and estimate entry points.",
+    "outcome": "A clearer research surface for understanding Sri Lanka property movement before making listing, buying, or pricing decisions.",
+    "role": "Market UX, dashboard design, responsive frontend, AI flow direction",
+    "year": "2026",
+    "url": "https://propertylk-one.vercel.app/"
+  },
+  {
+    "id": "motormila",
+    "title": "Motormila",
+    "category": "Vehicle Market Intelligence",
+    "image": "/images/motormila.jpg",
+    "tags": [
+      "Valuation Tools",
+      "Market Trends",
+      "AI Copilot"
+    ],
+    "description": "A Sri Lankan vehicle market cockpit for tracking listings, price signals, district coverage, valuation workflows, and AI-assisted comparison.",
+    "status": "Ardeno platform",
+    "problem": "Vehicle shoppers and sellers need a better way to judge asking prices, compare live listings, and spot market gaps.",
+    "solution": "Designed a vehicle-intelligence console with market scans, valuation entry points, district coverage, source signals, and an AI copilot layer.",
+    "outcome": "A stronger decision surface for inspecting Sri Lanka's vehicle market beyond one-off classified listings.",
+    "role": "Product UX, data dashboard design, frontend build, AI assistant direction",
+    "year": "2026",
+    "url": "https://motormila.vercel.app/"
+  },
+  {
+    "id": "lankawa",
+    "title": "Lankawa",
+    "category": "Civic & National Intelligence",
+    "image": "/images/lankawa.jpg",
+    "tags": [
+      "Civic Data",
+      "District Atlas",
+      "Live Provenance"
+    ],
+    "description": "Sri Lanka's national civic intelligence platform — unifying public data across the economy, all 25 districts, disaster telemetry, and public services with source provenance on every number.",
+    "status": "Ardeno platform",
+    "problem": "Public data across Sri Lanka — from CBSL exchange rates and fuel prices to flood gauges and census demographics — is fragmented across legacy portals, PDFs, and unstructured announcements with no clear freshness or source verification.",
+    "solution": "Architected a trilingual, API-first national civic intelligence console unifying real-time economic indicators, Census 2024 district profiles, disaster monitoring, and an open public API where every metric tracks explicit provenance and timestamps.",
+    "outcome": "A trusted daily morning briefing and open civic surface for Sri Lankans, researchers, and developers, delivering verifiable public data with zero guesswork.",
+    "role": "Platform architecture, civic UX, trilingual design system, public API engineering",
+    "year": "2026",
+    "url": "https://lankawa.vercel.app/"
+  },
+  {
+    "id": "dinaya-lk",
+    "title": "Dinaya",
+    "category": "Booking Pages",
+    "image": "/images/dinaya.jpg",
+    "tags": [
+      "Booking Platform",
+      "Deposits",
+      "Reminders"
+    ],
+    "description": "A booking-page platform for Sri Lankan service businesses: one shareable link where clients pick a time, pay a deposit and get reminders, with LKR pricing and PayHere payments.",
+    "status": "Ardeno platform",
+    "problem": "Service businesses in Sri Lanka often take bookings through WhatsApp threads, which means double bookings, missed deposits and a lot of back-and-forth.",
+    "solution": "Built a booking-page product around one shareable link: services and availability, deposits through PayHere, automatic reminders, calendar sync and LKR pricing, with a live example booking page on the home screen.",
+    "outcome": "A real booking page a service business can set up in minutes and share on Instagram or WhatsApp.",
+    "year": "2026",
+    "url": "https://dinaya-lk.vercel.app/"
+  },
+  {
+    "id": "koel-cse",
+    "title": "koel",
+    "category": "CSE Alerts on Telegram",
+    "image": "/images/koel.jpg",
+    "tags": [
+      "Telegram Bot",
+      "Market Alerts",
+      "CSE Data"
+    ],
+    "description": "A Colombo Stock Exchange alerts platform: watch symbols, set price, move and disclosure rules, and get pinged on Telegram the moment one fires, even with the tab closed.",
+    "status": "Ardeno platform",
+    "problem": "Following the Colombo Stock Exchange means checking prices and disclosures again and again, and browser-tab alerts stop working the moment the tab is closed.",
+    "solution": "Built a Telegram bot with a web dashboard behind it: symbol watchlists, rules for price, move and disclosure events, a market browser, learning guides and pricing.",
+    "outcome": "Alerts that reach you on Telegram when a rule fires, with a dashboard for managing the rules.",
+    "year": "2026",
+    "url": "https://koel-cse.vercel.app/"
+  },
+  {
+    "id": "serendib-trading",
+    "title": "Serendib Trading",
+    "category": "Vehicle Imports",
+    "image": "/images/serendib-trading.jpg",
+    "tags": [
+      "Vehicle Listings",
+      "Showroom",
+      "Finance Enquiries"
+    ],
+    "description": "A showroom website for a Dehiwala vehicle importer: browse inspected UK and Japan imports by body type and make, see featured arrivals, and reach the team about finance, trade-ins and viewings.",
+    "status": "Live website",
+    "problem": "Buyers weighing an imported vehicle want to see what is in stock, where it came from and how it can be financed before they visit the showroom.",
+    "solution": "A dark, showroom-led site with featured arrivals, browsing by body type and make, a gallery, finance and contact paths, and a welcome panel that points visitors to the collection, a payment estimate or a viewing.",
+    "outcome": "One place to browse inspected UK and Japan imports and reach the Dehiwala showroom.",
+    "year": "2026",
+    "url": "https://serendibtrading.lk/"
+  },
+  {
+    "id": "ceylon-stories",
+    "title": "Ceylon Stories",
+    "category": "Gallery Café & Tea House",
+    "image": "/images/ceylon-stories.jpg",
+    "tags": [
+      "Menu",
+      "Table Booking",
+      "Gallery"
+    ],
+    "description": "A website for a gallery café and tea house on Marine Drive, Colombo: rotating exhibitions, Dilmah reserve teas, a seasonal menu and table booking.",
+    "status": "Live website",
+    "problem": "A café that is also a gallery needs its menu, exhibitions and booking to feel as considered as the room itself.",
+    "solution": "A warm editorial site with a tea-leaf pattern backdrop, a hero that pairs Ceylon tea with curated art, a What’s New menu with specials, a gallery, and reserve-a-table paths including WhatsApp.",
+    "outcome": "A website that carries the café’s atmosphere from the first screen to the booking button.",
+    "year": "2026",
+    "url": "https://ceylon-stories-gallery-cafe.vercel.app/"
+  },
+  {
+    "id": "ceylon-hygiene",
+    "title": "Ceylon Hygiene Solutions",
+    "category": "Janitorial Services",
+    "image": "/images/ceylon-hygiene.jpg",
+    "tags": [
+      "Brand Identity",
+      "Brand Applications",
+      "Web Design"
+    ],
+    "description": "A website and an extended brand identity for a Colombo janitorial service. Clear Care carries the CHS symbol across uniforms, fleet, packaging, signage and everyday communication.",
+    "status": "Live website",
+    "problem": "Businesses choosing a cleaning partner need a clear picture of the service and the team behind it. CHS also needed a consistent way to carry its existing identity across the website and the many physical touchpoints of daily janitorial work.",
+    "solution": "We built a clear service website with quote and WhatsApp paths, then explored an extended identity system. The Clear Care direction retains the original CHS symbol, refreshes the lettering with Cal Sans and Inter, and applies a navy, green and white palette to uniforms, vehicles, working kits, signage, print and digital communication.",
+    "outcome": "A live website with a straightforward enquiry path, alongside a documented brand direction, application concepts and a 40-page guideline. The physical applications show the proposed system and remain concept studies for future production.",
+    "role": "Website design and development, identity studies, typographic refinement, brand application concepts and guidelines.",
+    "year": "2026",
+    "url": "https://www.ceylonhygienesolutions.lk/"
+  },
+  {
+    "id": "wax-in-the-city",
+    "title": "Wax In The City",
+    "category": "Waxing & Skin Care",
+    "image": "/images/wax-in-the-city.jpg",
+    "tags": [
+      "Booking",
+      "Treatment Menu",
+      "Two Locations"
+    ],
+    "description": "A website for a ladies-only waxing and skin care studio in Colombo: treatment menu, studio hygiene protocol, two locations and appointment booking.",
+    "status": "Live website",
+    "problem": "A private, ladies-only studio has to earn trust before the first visit: cleanliness, privacy and what a treatment involves.",
+    "solution": "A dark, quiet site built around the studio protocol (fresh wax setup, disposable covers, aftercare), a focused treatment menu, a gallery, both studios (Battaramulla and Nugegoda) and a book-appointment path.",
+    "outcome": "A calm, trust-first page that shows how a visit works before anyone books.",
+    "year": "2026",
+    "url": "https://waxinthecity.lk/"
+  }
+]

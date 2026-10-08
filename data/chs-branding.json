@@ -1,0 +1,414 @@
+[
+  {
+    "id": "people",
+    "label": "Uniforms & people",
+    "items": [
+      {
+        "id": "people-01",
+        "title": "Work shirt · three-quarter",
+        "alt": "CHS navy and white work shirt on a mannequin, viewed at an angle",
+        "src": "/images/projects/ceylon-hygiene/people-01.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "id": "people-02",
+        "title": "Work shirt · front",
+        "alt": "Front view of the CHS work shirt with its chest identity",
+        "src": "/images/projects/ceylon-hygiene/people-02.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "id": "people-03",
+        "title": "Work shirt · back",
+        "alt": "Back view of the CHS branded work shirt",
+        "src": "/images/projects/ceylon-hygiene/people-03.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "id": "people-04",
+        "title": "Work shirt · side",
+        "alt": "Side view of the CHS work shirt",
+        "src": "/images/projects/ceylon-hygiene/people-04.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "id": "people-05",
+        "title": "Embroidered cap",
+        "alt": "CHS monogram and company name embroidered onto a navy cap",
+        "src": "/images/projects/ceylon-hygiene/people-05.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "id": "people-06",
+        "title": "Staff ID & lanyard",
+        "alt": "CHS staff identification badge and branded lanyard concept",
+        "src": "/images/projects/ceylon-hygiene/people-06.webp",
+        "width": 1064,
+        "height": 1478
+      },
+      {
+        "id": "people-07",
+        "title": "Uniform seam label",
+        "alt": "A small CHS woven label attached to a garment seam",
+        "src": "/images/projects/ceylon-hygiene/people-07.webp",
+        "width": 1024,
+        "height": 1536
+      },
+      {
+        "id": "people-08",
+        "title": "Linen woven tag",
+        "alt": "CHS woven identity tag attached to folded linen",
+        "src": "/images/projects/ceylon-hygiene/people-08.webp",
+        "width": 1547,
+        "height": 1016
+      },
+      {
+        "id": "people-09",
+        "title": "Staff essentials",
+        "alt": "CHS staff tote bag, drink bottle and towel concept",
+        "src": "/images/projects/ceylon-hygiene/people-09.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ]
+  },
+  {
+    "id": "fleet",
+    "label": "Vehicles & fleet",
+    "items": [
+      {
+        "id": "fleet-01",
+        "title": "Service van · side",
+        "alt": "Side view of a CHS service van wrap concept in navy, green and white",
+        "src": "/images/projects/ceylon-hygiene/fleet-01.webp",
+        "width": 1254,
+        "height": 1254
+      },
+      {
+        "id": "fleet-02",
+        "title": "Service van · front",
+        "alt": "Front view of the CHS service van concept",
+        "src": "/images/projects/ceylon-hygiene/fleet-02.webp",
+        "width": 1254,
+        "height": 1254
+      },
+      {
+        "id": "fleet-03",
+        "title": "Service van · rear",
+        "alt": "Rear view of the CHS service van concept",
+        "src": "/images/projects/ceylon-hygiene/fleet-03.webp",
+        "width": 1254,
+        "height": 1254
+      },
+      {
+        "id": "fleet-04",
+        "title": "Service van · three-quarter",
+        "alt": "Rear three-quarter view of the CHS service van concept",
+        "src": "/images/projects/ceylon-hygiene/fleet-04.webp",
+        "width": 1254,
+        "height": 1254
+      },
+      {
+        "id": "fleet-05",
+        "title": "Supply truck",
+        "alt": "CHS branded supply truck wrap concept",
+        "src": "/images/projects/ceylon-hygiene/fleet-05.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ]
+  },
+  {
+    "id": "equipment",
+    "label": "Packaging & equipment",
+    "items": [
+      {
+        "id": "equipment-01",
+        "title": "Spray & refill kit",
+        "alt": "CHS branded spray bottle and refill packaging concept",
+        "src": "/images/projects/ceylon-hygiene/equipment-01.webp",
+        "width": 900,
+        "height": 1600
+      },
+      {
+        "id": "equipment-02",
+        "title": "Bulk container & carton",
+        "alt": "CHS bulk supply container and cardboard carton concept",
+        "src": "/images/projects/ceylon-hygiene/equipment-02.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "id": "equipment-03",
+        "title": "Working containers",
+        "alt": "CHS identity applied to working cleaning containers",
+        "src": "/images/projects/ceylon-hygiene/equipment-03.webp",
+        "width": 1536,
+        "height": 1024
+      },
+      {
+        "id": "equipment-04",
+        "title": "Container in use",
+        "alt": "A gloved hand holding a CHS branded supply container concept",
+        "src": "/images/projects/ceylon-hygiene/equipment-04.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "id": "equipment-05",
+        "title": "Bottle & refill family",
+        "alt": "A coordinated family of CHS working bottles and refills",
+        "src": "/images/projects/ceylon-hygiene/equipment-05.webp",
+        "width": 1086,
+        "height": 1448
+      },
+      {
+        "id": "equipment-06",
+        "title": "Cloths & storage",
+        "alt": "Organised cleaning textiles and storage carrying the CHS identity",
+        "src": "/images/projects/ceylon-hygiene/equipment-06.webp",
+        "width": 1536,
+        "height": 1024
+      },
+      {
+        "id": "equipment-07",
+        "title": "Janitorial trolley",
+        "alt": "CHS branded janitorial trolley with an organised cleaning kit",
+        "src": "/images/projects/ceylon-hygiene/equipment-07.webp",
+        "width": 1536,
+        "height": 1024
+      },
+      {
+        "id": "equipment-08",
+        "title": "Floor-care kit",
+        "alt": "CHS floor-care equipment concept",
+        "src": "/images/projects/ceylon-hygiene/equipment-08.webp",
+        "width": 1254,
+        "height": 1254
+      },
+      {
+        "id": "equipment-09",
+        "title": "Washroom dispenser",
+        "alt": "CHS identity applied to a washroom dispenser and service touchpoint",
+        "src": "/images/projects/ceylon-hygiene/equipment-09.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ]
+  },
+  {
+    "id": "places",
+    "label": "Signage & spaces",
+    "items": [
+      {
+        "id": "places-01",
+        "title": "Facade sign",
+        "alt": "Dimensional CHS monogram and company lettering on a building facade",
+        "src": "/images/projects/ceylon-hygiene/places-01.webp",
+        "width": 1024,
+        "height": 1536
+      },
+      {
+        "id": "places-02",
+        "title": "Reception identity",
+        "alt": "CHS identity applied to a reception wall and desk",
+        "src": "/images/projects/ceylon-hygiene/places-02.webp",
+        "width": 1024,
+        "height": 1536
+      },
+      {
+        "id": "places-03",
+        "title": "Window vinyl",
+        "alt": "CHS logo and service lettering applied to storefront glass",
+        "src": "/images/projects/ceylon-hygiene/places-03.webp",
+        "width": 1254,
+        "height": 1254
+      },
+      {
+        "id": "places-04",
+        "title": "Entrance signage",
+        "alt": "CHS entrance wall signage and glass monogram concept",
+        "src": "/images/projects/ceylon-hygiene/places-04.webp",
+        "width": 1024,
+        "height": 1535
+      },
+      {
+        "id": "places-05",
+        "title": "On-site safety signs",
+        "alt": "CHS branded on-site cleaning and safety sign concepts",
+        "src": "/images/projects/ceylon-hygiene/places-05.webp",
+        "width": 1536,
+        "height": 1024
+      },
+      {
+        "id": "places-06",
+        "title": "Feather banners",
+        "alt": "CHS identity on outdoor feather banner concepts",
+        "src": "/images/projects/ceylon-hygiene/places-06.webp",
+        "width": 1254,
+        "height": 1254
+      },
+      {
+        "id": "places-07",
+        "title": "Outdoor poster",
+        "alt": "CHS service message and brand identity on an outdoor poster concept",
+        "src": "/images/projects/ceylon-hygiene/places-07.webp",
+        "width": 1024,
+        "height": 1536
+      }
+    ]
+  },
+  {
+    "id": "communication",
+    "label": "Print & communication",
+    "items": [
+      {
+        "id": "communication-01",
+        "title": "Service agreement & folder",
+        "alt": "CHS service agreement sheets and presentation folder concept",
+        "src": "/images/projects/ceylon-hygiene/communication-01.webp",
+        "width": 1024,
+        "height": 1536
+      },
+      {
+        "id": "communication-02",
+        "title": "Operating procedure",
+        "alt": "CHS branded operating procedure document concept",
+        "src": "/images/projects/ceylon-hygiene/communication-02.webp",
+        "width": 1536,
+        "height": 1024
+      },
+      {
+        "id": "communication-03",
+        "title": "Letterhead",
+        "alt": "CHS letterhead with restrained identity and supporting details",
+        "src": "/images/projects/ceylon-hygiene/communication-03.webp",
+        "width": 1024,
+        "height": 1536
+      },
+      {
+        "id": "communication-04",
+        "title": "Email signature",
+        "alt": "CHS email signature layout with sample contact details",
+        "src": "/images/projects/ceylon-hygiene/communication-04.webp",
+        "width": 1254,
+        "height": 1254
+      },
+      {
+        "id": "communication-05",
+        "title": "Business card · front",
+        "alt": "A gloved hand holding the front of a CHS branded business card concept",
+        "src": "/images/projects/ceylon-hygiene/communication-05.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "id": "communication-06",
+        "title": "Business card · reverse",
+        "alt": "Reverse side of a CHS business card concept",
+        "src": "/images/projects/ceylon-hygiene/communication-06.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "id": "communication-07",
+        "title": "Promotional kit",
+        "alt": "CHS branded promotional and everyday items concept",
+        "src": "/images/projects/ceylon-hygiene/communication-07.webp",
+        "width": 1536,
+        "height": 1024
+      },
+      {
+        "id": "communication-08",
+        "title": "Proposal & service overview",
+        "alt": "CHS brand guideline spread showing proposal and service overview layouts",
+        "src": "/images/projects/ceylon-hygiene/communication-08.webp",
+        "width": 960,
+        "height": 640
+      },
+      {
+        "id": "communication-09",
+        "title": "Quotation & invoice",
+        "alt": "CHS brand guideline spread showing quotation and invoice layouts",
+        "src": "/images/projects/ceylon-hygiene/communication-09.webp",
+        "width": 960,
+        "height": 640
+      },
+      {
+        "id": "communication-10",
+        "title": "Daily records",
+        "alt": "CHS brand guideline spread showing daily operational record layouts",
+        "src": "/images/projects/ceylon-hygiene/communication-10.webp",
+        "width": 960,
+        "height": 640
+      },
+      {
+        "id": "communication-11",
+        "title": "Social & digital layouts",
+        "alt": "CHS brand guideline spread showing social and digital communication concepts",
+        "src": "/images/projects/ceylon-hygiene/communication-11.webp",
+        "width": 960,
+        "height": 640
+      }
+    ]
+  },
+  {
+    "id": "illustrations",
+    "label": "Service illustrations",
+    "items": [
+      {
+        "id": "illustrations-01",
+        "title": "Floor care",
+        "alt": "CHS visual concept for floor-care tools",
+        "src": "/images/projects/ceylon-hygiene/illustrations-01.webp",
+        "width": 1254,
+        "height": 1254
+      },
+      {
+        "id": "illustrations-02",
+        "title": "Workplace care",
+        "alt": "Workplace cleaning illustration in the CHS brand colours",
+        "src": "/images/projects/ceylon-hygiene/illustrations-02.webp",
+        "width": 1254,
+        "height": 1254
+      },
+      {
+        "id": "illustrations-03",
+        "title": "Washroom care",
+        "alt": "Washroom maintenance illustration in the CHS brand colours",
+        "src": "/images/projects/ceylon-hygiene/illustrations-03.webp",
+        "width": 1254,
+        "height": 1254
+      },
+      {
+        "id": "illustrations-04",
+        "title": "Glass & touchpoints",
+        "alt": "Glass cleaning illustration in the CHS brand colours",
+        "src": "/images/projects/ceylon-hygiene/illustrations-04.webp",
+        "width": 1254,
+        "height": 1254
+      },
+      {
+        "id": "illustrations-05",
+        "title": "Pantry care",
+        "alt": "Pantry care illustration in the CHS brand colours",
+        "src": "/images/projects/ceylon-hygiene/illustrations-05.webp",
+        "width": 1254,
+        "height": 1254
+      },
+      {
+        "id": "illustrations-06",
+        "title": "People & planning",
+        "alt": "Staffing and manpower illustration in the CHS brand colours",
+        "src": "/images/projects/ceylon-hygiene/illustrations-06.webp",
+        "width": 1254,
+        "height": 1254
+      }
+    ]
+  }
+]

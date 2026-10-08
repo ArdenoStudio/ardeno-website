@@ -1,4 +1,5 @@
 import seoConfig from "./seo-routes.json";
+import { portfolio, projectPath } from "./data/portfolio";
 
 export type SeoRouteKey = keyof typeof seoConfig.routes;
 
@@ -17,6 +18,9 @@ export const absoluteUrl = (pathOrUrl: string): string => {
 };
 
 export const getRouteSeo = (route: SeoRouteKey): SeoRoute => SEO_ROUTES[route] ?? SEO_ROUTES.home;
+
+const getRouteImage = (seo: SeoRoute): string =>
+  "image" in seo && typeof seo.image === "string" ? absoluteUrl(seo.image) : SITE.image;
 
 const setMeta = (selector: string, attrs: Record<string, string>) => {
   let tag = document.head.querySelector<HTMLMetaElement>(selector);
@@ -40,6 +44,7 @@ const setLink = (rel: string, href: string) => {
 
 export const buildStructuredData = (route: SeoRouteKey) => {
   const seo = getRouteSeo(route);
+  const project = portfolio.find((item) => route === `project-${item.id}`);
   const canonical = absoluteUrl(seo.path);
   const pageId = `${canonical.replace(/\/$/, "")}#webpage`;
   const breadcrumbItems = [
@@ -51,16 +56,25 @@ export const buildStructuredData = (route: SeoRouteKey) => {
     },
   ];
 
-  if (seo.path !== "/") {
+  if (project) {
     breadcrumbItems.push({
       "@type": "ListItem",
       position: 2,
+      name: "Projects",
+      item: absoluteUrl("/projects"),
+    });
+  }
+
+  if (seo.path !== "/") {
+    breadcrumbItems.push({
+      "@type": "ListItem",
+      position: project ? 3 : 2,
       name: seo.title.split("|")[0].trim(),
       item: canonical,
     });
   }
 
-  const pageType = route === "case-studies" ? "CollectionPage" : route === "faq" ? "FAQPage" : "WebPage";
+  const pageType = route === 'contact' ? 'ContactPage' : seo.type === "collection" ? "CollectionPage" : route === "faq" ? "FAQPage" : "WebPage";
   const pageName = seo.title.split("|")[0].trim();
   const graph: Record<string, unknown>[] = [
     {
@@ -82,8 +96,8 @@ export const buildStructuredData = (route: SeoRouteKey) => {
       },
       sameAs: SITE.sameAs,
       founder: [
-        { "@id": `${SITE.url}/founders.html#suven-seoras` },
-        { "@id": `${SITE.url}/founders.html#ovindu-karunaratne` },
+        { "@id": `${SITE.url}/founders#suven-seoras` },
+        { "@id": `${SITE.url}/founders#ovindu-karunaratne` },
       ],
     },
     {
@@ -110,10 +124,45 @@ export const buildStructuredData = (route: SeoRouteKey) => {
       about: { "@id": `${SITE.url}/#organization` },
       publisher: { "@id": `${SITE.url}/#organization` },
       breadcrumb: { "@id": `${canonical.replace(/\/$/, "")}#breadcrumb` },
-      image: SITE.image,
+      image: getRouteImage(seo),
       inLanguage: "en-LK",
     },
   ];
+
+  if (route === "projects") {
+    const listId = `${canonical}#projects-list`;
+    graph[3].mainEntity = { "@id": listId };
+    graph.push({
+      "@type": "ItemList",
+      "@id": listId,
+      name: "Ardeno Studio projects",
+      numberOfItems: portfolio.length,
+      itemListElement: portfolio.map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.title,
+        url: absoluteUrl(projectPath(item)),
+      })),
+    });
+  }
+
+  if (project) {
+    const workId = `${canonical}#project`;
+    graph[3].mainEntity = { "@id": workId };
+    graph.push({
+      "@type": "CreativeWork",
+      "@id": workId,
+      name: project.title,
+      description: project.description,
+      url: canonical,
+      image: absoluteUrl(project.image),
+      genre: project.category,
+      keywords: project.tags.join(", "),
+      creativeWorkStatus: project.status,
+      creator: { "@id": `${SITE.url}/#organization` },
+      mainEntityOfPage: { "@id": pageId },
+    });
+  }
 
   if (route === "home") {
     graph.push({
@@ -229,7 +278,7 @@ export const buildStructuredData = (route: SeoRouteKey) => {
 export const applySeoToDocument = (route: SeoRouteKey) => {
   const seo = getRouteSeo(route);
   const canonical = absoluteUrl(seo.path);
-  const image = SITE.image;
+  const image = getRouteImage(seo);
 
   document.title = seo.title;
   setMeta('meta[name="description"]', { name: "description", content: seo.description });
@@ -253,6 +302,8 @@ export const applySeoToDocument = (route: SeoRouteKey) => {
       property: "article:modified_time",
       content: seo.lastmod || published,
     });
+  } else {
+    document.head.querySelectorAll('meta[property="article:published_time"], meta[property="article:modified_time"]').forEach((tag) => tag.remove());
   }
   setMeta('meta[name="twitter:card"]', { name: "twitter:card", content: "summary_large_image" });
   setMeta('meta[name="twitter:title"]', { name: "twitter:title", content: seo.title });

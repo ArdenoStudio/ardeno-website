@@ -1,0 +1,18 @@
+.page-flow{min-height:100dvh;background:#f4f4f2;--page-y:0px;--page-opacity:1}
+/* The fallback fades content only. Navigation remains solid and anchored. */
+.page-flow main{transform:translateY(var(--page-y));opacity:var(--page-opacity)}
+.page-flow footer{opacity:var(--page-opacity)}
+.page-flow[data-phase="idle"] main{transform:none}
+.page-flow .site-header{view-transition-name:site-navigation}
+/* Crossfade viewport snapshots instead of fading through an empty screen. */
+::view-transition{pointer-events:none}
+::view-transition-group(*),::view-transition-image-pair(*),::view-transition-old(*),::view-transition-new(*){pointer-events:none}
+.page-flow[data-native-transition="true"] main{pointer-events:none}
+::view-transition-group(root),::view-transition-group(site-navigation){animation:none}
+::view-transition-old(root){animation:page-dissolve-out 160ms ease-out both;mix-blend-mode:normal}
+::view-transition-new(root){animation:page-dissolve-in 240ms cubic-bezier(.16,1,.3,1) both;mix-blend-mode:normal}
+::view-transition-old(site-navigation){display:none}
+::view-transition-new(site-navigation){animation:none;mix-blend-mode:normal}
+@keyframes page-dissolve-out{to{opacity:0}}
+@keyframes page-dissolve-in{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.page-flow main{transform:none!important;opacity:1!important}.page-flow footer{opacity:1!important}::view-transition-old(root),::view-transition-new(root){animation:none}}

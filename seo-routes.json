@@ -1,7 +1,10 @@
 {
   "site": {
     "name": "Ardeno Studio",
-    "alternateName": ["Ardeno", "Ardeno Studio LK"],
+    "alternateName": [
+      "Ardeno",
+      "Ardeno Studio LK"
+    ],
     "url": "https://www.ardenostudio.online",
     "logo": "https://www.ardenostudio.online/ardeno-logo.png",
     "image": "https://www.ardenostudio.online/og-image.png",
@@ -16,6 +19,21 @@
     ]
   },
   "routes": {
+    "contact": {
+      "path": "/contact",
+      "title": "Contact Ardeno Studio | Let’s Talk",
+      "description": "Start a conversation with Ardeno Studio in Colombo. Tell us about your website, brand or digital product, share a budget range, or reach the founders by email and WhatsApp.",
+      "keywords": [
+        "contact Ardeno Studio",
+        "web design enquiry Sri Lanka",
+        "Colombo design studio",
+        "start a website project"
+      ],
+      "type": "contact",
+      "lastmod": "2026-10-08",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
     "home": {
       "path": "/",
       "title": "Ardeno Studio | Web Design and Development in Sri Lanka",
@@ -30,7 +48,7 @@
         "AI lead assistant"
       ],
       "type": "website",
-      "lastmod": "2026-06-05",
+      "lastmod": "2026-10-07",
       "priority": "1.0",
       "changefreq": "weekly"
     },
@@ -160,7 +178,7 @@
     "case-studies": {
       "path": "/case-studies",
       "title": "Ardeno Studio Case Studies | Web Design Portfolio",
-      "description": "Explore Ardeno Studio case studies, portfolio builds, concept projects, and proof-led web design work for premium Sri Lankan and global brands.",
+      "description": "Explore Ardeno Studio case studies, portfolio builds and proof-led web design work for premium Sri Lankan and global brands.",
       "keywords": [
         "Ardeno Studio portfolio",
         "web design case studies",
@@ -188,7 +206,7 @@
       "changefreq": "monthly"
     },
     "founders": {
-      "path": "/founders.html",
+      "path": "/founders",
       "title": "Ardeno Studio Founders | Suven Seoras and Ovindu Karunaratne",
       "description": "Meet Suven Seoras and Ovindu Karunaratne, the co-founders of Ardeno Studio, a Colombo-based web design and development studio.",
       "keywords": [
@@ -198,8 +216,205 @@
         "Colombo web design studio"
       ],
       "type": "profile",
-      "lastmod": "2026-06-05",
+      "lastmod": "2026-10-08",
       "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    "projects": {
+      "path": "/projects",
+      "title": "Projects | Ardeno Studio Web Design Portfolio",
+      "description": "Explore Ardeno Studio’s live websites and digital platforms. Read each project’s challenge, approach, and result in the full portfolio.",
+      "keywords": [
+        "Ardeno Studio projects",
+        "Ardeno Studio portfolio",
+        "Sri Lanka web design portfolio",
+        "custom website projects",
+        "digital platform design"
+      ],
+      "type": "collection",
+      "image": "/images/octane.jpg",
+      "lastmod": "2026-10-07",
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    "project-octane": {
+      "path": "/projects/octane",
+      "title": "Octane | Ardeno Studio Project",
+      "description": "Explore Octane, Ardeno Studio’s Sri Lanka fuel-price platform with CPC price tracking, revision history, alerts, trip-cost tools, and a public API.",
+      "keywords": [
+        "Octane",
+        "Octane Ardeno Studio",
+        "Fuel Price Intelligence",
+        "Data Platform",
+        "Public API",
+        "Price Alerts"
+      ],
+      "type": "project",
+      "image": "/images/octane.jpg",
+      "lastmod": "2026-10-07",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    "project-propertylk": {
+      "path": "/projects/propertylk",
+      "title": "PropertyLK | Ardeno Studio Project",
+      "description": "Explore PropertyLK, Ardeno Studio’s Sri Lanka property intelligence platform with listing signals, district data, market trends, and estimate workflows.",
+      "keywords": [
+        "PropertyLK",
+        "PropertyLK Ardeno Studio",
+        "Property Intelligence",
+        "Market Data",
+        "Listings",
+        "AI Estimate"
+      ],
+      "type": "project",
+      "image": "/images/propertylk.jpg",
+      "lastmod": "2026-10-07",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    "project-lankawa": {
+      "path": "/projects/lankawa",
+      "title": "Lankawa | Ardeno Studio Project",
+      "description": "Explore Lankawa, Ardeno Studio’s civic data platform bringing Sri Lanka’s economy, districts, disaster monitoring, and public data into one interface.",
+      "keywords": [
+        "Lankawa",
+        "Lankawa Ardeno Studio",
+        "Civic & National Intelligence",
+        "Civic Data",
+        "District Atlas",
+        "Live Provenance"
+      ],
+      "type": "project",
+      "image": "/images/lankawa.jpg",
+      "lastmod": "2026-10-07",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    "project-dinaya-lk": {
+      "path": "/projects/dinaya-lk",
+      "title": "Dinaya | Ardeno Studio Project",
+      "description": "Explore Dinaya, Ardeno Studio’s booking-page platform for Sri Lankan service businesses, with shareable booking links, deposits, and reminders.",
+      "keywords": [
+        "Dinaya",
+        "Dinaya Ardeno Studio",
+        "Booking Pages",
+        "Booking Platform",
+        "Deposits",
+        "Reminders"
+      ],
+      "type": "project",
+      "image": "/images/dinaya.jpg",
+      "lastmod": "2026-10-07",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    "project-koel-cse": {
+      "path": "/projects/koel-cse",
+      "title": "koel | Ardeno Studio Project",
+      "description": "Explore koel, Ardeno Studio’s Colombo Stock Exchange alert platform with Telegram notifications, symbol watchlists, price rules, and a web dashboard.",
+      "keywords": [
+        "koel",
+        "koel Ardeno Studio",
+        "CSE Alerts on Telegram",
+        "Telegram Bot",
+        "Market Alerts",
+        "CSE Data"
+      ],
+      "type": "project",
+      "image": "/images/koel.jpg",
+      "lastmod": "2026-10-07",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    "project-serendib-trading": {
+      "path": "/projects/serendib-trading",
+      "title": "Serendib Trading | Ardeno Studio Project",
+      "description": "Explore Serendib Trading’s showroom website by Ardeno Studio, with UK and Japan vehicle imports, featured arrivals, and finance and viewing enquiries.",
+      "keywords": [
+        "Serendib Trading",
+        "Serendib Trading Ardeno Studio",
+        "Vehicle Imports",
+        "Vehicle Listings",
+        "Showroom",
+        "Finance Enquiries"
+      ],
+      "type": "project",
+      "image": "/images/serendib-trading.jpg",
+      "lastmod": "2026-10-07",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    "project-ceylon-stories": {
+      "path": "/projects/ceylon-stories",
+      "title": "Ceylon Stories | Ardeno Studio Project",
+      "description": "Explore Ceylon Stories’ gallery café website by Ardeno Studio, with seasonal menus, tea, curated art, a gallery, and table-booking paths.",
+      "keywords": [
+        "Ceylon Stories",
+        "Ceylon Stories Ardeno Studio",
+        "Gallery Café & Tea House",
+        "Menu",
+        "Table Booking",
+        "Gallery"
+      ],
+      "type": "project",
+      "image": "/images/ceylon-stories.jpg",
+      "lastmod": "2026-10-07",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    "project-ceylon-hygiene": {
+      "path": "/projects/ceylon-hygiene",
+      "title": "Ceylon Hygiene Solutions | Ardeno Studio Project",
+      "description": "Explore Ardeno’s website and branding work for Ceylon Hygiene Solutions: identity studies, uniforms, fleet, packaging, signage, stationery and brand guidelines.",
+      "keywords": [
+        "Ceylon Hygiene Solutions",
+        "Ceylon Hygiene Solutions Ardeno Studio",
+        "Janitorial Services",
+        "Service Pages",
+        "Quote Requests",
+        "Client Showcase"
+      ],
+      "type": "project",
+      "image": "/images/ceylon-hygiene.jpg",
+      "lastmod": "2026-10-07",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    "project-wax-in-the-city": {
+      "path": "/projects/wax-in-the-city",
+      "title": "Wax In The City | Ardeno Studio Project",
+      "description": "Explore Wax In The City’s website by Ardeno Studio, with treatment details, hygiene information, two Colombo studio locations, and appointment booking.",
+      "keywords": [
+        "Wax In The City",
+        "Wax In The City Ardeno Studio",
+        "Waxing & Skin Care",
+        "Booking",
+        "Treatment Menu",
+        "Two Locations"
+      ],
+      "type": "project",
+      "image": "/images/wax-in-the-city.jpg",
+      "lastmod": "2026-10-07",
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    "project-motormila": {
+      "path": "/projects/motormila",
+      "title": "Motormila | Ardeno Studio Project",
+      "description": "Explore Motormila, Ardeno Studio’s vehicle market intelligence platform with listings, valuation tools, district coverage, and AI-assisted comparison.",
+      "keywords": [
+        "Motormila",
+        "Motormila Ardeno Studio",
+        "Vehicle Market Intelligence",
+        "Valuation Tools",
+        "Market Trends",
+        "AI Copilot"
+      ],
+      "type": "project",
+      "image": "/images/motormila.jpg",
+      "lastmod": "2026-10-08",
+      "priority": "0.7",
       "changefreq": "monthly"
     }
   },
