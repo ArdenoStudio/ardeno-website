@@ -11,6 +11,7 @@ import { applySeoToDocument, SeoRouteKey } from './seo';
 import type { ServicePageKey } from './components/Services/ServicePage';
 
 const ArdenoWebsite = lazy(() => import('./components/Website/ArdenoWebsite'));
+const FoundersPage = lazy(() => import('./components/Website/Founders'));
 import { ContactDialog } from './components/Website/ContactDialog';
 
 // ─── Lazy-loaded below-fold sections ─────────────────────────────────────────
@@ -385,6 +386,14 @@ const Website: React.FC = () => {
           returnFocus={() => {}}
         />
       </div>
+    );
+  }
+
+  if (pathname.startsWith('/founders')) {
+    return (
+      <Suspense fallback={<div className="min-h-dvh bg-[#f4f4f2]" aria-label="Loading founders" />}>
+        <FoundersPage />
+      </Suspense>
     );
   }
 
