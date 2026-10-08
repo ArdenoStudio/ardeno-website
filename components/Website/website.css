@@ -1,3 +1,5 @@
+/* Native section links scroll the document; page/history restoration explicitly uses instant. */
+html:has(.ardeno-site){scroll-behavior:smooth}
 .ardeno-site{--paper:#f4f4f2;--ink:#20211f;--muted:#62635f;--line:#d8d9d4;--accent:#ff3301;--accent-ink:#20211f;--deep-ink:#151613;background:var(--paper);color:var(--ink);font-family:var(--font-ui);min-height:100dvh;color-scheme:light;isolation:isolate;font-synthesis:none}
 .ardeno-site *,.studio-modal *{box-sizing:border-box}
 .ardeno-site h1,.ardeno-site h2,.ardeno-site h3,.studio-modal h2,.studio-modal h3{text-wrap:balance;font-weight:500}
