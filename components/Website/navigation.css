@@ -27,7 +27,8 @@
 @keyframes tab-drop{from{translate:0 -100%}to{translate:0 0}}
 @keyframes tab-swing{from{rotate:9deg}to{rotate:0deg}}
 @media(min-width:761px){
-.site-header .header-contact{position:relative;transform-origin:50% 0;animation:tab-drop 850ms var(--spring-drop) .3s backwards,tab-swing 1900ms var(--spring-swing) .55s backwards;transition:min-height 520ms var(--spring-pull),padding-bottom 520ms var(--spring-pull),transform 560ms var(--spring-pull)}
+.site-header .header-contact{position:relative;transform-origin:50% 0;transition:min-height 520ms var(--spring-pull),padding-bottom 520ms var(--spring-pull),transform 560ms var(--spring-pull)}
+.site-header .header-contact.is-first-entrance{animation:tab-drop 850ms var(--spring-drop) .3s backwards,tab-swing 1900ms var(--spring-swing) .55s backwards}
 .site-header .header-contact::before{content:"";position:absolute;inset:auto 0 100%;height:24px;background:inherit}
 .site-header .header-contact:is(:hover,:focus-visible){transform:translateY(8px)}
 .site-header .header-contact svg{transition:transform 460ms var(--spring-pull)}

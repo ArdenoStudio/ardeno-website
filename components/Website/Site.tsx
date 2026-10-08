@@ -5,26 +5,28 @@ import { ArrowRight, ArrowUpRight, Check, Copy, Plus, X } from 'lucide-react';
 import { PROJECTS, type Project } from '../../data/projects';
 import { burstSparks, burstSparksAt } from './clickSpark';
 import { PixelCanvas } from './PixelCanvas';
-import { useMagnet, useReveal, useSiteInteractions, useSlidingIndicator } from './interactions';
+import { useMagnet, useReveal, useSiteInteractions } from './interactions';
 import { LOCKUP } from './brandLockup';
 import { Hero } from './Hero';
 import { StickerPlayground } from './StickerPlayground';
 import { cn, navigation } from './utils';
-
-// The Work section, in order: the platforms, then the live websites.
-const SHOWCASE_IDS = ['octane', 'propertylk', 'motormila', 'lankawa', 'dinaya-lk', 'koel-cse', 'serendib-trading', 'ceylon-stories', 'ceylon-hygiene', 'wax-in-the-city'];
-export const showcase = SHOWCASE_IDS.map(id => PROJECTS.find(project => project.id === id)).filter((project): project is Project => Boolean(project));
+import { featuredProjects, portfolio } from '../../data/portfolio';
+import { ProjectCard } from './ProjectCard';
 
 export function Wordmark() { return <span className="site-wordmark">ardeno<span>studio</span></span>; }
 
 // Header lockup, drawn from the official master (public/brand/ardeno-lockup-primary.svg, see scripts/generate-brand-lockup.cjs):
 // the A is as tall as the wordmark's visible height, the gap is 0.32 times the symbol height, and the letters keep their natural spacing.
-// The mark stays still. The wordmark rolls out from it on load, collapses into it when the page scrolls, and rolls out again at the top;
+// The mark stays still. The wordmark enters once per document load, collapses on scroll, and rolls out again at the top;
 // the motion lives in brand.css. The small studio label is not part of the master lockup.
+let brandEntrancePlayed = false;
+
 export function BrandLockup({ collapsed }: { collapsed: boolean }) {
-  // On load the mark sits alone for a moment, then the wordmark rolls out (state 'intro' looks like 'collapsed'). Reduced motion skips the intro.
-  const [introDone, setIntroDone] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  // Route remounts start fully visible; only a fresh document gets the initial roll-out.
+  const [introDone, setIntroDone] = useState(() => brandEntrancePlayed || window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   useEffect(() => {
+    brandEntrancePlayed = true;
+    if (introDone) return;
     const timer = window.setTimeout(() => setIntroDone(true), 650);
     return () => window.clearTimeout(timer);
   }, []);
@@ -52,13 +54,20 @@ export function RollText({ text }: { text: string }) {
   </span>;
 }
 
-export function SiteHeader({ onContact, anchorBase = '' }: { onContact: () => void; anchorBase?: string }) {
+// This resets on a full document load, while surviving header remounts during page navigation.
+let contactEntrancePlayed = false;
+
+export function SiteHeader({ onContact }: { onContact: () => void }) {
+  const [playContactEntrance] = useState(() => !contactEntrancePlayed);
+  useEffect(() => { contactEntrancePlayed = true; }, []);
   const [menuOpen, setMenuOpen] = useState(false);
   const [compact, setCompact] = useState(false);
   const [active, setActive] = useState<string | null>('top');
   const contactAfterClose = useRef(false);
   const menuTrigger = useRef<HTMLButtonElement>(null);
-  const headerLinks = [{ label: 'Home', id: 'top' }, ...navigation];
+  const isHome = window.location.pathname === '/';
+  const headerLinks = [{ label: 'Home', id: 'top' }, ...navigation.map(item => item.id === 'work' && !isHome ? { ...item, label: 'Projects' } : item)];
+  const headerHref = (id: string) => isHome ? `#${id}` : id === 'work' ? '/projects' : `/#${id}`;
 
   useEffect(() => {
     let frame = 0;
@@ -90,17 +99,17 @@ export function SiteHeader({ onContact, anchorBase = '' }: { onContact: () => vo
   const menuContact = () => { contactAfterClose.current = true; setMenuOpen(false); };
   return <div className="site-header-space"><header className={cn('site-header', compact && 'is-compact')}>
     <div className="site-header-inner">
-      <nav className="desktop-nav" aria-label="Main navigation">{headerLinks.map(item => <a key={item.id} aria-current={active === item.id ? 'location' : undefined} className="nav-roll-link" href={`${anchorBase}#${item.id}`}><RollText text={`${item.label}.`} /></a>)}</nav>
-      <a className="header-brand" href={`${anchorBase}#top`} aria-label="Ardeno Studio home"><BrandLockup collapsed={compact} /></a>
+      <nav className="desktop-nav" aria-label="Main navigation">{headerLinks.map(item => <a key={item.id} aria-current={isHome ? active === item.id ? 'location' : undefined : item.id === 'work' && window.location.pathname.startsWith('/projects') ? 'page' : undefined} className="nav-roll-link" href={headerHref(item.id)}><RollText text={`${item.label}.`} /></a>)}</nav>
+      <a className="header-brand" href={isHome ? "#top" : "/"} aria-label="Ardeno Studio home"><BrandLockup collapsed={compact} /></a>
       <div className="header-actions">
         <nav className="header-socials" aria-label="Studio social links"><a className="nav-roll-link" aria-label="Ardeno on Instagram" href="https://www.instagram.com/ardenostudio/" target="_blank" rel="noopener noreferrer"><RollText text="IG." /></a><a className="nav-roll-link" aria-label="Ardeno on LinkedIn" href="https://www.linkedin.com/company/ardentstudiolk" target="_blank" rel="noopener noreferrer"><RollText text="in." /></a></nav>
-        <button className="header-contact" onClick={event => { burstSparks(event); onContact(); }}><span className="nav-roll"><span>Let’s talk</span><span aria-hidden="true">Let’s talk</span></span><ArrowUpRight size={16} aria-hidden="true" /></button>
+        <a href={window.location.pathname === '/contact' ? '#enquiry' : '/contact'} aria-current={window.location.pathname === '/contact' ? 'page' : undefined} className={cn('header-contact', playContactEntrance && 'is-first-entrance')} onClick={event => { burstSparks(event); }}><span className="nav-roll"><span>Let’s talk</span><span aria-hidden="true">Let’s talk</span></span><ArrowUpRight size={16} aria-hidden="true" /></a>
         <Dialog.Root open={menuOpen} onOpenChange={setMenuOpen}>
           <Dialog.Trigger asChild><button ref={menuTrigger} className="mobile-menu icon-button" aria-label="Open navigation"><span className="menu-lines" aria-hidden="true"><span /><span /></span></button></Dialog.Trigger>
           <Dialog.Portal><Dialog.Overlay className="site-nav-overlay" /><Dialog.Content className="site-nav-panel" onCloseAutoFocus={event => { if (contactAfterClose.current) { event.preventDefault(); contactAfterClose.current = false; menuTrigger.current?.focus({ preventScroll: true }); onContact(); } else if (window.matchMedia('(min-width: 761px)').matches) { event.preventDefault(); document.querySelector<HTMLAnchorElement>('.header-brand')?.focus({ preventScroll: true }); } }}>
             <Dialog.Title className="sr-only">Explore Ardeno</Dialog.Title><Dialog.Description className="sr-only">Find our work, services, and studio, or start a conversation.</Dialog.Description>
-            <div className="site-nav-top"><a href={`${anchorBase}#top`} aria-label="Ardeno Studio home" onClick={() => setMenuOpen(false)}><Wordmark /></a><div className="header-actions"><button className="header-contact" onClick={menuContact}>Let’s talk <ArrowUpRight size={16} aria-hidden="true" /></button><Dialog.Close asChild><button className="icon-button" aria-label="Close navigation"><X size={22} aria-hidden="true" /></button></Dialog.Close></div></div>
-            <nav className="site-nav-links" aria-label="Mobile navigation">{headerLinks.map((item, index) => <a key={item.id} href={`${anchorBase}#${item.id}`} onClick={() => setMenuOpen(false)}><span><small aria-hidden="true">0{index + 1}</small>{item.label}.</span><ArrowUpRight size={26} aria-hidden="true" /></a>)}</nav>
+            <div className="site-nav-top"><a href={isHome ? "#top" : "/"} aria-label="Ardeno Studio home" onClick={() => setMenuOpen(false)}><Wordmark /></a><div className="header-actions"><button className="header-contact" onClick={menuContact}>Let’s talk <ArrowUpRight size={16} aria-hidden="true" /></button><Dialog.Close asChild><button className="icon-button" aria-label="Close navigation"><X size={22} aria-hidden="true" /></button></Dialog.Close></div></div>
+            <nav className="site-nav-links" aria-label="Mobile navigation">{headerLinks.map((item, index) => <a key={item.id} href={headerHref(item.id)} onClick={() => setMenuOpen(false)}><span><small aria-hidden="true">0{index + 1}</small>{item.label}.</span><ArrowUpRight size={26} aria-hidden="true" /></a>)}</nav>
             <div className="site-nav-bottom"><p>Independent minds.<br />Colombo ↗ Everywhere.</p><nav aria-label="Mobile social links"><a href="https://www.instagram.com/ardenostudio/" target="_blank" rel="noopener noreferrer">Instagram <ArrowUpRight size={14} aria-hidden="true" /></a><a href="https://www.linkedin.com/company/ardentstudiolk" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={14} aria-hidden="true" /></a></nav></div>
           </Dialog.Content></Dialog.Portal>
         </Dialog.Root>
@@ -113,33 +122,12 @@ export function SectionLabel({ number, children }: { number: string; children: R
   return <div className="section-label"><span className="tabular-nums">{number}</span><span>{children}</span><span className="section-label-line" /></div>;
 }
 
-// Filter name -> the status it shows (All work shows everything).
-const WORK_FILTERS: Record<string, string> = { Platforms: 'Ardeno platform', Websites: 'Live website' };
-const WORK_LABELS = ['All work', ...Object.keys(WORK_FILTERS)];
-
 function Work() {
-  const [filter, setFilter] = useState('All work');
-  const [selected, setSelected] = useState<Project | null>(null);
-  const filtersRef = useRef<HTMLDivElement>(null);
-  useSlidingIndicator(filtersRef, '.is-active', [filter]);
-  const projectTrigger = useRef<HTMLElement | null>(null);
-  const openProject = (project: Project) => {
-    projectTrigger.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    setSelected(project);
-  };
-  const filtered = showcase.filter(project => filter === 'All work' || project.status === WORK_FILTERS[filter]);
   return <section id="work" className="site-section work-section">
     <SectionLabel number="01">Selected work</SectionLabel>
-    <div className="section-heading"><h2><>Independent ideas.<br /><span>Made real.</span></></h2><div className="heading-aside"><p>Real platforms and live websites.<br />Different challenges. The same care.</p><div ref={filtersRef} className="work-filters" aria-label="Filter selected work">{WORK_LABELS.map(value => <button key={value} onClick={() => setFilter(value)} aria-pressed={filter === value} className={cn(filter === value && 'is-active')}>{value}</button>)}<span className="filter-indicator" aria-hidden="true" /></div></div></div>
-    <div className="project-grid" aria-live="polite">{filtered.map((project) => <article className={cn('project-card', `project-${project.id}`)} key={project.id}>
-      <button className="project-visual" onClick={() => openProject(project)} aria-label={`View ${project.title} project`}>
-        <span className="project-status">{project.status === 'Ardeno platform' ? 'Live platform' : project.status === 'Live website' ? 'Live website' : 'Studio concept'}</span>
-        <img src={project.image} alt={`${project.title} website preview`} width="1280" height="800" loading="lazy" decoding="async" />
-        <span className="project-open"><ArrowUpRight size={24} /></span>
-      </button><div className="project-caption"><div><h3><button onClick={() => openProject(project)}><span className="ul">{project.title}</span></button></h3><p>{project.category}</p></div><span className="project-year tabular-nums">{project.year}</span></div>
-    </article>)}</div>
-    <div className="work-outro"><p>A new idea belongs here, too.</p><a href="#contact"><span className="ul">Let’s talk about yours</span><ArrowUpRight size={18} /></a></div>
-    <Dialog.Root open={Boolean(selected)} onOpenChange={open => { if (!open) setSelected(null); }}><Dialog.Portal><Dialog.Overlay className="studio-overlay" /><Dialog.Content className="studio-modal project-modal" onCloseAutoFocus={event => { event.preventDefault(); projectTrigger.current?.focus(); }}><Dialog.Close asChild><button className="modal-close icon-button" aria-label="Close project"><X size={20} /></button></Dialog.Close>{selected && <><div className="project-modal-image"><img src={selected.image} alt={`${selected.title} website`} width="1280" height="800" /></div><div className="project-modal-copy"><span className="modal-eyebrow">{selected.status} · {selected.year}</span><Dialog.Title>{selected.title}</Dialog.Title><Dialog.Description>{selected.description}</Dialog.Description><div className="project-detail-grid"><div><h3>The challenge</h3><p>{selected.problem}</p></div><div><h3>Our approach</h3><p>{selected.solution}</p></div></div><div className="project-outcome"><h3>The result</h3><p>{selected.outcome}</p></div><div className="project-tags">{selected.tags.map(tag => <span key={tag}>{tag}</span>)}</div>{selected.url && <a href={selected.url} target="_blank" rel="noopener noreferrer" className="site-button">{selected.status === 'Ardeno platform' ? 'Explore live platform' : selected.status === 'Live website' ? 'Visit the live site' : 'Explore the concept'}<ArrowUpRight size={18} /></a>}</div></>}</Dialog.Content></Dialog.Portal></Dialog.Root>
+    <div className="section-heading"><h2>Independent ideas.<br /><span>Made real.</span></h2><div className="heading-aside"><p>A few of our favourites.<br />Products and websites, made with care.</p><a className="work-all-link" href="/projects"><span className="ul">All projects</span><sup>{String(portfolio.length).padStart(2, '0')}</sup><ArrowUpRight size={18} aria-hidden="true" /></a></div></div>
+    <div className="project-grid">{featuredProjects.map(project => <ProjectCard key={project.id} project={project} />)}</div>
+    <div className="work-outro"><p>There’s more where these came from.</p><a href="/projects"><span className="ul">Explore all {portfolio.length} projects</span><ArrowUpRight size={18} aria-hidden="true" /></a></div>
   </section>;
 }
 
@@ -348,7 +336,7 @@ function CopyEmail({ sparks = ['--accent', '--paper'] }: { sparks?: string[] }) 
   </>;
 }
 
-const footerLinks = [['Work', '#work'], ['Services', '#services'], ['Studio', '#about'], ['Contact', '#contact']];
+const footerLinks = [['Projects', '/projects'], ['Services', '/#services'], ['Studio', '/#about'], ['Contact', '/contact']];
 const footerSocials = [
   ['Instagram', 'https://www.instagram.com/ardenostudio/'],
   ['LinkedIn', 'https://www.linkedin.com/company/ardentstudiolk'],
@@ -358,7 +346,7 @@ const delay = (ms: number) => ({ '--d': ms }) as React.CSSProperties;
 
 // Big links, a conversation form, a social row and the reversed lockup (A in Signal, letters in paper) across the full width,
 // as the brand guidelines ask for on ink. Everything rises in once when the footer scrolls into view; styles are in footer.css.
-export function Footer({ onContact, anchorBase = '' }: { onContact: (email?: string) => void; anchorBase?: string }) {
+export function Footer({ onContact }: { onContact: (email?: string) => void }) {
   const footerRef = useRef<HTMLElement>(null);
   useReveal(footerRef);
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -369,7 +357,7 @@ export function Footer({ onContact, anchorBase = '' }: { onContact: (email?: str
   };
   return <footer ref={footerRef} className="site-footer ar-footer">
     <div className="ar-footer-top">
-      <nav className="ar-footer-nav ar-r" style={delay(0)} aria-label="Footer navigation">{footerLinks.map(([label, href]) => <a key={label} className="nav-roll-link ar-footer-link" href={`${anchorBase}${href}`}><RollText text={label} /></a>)}</nav>
+      <nav className="ar-footer-nav ar-r" style={delay(0)} aria-label="Footer navigation">{footerLinks.map(([label, href]) => <a key={label} className="nav-roll-link ar-footer-link" href={href}><RollText text={label} /></a>)}</nav>
       <div className="ar-footer-cta ar-r" style={delay(120)}>
         <p>Prefer to write?<br />Start with your email.</p>
         <form onSubmit={submit}>

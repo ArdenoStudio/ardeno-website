@@ -1147,6 +1147,7 @@ export const DocsPage: React.FC<{ onOpenContact: () => void }> = ({ onOpenContac
             {/* ── TOP BAR ── */}
             <header
                 style={{
+                    viewTransitionName: 'site-navigation',
                     position: 'fixed',
                     top: 0,
                     left: 0,

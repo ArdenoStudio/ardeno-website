@@ -2,7 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as Accordion from '@radix-ui/react-accordion';
 import { ArrowRight, ArrowUpRight, Check, Plus } from 'lucide-react';
 import { SiteHeader, SectionLabel, BuiltStrip, Contact, Footer } from './Site';
-import { ContactDialog } from './ContactDialog';
+import { prepareContactDraft } from './ContactForm';
+import { requestPageNavigation } from './pageNavigation';
+import { applySeoToDocument } from '../../seo';
+import { trackUtmParams } from '../UI/trackUtm';
 import { PixelCanvas } from './PixelCanvas';
 import { burstSparks } from './clickSpark';
 import { useSiteInteractions, useReveal } from './interactions';
@@ -306,13 +309,10 @@ function ValuesTicker() {
 export default function FoundersPage() {
   useSiteInteractions();
   const canvasRef = useRef<HTMLDivElement>(null);
-  const [contact, setContact] = useState(false);
-  const [prefillEmail, setPrefillEmail] = useState('');
-  const [prefillMessage, setPrefillMessage] = useState('');
-  const contactTrigger = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    document.title = 'Founders — Ardeno Studio';
+    applySeoToDocument('founders');
+    trackUtmParams();
     if (window.location.hash) {
       const id = window.location.hash.slice(1);
       window.requestAnimationFrame(() => {
@@ -333,16 +333,8 @@ export default function FoundersPage() {
   }, []);
 
   const openContact = (email?: unknown, message?: unknown) => {
-    setPrefillEmail(typeof email === 'string' ? email : '');
-    setPrefillMessage(typeof message === 'string' ? message : '');
-    contactTrigger.current = document.activeElement instanceof HTMLElement && document.activeElement !== document.body ? document.activeElement : null;
-    setContact(true);
-  };
-  const returnContactFocus = () => {
-    const target = contactTrigger.current?.isConnected
-      ? contactTrigger.current
-      : document.querySelector<HTMLButtonElement>('.header-contact');
-    target?.focus();
+    prepareContactDraft(typeof email === 'string' ? email : undefined, typeof message === 'string' ? message : undefined);
+    requestPageNavigation('/contact');
   };
 
   return (
@@ -360,8 +352,8 @@ export default function FoundersPage() {
             </filter>
           </defs>
         </svg>
-        <SiteHeader onContact={() => openContact()} anchorBase="/" />
-        <main>
+        <SiteHeader onContact={() => openContact()} />
+        <main id="page-content" tabIndex={-1}>
           <FoundersHero onContact={() => openContact()} />
 
           <RevealSection id="founders" className="site-section founders-chapters">
@@ -422,14 +414,7 @@ export default function FoundersPage() {
           <BuiltStrip />
           <Contact onContact={openContact} />
         </main>
-        <Footer onContact={openContact} anchorBase="/" />
-        <ContactDialog
-          open={contact}
-          onOpenChange={setContact}
-          returnFocus={returnContactFocus}
-          defaultEmail={prefillEmail}
-          defaultMessage={prefillMessage}
-        />
+        <Footer onContact={openContact} />
       </div>
     </div>
   );

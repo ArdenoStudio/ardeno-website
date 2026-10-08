@@ -1,0 +1,8 @@
+# Preserve exported artwork and PDF byte offsets on Windows.
+*.pdf binary
+*.png binary
+*.webp binary
+*.jpg binary
+*.jpeg binary
+*.woff binary
+*.woff2 binary

@@ -1,6 +1,11 @@
 {
   "redirects": [
     {
+      "source": "/projects/motormila-lk",
+      "destination": "/projects/motormila",
+      "permanent": true
+    },
+    {
       "source": "/founders.html",
       "destination": "/founders",
       "permanent": true
@@ -144,15 +149,97 @@
     }
   ],
   "rewrites": [
-    { "source": "/services/booking-systems", "destination": "/services/booking-systems/index.html" },
-    { "source": "/services/business-websites", "destination": "/services/business-websites/index.html" },
-    { "source": "/services/website-redesign", "destination": "/services/website-redesign/index.html" },
-    { "source": "/services/ai-lead-assistants", "destination": "/services/ai-lead-assistants/index.html" },
-    { "source": "/docs", "destination": "/docs/index.html" },
-    { "source": "/faq", "destination": "/faq/index.html" },
-    { "source": "/brand", "destination": "/brand/index.html" },
-    { "source": "/case-studies", "destination": "/case-studies/index.html" },
-    { "source": "/case-studies/humble-beginnings", "destination": "/case-studies/humble-beginnings/index.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/contact",
+      "destination": "/contact/index.html"
+    },
+    {
+      "source": "/services/booking-systems",
+      "destination": "/services/booking-systems/index.html"
+    },
+    {
+      "source": "/services/business-websites",
+      "destination": "/services/business-websites/index.html"
+    },
+    {
+      "source": "/services/website-redesign",
+      "destination": "/services/website-redesign/index.html"
+    },
+    {
+      "source": "/services/ai-lead-assistants",
+      "destination": "/services/ai-lead-assistants/index.html"
+    },
+    {
+      "source": "/docs",
+      "destination": "/docs/index.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/faq/index.html"
+    },
+    {
+      "source": "/brand",
+      "destination": "/brand/index.html"
+    },
+    {
+      "source": "/case-studies",
+      "destination": "/case-studies/index.html"
+    },
+    {
+      "source": "/case-studies/humble-beginnings",
+      "destination": "/case-studies/humble-beginnings/index.html"
+    },
+    {
+      "source": "/projects",
+      "destination": "/projects/index.html"
+    },
+    {
+      "source": "/projects/octane",
+      "destination": "/projects/octane/index.html"
+    },
+    {
+      "source": "/projects/propertylk",
+      "destination": "/projects/propertylk/index.html"
+    },
+    {
+      "source": "/projects/lankawa",
+      "destination": "/projects/lankawa/index.html"
+    },
+    {
+      "source": "/projects/dinaya-lk",
+      "destination": "/projects/dinaya-lk/index.html"
+    },
+    {
+      "source": "/projects/koel-cse",
+      "destination": "/projects/koel-cse/index.html"
+    },
+    {
+      "source": "/projects/serendib-trading",
+      "destination": "/projects/serendib-trading/index.html"
+    },
+    {
+      "source": "/projects/ceylon-stories",
+      "destination": "/projects/ceylon-stories/index.html"
+    },
+    {
+      "source": "/projects/ceylon-hygiene",
+      "destination": "/projects/ceylon-hygiene/index.html"
+    },
+    {
+      "source": "/projects/wax-in-the-city",
+      "destination": "/projects/wax-in-the-city/index.html"
+    },
+    {
+      "source": "/founders",
+      "destination": "/founders/index.html"
+    },
+    {
+      "source": "/projects/motormila",
+      "destination": "/projects/motormila/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }

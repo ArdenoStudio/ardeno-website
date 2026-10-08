@@ -1,0 +1,15 @@
+{
+  "scope": "component",
+  "targetName": "Ardeno monogram entrance",
+  "isRedesign": true,
+  "inspiration": { "visual": ["User-supplied repeating luxury monogram reference"], "functional": ["Codrops repetition and layer reveals", "Motion stagger and physical springs"] },
+  "brand": { "colours": ["#f4f4f2", "#20211f", "#ff3301"], "font": "Cal Sans", "tone": ["confident", "expressive", "smooth"] },
+  "constraints": { "mustKeep": ["Original Ardeno A path", "Existing site navigation and loader-free startup"], "technical": ["Development-only preview", "No new dependencies", "Reduced-motion support", "Replay, pause, scrub, fullscreen and feedback"] },
+  "framework": "vite-react",
+  "packageManager": "npm",
+  "proposal": "A short first-entry monogram sequence, without replaying on ordinary page navigation. No variant has been installed as the website loader.",
+  "round2": "User requests really small logos touching, then clarifies to use the actual standalone A. Use original SVG assets upright; no inverted or merged shapes.",
+  "round3": "User rejects visual noise and asks for Apple-level quality and further research. Refine compositions around one clear large A, faint micro-pattern texture, critically damped motion. Preview only.",
+  "round4": "User likes the background of J Studio veil, asks for variants, and explicitly requires the same colour. K–O retain Ink #20211f and Paper #f4f4f2. Default comparison is a paused still with replay/fullscreen controls.",
+  "round5": "Remove the central large A; retain only the original Ardeno wordmark plus studio and the woven monogram background. Five spring-led motion treatments: depth reveal, opposing rows, diagonal light cascade, a centre ripple, and six staggered layers. Same ink/paper colours, 1.5s duration, reduced-motion static mode. Historical large-A studies are no longer in the comparison UI. Preview only."
+}

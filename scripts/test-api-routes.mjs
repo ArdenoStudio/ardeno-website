@@ -322,6 +322,7 @@ const tests = [
         ip: '198.51.100.50',
         body: validLead({
           name: 'Alice\nInjected',
+          budget: 'LKR 150,000 - 500,000 <b>test</b>',
           message: '<img src=x onerror=alert(1)>\nHello',
         }),
       }));
@@ -336,6 +337,7 @@ const tests = [
       assert(!/[\r\n]/.test(providerBody.subject), 'lead subject contains newline');
       assert(!providerBody.html.includes('<img'), 'lead email contains raw img HTML');
       assert(providerBody.html.includes('&lt;img'), 'lead email did not escape HTML');
+      assert(providerBody.html.includes('LKR 150,000 - 500,000 &lt;b&gt;test&lt;/b&gt;'), 'lead email dropped or failed to escape the budget');
     },
   ],
   [
