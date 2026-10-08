@@ -109,7 +109,7 @@ export function SiteHeader({ onContact }: { onContact: () => void }) {
   </header></div>;
 }
 
-function SectionLabel({ number, children }: { number: string; children: React.ReactNode }) {
+export function SectionLabel({ number, children }: { number: string; children: React.ReactNode }) {
   return <div className="section-label"><span className="tabular-nums">{number}</span><span>{children}</span><span className="section-label-line" /></div>;
 }
 
@@ -244,7 +244,7 @@ const quickStarts = [
 // The closing call to action. The headline is one big button with the ring arrow inline after "next?". When the band first scrolls
 // into view the top row, the two headline lines and the bottom row rise in one after another, and the ring leans toward the pointer
 // as it nears. The small text is Deep ink, as the brand guide asks for small text on orange. Styles are in contact.css.
-function Contact({ onContact }: { onContact: (email?: string, message?: string) => void }) {
+export function Contact({ onContact }: { onContact: (email?: string, message?: string) => void }) {
   const sectionRef = useRef<HTMLElement>(null);
   const ringRef = useRef<HTMLSpanElement>(null);
   useReveal(sectionRef);
@@ -358,7 +358,7 @@ const delay = (ms: number) => ({ '--d': ms }) as React.CSSProperties;
 
 // Big links, a conversation form, a social row and the reversed lockup (A in Signal, letters in paper) across the full width,
 // as the brand guidelines ask for on ink. Everything rises in once when the footer scrolls into view; styles are in footer.css.
-function Footer({ onContact }: { onContact: (email?: string) => void }) {
+export function Footer({ onContact }: { onContact: (email?: string) => void }) {
   const footerRef = useRef<HTMLElement>(null);
   useReveal(footerRef);
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -437,7 +437,7 @@ const LOOKS: Record<string, Look> = {
 };
 const BUILT_IDS = ['octane', 'propertylk', 'motormila', 'lankawa', 'dinaya-lk', 'koel-cse', 'serendib-trading', 'ceylon-stories', 'ceylon-hygiene', 'wax-in-the-city'];
 
-function BuiltStrip() {
+export function BuiltStrip() {
   const platforms: Built[] = BUILT_IDS.map(id => PROJECTS.find(project => project.id === id)).filter((project): project is Project => Boolean(project)).map(project => ({ ...project, ...LOOKS[project.id] }));
   return <section className="built-strip" aria-labelledby="built-title">
     <div className="built-grid">

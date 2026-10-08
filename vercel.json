@@ -1,6 +1,11 @@
 {
   "redirects": [
     {
+      "source": "/founders.html",
+      "destination": "/founders",
+      "permanent": true
+    },
+    {
       "source": "/guides/custom-development-vs-website-builders",
       "destination": "https://www.ardenostudio.online/services/business-websites",
       "permanent": true
