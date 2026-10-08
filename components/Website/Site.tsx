@@ -52,7 +52,7 @@ export function RollText({ text }: { text: string }) {
   </span>;
 }
 
-export function SiteHeader({ onContact }: { onContact: () => void }) {
+export function SiteHeader({ onContact, anchorBase = '' }: { onContact: () => void; anchorBase?: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [compact, setCompact] = useState(false);
   const [active, setActive] = useState<string | null>('top');
@@ -90,8 +90,8 @@ export function SiteHeader({ onContact }: { onContact: () => void }) {
   const menuContact = () => { contactAfterClose.current = true; setMenuOpen(false); };
   return <div className="site-header-space"><header className={cn('site-header', compact && 'is-compact')}>
     <div className="site-header-inner">
-      <nav className="desktop-nav" aria-label="Main navigation">{headerLinks.map(item => <a key={item.id} aria-current={active === item.id ? 'location' : undefined} className="nav-roll-link" href={`#${item.id}`}><RollText text={`${item.label}.`} /></a>)}</nav>
-      <a className="header-brand" href="#top" aria-label="Ardeno Studio home"><BrandLockup collapsed={compact} /></a>
+      <nav className="desktop-nav" aria-label="Main navigation">{headerLinks.map(item => <a key={item.id} aria-current={active === item.id ? 'location' : undefined} className="nav-roll-link" href={`${anchorBase}#${item.id}`}><RollText text={`${item.label}.`} /></a>)}</nav>
+      <a className="header-brand" href={`${anchorBase}#top`} aria-label="Ardeno Studio home"><BrandLockup collapsed={compact} /></a>
       <div className="header-actions">
         <nav className="header-socials" aria-label="Studio social links"><a className="nav-roll-link" aria-label="Ardeno on Instagram" href="https://www.instagram.com/ardenostudio/" target="_blank" rel="noopener noreferrer"><RollText text="IG." /></a><a className="nav-roll-link" aria-label="Ardeno on LinkedIn" href="https://www.linkedin.com/company/ardentstudiolk" target="_blank" rel="noopener noreferrer"><RollText text="in." /></a></nav>
         <button className="header-contact" onClick={event => { burstSparks(event); onContact(); }}><span className="nav-roll"><span>Let’s talk</span><span aria-hidden="true">Let’s talk</span></span><ArrowUpRight size={16} aria-hidden="true" /></button>
@@ -99,8 +99,8 @@ export function SiteHeader({ onContact }: { onContact: () => void }) {
           <Dialog.Trigger asChild><button ref={menuTrigger} className="mobile-menu icon-button" aria-label="Open navigation"><span className="menu-lines" aria-hidden="true"><span /><span /></span></button></Dialog.Trigger>
           <Dialog.Portal><Dialog.Overlay className="site-nav-overlay" /><Dialog.Content className="site-nav-panel" onCloseAutoFocus={event => { if (contactAfterClose.current) { event.preventDefault(); contactAfterClose.current = false; menuTrigger.current?.focus({ preventScroll: true }); onContact(); } else if (window.matchMedia('(min-width: 761px)').matches) { event.preventDefault(); document.querySelector<HTMLAnchorElement>('.header-brand')?.focus({ preventScroll: true }); } }}>
             <Dialog.Title className="sr-only">Explore Ardeno</Dialog.Title><Dialog.Description className="sr-only">Find our work, services, and studio, or start a conversation.</Dialog.Description>
-            <div className="site-nav-top"><a href="#top" aria-label="Ardeno Studio home" onClick={() => setMenuOpen(false)}><Wordmark /></a><div className="header-actions"><button className="header-contact" onClick={menuContact}>Let’s talk <ArrowUpRight size={16} aria-hidden="true" /></button><Dialog.Close asChild><button className="icon-button" aria-label="Close navigation"><X size={22} aria-hidden="true" /></button></Dialog.Close></div></div>
-            <nav className="site-nav-links" aria-label="Mobile navigation">{headerLinks.map((item, index) => <a key={item.id} href={`#${item.id}`} onClick={() => setMenuOpen(false)}><span><small aria-hidden="true">0{index + 1}</small>{item.label}.</span><ArrowUpRight size={26} aria-hidden="true" /></a>)}</nav>
+            <div className="site-nav-top"><a href={`${anchorBase}#top`} aria-label="Ardeno Studio home" onClick={() => setMenuOpen(false)}><Wordmark /></a><div className="header-actions"><button className="header-contact" onClick={menuContact}>Let’s talk <ArrowUpRight size={16} aria-hidden="true" /></button><Dialog.Close asChild><button className="icon-button" aria-label="Close navigation"><X size={22} aria-hidden="true" /></button></Dialog.Close></div></div>
+            <nav className="site-nav-links" aria-label="Mobile navigation">{headerLinks.map((item, index) => <a key={item.id} href={`${anchorBase}#${item.id}`} onClick={() => setMenuOpen(false)}><span><small aria-hidden="true">0{index + 1}</small>{item.label}.</span><ArrowUpRight size={26} aria-hidden="true" /></a>)}</nav>
             <div className="site-nav-bottom"><p>Independent minds.<br />Colombo ↗ Everywhere.</p><nav aria-label="Mobile social links"><a href="https://www.instagram.com/ardenostudio/" target="_blank" rel="noopener noreferrer">Instagram <ArrowUpRight size={14} aria-hidden="true" /></a><a href="https://www.linkedin.com/company/ardentstudiolk" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={14} aria-hidden="true" /></a></nav></div>
           </Dialog.Content></Dialog.Portal>
         </Dialog.Root>
@@ -358,7 +358,7 @@ const delay = (ms: number) => ({ '--d': ms }) as React.CSSProperties;
 
 // Big links, a conversation form, a social row and the reversed lockup (A in Signal, letters in paper) across the full width,
 // as the brand guidelines ask for on ink. Everything rises in once when the footer scrolls into view; styles are in footer.css.
-export function Footer({ onContact }: { onContact: (email?: string) => void }) {
+export function Footer({ onContact, anchorBase = '' }: { onContact: (email?: string) => void; anchorBase?: string }) {
   const footerRef = useRef<HTMLElement>(null);
   useReveal(footerRef);
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -369,7 +369,7 @@ export function Footer({ onContact }: { onContact: (email?: string) => void }) {
   };
   return <footer ref={footerRef} className="site-footer ar-footer">
     <div className="ar-footer-top">
-      <nav className="ar-footer-nav ar-r" style={delay(0)} aria-label="Footer navigation">{footerLinks.map(([label, href]) => <a key={label} className="nav-roll-link ar-footer-link" href={href}><RollText text={label} /></a>)}</nav>
+      <nav className="ar-footer-nav ar-r" style={delay(0)} aria-label="Footer navigation">{footerLinks.map(([label, href]) => <a key={label} className="nav-roll-link ar-footer-link" href={`${anchorBase}${href}`}><RollText text={label} /></a>)}</nav>
       <div className="ar-footer-cta ar-r" style={delay(120)}>
         <p>Prefer to write?<br />Start with your email.</p>
         <form onSubmit={submit}>

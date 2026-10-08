@@ -410,7 +410,7 @@ export default function FoundersPage() {
             </filter>
           </defs>
         </svg>
-        <SiteHeader onContact={() => openContact()} />
+        <SiteHeader onContact={() => openContact()} anchorBase="/" />
         <main>
           <FoundersHero onContact={() => openContact()} />
 
@@ -472,7 +472,7 @@ export default function FoundersPage() {
           <BuiltStrip />
           <Contact onContact={openContact} />
         </main>
-        <Footer onContact={openContact} />
+        <Footer onContact={openContact} anchorBase="/" />
         <ContactDialog
           open={contact}
           onOpenChange={setContact}
