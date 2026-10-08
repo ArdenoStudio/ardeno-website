@@ -78,6 +78,7 @@ const FOUNDERS: Founder[] = [
     tags: ['Brand identity', 'UX design', 'Design systems', 'Client direction', 'Hackathons'],
     links: [
       { label: 'GitHub', href: 'https://github.com/Cookie-Cat21' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ovindukarunaratne' },
     ],
     ask: [
       ['What should our brand feel like?', 'He\u2019ll show you, not tell you.'],
