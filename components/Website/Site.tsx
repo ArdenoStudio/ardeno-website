@@ -12,6 +12,10 @@ import { StickerPlayground } from './StickerPlayground';
 import { cn, navigation } from './utils';
 import { featuredProjects, portfolio } from '../../data/portfolio';
 import { ProjectCard } from './ProjectCard';
+import { ServiceVisual } from './ServiceVisual';
+import { useProcessFill } from './processFill';
+import { fireConfetti } from './confetti';
+import { BuiltMarquee, usePhoneStrip } from './BuiltMarquee';
 import { CONTACT_HASH, ContactSheet, pressContactTab, releaseContactTab } from './ContactSheet';
 
 
@@ -150,7 +154,7 @@ const services = [
 function Services({ onContact }: { onContact: () => void }) {
   return <section id="services" className="site-section services-section">
     <SectionLabel number="02">What we do</SectionLabel><div className="section-heading"><h2><>The thinking.<br />The making.</></h2><p className="section-intro">Strategy, design, and development.<br />One small team, from first idea to final detail.</p></div>
-    <Accordion.Root type="single" collapsible className="service-list">{services.map((service, i) => <Accordion.Item key={service.short} value={service.short} className="service-item"><Accordion.Header><Accordion.Trigger className="service-trigger"><span className="service-number tabular-nums">0{i + 1}</span><span className="service-heading"><span className="service-short">{service.short}</span><span className="service-title">{service.title}</span></span><span className="service-description">{service.description}</span><span className="service-plus"><Plus size={23} /></span></Accordion.Trigger></Accordion.Header><Accordion.Content className="service-content"><div><p>{service.detail}</p><div className="service-tags">{service.tags.map(tag => <span key={tag}>{tag}</span>)}</div><button onClick={onContact}><span className="ul">Discuss this service</span><ArrowUpRight size={17} /></button></div></Accordion.Content></Accordion.Item>)}</Accordion.Root>
+    <Accordion.Root type="single" collapsible className="service-list">{services.map((service, i) => <Accordion.Item key={service.short} value={service.short} className="service-item"><Accordion.Header><Accordion.Trigger className="service-trigger"><span className="service-number tabular-nums">0{i + 1}</span><span className="service-heading"><span className="service-short">{service.short}</span><span className="service-title">{service.title}</span></span><span className="service-description">{service.description}</span><span className="service-plus"><Plus size={23} /></span></Accordion.Trigger></Accordion.Header><Accordion.Content className="service-content"><div className="service-body"><div className="service-copy"><p>{service.detail}</p><div className="service-tags">{service.tags.map(tag => <span key={tag}>{tag}</span>)}</div><button onClick={onContact}><span className="ul">Discuss this service</span><ArrowUpRight size={17} /></button></div><ServiceVisual service={service.short} /></div></Accordion.Content></Accordion.Item>)}</Accordion.Root>
   </section>;
 }
 
@@ -161,7 +165,9 @@ function Approach() {
     ['Build', 'We turn the direction into a responsive, carefully tested experience that works in the real world.'],
     ['Launch & evolve', 'We launch together, then stay close for support, refinements, and the next opportunity.'],
   ];
-  return <section id="process" className="site-section approach-section"><SectionLabel number="03">How we work</SectionLabel><div className="section-heading"><h2><>A clear process.<br /><em>A close partnership.</em></></h2><p className="section-intro">No disappearing acts. No confusing handoffs.<br />Just an open conversation and a clear way forward.</p></div><div className="process-grid">{steps.map(([title, description], i) => <div className="process-step" key={title}><div className="step-top"><span className="tabular-nums">0{i + 1}</span>{i === 3 ? <Check size={22} /> : <ArrowRight size={22} />}</div><h3>{title}</h3><p>{description}</p></div>)}</div></section>;
+  const gridRef = useRef<HTMLDivElement>(null);
+  useProcessFill(gridRef, fireConfetti);
+  return <section id="process" className="site-section approach-section"><SectionLabel number="03">How we work</SectionLabel><div className="section-heading"><h2><>A clear process.<br /><em>A close partnership.</em></></h2><p className="section-intro">No disappearing acts. No confusing handoffs.<br />Just an open conversation and a clear way forward.</p></div><div className="process-grid" ref={gridRef}>{steps.map(([title, description], i) => <div className="process-step" key={title}><div className="step-top"><span className="tabular-nums">0{i + 1}</span>{i === 3 ? <Check size={22} /> : <ArrowRight size={22} />}</div><h3>{title}</h3><p>{description}</p></div>)}</div></section>;
 }
 
 // The founder rows under the studio statement. Each tile wears the founder's colour and pixel shimmer from the founders page
@@ -445,8 +451,9 @@ export function builtPlatforms(): Built[] {
   return BUILT_IDS.map(id => PROJECTS.find(project => project.id === id)).filter((project): project is Project => Boolean(project)).map(project => ({ ...project, ...LOOKS[project.id] }));
 }
 
-export function BuiltCard({ project, className }: { project: Built; className?: string; key?: string }) {
-  return <a className={className ? `built-card ${className}` : 'built-card'} href={project.url ?? '#work'} {...(project.url ? { target: '_blank', rel: 'noopener noreferrer' } : {})} aria-label={`${project.title}, ${project.category}${project.url ? ' (opens in a new tab)' : ''}`}>
+// `copy` marks the second, inert copy of a card in the phone marquee (BuiltMarquee.tsx).
+export function BuiltCard({ project, className, copy }: { project: Built; className?: string; copy?: boolean; key?: string }) {
+  return <a className={['built-card', className, copy && 'is-copy'].filter(Boolean).join(' ')} inert={copy || undefined} href={project.url ?? '#work'} {...(project.url ? { target: '_blank', rel: 'noopener noreferrer' } : {})} aria-label={`${project.title}, ${project.category}${project.url ? ' (opens in a new tab)' : ''}`}>
     <PixelCanvas colors={project.pixels ?? PIXEL_COLORS} />
     {project.logo
       ? <span className={project.logo.text ? 'built-logo has-text' : 'built-logo'}><img src={project.logo.src} alt="" width={project.logo.width} height={project.logo.height} loading="lazy" decoding="async" />{project.logo.text && <span>{project.logo.text}</span>}</span>
@@ -456,15 +463,18 @@ export function BuiltCard({ project, className }: { project: Built; className?: 
   </a>;
 }
 
+// On phones the cards are two sliding rows instead of the grid (BuiltMarquee.tsx).
 export function BuiltStrip() {
+  const phone = usePhoneStrip();
+  const projects = builtPlatforms();
+  const intro = <div className="built-intro">
+    <h2 className="built-badge" id="built-title">Built by Ardeno</h2>
+    <p>A small studio.<br /><strong>With work out in the world.</strong></p>
+  </div>;
   return <section className="built-strip" aria-labelledby="built-title">
-    <div className="built-grid">
-      <div className="built-intro">
-        <h2 className="built-badge" id="built-title">Built by Ardeno</h2>
-        <p>A small studio.<br /><strong>With work out in the world.</strong></p>
-      </div>
-      {builtPlatforms().map(project => <BuiltCard key={project.id} project={project} />)}
-    </div>
+    {phone
+      ? <>{intro}<BuiltMarquee projects={projects} Card={BuiltCard} /></>
+      : <div className="built-grid">{intro}{projects.map(project => <BuiltCard key={project.id} project={project} />)}</div>}
   </section>;
 }
 

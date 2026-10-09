@@ -14,6 +14,9 @@ import './footer.css';
 import './contact.css';
 import './built.css';
 import './projects.css';
+import './serviceVisual.css';
+import './process.css';
+import './builtMarquee.css';
 
 export default function ArdenoWebsite({ pathname = window.location.pathname }: { pathname?: string }) {
   const path = pathname.replace(/\/+$/, '') || '/';
