@@ -37,6 +37,9 @@
 @media(prefers-reduced-motion:reduce){.site-header,.site-header-inner,.site-header .header-contact{animation:none;transition:none}.site-header .header-contact:is(:hover,:focus-visible){transform:none}}
 .header-contact svg{flex:none;transition:transform 160ms ease-out}
 .header-contact:hover svg{transform:translate(2px,-2px)}
+/* Just landed from the "Let's talk" sheet with the pointer still on it (ContactSheet.tsx, holdRest): no hover pull or label roll
+   until the pointer moves off it, so the landing is not followed by a second motion. */
+.site-header .header-contact.is-landed:is(:hover,:focus-visible),.site-header .header-contact.is-landed:is(:hover,:focus-visible) svg,.site-header .header-contact.is-landed .nav-roll>span{transform:none}
 .site-header .mobile-menu{display:none}
 .menu-lines{display:flex;flex-direction:column;gap:6px;width:24px}
 .menu-lines>span{width:100%;height:2px;background:currentColor}
