@@ -12,7 +12,7 @@ import { StickerPlayground } from './StickerPlayground';
 import { cn, navigation } from './utils';
 import { featuredProjects, portfolio } from '../../data/portfolio';
 import { ProjectCard } from './ProjectCard';
-import { CONTACT_HASH, ContactSheet } from './ContactSheet';
+import { CONTACT_HASH, ContactSheet, pressContactTab, releaseContactTab } from './ContactSheet';
 
 
 // Header lockup, drawn from the official master (public/brand/ardeno-lockup-primary.svg, see scripts/generate-brand-lockup.cjs):
@@ -109,7 +109,7 @@ export function SiteHeader({ onContact }: { onContact: () => void }) {
       <a className="header-brand" href={isHome ? "#top" : "/"} aria-label="Ardeno Studio home"><BrandLockup collapsed={compact} /></a>
       <div className="header-actions">
         <nav className="header-socials" aria-label="Studio social links"><a className="nav-roll-link" aria-label="Ardeno on Instagram" href="https://www.instagram.com/ardenostudio/" target="_blank" rel="noopener noreferrer"><RollText text="IG." /></a><a className="nav-roll-link" aria-label="Ardeno on LinkedIn" href="https://www.linkedin.com/company/ardentstudiolk" target="_blank" rel="noopener noreferrer"><RollText text="in." /></a></nav>
-        <a ref={contactTab} href={CONTACT_HASH} aria-haspopup="dialog" className={cn('header-contact', playContactEntrance && 'is-first-entrance')} onClick={event => { burstSparks(event); }}><span className="nav-roll"><span>Let’s talk</span><span aria-hidden="true">Let’s talk</span></span><ArrowUpRight size={16} aria-hidden="true" /></a>
+        <a ref={contactTab} href={CONTACT_HASH} aria-haspopup="dialog" className={cn('header-contact', playContactEntrance && 'is-first-entrance')} onClick={event => { burstSparks(event); }} onPointerDown={event => pressContactTab(event.currentTarget)} onPointerUp={event => releaseContactTab(event.currentTarget)} onPointerLeave={event => releaseContactTab(event.currentTarget)} onPointerCancel={event => releaseContactTab(event.currentTarget)}><span className="nav-roll"><span>Let’s talk</span><span aria-hidden="true">Let’s talk</span></span><ArrowUpRight size={16} aria-hidden="true" /></a>
         <Dialog.Root open={menuOpen} onOpenChange={setMenuOpen}>
           <Dialog.Trigger asChild><button ref={menuTrigger} className="mobile-menu icon-button" aria-label="Open navigation"><span className="menu-lines" aria-hidden="true"><span /><span /></span></button></Dialog.Trigger>
           <Dialog.Portal><Dialog.Overlay className="site-nav-overlay" /><Dialog.Content className="site-nav-panel" onCloseAutoFocus={event => { if (contactAfterClose.current) { event.preventDefault(); contactAfterClose.current = false; menuTrigger.current?.focus({ preventScroll: true }); onContact(); } else if (window.matchMedia('(min-width: 761px)').matches) { event.preventDefault(); document.querySelector<HTMLAnchorElement>('.header-brand')?.focus({ preventScroll: true }); } }}>

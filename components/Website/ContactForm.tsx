@@ -24,7 +24,8 @@ export function prepareContactDraft(email?: string, message?: string) {
 }
 
 // onDone: where the sheet shows the form, the success message's button closes the sheet instead of going to the homepage.
-export function ContactForm({ onDone }: { onDone?: () => void } = {}) {
+// onSent: told when an enquiry has gone through, so the sheet can play its "sent" close.
+export function ContactForm({ onDone, onSent }: { onDone?: () => void; onSent?: () => void } = {}) {
   const [fields, setFields] = useState(visitDraft);
   useEffect(() => { visitDraft = fields; }, [fields]);
   const [state, setState] = useState<State>('idle');
@@ -60,7 +61,7 @@ export function ContactForm({ onDone }: { onDone?: () => void } = {}) {
       const utm = getStoredUtm();
       const response = await fetch('/api/send-email', { method: 'POST', signal: controller.signal, headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ ...fields, name: fields.name.trim(), email: fields.email.trim(), message: fields.message.trim(), company: fields.company.trim() || '-', phone: fields.phone?.trim() || undefined, turnstileToken: token, utm_source: utm.utm_source || 'direct', utm_medium: utm.utm_medium || 'none', utm_campaign: utm.utm_campaign || 'none', page_path: window.location.pathname, page_url: window.location.href, referrer: document.referrer || 'direct', submitted_at: new Date().toISOString() }) });
       if (!response.ok) throw new Error('Delivery unavailable');
-      setState('success'); setFields(initial); messageStarter = ''; setToken('');
+      setState('success'); setFields(initial); messageStarter = ''; setToken(''); onSent?.();
     } catch { setState('error'); setToken(''); setError('We couldn’t send your enquiry. Please try again, or email us directly below.'); }
     finally { window.clearTimeout(timer); }
   }

@@ -18,6 +18,10 @@
    page below it. Both ride with it by position only (ContactSheet.tsx). */
 .contact-goo-shine,.contact-goo-shadow{position:absolute;left:0;top:0;border-radius:50%;pointer-events:none;opacity:0;will-change:transform,opacity}
 .contact-goo-shadow{z-index:0;background:radial-gradient(closest-side,rgba(21,22,19,.24),rgba(21,22,19,.1) 55%,rgba(21,22,19,0))}
+.contact-goo-tick{position:absolute;left:0;top:0;z-index:2;display:flex;align-items:center;justify-content:center;color:var(--paper);opacity:0;pointer-events:none;will-change:transform,opacity}
+/* The one-off warm-up copy of the liquid (warmUp in ContactSheet.tsx): drawn for a few frames in the top left corner at 1% opacity. */
+.contact-goo-warm{position:fixed;left:0;top:0;width:24px;height:24px;opacity:.01;pointer-events:none;z-index:2147483647;contain:strict}
+.contact-goo-warm :is(.contact-goo-shine,.contact-goo-shadow){opacity:1;width:24px;height:24px}
 .contact-goo-shine{z-index:2;background:radial-gradient(circle at 34% 30%,rgba(255,255,255,.62) 0,rgba(255,255,255,.24) 11%,rgba(255,255,255,0) 30%),radial-gradient(circle at 70% 76%,rgba(255,255,255,.14) 0,rgba(255,255,255,0) 20%),radial-gradient(circle at 50% 50%,rgba(255,255,255,0) 58%,rgba(120,20,0,.16) 74%,rgba(120,20,0,0) 76%)}
 .contact-goo-tab{position:absolute;background:var(--accent);transform-origin:50% 0}
 .contact-goo-blob{position:absolute;left:0;top:0;will-change:transform}
