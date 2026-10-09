@@ -30,6 +30,8 @@ type RateLimitOptions = {
 const rateStore = new Map<string, RateWindow>();
 
 const defaultOrigins = [
+  'https://ardenostudio.com',
+  'https://www.ardenostudio.com',
   'https://www.ardenostudio.online',
   'https://ardenostudio.online',
   'https://ardeno-studio-website.vercel.app',
