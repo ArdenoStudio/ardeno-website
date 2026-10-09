@@ -82,9 +82,10 @@ type Box = { x: number; y: number; w: number; h: number; radius: string };
 type Geometry = { origin: Box; tab: Box; fromTab: boolean; hangs: boolean; dir: 1 | -1; drop: number; vw: number; vh: number; sent: boolean };
 type Pose = { x: number; y: number; angle: number; sx: number; sy: number };
 type Spot = { ms: number; x: number; y: number };
-type Step = [number, Pose, string?]; // ms, pose, easing on to the next frame (linear when left out)
+export type Step = [number, Pose, string?]; // ms, pose, easing on to the next frame (linear when left out)
 
-// The choreography, in ms from the start of the opening or the closing, before TIMINGS shortens it.
+// The choreography, in ms from the start of the opening or the closing, before TIMINGS shortens it. The closing's flight home and
+// splash (and what it is built from, exported below) are also the tab's entrance on page load (tabEntrance.ts).
 const OPEN = { windUp: 130, swell: 260, neck: 380, pinch: 430, drained: 620, arrive: 1150, settled: 1480, burst: 1540, expand: 540 };
 const CLOSE = { gathered: 450, liquid: 600, impact: 1180 };
 // The splash, in ms from the impact: the droplet flattens against the edge (splat), runs out along it (spread) and throws a few
@@ -92,29 +93,29 @@ const CLOSE = { gathered: 450, liquid: 600, impact: 1180 };
 // where that spring first stands still (its trough), so nothing jumps, and settles over `settle`.
 const SPLASH = { splat: 70, spread: 140, spray: 170, settle: 300 };
 const DRIP = { hz: 2.8, damping: 0.45 };
-// The hanging tab swings sideways as it forms, about its top edge: the same pendulum as its swing on page load (about 2.2 Hz), damped
+// The hanging tab swings sideways as it forms, about its top edge: a pendulum of about 2.2 Hz, damped
 // harder so it settles in under a second. `deg` is its first swing; the bottom goes the way the droplet was heading. Desktop only.
 const SWING = { deg: 3, hz: 2.2, damping: 0.26, length: 850 };
 type Timings = { open: typeof OPEN; close: typeof CLOSE; splash: typeof SPLASH; drip: number; turn: number; spring: number };
 // Every showing runs at 60% of the tables above, with a 0.45-turn swirl and a stiffer spring so it still settles in time. The splash
 // only shortens to 80%, so it still reads.
 const scaled = <T extends Record<string, number>>(times: T, k: number) => Object.fromEntries(Object.entries(times).map(([key, ms]) => [key, ms * k])) as T;
-const TIMINGS: Timings = { open: scaled(OPEN, 0.6), close: scaled(CLOSE, 0.6), splash: scaled(SPLASH, 0.8), drip: DRIP.hz / 0.8, turn: 0.45, spring: 2.6 / 0.6 };
+export const TIMINGS: Timings = { open: scaled(OPEN, 0.6), close: scaled(CLOSE, 0.6), splash: scaled(SPLASH, 0.8), drip: DRIP.hz / 0.8, turn: 0.45, spring: 2.6 / 0.6 };
 
-const TRAIL = [1, 0.76, 0.6, 0.46, 0.34]; // the droplet and the drops trailing it, as fractions of its size
-const TRAIL_LAG = 12; // ms between drops: close enough at full speed for the goo to melt them into one tail
+export const TRAIL = [1, 0.76, 0.6, 0.46, 0.34]; // the droplet and the drops trailing it, as fractions of its size
+export const TRAIL_LAG = 12; // ms between drops: close enough at full speed for the goo to melt them into one tail
 // The drops the splash throws: the angle they fly at (degrees from straight down, mirrored to the side the droplet was heading),
 // how far (in droplet sizes), their size, and when (ms after the hit, before TIMINGS shortens it) each tops out and is caught by the tab as it
 // drips down. Under the goo filter a drop much smaller than a third of the droplet disappears.
-const SPRAY = [
+export const SPRAY = [
   { angle: 70, reach: 1.15, size: 0.44, apex: 150, caught: 330 },
   { angle: -42, reach: 0.75, size: 0.38, apex: 115, caught: 285 },
   { angle: 8, reach: 0.95, size: 0.34, apex: 175, caught: 365 },
 ];
-const ARMS = [-1, 1] as const; // the puddle's two arms, running out along the edge either side of the hit
-const EXTEND = 40; // px the hanging tab's stand-in reaches above the screen, so the goo filter keeps its top corners square
-const SOFT = 'cubic-bezier(.35,0,.25,1)';
-const FRAME = 1000 / 60;
+export const ARMS = [-1, 1] as const; // the puddle's two arms, running out along the edge either side of the hit
+export const EXTEND = 40; // px the hanging tab's stand-in reaches above the screen, so the goo filter keeps its top corners square
+export const SOFT = 'cubic-bezier(.35,0,.25,1)';
+export const FRAME = 1000 / 60;
 
 function boxOf(el: Element | null | undefined): Box | null {
   if (!(el instanceof HTMLElement) || !el.isConnected) return null;
@@ -124,7 +125,7 @@ function boxOf(el: Element | null | undefined): Box | null {
   return { x: r.left, y: Math.max(0, r.top), w: r.width, h: r.bottom - Math.max(0, r.top), radius: [s.borderTopLeftRadius, s.borderTopRightRadius, s.borderBottomRightRadius, s.borderBottomLeftRadius].join(' ') };
 }
 
-function measure(tab: HTMLElement | null, origin: Element | null, sent = false): Geometry {
+export function measure(tab: HTMLElement | null, origin: Element | null, sent = false): Geometry {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
   const drop = Math.round(Math.min(84, Math.max(54, Math.min(vw, vh) * 0.095)));
@@ -138,10 +139,10 @@ const easeInOutSine = (t: number) => (1 - Math.cos(Math.PI * t)) / 2;
 // The droplet stretches along an axis, not a direction: turned 180° it is the same shape, so angles unwrap with a 180° period and
 // it can reverse (as it does at the far end of its overshoot) without spinning.
 const axis = (angle: number, ref: number) => { let a = angle; while (a - ref > 90) a -= 180; while (a - ref < -90) a += 180; return a; };
-const pose = (d: number, p: Pose, scale: number) => `translate(${(p.x - d / 2).toFixed(1)}px, ${(p.y - d / 2).toFixed(1)}px) rotate(${p.angle.toFixed(1)}deg) scale(${(p.sx * scale).toFixed(3)}, ${(p.sy * scale).toFixed(3)})`;
+export const pose = (d: number, p: Pose, scale: number) => `translate(${(p.x - d / 2).toFixed(1)}px, ${(p.y - d / 2).toFixed(1)}px) rotate(${p.angle.toFixed(1)}deg) scale(${(p.sx * scale).toFixed(3)}, ${(p.sy * scale).toFixed(3)})`;
 // Keyframes from [ms, frame] pairs over a duration. The last frame is held to the end: left open, the browser would finish on the
 // element's own resting style (for a blob, full size in the top left corner) and drift there.
-const timeline = (total: number, frames: [number, Keyframe][]): Keyframe[] => {
+export const timeline = (total: number, frames: [number, Keyframe][]): Keyframe[] => {
   const keyframes = frames.map(([ms, frame]) => ({ ...frame, offset: Math.min(1, Math.max(0, ms / total)) }));
   const last = keyframes[keyframes.length - 1];
   return last && last.offset < 1 ? [...keyframes, { ...last, offset: 1 }] : keyframes;
@@ -192,7 +193,7 @@ function posed(track: Spot[], startAxis: number, fastest: number, wobble: (ms: n
 // The way out: grows out of the starting edge, stretches on its neck, rounds off as it pinches free, swirls, then lands in the
 // middle on a spring (its arrival speed carries it a little past, it eases back and settles with a fading jelly wobble), and
 // breathes in before the sheet bursts out of it. Returns the droplet's steps and its top speed.
-function outward(g: Geometry, t: Timings): { steps: Step[]; fastest: number } {
+export function outward(g: Geometry, t: Timings): { steps: Step[]; fastest: number } {
   const O = t.open;
   const d = g.drop;
   const { x, edge, drip } = dripOf(g.origin, g.dir, g);
@@ -266,7 +267,7 @@ function pendulum(deg: number, hz: number) {
   return (ms: number) => ms <= 0 ? 0 : scale * Math.exp(-z * w * ms) * Math.sin(wd * ms);
 }
 // The tab keeps roughly its area as it stretches: longer is narrower.
-const widthFor = (sy: number) => 1 - 0.65 * (sy - 1);
+export const widthFor = (sy: number) => 1 - 0.65 * (sy - 1);
 
 // Where and when the droplet lands. On the edge the tab hangs from when the tab has drained away (`ceiling`), the puddle drips down
 // into a new tab; otherwise it hits the tab's bottom edge, which gives under it and springs back. `surface` is the line it hits, `lean`
@@ -274,7 +275,7 @@ const widthFor = (sy: number) => 1 - 0.65 * (sy - 1);
 // last swoop up, and `start`, `swap` and `end` when the spring is let go, the real tab takes over and it has settled. `spring` (its
 // length) and `swing` (its angle) are read in ms from `start`.
 type Landing = { ceiling: boolean; surface: number; impact: { x: number; y: number }; launch: { x: number; y: number }; exit: { x: number; y: number }; lean: number; start: number; swap: number; end: number; spring: (ms: number) => number; swing: (ms: number) => number; still: number };
-function landing(g: Geometry, t: Timings): Landing {
+export function landing(g: Geometry, t: Timings): Landing {
   const d = g.drop;
   const ceiling = g.fromTab && g.hangs;
   const surface = ceiling ? g.tab.y : g.tab.y + g.tab.h;
@@ -322,7 +323,7 @@ function along(points: { x: number; y: number }[]) {
 // The way back: sits in the middle while the sheet gathers into it, wobbles as it turns to liquid, sets off from rest along a spiral
 // that ends under the tab, then swoops straight up and hits the edge, speeding up the whole way. There it flattens into a puddle
 // and melts into the stand-in for the tab as it forms.
-function homeward(g: Geometry, t: Timings, fastest: number, land: Landing): Step[] {
+export function homeward(g: Geometry, t: Timings, fastest: number, land: Landing): Step[] {
   const C = t.close;
   const S = t.splash;
   const d = g.drop;
@@ -370,7 +371,7 @@ function homeward(g: Geometry, t: Timings, fastest: number, land: Landing): Step
 
 // How big each trailing drop is at a moment: on the way out they shrink into the droplet as it lands, so only one body settles; on
 // the way back they grow out of it as it sets off, and melt into the splash after the hit.
-const trailScale = (i: number, ms: number, opening: boolean, t: Timings) => {
+export const trailScale = (i: number, ms: number, opening: boolean, t: Timings) => {
   const f = TRAIL[i] ?? 0.3;
   if (i === 0) return 1;
   if (opening) return f * (1 - 0.45 * Math.min(1, Math.max(0, (ms - t.open.arrive) / 160)));
@@ -381,7 +382,7 @@ const trailScale = (i: number, ms: number, opening: boolean, t: Timings) => {
 
 // The splash's own drops: the puddle's two arms that run out along the edge and are pulled back in, and the spray that flies off,
 // hangs and is drawn back into the tab as it forms. Each is a list of steps for one blob.
-function splashes(g: Geometry, t: Timings, land: Landing): Step[][] {
+export function splashes(g: Geometry, t: Timings, land: Landing): Step[][] {
   const S = t.splash;
   const d = g.drop;
   const { impact, surface: y, lean, start, swap, still } = land;
@@ -431,7 +432,7 @@ function splashes(g: Geometry, t: Timings, land: Landing): Step[][] {
 }
 
 // Things that ride with the droplet by position only, so the light stays fixed above the page: the highlight, the shadow, the tick.
-function rider(track: Step[], total: number, shown: [number, number, number, number], dx: number, dy: number, d: number, scale: string | ((ms: number) => string)): Keyframe[] {
+export function rider(track: Step[], total: number, shown: [number, number, number, number], dx: number, dy: number, d: number, scale: string | ((ms: number) => string)): Keyframe[] {
   const [inFrom, inTo, outFrom, outTo] = shown;
   const opacity = (ms: number) => ms <= inFrom || ms >= outTo ? 0 : ms < inTo ? (ms - inFrom) / (inTo - inFrom) : ms > outFrom ? (outTo - ms) / (outTo - outFrom) : 1;
   return timeline(total, track.map(([ms, p]) => [ms, { opacity: opacity(ms), transform: `translate(${(p.x - d / 2 + dx).toFixed(1)}px, ${(p.y - d / 2 + dy).toFixed(1)}px) ${typeof scale === 'function' ? scale(ms) : scale}` }]));

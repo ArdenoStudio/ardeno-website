@@ -1,0 +1,5 @@
+/* The Let's talk tab's entrance (tabEntrance.ts): the sheet's liquid (contactSheet.css) in a full-screen layer of its own, above the
+   header. Nothing in it is promoted to its own layer: at page load, layers over the filtered liquid put it on a slow path and stalled
+   its first frames. */
+.tab-entrance{position:fixed;inset:0;z-index:45;pointer-events:none;overflow:hidden}
+.tab-entrance :is(.contact-goo-blob,.contact-goo-shine,.contact-goo-shadow){will-change:auto}
