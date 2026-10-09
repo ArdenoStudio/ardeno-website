@@ -73,7 +73,7 @@ const footerColumns: FooterColumn[] = [
   {
     title: 'Contact',
     links: [
-      { label: 'ardenostudio@gmail.com', href: 'mailto:ardenostudio@gmail.com', external: true },
+      { label: 'hello@ardenostudio.com', href: 'mailto:hello@ardenostudio.com', external: true },
       { label: '+94 75 850 4424', href: suvenWhatsApp, external: true, caption: 'Suven Seoras', whatsApp: true },
       { label: '+94 76 248 5456', href: ovinduWhatsApp, external: true, caption: 'Ovindu Karunaratne', whatsApp: true },
       { label: 'Colombo, Sri Lanka', href: '#contact' },

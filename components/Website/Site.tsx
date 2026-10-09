@@ -307,7 +307,7 @@ function ColomboClock() {
   return <span className="ar-clock"><span className="ar-clock-city">Colombo</span><span className="ar-clock-time">{time.hour}<span className="ar-clock-colon">:</span>{time.minute} {time.period}</span></span>;
 }
 
-const STUDIO_EMAIL = 'ardenostudio@gmail.com';
+const STUDIO_EMAIL = 'hello@ardenostudio.com';
 
 async function copyText(text: string) {
   try {

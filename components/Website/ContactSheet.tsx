@@ -585,7 +585,7 @@ export function ContactSheet({ tabRef }: { tabRef: React.RefObject<HTMLElement |
                 <Dialog.Title asChild><h2 ref={titleRef} tabIndex={-1} className="contact-sheet-title">It starts<br />with hello<span>.</span></h2></Dialog.Title>
                 <p className="contact-sheet-lead" id="contact-sheet-lead">A new idea, a fresh start, or something you’re still figuring out. We’d love to hear it.</p>
                 <div className="contact-sheet-direct">
-                  <a href="mailto:ardenostudio@gmail.com"><Mail size={18} aria-hidden="true" /><span className="ul">ardenostudio@gmail.com</span><ArrowUpRight size={17} aria-hidden="true" /></a>
+                  <a href="mailto:hello@ardenostudio.com"><Mail size={18} aria-hidden="true" /><span className="ul">hello@ardenostudio.com</span><ArrowUpRight size={17} aria-hidden="true" /></a>
                   <a href="https://wa.me/94758504424" target="_blank" rel="noopener noreferrer"><span className="ul">Prefer WhatsApp?</span><ArrowUpRight size={17} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></a>
                 </div>
                 <p className="contact-sheet-next"><span className="status-dot" aria-hidden="true" /><span>We reply within 24 hours.<br />You’ll speak directly with the founders.</span></p>

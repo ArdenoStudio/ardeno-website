@@ -41,7 +41,7 @@ export function ContactForm({ onDone, onSent }: { onDone?: () => void; onSent?: 
   const verify = useCallback((value: string) => setToken(value), []);
   const expire = useCallback(() => setToken(''), []);
   const update = (name: keyof Fields, value: string) => { setFields(current => ({ ...current, [name]: value })); if (state === 'error') { setState('idle'); setError(''); } };
-  const draftHref = `mailto:ardenostudio@gmail.com?subject=${encodeURIComponent(`Project enquiry${fields.company ? ` — ${fields.company}` : ''}`)}&body=${encodeURIComponent(`Hi Ardeno,\n\n${fields.message}\n\nName: ${fields.name}\nEmail: ${fields.email}\nCompany: ${fields.company || 'Not specified'}\nPhone: ${fields.phone || 'Not specified'}\nBudget: ${fields.budget || 'Not specified'}\n`)}`;
+  const draftHref = `mailto:hello@ardenostudio.com?subject=${encodeURIComponent(`Project enquiry${fields.company ? ` — ${fields.company}` : ''}`)}&body=${encodeURIComponent(`Hi Ardeno,\n\n${fields.message}\n\nName: ${fields.name}\nEmail: ${fields.email}\nCompany: ${fields.company || 'Not specified'}\nPhone: ${fields.phone || 'Not specified'}\nBudget: ${fields.budget || 'Not specified'}\n`)}`;
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();

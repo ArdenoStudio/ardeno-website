@@ -259,7 +259,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenContact }) => {
             return;
         }
 
-        window.location.href = 'mailto:ardenostudio@gmail.com?subject=Project%20question';
+        window.location.href = 'mailto:hello@ardenostudio.com?subject=Project%20question';
     };
 
     const openAIChat = () => {

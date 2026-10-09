@@ -124,7 +124,7 @@ export const ServicePage: React.FC<ServicePageProps> = ({ pageKey, onOpenContact
       return;
     }
 
-    window.location.href = 'mailto:ardenostudio@gmail.com?subject=Ardeno%20project%20question';
+    window.location.href = 'mailto:hello@ardenostudio.com?subject=Ardeno%20project%20question';
   };
 
   const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {

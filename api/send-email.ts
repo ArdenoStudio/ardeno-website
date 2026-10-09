@@ -178,7 +178,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
       },
       body: JSON.stringify({
         from: process.env.RESEND_FROM || 'Ardeno Studio <onboarding@resend.dev>',
-        to: [process.env.ADMIN_EMAIL || 'ardenostudio@gmail.com'],
+        to: [process.env.ADMIN_EMAIL || 'hello@ardenostudio.com'],
         subject: sanitizeSubject(`New Ardeno inquiry from ${lead.name}`),
         html: leadHtml(lead),
         reply_to: lead.email,

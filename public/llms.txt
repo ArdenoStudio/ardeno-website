@@ -125,7 +125,7 @@ Start with the business goal, target customer, services, proof, brand assets, re
 
 - Brand: Ardeno Studio
 - Location: Colombo, Sri Lanka
-- Email: ardenostudio@gmail.com
+- Email: hello@ardenostudio.com
 - Founders: Suven Seoras and Ovindu Karunaratne
 - GitHub organization: https://github.com/ArdenoStudio
 - Website: https://ardenostudio.com/

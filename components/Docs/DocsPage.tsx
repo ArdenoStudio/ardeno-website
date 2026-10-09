@@ -353,7 +353,7 @@ const PAGE_CONTENT: Record<string, React.ReactNode> = {
             title="Starting a Project"
             lead="Getting started with Ardeno Studio is straightforward. Here is everything you need to know."
             sections={[
-                { heading: 'Step 1 — Reach Out', body: 'Use the Start Project button on our site or email ardenostudio@gmail.com with a brief description of your project and timeline.' },
+                { heading: 'Step 1 — Reach Out', body: 'Use the Start Project button on our site or email hello@ardenostudio.com with a brief description of your project and timeline.' },
                 { heading: 'Step 2 — Discovery Call', body: 'A 30 to 45 minute video call to understand your goals, scope, and budget range. No commitment required.' },
                 { heading: 'Step 3 — Proposal', body: "We'll send a detailed proposal within 48 hours — scope, deliverables, timeline, and pricing — all in plain language." },
                 { heading: 'Step 4 — Kick-Off', body: 'Once you sign off, we schedule a kick-off session and your project enters our active pipeline within one week.' },
@@ -438,7 +438,7 @@ const PAGE_CONTENT: Record<string, React.ReactNode> = {
                 { heading: 'Service Providers', body: 'The website runs on Vercel. Enquiry emails are processed through Resend and delivered to our admin inbox. The AI assistant uses our server-side AI provider key. Optional analytics only loads after cookie consent. Turnstile may be used to verify public forms.' },
                 { heading: 'Storage', body: 'Lead details are stored in our email/admin systems. Project files may later be stored in Google Drive, Figma, Notion, GitHub, or similar project tools with access limited to the delivery team. Browser chat history and campaign data remain on your device unless you clear them.' },
                 { heading: 'Retention & Security', body: 'We keep enquiry data only as long as needed for sales, support, legal, and operational records. Server routes validate inputs, rate-limit abuse, avoid exposing secrets to the browser, and return generic production errors.' },
-                { heading: 'Your Rights', body: "You may request access, correction, or deletion of your data at any time by emailing ardenostudio@gmail.com. We'll action reasonable requests within 7 business days unless a legal or operational retention need applies." },
+                { heading: 'Your Rights', body: "You may request access, correction, or deletion of your data at any time by emailing info@ardenostudio.com. We'll action reasonable requests within 7 business days unless a legal or operational retention need applies." },
             ]}
         />
     ),
@@ -448,7 +448,7 @@ const PAGE_CONTENT: Record<string, React.ReactNode> = {
             title="NDA Requests"
             lead="We handle sensitive projects regularly and are fully comfortable signing mutual NDAs before any discussion begins."
             sections={[
-                { heading: 'How to Request an NDA', body: "Email ardenostudio@gmail.com with the subject line 'NDA Request' and we'll send a mutual NDA within one business day." },
+                { heading: 'How to Request an NDA', body: "Email info@ardenostudio.com with the subject line 'NDA Request' and we'll send a mutual NDA within one business day." },
                 { heading: 'What We Cover', body: 'All project details, client identity, business information, and any proprietary materials shared during the engagement.' },
                 { heading: 'Portfolio Clauses', body: 'If you require work to remain confidential and out of our portfolio, we include a portfolio exclusion clause in both the NDA and your project contract.' },
             ]}
