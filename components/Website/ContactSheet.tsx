@@ -11,9 +11,11 @@ import './contactSheet.css';
 // that button's edge instead (upward when the button sits low on the screen) and the button just gives. Either way the droplet
 // swirls round the screen with a liquid tail, lands in the middle on a spring with a fading jelly wobble, breathes in and the sheet
 // bursts out of it with a rippling edge. Closing: the sheet gathers back into a droplet (carrying a tick after an enquiry is sent),
-// which swirls home; the tab reaches down for it, gulps it, wobbles and its label rolls back in. The full show plays on the first
-// opening of a visit; later ones run at about 60% of the length with a shorter swirl. Closing part way through an opening (or
-// reopening part way through a closing) plays the motion backwards from where it is.
+// which swirls home, speeding up, and splashes against the top edge where the tab hangs: it flattens into a puddle that runs out
+// along the edge and throws a few drops, then pulls itself together and drips down into the tab, which springs, swings like a
+// hanging tag the way the droplet was heading, settles and rolls its label back in. (When the tab is still there, because the liquid came from another button, or on phones, where it is a pill,
+// the droplet splashes against its bottom edge instead.) Closing part way through an opening (or reopening part way through a
+// closing) plays the motion backwards from where it is.
 //
 // The liquid is the "gooey" filter (blur, then a sharp alpha threshold) over a layer of blobs, the technique React Bits' Blob Cursor
 // and Gooey Nav use, so drops that touch melt together. The droplet stretches along its direction of travel and carries a fixed
@@ -50,28 +52,67 @@ export function releaseContactTab(tab: HTMLElement) {
   }, 120);
 }
 
+// The Close button sits right where the tab lands, so the pointer is usually still over the tab when the sheet goes, and its hover
+// pull would start a second motion just after it settles. It holds its resting pose (.is-landed in navigation.css) until the pointer
+// moves off it or focus moves on.
+let releaseRest: (() => void) | null = null;
+function holdRest(tab: HTMLElement) {
+  releaseRest?.();
+  tab.classList.add('is-landed');
+  const release = (event?: Event) => {
+    if (event instanceof PointerEvent) {
+      const r = tab.getBoundingClientRect();
+      if (event.clientX >= r.left && event.clientX <= r.right && event.clientY >= r.top && event.clientY <= r.bottom) return;
+    }
+    tab.classList.remove('is-landed');
+    document.removeEventListener('pointermove', release);
+    tab.removeEventListener('blur', release);
+    releaseRest = null;
+  };
+  document.addEventListener('pointermove', release);
+  tab.addEventListener('blur', release);
+  releaseRest = release;
+}
+
 type Phase = 'closed' | 'opening' | 'open' | 'closing';
 type Box = { x: number; y: number; w: number; h: number; radius: string };
 // Where the liquid starts (the tab or the pressed button) and goes home to (the tab), the drip's direction (1 down, -1 up), the
-// droplet's diameter for this screen, the screen, whether this is a later, quicker showing, and whether an enquiry was just sent.
-type Geometry = { origin: Box; tab: Box; fromTab: boolean; dir: 1 | -1; drop: number; vw: number; vh: number; quick: boolean; sent: boolean };
+// droplet's diameter for this screen, the screen, and whether an enquiry was just sent.
+// `hangs`: the tab hangs from the top of the screen (on desktop; on phones it is a pill inside the header bar).
+type Geometry = { origin: Box; tab: Box; fromTab: boolean; hangs: boolean; dir: 1 | -1; drop: number; vw: number; vh: number; sent: boolean };
 type Pose = { x: number; y: number; angle: number; sx: number; sy: number };
 type Spot = { ms: number; x: number; y: number };
 type Step = [number, Pose, string?]; // ms, pose, easing on to the next frame (linear when left out)
 
-// The choreography, in ms from the start of the opening or the closing, at full length.
+// The choreography, in ms from the start of the opening or the closing, before TIMINGS shortens it.
 const OPEN = { windUp: 130, swell: 260, neck: 380, pinch: 430, drained: 620, arrive: 1150, settled: 1480, burst: 1540, expand: 540 };
-const CLOSE = { gathered: 450, liquid: 600, regrow: 1040, reach: 1220, back: 1320, pulled: 1370, swallow: 1440, gulped: 1480, jelly: 520 };
-type Timings = { open: typeof OPEN; close: typeof CLOSE; turn: number; spring: number };
-// Later showings in a visit: about 60% of the length, a shorter swirl and a stiffer spring so it still settles in time.
+const CLOSE = { gathered: 450, liquid: 600, impact: 1180 };
+// The splash, in ms from the impact: the droplet flattens against the edge (splat), runs out along it (spread) and throws a few
+// drops (spray: their flight out), then the puddle pulls together and drips down into the tab on a spring. The real tab takes over
+// where that spring first stands still (its trough), so nothing jumps, and settles over `settle`.
+const SPLASH = { splat: 70, spread: 140, spray: 170, settle: 300 };
+const DRIP = { hz: 2.8, damping: 0.45 };
+// The hanging tab swings sideways as it forms, about its top edge: the same pendulum as its swing on page load (about 2.2 Hz), damped
+// harder so it settles in under a second. `deg` is its first swing; the bottom goes the way the droplet was heading. Desktop only.
+const SWING = { deg: 3, hz: 2.2, damping: 0.26, length: 850 };
+type Timings = { open: typeof OPEN; close: typeof CLOSE; splash: typeof SPLASH; drip: number; turn: number; spring: number };
+// Every showing runs at 60% of the tables above, with a 0.45-turn swirl and a stiffer spring so it still settles in time. The splash
+// only shortens to 80%, so it still reads.
 const scaled = <T extends Record<string, number>>(times: T, k: number) => Object.fromEntries(Object.entries(times).map(([key, ms]) => [key, ms * k])) as T;
-const timings = (quick: boolean): Timings => quick
-  ? { open: scaled(OPEN, 0.6), close: scaled(CLOSE, 0.6), turn: 0.45, spring: 2.6 / 0.6 }
-  : { open: OPEN, close: CLOSE, turn: 0.8, spring: 2.6 };
-let fullShowPlayed = false;
+const TIMINGS: Timings = { open: scaled(OPEN, 0.6), close: scaled(CLOSE, 0.6), splash: scaled(SPLASH, 0.8), drip: DRIP.hz / 0.8, turn: 0.45, spring: 2.6 / 0.6 };
 
 const TRAIL = [1, 0.76, 0.6, 0.46, 0.34]; // the droplet and the drops trailing it, as fractions of its size
 const TRAIL_LAG = 12; // ms between drops: close enough at full speed for the goo to melt them into one tail
+// The drops the splash throws: the angle they fly at (degrees from straight down, mirrored to the side the droplet was heading),
+// how far (in droplet sizes), their size, and when (ms after the hit, before TIMINGS shortens it) each tops out and is caught by the tab as it
+// drips down. Under the goo filter a drop much smaller than a third of the droplet disappears.
+const SPRAY = [
+  { angle: 70, reach: 1.15, size: 0.44, apex: 150, caught: 330 },
+  { angle: -42, reach: 0.75, size: 0.38, apex: 115, caught: 285 },
+  { angle: 8, reach: 0.95, size: 0.34, apex: 175, caught: 365 },
+];
+const ARMS = [-1, 1] as const; // the puddle's two arms, running out along the edge either side of the hit
+const EXTEND = 40; // px the hanging tab's stand-in reaches above the screen, so the goo filter keeps its top corners square
 const SOFT = 'cubic-bezier(.35,0,.25,1)';
 const FRAME = 1000 / 60;
 
@@ -83,14 +124,14 @@ function boxOf(el: Element | null | undefined): Box | null {
   return { x: r.left, y: Math.max(0, r.top), w: r.width, h: r.bottom - Math.max(0, r.top), radius: [s.borderTopLeftRadius, s.borderTopRightRadius, s.borderBottomRightRadius, s.borderBottomLeftRadius].join(' ') };
 }
 
-function measure(tab: HTMLElement | null, origin: Element | null, quick: boolean, sent = false): Geometry {
+function measure(tab: HTMLElement | null, origin: Element | null, sent = false): Geometry {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
   const drop = Math.round(Math.min(84, Math.max(54, Math.min(vw, vh) * 0.095)));
   const tabBox = boxOf(tab) ?? { x: vw - 144, y: 0, w: 118, h: 64, radius: '0px 0px 12px 12px' };
   const fromBox = origin && origin !== tab && !(tab && tab.contains(origin)) ? boxOf(origin) : null;
   const box = fromBox ?? tabBox;
-  return { origin: box, tab: tabBox, fromTab: !fromBox, dir: fromBox && box.y + box.h / 2 > vh * 0.55 ? -1 : 1, drop, vw, vh, quick, sent };
+  return { origin: box, tab: tabBox, fromTab: !fromBox, hangs: tabBox.y <= 1, dir: fromBox && box.y + box.h / 2 > vh * 0.55 ? -1 : 1, drop, vw, vh, sent };
 }
 
 const easeInOutSine = (t: number) => (1 - Math.cos(Math.PI * t)) / 2;
@@ -98,8 +139,13 @@ const easeInOutSine = (t: number) => (1 - Math.cos(Math.PI * t)) / 2;
 // it can reverse (as it does at the far end of its overshoot) without spinning.
 const axis = (angle: number, ref: number) => { let a = angle; while (a - ref > 90) a -= 180; while (a - ref < -90) a += 180; return a; };
 const pose = (d: number, p: Pose, scale: number) => `translate(${(p.x - d / 2).toFixed(1)}px, ${(p.y - d / 2).toFixed(1)}px) rotate(${p.angle.toFixed(1)}deg) scale(${(p.sx * scale).toFixed(3)}, ${(p.sy * scale).toFixed(3)})`;
-// Keyframes from [ms, frame] pairs over a duration.
-const timeline = (total: number, frames: [number, Keyframe][]): Keyframe[] => frames.map(([ms, frame]) => ({ ...frame, offset: Math.min(1, Math.max(0, ms / total)) }));
+// Keyframes from [ms, frame] pairs over a duration. The last frame is held to the end: left open, the browser would finish on the
+// element's own resting style (for a blob, full size in the top left corner) and drift there.
+const timeline = (total: number, frames: [number, Keyframe][]): Keyframe[] => {
+  const keyframes = frames.map(([ms, frame]) => ({ ...frame, offset: Math.min(1, Math.max(0, ms / total)) }));
+  const last = keyframes[keyframes.length - 1];
+  return last && last.offset < 1 ? [...keyframes, { ...last, offset: 1 }] : keyframes;
+};
 
 // The edge the droplet leaves from (or returns to) and the point just past it where it hangs free.
 const dripOf = (box: Box, dir: 1 | -1, g: Geometry) => {
@@ -202,14 +248,86 @@ function outward(g: Geometry, t: Timings): { steps: Step[]; fastest: number } {
   };
 }
 
-// The way back to the tab: sits in the middle while the sheet gathers into it, wobbles as it turns to liquid, sets off from rest
-// along a spiral and slows to a stop under the tab, is pulled up and gulped into it.
-function homeward(g: Geometry, t: Timings, fastest: number): Step[] {
-  const C = t.close;
+// A damped spring let go at rest from `from`, heading for 1: its value `ms` later, and when it next stands still (its first trough),
+// which is where the real tab can take over from its liquid stand-in without a jump in speed.
+function dripSpring(from: number, hz: number) {
+  const w = 2 * Math.PI * hz / 1000;
+  const z = DRIP.damping;
+  const wd = w * Math.sqrt(1 - z * z);
+  return { at: (ms: number) => 1 - (1 - from) * Math.exp(-z * w * ms) * (Math.cos(wd * ms) + (z * w / wd) * Math.sin(wd * ms)), still: 2 * Math.PI / wd };
+}
+// A swing let go from hanging straight with a push: its angle `ms` later, `deg` at the top of its first swing.
+function pendulum(deg: number, hz: number) {
+  const w = 2 * Math.PI * hz / 1000;
+  const z = SWING.damping;
+  const wd = w * Math.sqrt(1 - z * z);
+  const top = Math.atan(wd / (z * w)) / wd;
+  const scale = deg / (Math.exp(-z * w * top) * Math.sin(wd * top));
+  return (ms: number) => ms <= 0 ? 0 : scale * Math.exp(-z * w * ms) * Math.sin(wd * ms);
+}
+// The tab keeps roughly its area as it stretches: longer is narrower.
+const widthFor = (sy: number) => 1 - 0.65 * (sy - 1);
+
+// Where and when the droplet lands. On the edge the tab hangs from when the tab has drained away (`ceiling`), the puddle drips down
+// into a new tab; otherwise it hits the tab's bottom edge, which gives under it and springs back. `surface` is the line it hits, `lean`
+// which way it was heading along the edge (-1 left to 1 right), `launch` the point under the tab where the swirl hands over to the
+// last swoop up, and `start`, `swap` and `end` when the spring is let go, the real tab takes over and it has settled. `spring` (its
+// length) and `swing` (its angle) are read in ms from `start`.
+type Landing = { ceiling: boolean; surface: number; impact: { x: number; y: number }; launch: { x: number; y: number }; exit: { x: number; y: number }; lean: number; start: number; swap: number; end: number; spring: (ms: number) => number; swing: (ms: number) => number; still: number };
+function landing(g: Geometry, t: Timings): Landing {
   const d = g.drop;
-  const { x, edge, drip } = dripOf(g.tab, 1, g);
+  const ceiling = g.fromTab && g.hangs;
+  const surface = ceiling ? g.tab.y : g.tab.y + g.tab.h;
+  const x = g.tab.x + g.tab.w / 2;
+  const impact = { x, y: surface + d * 0.42 };
+  const launch = { x, y: Math.min(g.vh - d / 2 - 10, impact.y + Math.max(d * 1.6, 120)) };
+  const point = spiral(g, launch, 1, t.turn);
+  const a = point(0);
+  const b = point(0.01);
+  const len = Math.hypot(a.x - b.x, a.y - b.y) || 1;
+  const exit = { x: (a.x - b.x) / len, y: (a.y - b.y) / len };
+  const start = t.close.impact + t.splash.spread;
+  const { at, still } = dripSpring(ceiling ? 0.3 : 0.86, t.drip);
+  const swap = start + still;
+  const lean = Math.max(-1, Math.min(1, exit.x * 1.6));
+  // Turned clockwise the bottom of a tab hanging from its top edge moves left, so a droplet heading left swings it clockwise.
+  const k = t.splash.splat / SPLASH.splat;
+  // The push comes as the drip reaches its full length, so the first, biggest swing shows on the formed tab, not the puddle.
+  const push = still * 0.35;
+  const swung = pendulum((lean < 0 ? 1 : -1) * SWING.deg * (0.6 + 0.4 * Math.abs(lean)), SWING.hz / k);
+  const swing = g.hangs ? (ms: number) => swung(ms - push) : () => 0;
+  const end = start + Math.max(still + t.splash.settle, g.hangs ? push + SWING.length * k : 0);
+  return { ceiling, surface, impact, launch, exit, lean, start, swap, end, spring: at, swing, still };
+}
+
+// A cubic curve's point at `s`.
+const bezier = (p0: { x: number; y: number }, p1: { x: number; y: number }, p2: { x: number; y: number }, p3: { x: number; y: number }, s: number) => {
+  const u = 1 - s;
+  return { x: u * u * u * p0.x + 3 * u * u * s * p1.x + 3 * u * s * s * p2.x + s * s * s * p3.x, y: u * u * u * p0.y + 3 * u * u * s * p1.y + 3 * u * s * s * p2.y + s * s * s * p3.y };
+};
+// A route given as closely spaced points, read by distance travelled (0 to 1 of its length), so speed along it can be set freely.
+function along(points: { x: number; y: number }[]) {
+  const run = [0];
+  for (let i = 1; i < points.length; i++) run.push(run[i - 1] + Math.hypot(points[i].x - points[i - 1].x, points[i].y - points[i - 1].y));
+  const total = run[run.length - 1] || 1;
+  return (f: number) => {
+    const target = Math.min(1, Math.max(0, f)) * total;
+    let i = 1;
+    while (i < run.length - 1 && run[i] < target) i++;
+    const k = (target - run[i - 1]) / ((run[i] - run[i - 1]) || 1);
+    return { x: points[i - 1].x + (points[i].x - points[i - 1].x) * k, y: points[i - 1].y + (points[i].y - points[i - 1].y) * k };
+  };
+}
+
+// The way back: sits in the middle while the sheet gathers into it, wobbles as it turns to liquid, sets off from rest along a spiral
+// that ends under the tab, then swoops straight up and hits the edge, speeding up the whole way. There it flattens into a puddle
+// and melts into the stand-in for the tab as it forms.
+function homeward(g: Geometry, t: Timings, fastest: number, land: Landing): Step[] {
+  const C = t.close;
+  const S = t.splash;
+  const d = g.drop;
   const centre = centreOf(g);
-  const point = spiral(g, drip, 1, t.turn);
+  const point = spiral(g, land.launch, 1, t.turn);
   const lead = point(0.97);
   const depart = Math.atan2(lead.y - centre.y, lead.x - centre.x) * 180 / Math.PI;
   const at = (ax: number, ay: number, sx: number, sy: number, angle: number): Pose => ({ x: ax, y: ay, angle, sx, sy });
@@ -221,31 +339,96 @@ function homeward(g: Geometry, t: Timings, fastest: number): Step[] {
     const w = 0.09 * Math.exp(-ms / (wobbleSpan * 0.53)) * Math.sin(2 * Math.PI * ms / wobbleSpan);
     steps.push([C.gathered + ms, at(centre.x, centre.y, 1 + w, 1 - w, depart)]);
   }
-  const returnFrames = Math.max(8, Math.round((C.back - C.liquid) / FRAME));
+  // The route: the spiral out to the launch point, then a curve that leaves it the way the spiral was heading and arrives going
+  // straight up. Distance along it eases in (from rest in the middle) and keeps speeding up into the hit.
+  const route: { x: number; y: number }[] = [];
+  for (let i = 0; i <= 160; i++) route.push(point(1 - i / 160));
+  const { launch, impact, exit } = land;
+  const handle = Math.hypot(impact.x - launch.x, impact.y - launch.y) * 0.45;
+  const c1 = { x: launch.x + exit.x * handle, y: launch.y + exit.y * handle };
+  const c2 = { x: impact.x, y: impact.y + handle };
+  for (let i = 1; i <= 40; i++) route.push(bezier(launch, c1, c2, impact, i / 40));
+  const on = along(route);
+  const returnFrames = Math.max(8, Math.round((C.impact - C.liquid) / FRAME));
   const track: Spot[] = [];
   for (let i = 0; i <= returnFrames; i++) {
     const s = i / returnFrames;
-    track.push({ ms: C.liquid + (C.back - C.liquid) * s, ...point(1 - easeInOutSine(s)) });
+    track.push({ ms: C.liquid + (C.impact - C.liquid) * s, ...on(0.5 * (1 - Math.cos(Math.PI * s / 2)) + 0.5 * s * s) });
   }
   const flight = posed(track, depart, fastest);
-  const up = axis(90, flight[flight.length - 1][1].angle);
+  const up = axis(-90, flight[flight.length - 1][1].angle);
+  const y = land.surface;
   return [
     ...steps,
-    ...flight.map(([ms, p], i): Step => i === flight.length - 1 ? [ms, at(drip.x, drip.y, 0.98, 1.02, up), SOFT] : [ms, p]),
-    [C.pulled, at(x, edge + d * 0.36, 1.22, 0.84, up), SOFT],
-    [C.swallow, at(x, edge - d * 0.02, 0.8, 0.7, up), SOFT],
-    [C.gulped, at(x, edge - d * 0.22, 0.25, 0.25, up)],
+    ...flight.map(([ms, p], i): Step => i === flight.length - 1 ? [ms, { ...p, angle: up }, 'cubic-bezier(.2,.7,.3,1)'] : [ms, p]),
+    // Flattened against the edge: squashed along its line of travel (up), spread across it.
+    [C.impact + S.splat, at(impact.x, y + d * 0.08, 0.5, 1.75, up), SOFT],
+    [land.start, at(impact.x, y + d * 0.05, 0.42, 1.5, up), SOFT],
+    [land.start + land.still * 0.3, at(impact.x, y + d * 0.22, 0.01, 0.01, up)],
   ];
 }
 
 // How big each trailing drop is at a moment: on the way out they shrink into the droplet as it lands, so only one body settles; on
-// the way back they grow out of it as it sets off.
+// the way back they grow out of it as it sets off, and melt into the splash after the hit.
 const trailScale = (i: number, ms: number, opening: boolean, t: Timings) => {
   const f = TRAIL[i] ?? 0.3;
   if (i === 0) return 1;
-  const k = opening ? Math.min(1, Math.max(0, (ms - t.open.arrive) / 160)) : 1 - Math.min(1, Math.max(0, (ms - t.close.liquid) / 160));
-  return f * (1 - 0.45 * k);
+  if (opening) return f * (1 - 0.45 * Math.min(1, Math.max(0, (ms - t.open.arrive) / 160)));
+  const grown = Math.min(1, Math.max(0, (ms - t.close.liquid) / 160));
+  const merged = Math.min(1, Math.max(0, (ms - t.close.impact) / 90));
+  return Math.max(0.01, f * (0.55 + 0.45 * grown) * (1 - merged));
 };
+
+// The splash's own drops: the puddle's two arms that run out along the edge and are pulled back in, and the spray that flies off,
+// hangs and is drawn back into the tab as it forms. Each is a list of steps for one blob.
+function splashes(g: Geometry, t: Timings, land: Landing): Step[][] {
+  const S = t.splash;
+  const d = g.drop;
+  const { impact, surface: y, lean, start, swap, still } = land;
+  const tabX = g.tab.x + g.tab.w / 2;
+  const tabBottom = g.tab.y + g.tab.h;
+  const at = (ax: number, ay: number, sx: number, sy: number, angle: number): Pose => ({ x: ax, y: ay, angle, sx, sy });
+  const hit = t.close.impact;
+  // Along the screen edge the arms run well past the tab; under a button they stay short, or they hang off its corners as loose lenses.
+  const arms = ARMS.map((side): Step[] => {
+    const reach = g.tab.w * (land.ceiling ? 0.78 : 0.42) * (1 + 0.3 * side * lean);
+    const hug = land.ceiling ? 0 : -d * 0.04;
+    return [
+      [0, at(impact.x, y + d * 0.15, 0.01, 0.01, 0)],
+      [hit, at(impact.x, y + d * 0.15, 0.01, 0.01, 0), 'cubic-bezier(.1,.8,.3,1)'],
+      [hit + S.splat, at(impact.x + side * reach * 0.62, y + d * 0.07 + hug, 0.95, 0.44, 0), 'cubic-bezier(.2,.6,.35,1)'],
+      [start, at(impact.x + side * reach, y + d * 0.05 + hug, 0.85, 0.4, 0), 'cubic-bezier(.45,0,.55,1)'],
+      [start + still * 0.4, at(tabX + side * g.tab.w * 0.2, y + d * 0.12, 0.3, 0.3, 0)],
+      [start + still * 0.5, at(tabX + side * g.tab.w * 0.15, y + d * 0.12, 0.01, 0.01, 0)],
+    ];
+  });
+  // Each drop flies out, slowing to the top of its flight, and is drawn straight back in, caught by the tab's bottom edge as it
+  // drips past (where that edge is at that moment comes from the same spring).
+  const k = S.splat / SPLASH.splat;
+  const flip = lean < 0 ? -1 : 1;
+  const spray = SPRAY.map(({ angle, reach, size, apex: top, caught }): Step[] => {
+    const a = angle * flip * Math.PI / 180;
+    const dir = { x: Math.sin(a), y: Math.cos(a) };
+    const p0 = { x: impact.x + dir.x * d * 0.3, y: y + d * 0.3 };
+    const apex = { x: p0.x + dir.x * reach * d, y: p0.y + dir.y * reach * d + d * 0.1 };
+    const when = hit + caught * k;
+    const edge = g.tab.y + g.tab.h * land.spring(Math.max(0, when - start)) - d * 0.18;
+    const home = { x: tabX + (apex.x - tabX) * 0.3, y: Math.min(edge, apex.y - d * 0.1) };
+    const near = { x: apex.x + (home.x - apex.x) * 0.85, y: apex.y + (home.y - apex.y) * 0.85 };
+    const out = Math.atan2(dir.y, dir.x) * 180 / Math.PI;
+    const back = axis(Math.atan2(home.y - apex.y, home.x - apex.x) * 180 / Math.PI, out);
+    return [
+      [0, at(p0.x, p0.y, 0.01, 0.01, out)],
+      [hit - 5, at(p0.x, p0.y, 0.01, 0.01, out)],
+      [hit + 5, at(p0.x, p0.y, size * 0.8, size * 0.8, out)],
+      [hit + 35, at(p0.x + dir.x * reach * d * 0.35, p0.y + dir.y * reach * d * 0.35, size * 1.45, size * 0.72, out), 'cubic-bezier(.25,.6,.4,1)'],
+      [hit + top * k, at(apex.x, apex.y, size, size, out), 'cubic-bezier(.55,0,.85,.45)'],
+      [when - 40, at(near.x, near.y, size * 0.95, size * 0.62, back)],
+      [when + 30, at(home.x, home.y, 0.01, 0.01, back)],
+    ];
+  });
+  return [...arms, ...spray];
+}
 
 // Things that ride with the droplet by position only, so the light stays fixed above the page: the highlight, the shadow, the tick.
 function rider(track: Step[], total: number, shown: [number, number, number, number], dx: number, dy: number, d: number, scale: string | ((ms: number) => string)): Keyframe[] {
@@ -325,7 +508,7 @@ export function ContactSheet({ tabRef }: { tabRef: React.RefObject<HTMLElement |
   const surfaceRef = useRef<HTMLDivElement>(null);
   const gooRef = useRef<HTMLDivElement>(null);
   const ghostRef = useRef<HTMLSpanElement>(null);
-  const reachRef = useRef<HTMLSpanElement>(null);
+  const splashRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const shineRef = useRef<HTMLSpanElement>(null);
   const shadowRef = useRef<HTMLSpanElement>(null);
   const tickRef = useRef<HTMLSpanElement>(null);
@@ -357,12 +540,11 @@ export function ContactSheet({ tabRef }: { tabRef: React.RefObject<HTMLElement |
     stop();
     const recent = lastPress.current && performance.now() - lastPress.current.at < 1500 ? lastPress.current.el : null;
     const active = document.activeElement instanceof HTMLElement && document.activeElement !== document.body ? document.activeElement : null;
-    const quick = fullShowPlayed;
-    fullShowPlayed = true;
+    releaseRest?.();
     sent.current = false;
     reversing.current = false;
     originRef.current = recent ?? active;
-    setGeometry(measure(tabRef.current, originRef.current, quick));
+    setGeometry(measure(tabRef.current, originRef.current));
     setPhase('opening');
   }, [tabRef, reverse]);
   const close = useCallback(() => {
@@ -370,7 +552,7 @@ export function ContactSheet({ tabRef }: { tabRef: React.RefObject<HTMLElement |
     if (phaseRef.current === 'closed' || phaseRef.current === 'closing') return;
     if (phaseRef.current === 'opening' && reverse('closing')) return;
     reversing.current = false;
-    setGeometry(current => current && { ...measure(tabRef.current, null, current.quick, sent.current), origin: current.origin, fromTab: current.fromTab, dir: current.dir });
+    setGeometry(current => current && { ...measure(tabRef.current, null, sent.current), origin: current.origin, fromTab: current.fromTab, dir: current.dir });
     setPhase('closing');
   }, [tabRef, reverse]);
 
@@ -430,14 +612,14 @@ export function ContactSheet({ tabRef }: { tabRef: React.RefObject<HTMLElement |
       return;
     }
     const g = geometry;
-    const t = timings(g.quick);
+    const t = TIMINGS;
     const O = t.open;
     const C = t.close;
     const d = g.drop;
     const blobs = blobRefs.current.filter((blob): blob is HTMLSpanElement => Boolean(blob));
     const goo = gooRef.current;
     const ghost = ghostRef.current;
-    const reach = reachRef.current;
+    const splashEls = splashRefs.current.filter((el): el is HTMLSpanElement => Boolean(el));
     const shine = shineRef.current;
     const shadow = shadowRef.current;
     const tick = tickRef.current;
@@ -471,7 +653,7 @@ export function ContactSheet({ tabRef }: { tabRef: React.RefObject<HTMLElement |
         if (button instanceof HTMLElement && button.isConnected) track(button.animate([{ transform: 'scale(1)' }, { transform: 'scale(.95, .92)', offset: 0.3 }, { transform: 'scale(1.02, 1.03)', offset: 0.65 }, { transform: 'scale(1)' }], { duration: O.drained, easing: 'ease-out' }));
         if (ghost) track(ghost.animate([{ opacity: 0 }, { opacity: 0 }], { duration: 1, fill: 'both' }));
       }
-      if (reach) track(reach.animate([{ transform: 'scale(0)' }, { transform: 'scale(0)' }], { duration: 1, fill: 'both' }));
+      splashEls.forEach(el => track(el.animate([{ transform: 'scale(0)' }, { transform: 'scale(0)' }], { duration: 1, fill: 'both' })));
       if (tick) track(tick.animate([{ opacity: 0 }, { opacity: 0 }], { duration: 1, fill: 'both' }));
       blobs.forEach((blob, i) => track(blob.animate(timeline(total, out.map(([ms, p, ease]): [number, Keyframe] => [ms, { transform: pose(d, p, trailScale(i, ms, true, t)), easing: ease ?? 'linear' }])), { duration: total, delay: i * TRAIL_LAG, fill: 'both' })));
       const ride: [number, number, number, number] = [O.pinch, O.pinch + 90, O.settled, O.burst];
@@ -483,57 +665,59 @@ export function ContactSheet({ tabRef }: { tabRef: React.RefObject<HTMLElement |
       return;
     }
 
-    const back = homeward(g, t, fastest);
-    const total = C.gulped;
-    // The real tab stays hidden until the droplet is home, then takes over from its stand-in with a jelly wobble and its label rolls in.
+    const land = landing(g, t);
+    const S = t.splash;
+    const hit = C.impact;
+    const back = homeward(g, t, fastest, land);
+    const total = land.swap;
+    // The spring the tab forms on: its stand-in follows it until it first stands still, then the real tab picks it up from exactly
+    // there and settles, so the hand-over has no jump. `ms` is from the moment the spring is let go.
+    const formed = (ms: number) => { const sy = land.spring(ms); return `rotate(${land.swing(ms).toFixed(3)}deg) scale(${widthFor(sy).toFixed(4)}, ${sy.toFixed(4)})`; };
     if (tab) {
-      track(tab.animate([{ opacity: 0 }, { opacity: 0 }], { duration: C.gulped }));
-      track(tab.animate([
-        { transform: 'scale(1, 1)', easing: 'ease-out' },
-        { transform: 'scale(1.1, .86)', offset: 0.12, easing: 'ease-in-out' },
-        { transform: 'scale(.95, 1.07)', offset: 0.35, easing: 'ease-in-out' },
-        { transform: 'scale(1.03, .97)', offset: 0.58, easing: 'ease-in-out' },
-        { transform: 'scale(.99, 1.01)', offset: 0.8, easing: 'ease-in-out' },
-        { transform: 'scale(1, 1)' },
-      ], { duration: C.jelly, delay: C.gulped })).onfinish = done;
-      Array.from(tab.children as HTMLCollectionOf<HTMLElement>).forEach((part, i) => track(part.animate([{ opacity: 0, transform: 'translateY(70%)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 340, delay: C.gulped + 110 + i * 40, easing: 'cubic-bezier(.3,1.4,.5,1)', fill: 'backwards' })));
-    } else window.setTimeout(done, C.gulped + C.jelly);
+      track(tab.animate([{ opacity: 0 }, { opacity: 0 }], { duration: land.swap }));
+      const length = land.end - land.swap;
+      const n = Math.max(4, Math.round(length / FRAME));
+      const settle = Array.from({ length: n + 1 }, (_, i): Keyframe => ({ transform: i === n ? 'rotate(0deg) scale(1, 1)' : formed(land.still + length * i / n) }));
+      track(tab.animate(settle, { duration: length, delay: land.swap, fill: 'backwards' })).onfinish = () => { holdRest(tab); done(); };
+      Array.from(tab.children as HTMLCollectionOf<HTMLElement>).forEach((part, i) => track(part.animate([{ opacity: 0, transform: 'translateY(70%)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 340, delay: land.swap + 20 + i * 40, easing: 'cubic-bezier(.3,1.4,.5,1)', fill: 'backwards' })));
+    } else window.setTimeout(done, land.end);
     // The sheet gathers into the droplet in the middle, rippling as it shrinks, then is gone.
     track(surface.animate([...burst(g, false).map(frame => ({ ...frame, offset: (frame.offset as number) * 0.999 })), { offset: 1, clipPath: gone(g) }], { duration: C.gathered - 110, delay: 110, easing: 'linear', fill: 'both' }));
-    if (goo) track(goo.animate([{ opacity: 1 }, { opacity: 1, offset: C.gulped / (C.gulped + 80) }, { opacity: 0 }], { duration: C.gulped + 80, fill: 'both' }));
+    // The liquid goes in the same frame the real tab appears.
+    if (goo) track(goo.animate([{ opacity: 1, easing: 'step-end' }, { opacity: 0 }], { duration: land.swap, fill: 'both' }));
     blobs.forEach((blob, i) => track(blob.animate(timeline(total, back.map(([ms, p, ease]): [number, Keyframe] => [ms, { transform: pose(d, p, trailScale(i, ms, false, t)), easing: ease ?? 'linear' }])), { duration: total, delay: i * TRAIL_LAG, fill: 'both' })));
-    const ride: [number, number, number, number] = [C.liquid, C.liquid + 70, C.back - 60, C.back];
+    const drops = splashes(g, t, land);
+    splashEls.forEach((el, i) => { if (drops[i]) track(el.animate(timeline(total, drops[i].map(([ms, p, ease]): [number, Keyframe] => [ms, { transform: pose(d, p, 1), easing: ease ?? 'linear' }])), { duration: total, fill: 'both' })); });
+    const ride: [number, number, number, number] = [C.liquid, C.liquid + 70, hit - 40, hit + 10];
     if (shine) track(shine.animate(rider(back, total, ride, 0, 0, d, ''), { duration: total, fill: 'both' }));
     if (shadow) track(shadow.animate(rider(back, total, ride, 5, 16, d, shadowScale), { duration: total, fill: 'both' }));
-    // After a send, the droplet carries a tick home: it pops in as the sheet becomes a droplet and sinks into the tab with it.
+    // After a send, the droplet carries a tick home: it pops in as the sheet becomes a droplet and is lost in the splash.
     if (tick) {
-      const size = (ms: number) => ms < C.gathered ? 0.4 : ms < C.liquid ? 0.4 + 0.6 * Math.min(1, (ms - C.gathered) / ((C.liquid - C.gathered) * 0.6)) : ms > C.back ? Math.max(0.3, 1 - (ms - C.back) / (C.gulped - C.back)) : 1;
-      track(tick.animate(rider(back, total, g.sent ? [C.gathered - 20, C.gathered + 60, C.swallow, C.gulped] : [0, 1, 1, 2], 0, 0, d, ms => `scale(${g.sent ? size(ms) : 0})`), { duration: total, fill: 'both' }));
+      const size = (ms: number) => ms < C.gathered ? 0.4 : ms < C.liquid ? 0.4 + 0.6 * Math.min(1, (ms - C.gathered) / ((C.liquid - C.gathered) * 0.6)) : ms > hit - 30 ? Math.max(0.3, 1 - (ms - hit + 30) / 60) : 1;
+      track(tick.animate(rider(back, total, g.sent ? [C.gathered - 20, C.gathered + 60, hit - 30, hit + 30] : [0, 1, 1, 2], 0, 0, d, ms => `scale(${g.sent ? size(ms) : 0})`), { duration: total, fill: 'both' }));
     }
-    // The tab re-forms out of the header (or, if the liquid came from another button, stands in for it from the start) and its bottom
-    // edge reaches down for the droplet, so they join on a liquid neck.
-    const { x: tabX, edge: tabBottom } = dripOf(g.tab, 1, g);
-    if (ghost) track(ghost.animate(timeline(C.gulped, g.fromTab ? [
-      [0, { opacity: 1, transform: 'scale(.55, 0)' }],
-      [C.regrow, { opacity: 1, transform: 'scale(.55, 0)', easing: 'cubic-bezier(.2,.9,.3,1)' }],
-      [C.reach, { opacity: 1, transform: 'scale(1, 1)', easing: SOFT }],
-      [C.back, { opacity: 1, transform: 'scale(1, 1.04)', easing: SOFT }],
-      [C.gulped, { opacity: 1, transform: 'scale(1, 1)' }],
-    ] : [
-      [0, { opacity: 1, transform: 'scale(1, 1)' }],
-      [C.reach, { opacity: 1, transform: 'scale(1, 1)', easing: SOFT }],
-      [C.back, { opacity: 1, transform: 'scale(1, 1.04)', easing: SOFT }],
-      [C.gulped, { opacity: 1, transform: 'scale(1, 1)' }],
-    ]), { duration: C.gulped, fill: 'both' }));
-    if (reach) track(reach.animate(timeline(C.gulped, ([
-      [0, { x: tabX, y: tabBottom - d * 0.3, angle: 90, sx: 0.01, sy: 0.01 }],
-      [C.reach - (C.reach - C.regrow) * 0.45, { x: tabX, y: tabBottom - d * 0.3, angle: 90, sx: 0.01, sy: 0.01 }],
-      [C.reach, { x: tabX, y: tabBottom - d * 0.12, angle: 90, sx: 0.6, sy: 0.6 }],
-      [C.back, { x: tabX, y: tabBottom + d * 0.1, angle: 90, sx: 0.78, sy: 0.46 }],
-      [C.pulled, { x: tabX, y: tabBottom + d * 0.16, angle: 90, sx: 0.82, sy: 0.42 }],
-      [C.swallow, { x: tabX, y: tabBottom - d * 0.05, angle: 90, sx: 0.36, sy: 0.36 }],
-      [C.gulped, { x: tabX, y: tabBottom - d * 0.2, angle: 90, sx: 0.01, sy: 0.01 }],
-    ] as [number, Pose][]).map(([ms, p]) => [ms, { transform: pose(d, p, 1), easing: SOFT }])), { duration: C.gulped, fill: 'both' }));
+    // The stand-in for the tab. On the edge: nothing until the hit, then the puddle, which pulls together and drips down into the
+    // tab. Against the tab: it is there already (re-forming out of the header first if the liquid left from it), gives under the hit
+    // and springs back.
+    if (ghost) {
+      const hitEase = 'cubic-bezier(.2,.7,.3,1)';
+      const before: [number, Keyframe][] = land.ceiling ? [
+        [0, { opacity: 1, transform: 'scale(.55, 0)' }],
+        [hit, { opacity: 1, transform: 'scale(.6, 0)', easing: hitEase }],
+        [hit + S.splat, { opacity: 1, transform: 'scale(1.3, .22)', easing: SOFT }],
+      ] : [
+        ...(g.fromTab ? [
+          [0, { opacity: 1, transform: 'scale(.55, 0)' }],
+          [hit - (hit - C.liquid) * 0.45, { opacity: 1, transform: 'scale(.55, 0)', easing: 'cubic-bezier(.2,.9,.3,1)' }],
+        ] as [number, Keyframe][] : [[0, { opacity: 1, transform: 'scale(1, 1)' }]] as [number, Keyframe][]),
+        [hit - 60, { opacity: 1, transform: 'scale(1, 1)' }],
+        [hit, { opacity: 1, transform: 'scale(1, 1)', easing: hitEase }],
+        [hit + S.splat, { opacity: 1, transform: 'scale(1.085, .87)', easing: SOFT }],
+      ];
+      const n = Math.max(4, Math.round((land.swap - land.start) / FRAME));
+      const spring = Array.from({ length: n + 1 }, (_, i): [number, Keyframe] => [land.start + (land.swap - land.start) * i / n, { opacity: 1, transform: formed(land.still * i / n) }]);
+      track(ghost.animate(timeline(total, [...before, ...spring]), { duration: total, fill: 'both' }));
+    }
   }, [sheet, phase, geometry, tabRef]);
 
   const g = geometry;
@@ -567,8 +751,8 @@ export function ContactSheet({ tabRef }: { tabRef: React.RefObject<HTMLElement |
           </svg>
           <span ref={shadowRef} className="contact-goo-shadow" aria-hidden="true" style={{ width: g.drop, height: g.drop }} />
           <div ref={gooRef} className="contact-goo" aria-hidden="true" style={{ filter: `url(#${filterId})` }}>
-            <span ref={ghostRef} className="contact-goo-tab" style={{ left: g.tab.x, top: g.tab.y, width: g.tab.w, height: g.tab.h, borderRadius: g.tab.radius }} />
-            <span ref={reachRef} className="contact-goo-blob" style={{ width: g.drop, height: g.drop }}><span /></span>
+            <span ref={ghostRef} className="contact-goo-tab" style={{ left: g.tab.x, top: g.tab.y - (g.hangs ? EXTEND : 0), width: g.tab.w, height: g.tab.h + (g.hangs ? EXTEND : 0), borderRadius: g.tab.radius, transformOrigin: `50% ${g.hangs ? EXTEND : 0}px` }} />
+            {Array.from({ length: ARMS.length + SPRAY.length }, (_, i) => <span key={`splash-${i}`} ref={el => { splashRefs.current[i] = el; }} className="contact-goo-blob" style={{ width: g.drop, height: g.drop }}><span /></span>)}
             {TRAIL.map((size, i) => <span key={size} ref={blob => { blobRefs.current[i] = blob; }} className="contact-goo-blob" style={{ width: g.drop, height: g.drop }}><span /></span>)}
           </div>
           <span ref={shineRef} className="contact-goo-shine" aria-hidden="true" style={{ width: g.drop, height: g.drop }} />
