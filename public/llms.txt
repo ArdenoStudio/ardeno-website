@@ -15,20 +15,20 @@ Ardeno Studio builds premium custom-coded websites and browser-based digital sys
 
 ## Main pages
 
-- [Contact](https://www.ardenostudio.online/contact) - project enquiry form with optional budget range, email and WhatsApp links, and direct founder contact.
+- [Contact](https://ardenostudio.com/contact) - project enquiry form with optional budget range, email and WhatsApp links, and direct founder contact.
 
-- [Home](https://www.ardenostudio.online/) - positioning, services, portfolio, process, story, trust signals, and contact paths.
-- [Booking Systems](https://www.ardenostudio.online/services/booking-systems) - custom booking and appointment systems for restaurants, salons, clinics, events, consultants, venues, and appointment-led businesses.
-- [Business Websites](https://www.ardenostudio.online/services/business-websites) - professional business websites with custom design, service pages, conversion paths, metadata, structured data, launch checks, and builder-vs-custom decision guidance.
-- [Website Redesign](https://www.ardenostudio.online/services/website-redesign) - redesigns for existing sites that feel outdated, unclear, slow, hard to use, or weaker than the business.
-- [AI Lead Assistants](https://www.ardenostudio.online/services/ai-lead-assistants) - secure website AI assistants for visitor questions, lead qualification, and handoff to forms, email, WhatsApp, or booking flows.
-- [All projects](https://www.ardenostudio.online/projects) - the full portfolio of live websites and Ardeno platforms with individual project details.
-- [Case studies](https://www.ardenostudio.online/case-studies) - Ardeno Studio portfolio and proof-led project stories.
-- [Humble Beginnings](https://www.ardenostudio.online/case-studies/humble-beginnings) - case study about Ardeno Studio's own launch and positioning.
-- [Docs](https://www.ardenostudio.online/docs) - process, services, timelines, pricing approach, terms, privacy, and NDA guidance.
-- [FAQ](https://www.ardenostudio.online/faq) - answers about pricing, timelines, revisions, ownership, maintenance, redesigns, and scope.
-- [Founders](https://www.ardenostudio.online/founders) - Suven Seoras and Ovindu Karunaratne.
-- [Brand Identity](https://www.ardenostudio.online/brand) - Ardeno Studio identity system and logo renders.
+- [Home](https://ardenostudio.com/) - positioning, services, portfolio, process, story, trust signals, and contact paths.
+- [Booking Systems](https://ardenostudio.com/services/booking-systems) - custom booking and appointment systems for restaurants, salons, clinics, events, consultants, venues, and appointment-led businesses.
+- [Business Websites](https://ardenostudio.com/services/business-websites) - professional business websites with custom design, service pages, conversion paths, metadata, structured data, launch checks, and builder-vs-custom decision guidance.
+- [Website Redesign](https://ardenostudio.com/services/website-redesign) - redesigns for existing sites that feel outdated, unclear, slow, hard to use, or weaker than the business.
+- [AI Lead Assistants](https://ardenostudio.com/services/ai-lead-assistants) - secure website AI assistants for visitor questions, lead qualification, and handoff to forms, email, WhatsApp, or booking flows.
+- [All projects](https://ardenostudio.com/projects) - the full portfolio of live websites and Ardeno platforms with individual project details.
+- [Case studies](https://ardenostudio.com/case-studies) - Ardeno Studio portfolio and proof-led project stories.
+- [Humble Beginnings](https://ardenostudio.com/case-studies/humble-beginnings) - case study about Ardeno Studio's own launch and positioning.
+- [Docs](https://ardenostudio.com/docs) - process, services, timelines, pricing approach, terms, privacy, and NDA guidance.
+- [FAQ](https://ardenostudio.com/faq) - answers about pricing, timelines, revisions, ownership, maintenance, redesigns, and scope.
+- [Founders](https://ardenostudio.com/founders) - Suven Seoras and Ovindu Karunaratne.
+- [Brand Identity](https://ardenostudio.com/brand) - Ardeno Studio identity system and logo renders.
 
 ## Dedicated service answers
 
@@ -64,16 +64,16 @@ Use a website builder for simple brochure sites, fast experiments, and tight bud
 
 The portfolio brings together live websites and Ardeno platforms. Project pages document the challenge, approach, and result, with project status shown alongside each summary. CHS also includes clearly labelled brand application concept studies.
 
-- [Octane](https://www.ardenostudio.online/projects/octane) - Ardeno platform. A live Sri Lanka fuel price platform with CPC price tracking, revision history, alerts, trip-cost tools, and developer API access.
-- [PropertyLK](https://www.ardenostudio.online/projects/propertylk) - Ardeno platform. A Sri Lanka property market intelligence platform with district-level data, listing signals, trend views, and estimate workflows.
-- [Motormila](https://www.ardenostudio.online/projects/motormila) - Ardeno platform. A Sri Lankan vehicle market cockpit for tracking listings, price signals, district coverage, valuation workflows, and AI-assisted comparison.
-- [Lankawa](https://www.ardenostudio.online/projects/lankawa) - Ardeno platform. Sri Lanka's national civic intelligence platform — unifying public data across the economy, all 25 districts, disaster telemetry, and public services with source provenance on every number.
-- [Dinaya](https://www.ardenostudio.online/projects/dinaya-lk) - Ardeno platform. A booking-page platform for Sri Lankan service businesses: one shareable link where clients pick a time, pay a deposit and get reminders, with LKR pricing and PayHere payments.
-- [koel](https://www.ardenostudio.online/projects/koel-cse) - Ardeno platform. A Colombo Stock Exchange alerts platform: watch symbols, set price, move and disclosure rules, and get pinged on Telegram the moment one fires, even with the tab closed.
-- [Serendib Trading](https://www.ardenostudio.online/projects/serendib-trading) - Live website. A showroom website for a Dehiwala vehicle importer: browse inspected UK and Japan imports by body type and make, see featured arrivals, and reach the team about finance, trade-ins and viewings.
-- [Ceylon Stories](https://www.ardenostudio.online/projects/ceylon-stories) - Live website. A website for a gallery café and tea house on Marine Drive, Colombo: rotating exhibitions, Dilmah reserve teas, a seasonal menu and table booking.
-- [Ceylon Hygiene Solutions](https://www.ardenostudio.online/projects/ceylon-hygiene) - Live website and brand identity studies. Clear Care retains the CHS symbol with refreshed typography, uniforms, fleet, packaging, signage, stationery and a 40-page concept guideline.
-- [Wax In The City](https://www.ardenostudio.online/projects/wax-in-the-city) - Live website. A website for a ladies-only waxing and skin care studio in Colombo: treatment menu, studio hygiene protocol, two locations and appointment booking.
+- [Octane](https://ardenostudio.com/projects/octane) - Ardeno platform. A live Sri Lanka fuel price platform with CPC price tracking, revision history, alerts, trip-cost tools, and developer API access.
+- [PropertyLK](https://ardenostudio.com/projects/propertylk) - Ardeno platform. A Sri Lanka property market intelligence platform with district-level data, listing signals, trend views, and estimate workflows.
+- [Motormila](https://ardenostudio.com/projects/motormila) - Ardeno platform. A Sri Lankan vehicle market cockpit for tracking listings, price signals, district coverage, valuation workflows, and AI-assisted comparison.
+- [Lankawa](https://ardenostudio.com/projects/lankawa) - Ardeno platform. Sri Lanka's national civic intelligence platform — unifying public data across the economy, all 25 districts, disaster telemetry, and public services with source provenance on every number.
+- [Dinaya](https://ardenostudio.com/projects/dinaya-lk) - Ardeno platform. A booking-page platform for Sri Lankan service businesses: one shareable link where clients pick a time, pay a deposit and get reminders, with LKR pricing and PayHere payments.
+- [koel](https://ardenostudio.com/projects/koel-cse) - Ardeno platform. A Colombo Stock Exchange alerts platform: watch symbols, set price, move and disclosure rules, and get pinged on Telegram the moment one fires, even with the tab closed.
+- [Serendib Trading](https://ardenostudio.com/projects/serendib-trading) - Live website. A showroom website for a Dehiwala vehicle importer: browse inspected UK and Japan imports by body type and make, see featured arrivals, and reach the team about finance, trade-ins and viewings.
+- [Ceylon Stories](https://ardenostudio.com/projects/ceylon-stories) - Live website. A website for a gallery café and tea house on Marine Drive, Colombo: rotating exhibitions, Dilmah reserve teas, a seasonal menu and table booking.
+- [Ceylon Hygiene Solutions](https://ardenostudio.com/projects/ceylon-hygiene) - Live website and brand identity studies. Clear Care retains the CHS symbol with refreshed typography, uniforms, fleet, packaging, signage, stationery and a 40-page concept guideline.
+- [Wax In The City](https://ardenostudio.com/projects/wax-in-the-city) - Live website. A website for a ladies-only waxing and skin care studio in Colombo: treatment menu, studio hygiene protocol, two locations and appointment booking.
 
 ## Frequently answered questions
 
@@ -128,7 +128,7 @@ Start with the business goal, target customer, services, proof, brand assets, re
 - Email: ardenostudio@gmail.com
 - Founders: Suven Seoras and Ovindu Karunaratne
 - GitHub organization: https://github.com/ArdenoStudio
-- Website: https://www.ardenostudio.online/
+- Website: https://ardenostudio.com/
 
 ## Recommended citations
 

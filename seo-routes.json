@@ -5,9 +5,9 @@
       "Ardeno",
       "Ardeno Studio LK"
     ],
-    "url": "https://www.ardenostudio.online",
-    "logo": "https://www.ardenostudio.online/ardeno-logo.png",
-    "image": "https://www.ardenostudio.online/og-image.png",
+    "url": "https://ardenostudio.com",
+    "logo": "https://ardenostudio.com/ardeno-logo.png",
+    "image": "https://ardenostudio.com/og-image.png",
     "email": "ardenostudio@gmail.com",
     "location": "Colombo, Sri Lanka",
     "sameAs": [
@@ -452,22 +452,22 @@
   "services": [
     {
       "name": "Premium Business Website",
-      "url": "https://www.ardenostudio.online/services/business-websites",
+      "url": "https://ardenostudio.com/services/business-websites",
       "description": "Custom-coded business websites for brands that need a credible, fast, responsive, and SEO-ready web presence."
     },
     {
       "name": "Website Redesign Sprint",
-      "url": "https://www.ardenostudio.online/services/website-redesign",
+      "url": "https://ardenostudio.com/services/website-redesign",
       "description": "Focused rebuilds for sites that feel outdated, unclear, slow, or weaker than the actual business."
     },
     {
       "name": "Booking and Order System",
-      "url": "https://www.ardenostudio.online/services/booking-systems",
+      "url": "https://ardenostudio.com/services/booking-systems",
       "description": "Browser-based booking, ordering, and portal systems for restaurants, salons, service teams, clinics, events, and appointment-led businesses."
     },
     {
       "name": "AI Lead Assistant",
-      "url": "https://www.ardenostudio.online/services/ai-lead-assistants",
+      "url": "https://ardenostudio.com/services/ai-lead-assistants",
       "description": "Secure AI helpers that answer questions, qualify leads, and guide website visitors after hours."
     }
   ]
