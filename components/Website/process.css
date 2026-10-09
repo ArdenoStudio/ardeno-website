@@ -1,0 +1,39 @@
+/* "How we work" fills in as it is scrolled through. processFill.ts sets --f (0 to 1) and data-step ("", active, done) on each
+   .process-step, and --rail, --rail-top and --rail-length on the grid when the steps are stacked. Without JavaScript nothing is
+   set and the steps look as they did before. Spring easings come from navigation.css. */
+
+/* Each step number is a pill that turns Signal when its step is reached (Deep ink text on Signal, as the brand guide asks for small
+   text on orange). */
+.step-top>span{display:inline-grid;place-items:center;min-width:32px;height:22px;padding:0 8px;border:1px solid var(--line);border-radius:999px;background:var(--paper);font-size:11px;line-height:1;color:var(--muted);transition:background-color 300ms ease,border-color 300ms ease,color 300ms ease}
+.process-step:is([data-step=active],[data-step=done]) .step-top>span{background:var(--accent);border-color:var(--accent);color:var(--deep-ink)}
+.process-step[data-step=active] .step-top>span{animation:step-pop 560ms var(--spring-pull)}
+@keyframes step-pop{0%{scale:.82}100%{scale:1}}
+
+/* Side by side: each step's top hairline fills with Signal from the left, with a dot riding the end of the line that is filling.
+   When a line is full its arrow turns Signal and steps toward the next step; the last step's tick turns Signal. */
+.step-top{position:relative}
+.step-top::before{content:'';position:absolute;left:0;right:0;top:-1px;height:2px;background:var(--accent);transform:scaleX(var(--f,0));transform-origin:left center;transition:transform 180ms linear}
+.step-top::after{content:'';position:absolute;top:-1px;left:calc(var(--f,0) * 100%);width:8px;height:8px;margin:-3px 0 0 -4px;border-radius:50%;background:var(--accent);opacity:0;scale:.4;transition:left 180ms linear,opacity 200ms ease,scale 420ms var(--spring-pull)}
+.process-step[data-step=active] .step-top::after{opacity:1;scale:1}
+.step-top svg{transition:color 300ms ease,translate 560ms var(--spring-pull)}
+.process-step[data-step=done] .step-top svg{color:var(--accent);translate:4px 0}
+.process-step[data-step=done] .step-top .lucide-check{translate:0 0}
+
+/* Stacked (800px and below, where the arrows used to point sideways at a step that sits below): one step per row, the number on
+   the left with the title beside it, and a rail running down through the numbers that fills with Signal. */
+@media(max-width:800px){
+  .process-grid{position:relative;grid-template-columns:minmax(0,1fr);gap:0}
+  .process-step{display:grid;grid-template-columns:32px minmax(0,1fr);column-gap:14px;align-items:center;padding-bottom:24px}
+  .process-step:last-child{padding-bottom:0}
+  .step-top{display:contents}
+  .step-top::before,.step-top::after,.step-top svg{display:none}
+  .step-top>span{grid-column:1;grid-row:1;position:relative;z-index:1}
+  .process-step h3{grid-column:2;grid-row:1;margin:0}
+  .process-step p{grid-column:2;grid-row:2;margin-top:6px;max-width:34em}
+  .process-grid::before,.process-grid::after{content:'';position:absolute;left:16px;top:var(--rail-top,0);height:var(--rail-length,0);width:1px;translate:-50% 0;background:var(--line);pointer-events:none}
+  .process-grid::after{width:2px;background:var(--accent);transform:scaleY(var(--rail,0));transform-origin:top center;transition:transform 180ms linear}
+}
+@media(max-width:580px){
+  .process-step{column-gap:12px;padding-bottom:20px}
+  .process-step h3{font-size:20px}
+}

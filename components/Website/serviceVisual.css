@@ -1,0 +1,68 @@
+/* An open service row: the details sit under the title and the visual under the description, on the trigger's own columns
+   (.service-trigger in website.css). ServiceVisual.tsx has the diagrams; spring easings come from navigation.css. */
+.service-content>.service-body{display:grid;grid-template-columns:45px 1.4fr 1fr 42px;column-gap:25px;margin-left:0;max-width:none;padding-bottom:42px}
+.service-body>.service-copy{grid-column:2;max-width:620px}
+.service-body>.service-visual{grid-column:3/5;align-self:start;margin:0}
+@media(max-width:1100px){.service-content>.service-body{grid-template-columns:30px 1.2fr 1fr 35px;column-gap:18px}}
+@media(max-width:800px){
+  .service-content>.service-body{display:block;margin-left:41px}
+  .service-body>.service-visual{margin-top:26px;max-width:520px}
+}
+@media(max-width:580px){.service-content>.service-body{margin-left:32px;padding-bottom:30px}}
+
+.service-visual-caption{display:flex;align-items:center;gap:8px;margin:0 0 16px;font-size:11px;line-height:1.4;color:var(--muted)}
+.service-visual-caption::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+/* The beam diagram. The SVG is drawn at the box's measured size; nodes are placed on the same coordinates. */
+.flow-box{position:relative;width:100%}
+.flow-lines{position:absolute;inset:0;overflow:visible}
+.flow-path,.flow-beam{fill:none}
+.flow-path{stroke:color-mix(in srgb,var(--ink) 20%,transparent);stroke-width:1.25}
+/* A beam is two dashes on the same line sharing a leading edge: a short bright head and a longer faint tail. Each dash travels from
+   just before the line's start to just past its end (pathLength is 1), then waits; the tail's offsets are the head's plus the
+   difference in length, so the two stay together. */
+.flow-beam{stroke:var(--accent);stroke-linecap:round;stroke-dasharray:var(--len) 2;stroke-dashoffset:var(--len);animation:flow-beam 3.4s cubic-bezier(.45,.05,.3,1) var(--delay) infinite both;animation-play-state:paused}
+.flow-box[data-running] .flow-beam{animation-play-state:running}
+.flow-beam-head{--len:.09;--end:-1;stroke-width:2.25}
+.flow-beam-tail{--len:.3;--end:-.79;stroke-width:1.75;opacity:.3}
+@keyframes flow-beam{0%{stroke-dashoffset:var(--len)}60%,100%{stroke-dashoffset:var(--end)}}
+
+.flow-node{position:absolute;width:0;height:0}
+.flow-dot{position:absolute;left:0;top:0;translate:-50% -50%;display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(32,33,31,.06),0 8px 18px -10px rgba(32,33,31,.28)}
+.flow-label{position:absolute;left:0;top:29px;translate:-50% 0;width:max-content;max-width:7.6em;font-size:11px;line-height:1.3;text-align:center;color:var(--muted);text-wrap:balance}
+.flow-hub{position:absolute;translate:-50% -50%;display:grid;place-items:center;width:66px;height:66px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 28%,transparent),0 12px 30px -12px color-mix(in srgb,var(--accent) 60%,transparent)}
+.flow-hub img{display:block;width:30px;height:auto}
+
+/* The websites row: two live websites, each opening its case study. */
+.service-proof-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.service-proof-card{display:grid;align-content:start;gap:3px;color:var(--ink)}
+.service-proof-shot{display:block;aspect-ratio:16/10;overflow:hidden;border-radius:10px;background:#fff;box-shadow:0 1px 2px rgba(32,33,31,.06),0 14px 30px -18px rgba(32,33,31,.4);transition:translate 560ms var(--spring-pull),box-shadow 300ms ease}
+.service-proof-shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:top;transition:transform 800ms var(--spring-soft)}
+.service-proof-name{display:flex;align-items:center;gap:6px;margin-top:10px;font-family:var(--font-display);font-size:16px;line-height:1.2}
+.service-proof-name svg{flex:none;transition:transform 520ms var(--spring-pull)}
+.service-proof-kind{font-size:11px;color:var(--muted)}
+.service-proof-card:focus-visible .service-proof-name svg{transform:translate(2px,-2px)}
+@media(hover:hover){
+  .service-proof-card:hover .service-proof-shot{translate:0 -4px;box-shadow:0 1px 2px rgba(32,33,31,.06),0 22px 36px -18px rgba(32,33,31,.45)}
+  .service-proof-card:hover .service-proof-shot img{transform:scale(1.035)}
+  .service-proof-card:hover .service-proof-name svg{transform:translate(2px,-2px)}
+}
+@media(max-width:580px){
+  .service-proof-grid{gap:12px}
+  .service-proof-name{font-size:14px}
+}
+
+/* Opening a row: the lines draw in, the circles pop up one after another, the website cards rise. */
+@media(prefers-reduced-motion:no-preference){
+  .service-content[data-state=open] .flow-path{stroke-dasharray:1 1;animation:flow-draw 720ms cubic-bezier(.2,.7,.2,1) calc(180ms + var(--i) * 40ms) both}
+  .service-content[data-state=open] .flow-hub{animation:flow-pop 720ms var(--spring-pull) 100ms both}
+  .service-content[data-state=open] .flow-dot{animation:flow-pop 640ms var(--spring-pull) calc(160ms + var(--i) * 45ms) both}
+  .service-content[data-state=open] .flow-label{animation:flow-fade 400ms ease calc(260ms + var(--i) * 45ms) both}
+  .service-content[data-state=open] .service-proof-card{animation:flow-rise 680ms var(--spring-pull) calc(120ms + var(--i) * 80ms) both}
+}
+@keyframes flow-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes flow-pop{from{opacity:0;scale:.4}to{opacity:1;scale:1}}
+@keyframes flow-fade{from{opacity:0}to{opacity:1}}
+@keyframes flow-rise{from{opacity:0;translate:0 14px}to{opacity:1;translate:0 0}}
+/* The site-wide reduced-motion rule stops the animations; the beams would then sit still at their starting point, so hide them. */
+@media(prefers-reduced-motion:reduce){.flow-beam{display:none}}

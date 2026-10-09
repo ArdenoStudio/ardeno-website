@@ -1,0 +1,22 @@
+/* Built by Ardeno on phones: two rows of cards sliding in opposite directions (BuiltMarquee.tsx). Each track holds its cards twice
+   and moves by half its width, so the loop has no seam. Rows fade out at both ends. The cards keep their look from built.css;
+   these rules are more specific so they win over its grid borders. */
+.built-row{overflow:hidden;border-top:1px solid var(--line);-webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
+.built-track{display:flex;width:max-content;animation:built-marquee calc(var(--count,5) * 6.4s) linear infinite;animation-play-state:paused}
+.built-track.is-reverse{animation-direction:reverse}
+.built-marquee[data-running]:not([data-held]) .built-track{animation-play-state:running}
+@keyframes built-marquee{to{translate:-50% 0}}
+.built-strip .built-marquee .built-card{flex:0 0 148px;min-height:86px;padding:16px 12px;border-top:0;border-left:1px solid var(--line)}
+
+/* Keyboard focus on a card stops the rows at their start and lets the focused row scroll, so the card is brought into view. */
+.built-marquee:has(.built-card:focus-visible) .built-track{animation:none}
+.built-marquee:has(.built-card:focus-visible) .built-row{overflow-x:auto;scrollbar-width:none;-webkit-mask-image:none;mask-image:none}
+.built-strip .built-marquee:has(.built-card:focus-visible) .built-card.is-copy{display:none}
+.built-row::-webkit-scrollbar{display:none}
+
+/* Reduced motion: the site-wide rule stops the animation; each row becomes a sideways scroller without the copies. */
+@media(prefers-reduced-motion:reduce){
+  .built-row{overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity;-webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}
+  .built-strip .built-marquee .built-card{scroll-snap-align:start}
+  .built-strip .built-marquee .built-card.is-copy{display:none}
+}
