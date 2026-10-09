@@ -3,9 +3,11 @@ import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { PROJECTS, type Project } from '../../data/projects';
 import { burstSparks } from './clickSpark';
 
-// Back-to-front order of the fanned project cards; the last one sits on top.
+// Back-to-front order of the fanned project cards; the last one sits on top. Each opens its case study (/projects/<id>), which links
+// on to the live site.
 const FAN_IDS = ['serendib-trading', 'wax-in-the-city', 'ceylon-hygiene'];
-// A card is partly covered by the next one, so its label is the short name the studio uses where the full title is long.
+// A card is partly covered by the next one, so its name (under the card, clear of the site's own logo) is the short name the studio
+// uses where the full title is long.
 const FAN_LABELS: Record<string, string> = {
   'serendib-trading': 'Serendib',
   'wax-in-the-city': 'Wax in the City',
@@ -146,13 +148,8 @@ export function Hero({ onContact }: { onContact: () => void }) {
           <ul className="editorial-fan" aria-label="Platforms and sites we have built">
             {FAN_PROJECTS.map((project) => (
               <li key={project.id}>
-                <a
-                  className="editorial-card"
-                  href={project.url ?? '#work'}
-                  {...(project.url ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  aria-label={`${project.title}, ${project.category}${project.url ? ' (opens in a new tab)' : ''}`}
-                >
-                  <img src={project.image} alt="" width={1280} height={800} loading="lazy" decoding="async" />
+                <a className="editorial-card-link" href={`/projects/${project.id}`} aria-label={`${project.title}, ${project.category}`}>
+                  <span className="editorial-card"><img src={project.image} alt="" width={1280} height={800} loading="lazy" decoding="async" /></span>
                   <span className="editorial-card-label">{FAN_LABELS[project.id] ?? project.title}<ArrowUpRight size={12} aria-hidden="true" /></span>
                 </a>
               </li>

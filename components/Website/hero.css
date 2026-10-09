@@ -53,20 +53,31 @@
 }
 @keyframes arrow-nudge{0%,52%,100%{transform:translateY(0)}68%{transform:translateY(5px)}84%{transform:translateY(-1px)}}
 @keyframes arrow-fall{0%{transform:translateY(0);opacity:1;animation-timing-function:cubic-bezier(.5,0,1,.6)}34%{transform:translateY(24px);opacity:0}35%{transform:translateY(-18px);opacity:0;animation-timing-function:var(--spring-pull)}100%{transform:translateY(0);opacity:1}}
-.editorial-fan{--cw:calc(var(--h)*4.2);position:absolute;right:calc(var(--cw)*.05);bottom:calc(var(--h)*-.5);width:calc(var(--cw)*2.1);height:calc(var(--cw)*.82);margin:0;padding:0;list-style:none}
+/* The fan of project cards: --cw is a card's width in headline sizes, --step how far each card sits from the one behind it (in card
+   widths). It is sized to clear the end of the headline's last line and rise into the lower half of the dotted "chapter.". */
+.editorial-fan{--cw:calc(var(--h)*5.2);--step:.36;position:absolute;right:calc(var(--cw)*.05);bottom:calc(var(--h)*.15);width:calc(var(--cw)*(1 + 2*var(--step)));height:calc(var(--cw)*.82);margin:0;padding:0;list-style:none}
 .editorial-fan>li{position:absolute;bottom:0;width:var(--cw);--x:0;--y:0;--r:0deg;--s:1;transform:translate(calc(var(--cw)*var(--x)),calc(var(--cw)*var(--y))) rotate(var(--r)) scale(var(--s));transform-origin:50% 100%;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
 .editorial-fan>li:nth-child(1){left:0;z-index:1;--y:-.05;--r:-5deg}
-.editorial-fan>li:nth-child(2){left:calc(var(--cw)*.55);z-index:2;--y:-.01;--r:.5deg}
-.editorial-fan>li:nth-child(3){left:calc(var(--cw)*1.1);z-index:3;--y:-.04;--r:5deg}
+.editorial-fan>li:nth-child(2){left:calc(var(--cw)*var(--step));z-index:2;--y:-.01;--r:.5deg}
+.editorial-fan>li:nth-child(3){left:calc(var(--cw)*var(--step)*2);z-index:3;--y:-.04;--r:5deg}
 .editorial-fan:is(:hover,:focus-within)>li:nth-child(1){--x:-.07;--r:-8deg}
 .editorial-fan:is(:hover,:focus-within)>li:nth-child(3){--x:.06;--r:8deg}
 .editorial-fan>li:nth-child(n):is(:hover,:focus-within){z-index:4;--y:-.1;--r:0deg;--s:1.04}
 .editorial-card{position:relative;display:block;aspect-ratio:16/10;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 22px 44px -22px rgba(32,33,31,.45),0 3px 8px rgba(32,33,31,.1);outline:1px solid rgba(32,33,31,.1);outline-offset:-1px}
-.editorial-card:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.editorial-card-link{display:block;color:var(--ink);text-decoration:none}
+.editorial-card-link:focus-visible{outline:none}
+.editorial-card-link:focus-visible .editorial-card{outline:2px solid var(--accent);outline-offset:3px}
 .editorial-card img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
-.editorial-card-label{position:absolute;left:10px;top:10px;display:inline-flex;align-items:center;gap:6px;padding:6px 10px 6px 12px;border-radius:999px;background:rgba(244,244,242,.94);color:var(--ink);font-family:var(--font-ui);font-size:clamp(10px,calc(var(--cw)*.033),12px);line-height:1;box-shadow:0 1px 4px rgba(32,33,31,.15)}
+/* The name sits under the card's left edge, the part the next card never covers, so the site's own logo stays visible. */
+.editorial-card-label{display:inline-flex;align-items:center;gap:6px;margin:12px 0 0 4px;color:var(--ink);font-family:var(--font-ui);font-size:clamp(11px,calc(var(--cw)*.036),13px);line-height:1}
+/* The front card tilts its left edge up over the card behind, where a name would be dark on dark; nothing covers its right, so its
+   name sits under its right corner. */
+.editorial-fan>li:last-child .editorial-card-link{text-align:right}
+.editorial-fan>li:last-child .editorial-card-label{margin:12px 4px 0 0}
 @media(prefers-reduced-motion:reduce){.editorial-fan>li,.editorial-dot-glow,.editorial-cta,.cta-fill,.cta-label>span,.cta-arrow>svg,.link-label::after,.link-arrow>svg{transition:none}.link-arrow,.link-arrow.is-falling{animation:none}.editorial-cta:is(:hover,:active){transform:none}}
 @media(min-width:1800px){.editorial-hero{padding-left:103px;padding-right:103px}}
-@media(max-width:1100px){.editorial-fan{display:none}.editorial-message{max-width:730px}.editorial-composition{--h:clamp(48px,6.4vw,70px);--k:15.5;--b:.1;min-height:690px}.editorial-description{font-size:16px}}
+/* At 1100px and below the fan leaves the corner and sits under the buttons, right-aligned on tablets and the full column on phones
+   (the fan is 1.72 card widths, so 51vw cards fill the 88vw phone column). */
+@media(max-width:1100px){.editorial-fan{--cw:min(51vw,320px);position:relative;right:auto;bottom:auto;margin:clamp(44px,7vw,64px) 0 0 auto}.editorial-message{max-width:730px}.editorial-composition{--h:clamp(48px,6.4vw,70px);--k:15.5;--b:.1;min-height:690px}.editorial-description{font-size:16px}}
 @media(max-width:760px){.editorial-hero{padding-top:30px;padding-left:6%;padding-right:6%}.editorial-meta{font-size:10px}.editorial-composition{--pad:28px;--lead:165px;--h:clamp(36px,7.9vw,58px);padding-bottom:60px;min-height:calc(100svh - 127px)}.editorial-message h1{line-height:1.04}.editorial-description{margin-top:23px;font-size:14px}.editorial-cta{min-height:52px;font-size:13px;padding:15px 23px;gap:25px}.editorial-work-link{font-size:13px;gap:14px}.editorial-actions{gap:10px 25px}}
 @media(max-width:400px){.editorial-composition{--lead:133px;--h:clamp(32px,9.4vw,37px);padding-bottom:46px}.editorial-description{font-size:12px}.editorial-actions{gap:8px 19px}.editorial-cta{padding:14px 21px;min-height:50px;font-size:12px;gap:23px}.editorial-work-link{font-size:12px;gap:12px}}

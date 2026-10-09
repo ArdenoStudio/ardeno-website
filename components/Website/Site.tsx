@@ -13,7 +13,6 @@ import { cn, navigation } from './utils';
 import { featuredProjects, portfolio } from '../../data/portfolio';
 import { ProjectCard } from './ProjectCard';
 
-export function Wordmark() { return <span className="site-wordmark">ardeno<span>studio</span></span>; }
 
 // Header lockup, drawn from the official master (public/brand/ardeno-lockup-primary.svg, see scripts/generate-brand-lockup.cjs):
 // the A is as tall as the wordmark's visible height, the gap is 0.32 times the symbol height, and the letters keep their natural spacing.
@@ -68,6 +67,10 @@ export function SiteHeader({ onContact }: { onContact: () => void }) {
   const isHome = window.location.pathname === '/';
   const headerLinks = [{ label: 'Home', id: 'top' }, ...navigation.map(item => item.id === 'work' && !isHome ? { ...item, label: 'Projects' } : item)];
   const headerHref = (id: string) => isHome ? `#${id}` : id === 'work' ? '/projects' : `/#${id}`;
+  // The section being read on the homepage, or Projects on the project pages; the desktop links and the mobile menu both mark it.
+  const linkCurrent = (id: string) => isHome ? active === id ? 'location' as const : undefined : id === 'work' && window.location.pathname.startsWith('/projects') ? 'page' as const : undefined;
+  // The menu's second group: the pages that are not homepage sections. Off the homepage the big "Projects." link already opens the archive.
+  const morePages = [{ label: 'All projects', href: '/projects' }, { label: 'Founders', href: '/founders' }, { label: 'Contact', href: '/contact' }].filter(page => isHome || page.href !== '/projects');
 
   useEffect(() => {
     let frame = 0;
@@ -99,7 +102,7 @@ export function SiteHeader({ onContact }: { onContact: () => void }) {
   const menuContact = () => { contactAfterClose.current = true; setMenuOpen(false); };
   return <div className="site-header-space"><header className={cn('site-header', compact && 'is-compact')}>
     <div className="site-header-inner">
-      <nav className="desktop-nav" aria-label="Main navigation">{headerLinks.map(item => <a key={item.id} aria-current={isHome ? active === item.id ? 'location' : undefined : item.id === 'work' && window.location.pathname.startsWith('/projects') ? 'page' : undefined} className="nav-roll-link" href={headerHref(item.id)}><RollText text={`${item.label}.`} /></a>)}</nav>
+      <nav className="desktop-nav" aria-label="Main navigation">{headerLinks.map(item => <a key={item.id} aria-current={linkCurrent(item.id)} className="nav-roll-link" href={headerHref(item.id)}><RollText text={`${item.label}.`} /></a>)}</nav>
       <a className="header-brand" href={isHome ? "#top" : "/"} aria-label="Ardeno Studio home"><BrandLockup collapsed={compact} /></a>
       <div className="header-actions">
         <nav className="header-socials" aria-label="Studio social links"><a className="nav-roll-link" aria-label="Ardeno on Instagram" href="https://www.instagram.com/ardenostudio/" target="_blank" rel="noopener noreferrer"><RollText text="IG." /></a><a className="nav-roll-link" aria-label="Ardeno on LinkedIn" href="https://www.linkedin.com/company/ardentstudiolk" target="_blank" rel="noopener noreferrer"><RollText text="in." /></a></nav>
@@ -108,8 +111,10 @@ export function SiteHeader({ onContact }: { onContact: () => void }) {
           <Dialog.Trigger asChild><button ref={menuTrigger} className="mobile-menu icon-button" aria-label="Open navigation"><span className="menu-lines" aria-hidden="true"><span /><span /></span></button></Dialog.Trigger>
           <Dialog.Portal><Dialog.Overlay className="site-nav-overlay" /><Dialog.Content className="site-nav-panel" onCloseAutoFocus={event => { if (contactAfterClose.current) { event.preventDefault(); contactAfterClose.current = false; menuTrigger.current?.focus({ preventScroll: true }); onContact(); } else if (window.matchMedia('(min-width: 761px)').matches) { event.preventDefault(); document.querySelector<HTMLAnchorElement>('.header-brand')?.focus({ preventScroll: true }); } }}>
             <Dialog.Title className="sr-only">Explore Ardeno</Dialog.Title><Dialog.Description className="sr-only">Find our work, services, and studio, or start a conversation.</Dialog.Description>
-            <div className="site-nav-top"><a href={isHome ? "#top" : "/"} aria-label="Ardeno Studio home" onClick={() => setMenuOpen(false)}><Wordmark /></a><div className="header-actions"><button className="header-contact" onClick={menuContact}>Let’s talk <ArrowUpRight size={16} aria-hidden="true" /></button><Dialog.Close asChild><button className="icon-button" aria-label="Close navigation"><X size={22} aria-hidden="true" /></button></Dialog.Close></div></div>
-            <nav className="site-nav-links" aria-label="Mobile navigation">{headerLinks.map((item, index) => <a key={item.id} href={headerHref(item.id)} onClick={() => setMenuOpen(false)}><span><small aria-hidden="true">0{index + 1}</small>{item.label}.</span><ArrowUpRight size={26} aria-hidden="true" /></a>)}</nav>
+            <div className="site-nav-top"><a href={isHome ? "#top" : "/"} aria-label="Ardeno Studio home" onClick={() => setMenuOpen(false)}><BrandLockup collapsed={false} /></a><div className="header-actions"><button className="header-contact" onClick={menuContact}>Let’s talk <ArrowUpRight size={16} aria-hidden="true" /></button><Dialog.Close asChild><button className="icon-button" aria-label="Close navigation"><X size={22} aria-hidden="true" /></button></Dialog.Close></div></div>
+            <nav className="site-nav-links" aria-label="Mobile navigation">{headerLinks.map((item, index) => <a key={item.id} href={headerHref(item.id)} aria-current={linkCurrent(item.id)} style={{ '--i': index } as React.CSSProperties} onClick={() => setMenuOpen(false)}><span><small aria-hidden="true">0{index + 1}</small>{item.label}.</span><ArrowUpRight size={26} aria-hidden="true" /></a>)}</nav>
+            <nav className="site-nav-more" aria-label="More pages" style={{ '--i': headerLinks.length } as React.CSSProperties}>{morePages.map(page => <a key={page.href} href={page.href} aria-current={window.location.pathname === page.href ? 'page' : undefined} onClick={() => setMenuOpen(false)}>{page.label}<ArrowUpRight size={16} aria-hidden="true" /></a>)}</nav>
+            <p className="site-nav-status" style={{ '--i': headerLinks.length + 1 } as React.CSSProperties}><span className="status-dot" aria-hidden="true" /><span>{REPLY_PROMISE}</span><span aria-hidden="true">·</span><ColomboClock /></p>
             <div className="site-nav-bottom"><p>Independent minds.<br />Colombo ↗ Everywhere.</p><nav aria-label="Mobile social links"><a href="https://www.instagram.com/ardenostudio/" target="_blank" rel="noopener noreferrer">Instagram <ArrowUpRight size={14} aria-hidden="true" /></a><a href="https://www.linkedin.com/company/ardentstudiolk" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={14} aria-hidden="true" /></a></nav></div>
           </Dialog.Content></Dialog.Portal>
         </Dialog.Root>
@@ -155,7 +160,14 @@ function Approach() {
   return <section id="process" className="site-section approach-section"><SectionLabel number="03">How we work</SectionLabel><div className="section-heading"><h2><>A clear process.<br /><em>A close partnership.</em></></h2><p className="section-intro">No disappearing acts. No confusing handoffs.<br />Just an open conversation and a clear way forward.</p></div><div className="process-grid">{steps.map(([title, description], i) => <div className="process-step" key={title}><div className="step-top"><span className="tabular-nums">0{i + 1}</span>{i === 3 ? <Check size={22} /> : <ArrowRight size={22} />}</div><h3>{title}</h3><p>{description}</p></div>)}</div></section>;
 }
 
-function Studio({ onContact, canvasRef }: { onContact: () => void; canvasRef: React.RefObject<HTMLDivElement | null> }) {
+// The founder rows under the studio statement. Each tile wears the founder's colour and pixel shimmer from the founders page
+// (FOUNDERS in Founders.tsx, copied here so the homepage doesn't load that page), and hovering the row ripples the pixels through it.
+const STUDIO_FOUNDERS = [
+  { id: 'suven-seoras', name: 'Suven Seoras', initials: 'SS', role: 'Product & engineering', tint: '#d7d9e5', pixels: ['#0A7AFF', '#4098FF', '#80BCFF'] },
+  { id: 'ovindu-karunaratne', name: 'Ovindu Karunaratne', initials: 'OK', role: 'Design & client direction', tint: '#eadfbf', pixels: ['#D4AF37', '#E0C56D', '#EBD9A1'] },
+];
+
+function Studio({ canvasRef }: { canvasRef: React.RefObject<HTMLDivElement | null> }) {
   const stickerFilter = `studio-sticker-${useId().replace(/:/g, '')}`;
   return <section id="about" className="site-section studio-section" aria-labelledby="studio-heading">
     <SectionLabel number="04">The studio</SectionLabel>
@@ -193,10 +205,9 @@ function Studio({ onContact, canvasRef }: { onContact: () => void; canvasRef: Re
       <div className="studio-people">
         <p className="studio-people-label">The people behind the pixels</p>
         <div className="founder-grid">
-          <a href="/founders#suven-seoras"><span className="founder-initial">SS</span><span><strong>Suven Seoras</strong><small>Product & engineering</small></span><ArrowUpRight size={17} /></a>
-          <a href="/founders#ovindu-karunaratne"><span className="founder-initial">OK</span><span><strong>Ovindu Karunaratne</strong><small>Design & client direction</small></span><ArrowUpRight size={17} /></a>
+          {STUDIO_FOUNDERS.map(founder => <a key={founder.id} href={`/founders#${founder.id}`}><span className="founder-initial" style={{ background: founder.tint }} aria-hidden="true"><PixelCanvas colors={founder.pixels} gap={3} host="a" /><span>{founder.initials}</span></span><span><strong>{founder.name}</strong><small>{founder.role}</small></span><ArrowUpRight size={17} /></a>)}
         </div>
-        <button className="text-button" onClick={onContact}><span className="ul">Meet your next creative partners</span><ArrowUpRight size={18} /></button>
+        <a className="text-button" href="/founders"><span className="ul">Meet your next creative partners</span><ArrowUpRight size={18} /></a>
       </div>
     </div>
     <div className="studio-principles"><span><Check size={16} /> Direct founder access</span><span><Check size={16} /> Custom design & code</span><span><Check size={16} /> Clear scope & communication</span><span><Check size={16} /> Support after launch</span></div>
@@ -402,7 +413,7 @@ export function Footer({ onContact }: { onContact: (email?: string) => void }) {
 // Logos are grey and a little faded at rest and in their own colours on hover (the black ones just fade). Without a look, a card shows
 // the name with Signal orange shimmer.
 type Look = { logo?: { src: string; width: number; height: number; text?: string }; pixels?: string[] };
-type Built = { id: string; title: string; category: string; url?: string } & Look;
+export type Built = { id: string; title: string; category: string; url?: string } & Look;
 const PIXEL_COLORS = ['#ff3301', '#ff6a45', '#ffa088']; // Signal and two tints of it
 const LOOKS: Record<string, Look> = {
   // Octane's italic wordmark as octane-smoky.vercel.app publishes it (the viewBox trimmed to the letters); one flat amber for the dots
@@ -425,22 +436,30 @@ const LOOKS: Record<string, Look> = {
 };
 const BUILT_IDS = ['octane', 'propertylk', 'motormila', 'lankawa', 'dinaya-lk', 'koel-cse', 'serendib-trading', 'ceylon-stories', 'ceylon-hygiene', 'wax-in-the-city'];
 
+// The strip's cards in BUILT_IDS order, each with its look. The founders page story uses them too (StoryWork in Founders.tsx).
+export function builtPlatforms(): Built[] {
+  return BUILT_IDS.map(id => PROJECTS.find(project => project.id === id)).filter((project): project is Project => Boolean(project)).map(project => ({ ...project, ...LOOKS[project.id] }));
+}
+
+export function BuiltCard({ project, className }: { project: Built; className?: string; key?: string }) {
+  return <a className={className ? `built-card ${className}` : 'built-card'} href={project.url ?? '#work'} {...(project.url ? { target: '_blank', rel: 'noopener noreferrer' } : {})} aria-label={`${project.title}, ${project.category}${project.url ? ' (opens in a new tab)' : ''}`}>
+    <PixelCanvas colors={project.pixels ?? PIXEL_COLORS} />
+    {project.logo
+      ? <span className={project.logo.text ? 'built-logo has-text' : 'built-logo'}><img src={project.logo.src} alt="" width={project.logo.width} height={project.logo.height} loading="lazy" decoding="async" />{project.logo.text && <span>{project.logo.text}</span>}</span>
+      : <span className="built-name">{project.title}</span>}
+    <span className="built-kind">{project.category}</span>
+    <ArrowUpRight className="built-arrow" size={14} aria-hidden="true" />
+  </a>;
+}
+
 export function BuiltStrip() {
-  const platforms: Built[] = BUILT_IDS.map(id => PROJECTS.find(project => project.id === id)).filter((project): project is Project => Boolean(project)).map(project => ({ ...project, ...LOOKS[project.id] }));
   return <section className="built-strip" aria-labelledby="built-title">
     <div className="built-grid">
       <div className="built-intro">
         <h2 className="built-badge" id="built-title">Built by Ardeno</h2>
         <p>A small studio.<br /><strong>With work out in the world.</strong></p>
       </div>
-      {platforms.map(project => <a key={project.id} className="built-card" href={project.url ?? '#work'} {...(project.url ? { target: '_blank', rel: 'noopener noreferrer' } : {})} aria-label={`${project.title}, ${project.category}${project.url ? ' (opens in a new tab)' : ''}`}>
-        <PixelCanvas colors={project.pixels ?? PIXEL_COLORS} />
-        {project.logo
-          ? <span className={project.logo.text ? 'built-logo has-text' : 'built-logo'}><img src={project.logo.src} alt="" width={project.logo.width} height={project.logo.height} loading="lazy" decoding="async" />{project.logo.text && <span>{project.logo.text}</span>}</span>
-          : <span className="built-name">{project.title}</span>}
-        <span className="built-kind">{project.category}</span>
-        <ArrowUpRight className="built-arrow" size={14} aria-hidden="true" />
-      </a>)}
+      {builtPlatforms().map(project => <BuiltCard key={project.id} project={project} />)}
     </div>
   </section>;
 }
@@ -457,7 +476,7 @@ export function Site({ onContact }: { onContact: (email?: string, message?: stri
       <Work />
       <Services onContact={onContact} />
       <Approach />
-      <Studio onContact={onContact} canvasRef={canvasRef} />
+      <Studio canvasRef={canvasRef} />
       <FAQ onContact={onContact} />
       <Contact onContact={onContact} />
     </main>

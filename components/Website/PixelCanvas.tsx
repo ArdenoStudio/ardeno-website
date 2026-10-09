@@ -3,7 +3,8 @@ import { useEffect, useRef } from 'react';
 // A canvas of small squares that ripple outwards from the middle of its parent while a mouse is over it (or it has keyboard
 // focus) and fade away when it leaves. It is the pixel shimmer of the pasted pixel-logo-grid component, without its Tailwind and
 // shadcn parts. The parent should be position: relative with overflow hidden; the canvas never takes pointer events.
-// With reduced motion nothing is drawn and the parent's own hover styles carry the effect.
+// With reduced motion nothing is drawn and the parent's own hover styles carry the effect. Pass `host` (a selector for an ancestor,
+// such as "a") when a larger element than the parent should start the shimmer.
 
 type Pixel = {
   x: number;
@@ -81,14 +82,14 @@ function disappear(p: Pixel) {
   return true;
 }
 
-export function PixelCanvas({ colors, gap = 5, speed = 30 }: { colors: string[]; gap?: number; speed?: number }) {
+export function PixelCanvas({ colors, gap = 5, speed = 30, host: hostSelector }: { colors: string[]; gap?: number; speed?: number; host?: string }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const wrap = wrapRef.current;
     const canvas = canvasRef.current;
-    const host = wrap?.parentElement;
+    const host = hostSelector ? wrap?.closest<HTMLElement>(hostSelector) : wrap?.parentElement;
     const ctx = canvas?.getContext('2d');
     if (!wrap || !canvas || !host || !ctx || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -159,7 +160,7 @@ export function PixelCanvas({ colors, gap = 5, speed = 30 }: { colors: string[];
       host.removeEventListener('focus', focus);
       host.removeEventListener('blur', blur);
     };
-  }, [colors, gap, speed]);
+  }, [colors, gap, speed, hostSelector]);
 
   return (
     <div ref={wrapRef} className="pixel-canvas" aria-hidden="true">

@@ -45,11 +45,9 @@
 .site-nav-panel *{box-sizing:border-box}
 .site-nav-panel :is(a,button):focus-visible{outline:2px solid var(--ink);outline-offset:5px}
 .site-nav-top{display:flex;align-items:center;justify-content:space-between;gap:16px}
-.site-nav-top .site-wordmark{font-size:34px;font-weight:400}
-.site-nav-top .site-wordmark>span{display:none}
 .site-nav-top .header-actions{gap:8px}
 .site-nav-top .header-contact{display:flex;align-items:center;gap:10px;min-height:44px;padding:12px 14px;border:0;border-radius:6px;background:var(--accent);color:#151613;font-size:12px}
-.site-nav-links{display:flex;flex-direction:column;margin:56px 0 48px}
+.site-nav-links{display:flex;flex-direction:column;margin:56px 0 24px}
 .site-nav-links>a{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:90px;padding:18px 0;border-bottom:1px solid var(--line);font-size:38px;line-height:1.15}
 .site-nav-links>a>span{display:flex;align-items:center;gap:18px}
 .site-nav-links small{font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}
@@ -59,11 +57,30 @@
 .site-nav-bottom p{color:var(--muted);font-size:11px;line-height:1.6;margin:0}
 .site-nav-bottom nav{display:flex;flex-direction:column;gap:2px}
 .site-nav-bottom a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:40px}
+/* The pages that are not homepage sections, a smaller list under the big links. */
+.site-nav-more{display:flex;flex-direction:column}
+.site-nav-more>a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;border-bottom:1px solid var(--line);font-size:19px}
+.site-nav-more>a[aria-current]{color:var(--muted)}
+.site-nav-more svg{color:var(--muted);flex:none;transition:transform 160ms ease-out}
+.site-nav-more>a:is(:hover,:focus-visible) svg{transform:translate(3px,-3px)}
+/* The contact band's reply promise and the live time in Colombo. */
+.site-nav-status{display:flex;align-items:center;flex-wrap:wrap;gap:6px 9px;margin:22px 0 0;font-size:11px;color:var(--muted)}
+.site-nav-status .status-dot{background:var(--accent)}
+.site-nav-status .ar-clock{gap:6px}
+.site-nav-status :is(.ar-clock-city,.ar-clock-time){min-width:0;color:inherit}
+/* You are here: the current section's number turns Signal orange and a dot follows its name. */
+.site-nav-links>a[aria-current] small{color:var(--accent)}
+.site-nav-links>a[aria-current]>span::after{content:"";width:9px;height:9px;flex:none;border-radius:50%;background:var(--accent)}
+/* When the menu opens its links rise in one after another (--i is each one's place in the order). */
+.site-nav-links>a,.site-nav-more,.site-nav-status{animation:nav-item-rise 520ms cubic-bezier(.22,.9,.3,1) both;animation-delay:calc(60ms + var(--i,0) * 55ms)}
+@keyframes nav-item-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 @keyframes nav-panel-enter{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:1000px) and (min-width:761px){.site-header{padding:0 24px}.site-header-inner{gap:16px}.site-header .desktop-nav{gap:18px;font-size:12px}.site-header .header-actions{gap:20px}.header-socials{gap:10px;font-size:12px}.site-header .site-wordmark{font-size:35px}.site-header .header-contact{padding-left:15px;padding-right:15px;gap:8px}.site-header .site-wordmark>span{display:none}}
 @media(max-width:760px){.site-header-space{height:82px}.site-header{padding:max(0px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) 0 max(20px,env(safe-area-inset-left))}.site-header-inner{display:flex;justify-content:space-between;gap:14px;height:82px}.site-header.is-compact .site-header-inner{height:68px}.site-header .desktop-nav,.header-socials{display:none}.site-header .site-wordmark{font-size:34px}.site-header .site-wordmark>span{display:none}.site-header .header-actions{align-self:center;gap:8px}.site-header .header-contact,.site-header.is-compact .header-contact{align-self:center;align-items:center;min-height:44px;border-radius:6px;padding:12px 14px;font-size:12px;gap:8px}.site-header .mobile-menu{display:inline-flex;min-width:44px;min-height:44px}.site-header.is-compact{padding-top:0}}
 @media(max-width:360px){.site-header{padding-left:18px;padding-right:14px}.site-header .site-wordmark{font-size:29px}.site-header .header-actions{gap:2px}.site-header .header-contact{padding:12px;font-size:11px}.site-nav-panel{padding-left:20px;padding-right:16px}.site-nav-top{gap:8px}.site-nav-top .site-wordmark{font-size:29px}.site-nav-top .header-actions{gap:2px}.site-nav-top .header-contact{padding:12px;font-size:11px}.site-nav-links>a{font-size:34px;min-height:82px}.site-nav-links{margin-top:40px}}
 @media(max-width:310px){.site-header .site-wordmark,.site-nav-top .site-wordmark{font-size:25px}}
+/* Shorter phones (an iPhone SE is 667px tall): tighter rows so the whole menu, socials included, fits without scrolling. */
+@media(max-height:760px){.site-nav-links{margin-top:20px;margin-bottom:16px}.site-nav-links>a{min-height:64px;padding:12px 0;font-size:32px}.site-nav-more>a{min-height:44px;font-size:17px}.site-nav-status{margin-top:16px}.site-nav-bottom{padding-top:12px}}
 @media(max-height:600px){.site-nav-links{margin-top:24px;margin-bottom:20px}.site-nav-links>a{min-height:65px;padding:12px 0;font-size:30px}}
 @media(prefers-reduced-motion:reduce){.site-nav-panel,.site-nav-panel *{animation:none!important;transition:none!important}}
 @media(max-width:760px){.site-header-space{height:calc(82px + env(safe-area-inset-top))}.site-header.is-compact{padding-top:env(safe-area-inset-top)}}

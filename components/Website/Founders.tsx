@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as Accordion from '@radix-ui/react-accordion';
 import { ArrowRight, ArrowUpRight, Check, Plus } from 'lucide-react';
-import { SiteHeader, SectionLabel, BuiltStrip, Contact, Footer } from './Site';
+import { SiteHeader, SectionLabel, BuiltCard, builtPlatforms, Contact, Footer } from './Site';
 import { prepareContactDraft } from './ContactForm';
 import { requestPageNavigation } from './pageNavigation';
 import { applySeoToDocument } from '../../seo';
@@ -105,13 +105,16 @@ const STEPS: [string, string][] = [
   ['Support after launch.', 'You\u2019ll always know who to call. It\u2019s one of two numbers.'],
 ];
 
+// `work` is the Built by Ardeno cards (ids in data/projects.ts) that light up beside the timeline when the reader reaches that beat:
+// the ones the beat names, and at "Today" the rest, so every card is lit by the end.
 const TIMELINE = [
-  { year: '2026', title: 'Two friends, one studio.', copy: 'Ardeno Studio is founded in Colombo. Two builders, one shared obsession: work that ships.' },
-  { year: '2026', title: 'First client site goes live.', copy: 'A ladies-only salon in Nugegoda. Wax in the City opens its digital doors.' },
-  { year: '2026', title: 'First platform ships.', copy: 'Motormila, the vehicle market tracker. Live prices, real data, out in the world.' },
-  { year: '2026', title: 'The roster grows.', copy: 'Serendib Trading and Ceylon Hygiene Solutions join as clients. Dinaya, Koel and Lankawa ship as platforms.' },
-  { year: 'Today', title: 'Two people. A real body of work.', copy: 'The studio is still two founders. The work speaks for itself.' },
+  { year: '2026', title: 'Two friends, one studio.', copy: 'Ardeno Studio is founded in Colombo. Two builders, one shared obsession: work that ships.', work: [] },
+  { year: '2026', title: 'First client site goes live.', copy: 'A ladies-only salon in Nugegoda. Wax in the City opens its digital doors.', work: ['wax-in-the-city'] },
+  { year: '2026', title: 'First platform ships.', copy: 'Motormila, the vehicle market tracker. Live prices, real data, out in the world.', work: ['motormila'] },
+  { year: '2026', title: 'The roster grows.', copy: 'Serendib Trading and Ceylon Hygiene Solutions join as clients. Dinaya, Koel and Lankawa ship as platforms.', work: ['serendib-trading', 'ceylon-hygiene', 'dinaya-lk', 'koel-cse', 'lankawa'] },
+  { year: 'Today', title: 'Two people. A real body of work.', copy: 'The studio is still two founders. The work speaks for itself.', work: ['octane', 'propertylk', 'ceylon-stories'] },
 ];
+const WORK = builtPlatforms();
 
 const VALUES = ['Character.', 'Clarity.', 'Purpose.', 'Craft.', 'Colombo \u2197 Everywhere.'];
 
@@ -169,6 +172,57 @@ function CountUp({ value, suffix = '' }: { value: number; suffix?: string }) {
   return <span ref={ref} className="tabular-nums">{display}{suffix}</span>;
 }
 
+// Which timeline beat is being read: the last one whose top has passed 55% of the way down the screen, or -1 above the first.
+function useActiveBeat(listRef: React.RefObject<HTMLOListElement | null>) {
+  const [active, setActive] = useState(-1);
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      const line = window.innerHeight * 0.55;
+      let next = -1;
+      Array.from(list.children as HTMLCollectionOf<HTMLElement>).forEach((beat, index) => { if (beat.getBoundingClientRect().top < line) next = index; });
+      setActive(next);
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(measure); };
+    measure();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+    };
+  }, [listRef]);
+  return active;
+}
+
+// Beside the timeline (under it on narrow screens), every site the studio has built, lighting up as the story reaches the beat it
+// went live in. They used to be the Built by Ardeno strip under the story. The beat being read rings its own cards, and the "Next"
+// beat lights the empty slot at the end, which opens the contact dialog. Styles are in founders.css.
+function StoryWork({ active, onContact }: { active: number; onContact: () => void }) {
+  const lit = new Set(TIMELINE.slice(0, active + 1).flatMap(beat => beat.work));
+  const fresh = new Set(TIMELINE[active]?.work ?? []);
+  const next = active >= TIMELINE.length;
+  return (
+    <aside className="story-work" aria-labelledby="story-work-title">
+      <div className="story-work-head">
+        <h3 className="built-badge" id="story-work-title">Built by Ardeno</h3>
+        <p aria-hidden="true"><span className="tabular-nums">{lit.size}</span>out in the world</p>
+      </div>
+      <div className="story-work-grid">
+        {WORK.map(project => <BuiltCard key={project.id} project={project} className={[lit.has(project.id) && 'is-lit', fresh.has(project.id) && 'is-new'].filter(Boolean).join(' ')} />)}
+        <button type="button" className={`story-work-yours${next ? ' is-lit' : ''}`} onClick={onContact}>
+          <span>Your project</span><small>Start a conversation</small>
+          <ArrowUpRight size={14} aria-hidden="true" />
+        </button>
+      </div>
+    </aside>
+  );
+}
+
 // ─── Sections ────────────────────────────────────────────────────────────────
 
 function FoundersHero({ onContact }: { onContact: () => void }) {
@@ -201,7 +255,7 @@ function FoundersHero({ onContact }: { onContact: () => void }) {
                 <span className="cta-label"><span>Work with us</span><span aria-hidden="true">Work with us</span></span>
                 <span className="cta-arrow" aria-hidden="true"><ArrowUpRight size={18} /><ArrowUpRight size={18} /></span>
               </button>
-              <a className="text-button" href="/"><span className="ul">See the studio&rsquo;s work</span><ArrowUpRight size={18} /></a>
+              <a className="text-button" href="/projects"><span className="ul">See the studio&rsquo;s work</span><ArrowUpRight size={18} /></a>
             </div>
           </div>
           <ul className="founder-fan" aria-label="The founders">
@@ -309,6 +363,8 @@ function ValuesTicker() {
 export default function FoundersPage() {
   useSiteInteractions();
   const canvasRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<HTMLOListElement>(null);
+  const activeBeat = useActiveBeat(timelineRef);
 
   useEffect(() => {
     applySeoToDocument('founders');
@@ -392,26 +448,28 @@ export default function FoundersPage() {
                 <h2>The story<br /><span>so far.</span></h2>
               </div>
             </div>
-            <ol className="founders-timeline f-rise">
-              {TIMELINE.map(beat => (
-                <li className="timeline-beat" key={beat.title}>
-                  <span className="timeline-year tabular-nums">{beat.year}</span>
-                  <h3>{beat.title}</h3>
-                  <p>{beat.copy}</p>
+            <div className="founders-story-body">
+              <ol ref={timelineRef} className="founders-timeline f-rise">
+                {TIMELINE.map(beat => (
+                  <li className="timeline-beat" key={beat.title}>
+                    <span className="timeline-year tabular-nums">{beat.year}</span>
+                    <h3>{beat.title}</h3>
+                    <p>{beat.copy}</p>
+                  </li>
+                ))}
+                <li className="timeline-beat timeline-cta-beat">
+                  <span className="timeline-year tabular-nums">Next</span>
+                  <h3>Your project belongs here too.</h3>
+                  <button type="button" className="site-button" onClick={() => openContact()}>
+                    <span>Start a conversation</span><ArrowUpRight size={16} aria-hidden="true" />
+                  </button>
                 </li>
-              ))}
-              <li className="timeline-beat timeline-cta-beat">
-                <span className="timeline-year tabular-nums">Next</span>
-                <h3>Your project belongs here too.</h3>
-                <button type="button" className="site-button" onClick={() => openContact()}>
-                  <span>Start a conversation</span><ArrowUpRight size={16} aria-hidden="true" />
-                </button>
-              </li>
-            </ol>
+              </ol>
+              <StoryWork active={activeBeat} onContact={() => openContact()} />
+            </div>
           </RevealSection>
 
           <ValuesTicker />
-          <BuiltStrip />
           <Contact onContact={openContact} />
         </main>
         <Footer onContact={openContact} />

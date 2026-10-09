@@ -174,9 +174,33 @@ export function usePageNavigation(enabled = true) {
       if (!anchor || anchor.hasAttribute('download') || (anchor.target && anchor.target !== '_self')) return;
       const url = new URL(anchor.href, window.location.href);
       if (url.origin !== window.location.origin || !isPage(url.pathname.replace(/\/+$/, '') || '/')) return;
-      if (url.pathname === current.current.pathname && url.search === current.current.search) return;
+      if (url.pathname === current.current.pathname && url.search === current.current.search) {
+        if (url.hash) glideToSection(event, url.hash);
+        return;
+      }
       event.preventDefault();
       navigate(url);
+    };
+    // A section link on the same page (the header's Work., Services., Studio., Back to top) glides there. Chrome jumps straight to
+    // a #fragment even with scroll-behavior: smooth. The address bar and history change as a native fragment link's would (captureClick
+    // then syncs the location), focus moves to the section like the hero's "Explore our work", and reduced motion jumps. The scroll
+    // waits a frame so the mobile menu, which closes on the same click, has let go of the page first.
+    const glideToSection = (event: MouseEvent, hash: string) => {
+      let target: HTMLElement | null = null;
+      try { target = document.getElementById(decodeURIComponent(hash.slice(1))); } catch { return; }
+      if (!target) return;
+      event.preventDefault();
+      if (hash !== window.location.hash) window.history.pushState(null, '', hash);
+      const section = target;
+      window.requestAnimationFrame(() => {
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        section.scrollIntoView({ behavior: reduced ? 'instant' : 'smooth', block: 'start' });
+        if (!section.hasAttribute('tabindex')) {
+          section.setAttribute('tabindex', '-1');
+          section.addEventListener('blur', () => section.removeAttribute('tabindex'), { once: true });
+        }
+        section.focus({ preventScroll: true });
+      });
     };
     const pop = () => {
       const url = new URL(window.location.href);
