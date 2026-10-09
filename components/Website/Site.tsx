@@ -12,6 +12,7 @@ import { StickerPlayground } from './StickerPlayground';
 import { cn, navigation } from './utils';
 import { featuredProjects, portfolio } from '../../data/portfolio';
 import { ProjectCard } from './ProjectCard';
+import { CONTACT_HASH, ContactSheet } from './ContactSheet';
 
 
 // Header lockup, drawn from the official master (public/brand/ardeno-lockup-primary.svg, see scripts/generate-brand-lockup.cjs):
@@ -70,7 +71,9 @@ export function SiteHeader({ onContact }: { onContact: () => void }) {
   // The section being read on the homepage, or Projects on the project pages; the desktop links and the mobile menu both mark it.
   const linkCurrent = (id: string) => isHome ? active === id ? 'location' as const : undefined : id === 'work' && window.location.pathname.startsWith('/projects') ? 'page' as const : undefined;
   // The menu's second group: the pages that are not homepage sections. Off the homepage the big "Projects." link already opens the archive.
-  const morePages = [{ label: 'All projects', href: '/projects' }, { label: 'Founders', href: '/founders' }, { label: 'Contact', href: '/contact' }].filter(page => isHome || page.href !== '/projects');
+  // Contact follows them as a button that closes the menu and pulls down the contact sheet.
+  const morePages = [{ label: 'All projects', href: '/projects' }, { label: 'Founders', href: '/founders' }].filter(page => isHome || page.href !== '/projects');
+  const contactTab = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     let frame = 0;
@@ -106,18 +109,19 @@ export function SiteHeader({ onContact }: { onContact: () => void }) {
       <a className="header-brand" href={isHome ? "#top" : "/"} aria-label="Ardeno Studio home"><BrandLockup collapsed={compact} /></a>
       <div className="header-actions">
         <nav className="header-socials" aria-label="Studio social links"><a className="nav-roll-link" aria-label="Ardeno on Instagram" href="https://www.instagram.com/ardenostudio/" target="_blank" rel="noopener noreferrer"><RollText text="IG." /></a><a className="nav-roll-link" aria-label="Ardeno on LinkedIn" href="https://www.linkedin.com/company/ardentstudiolk" target="_blank" rel="noopener noreferrer"><RollText text="in." /></a></nav>
-        <a href={window.location.pathname === '/contact' ? '#enquiry' : '/contact'} aria-current={window.location.pathname === '/contact' ? 'page' : undefined} className={cn('header-contact', playContactEntrance && 'is-first-entrance')} onClick={event => { burstSparks(event); }}><span className="nav-roll"><span>Let’s talk</span><span aria-hidden="true">Let’s talk</span></span><ArrowUpRight size={16} aria-hidden="true" /></a>
+        <a ref={contactTab} href={CONTACT_HASH} aria-haspopup="dialog" className={cn('header-contact', playContactEntrance && 'is-first-entrance')} onClick={event => { burstSparks(event); }}><span className="nav-roll"><span>Let’s talk</span><span aria-hidden="true">Let’s talk</span></span><ArrowUpRight size={16} aria-hidden="true" /></a>
         <Dialog.Root open={menuOpen} onOpenChange={setMenuOpen}>
           <Dialog.Trigger asChild><button ref={menuTrigger} className="mobile-menu icon-button" aria-label="Open navigation"><span className="menu-lines" aria-hidden="true"><span /><span /></span></button></Dialog.Trigger>
           <Dialog.Portal><Dialog.Overlay className="site-nav-overlay" /><Dialog.Content className="site-nav-panel" onCloseAutoFocus={event => { if (contactAfterClose.current) { event.preventDefault(); contactAfterClose.current = false; menuTrigger.current?.focus({ preventScroll: true }); onContact(); } else if (window.matchMedia('(min-width: 761px)').matches) { event.preventDefault(); document.querySelector<HTMLAnchorElement>('.header-brand')?.focus({ preventScroll: true }); } }}>
             <Dialog.Title className="sr-only">Explore Ardeno</Dialog.Title><Dialog.Description className="sr-only">Find our work, services, and studio, or start a conversation.</Dialog.Description>
             <div className="site-nav-top"><a href={isHome ? "#top" : "/"} aria-label="Ardeno Studio home" onClick={() => setMenuOpen(false)}><BrandLockup collapsed={false} /></a><div className="header-actions"><button className="header-contact" onClick={menuContact}>Let’s talk <ArrowUpRight size={16} aria-hidden="true" /></button><Dialog.Close asChild><button className="icon-button" aria-label="Close navigation"><X size={22} aria-hidden="true" /></button></Dialog.Close></div></div>
             <nav className="site-nav-links" aria-label="Mobile navigation">{headerLinks.map((item, index) => <a key={item.id} href={headerHref(item.id)} aria-current={linkCurrent(item.id)} style={{ '--i': index } as React.CSSProperties} onClick={() => setMenuOpen(false)}><span><small aria-hidden="true">0{index + 1}</small>{item.label}.</span><ArrowUpRight size={26} aria-hidden="true" /></a>)}</nav>
-            <nav className="site-nav-more" aria-label="More pages" style={{ '--i': headerLinks.length } as React.CSSProperties}>{morePages.map(page => <a key={page.href} href={page.href} aria-current={window.location.pathname === page.href ? 'page' : undefined} onClick={() => setMenuOpen(false)}>{page.label}<ArrowUpRight size={16} aria-hidden="true" /></a>)}</nav>
+            <nav className="site-nav-more" aria-label="More pages" style={{ '--i': headerLinks.length } as React.CSSProperties}>{morePages.map(page => <a key={page.href} href={page.href} aria-current={window.location.pathname === page.href ? 'page' : undefined} onClick={() => setMenuOpen(false)}>{page.label}<ArrowUpRight size={16} aria-hidden="true" /></a>)}<button type="button" onClick={menuContact}>Contact<ArrowUpRight size={16} aria-hidden="true" /></button></nav>
             <p className="site-nav-status" style={{ '--i': headerLinks.length + 1 } as React.CSSProperties}><span className="status-dot" aria-hidden="true" /><span>{REPLY_PROMISE}</span><span aria-hidden="true">·</span><ColomboClock /></p>
             <div className="site-nav-bottom"><p>Independent minds.<br />Colombo ↗ Everywhere.</p><nav aria-label="Mobile social links"><a href="https://www.instagram.com/ardenostudio/" target="_blank" rel="noopener noreferrer">Instagram <ArrowUpRight size={14} aria-hidden="true" /></a><a href="https://www.linkedin.com/company/ardentstudiolk" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={14} aria-hidden="true" /></a></nav></div>
           </Dialog.Content></Dialog.Portal>
         </Dialog.Root>
+        <ContactSheet tabRef={contactTab} />
       </div>
     </div>
   </header></div>;
@@ -347,7 +351,7 @@ function CopyEmail({ sparks = ['--accent', '--paper'] }: { sparks?: string[] }) 
   </>;
 }
 
-const footerLinks = [['Projects', '/projects'], ['Services', '/#services'], ['Studio', '/#about'], ['Contact', '/contact']];
+const footerLinks = [['Projects', '/projects'], ['Services', '/#services'], ['Studio', '/#about'], ['Contact', CONTACT_HASH]];
 const footerSocials = [
   ['Instagram', 'https://www.instagram.com/ardenostudio/'],
   ['LinkedIn', 'https://www.linkedin.com/company/ardentstudiolk'],

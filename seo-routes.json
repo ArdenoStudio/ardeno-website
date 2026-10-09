@@ -19,21 +19,6 @@
     ]
   },
   "routes": {
-    "contact": {
-      "path": "/contact",
-      "title": "Contact Ardeno Studio | Let’s Talk",
-      "description": "Start a conversation with Ardeno Studio in Colombo. Tell us about your website, brand or digital product, share a budget range, or reach the founders by email and WhatsApp.",
-      "keywords": [
-        "contact Ardeno Studio",
-        "web design enquiry Sri Lanka",
-        "Colombo design studio",
-        "start a website project"
-      ],
-      "type": "contact",
-      "lastmod": "2026-10-08",
-      "priority": "0.7",
-      "changefreq": "monthly"
-    },
     "home": {
       "path": "/",
       "title": "Ardeno Studio | Web Design and Development in Sri Lanka",

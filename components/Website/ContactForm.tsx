@@ -23,7 +23,8 @@ export function prepareContactDraft(email?: string, message?: string) {
   window.dispatchEvent(new Event('ardeno:contact-prefill'));
 }
 
-export function ContactForm() {
+// onDone: where the sheet shows the form, the success message's button closes the sheet instead of going to the homepage.
+export function ContactForm({ onDone }: { onDone?: () => void } = {}) {
   const [fields, setFields] = useState(visitDraft);
   useEffect(() => { visitDraft = fields; }, [fields]);
   const [state, setState] = useState<State>('idle');
@@ -65,7 +66,7 @@ export function ContactForm() {
   }
 
 
-  return <div className="contact-dialog-form">{state === 'success' ? <div className="contact-success" role="status"><span><Check size={30} /></span><h3>Your enquiry is with us.</h3><p>We’ll get back to you at the email address you provided.</p><a className="site-button" href="/">Back to exploring <ArrowUpRight size={17} /></a></div> : <form onSubmit={submit}>
+  return <div className="contact-dialog-form">{state === 'success' ? <div className="contact-success" role="status"><span><Check size={30} /></span><h3>Your enquiry is with us.</h3><p>We’ll get back to you at the email address you provided.</p>{onDone ? <button type="button" className="site-button" onClick={onDone}>Back to exploring <ArrowUpRight size={17} /></button> : <a className="site-button" href="/">Back to exploring <ArrowUpRight size={17} /></a>}</div> : <form onSubmit={submit}>
       <div className="form-row"><label>Your name <span>*</span><input name="name" value={fields.name} onChange={e => update('name', e.target.value)} autoComplete="name" placeholder="Alex, for example" required minLength={2} maxLength={80} disabled={state === 'sending'} /></label><label>Email address <span>*</span><input name="email" value={fields.email} onChange={e => update('email', e.target.value)} type="email" autoComplete="email" placeholder="you@company.com" required maxLength={254} disabled={state === 'sending'} /></label></div>
       <div className="form-row"><label>Company <span className="optional">optional</span><input name="company" value={fields.company} onChange={e => update('company', e.target.value)} autoComplete="organization" placeholder="Your company or brand" maxLength={120} disabled={state === 'sending'} /></label><label>Phone or WhatsApp <span className="optional">optional</span><input name="phone" type="tel" value={fields.phone} onChange={e => update('phone', e.target.value)} autoComplete="tel" placeholder="e.g. +94 77 123 4567" maxLength={80} disabled={state === 'sending'} /></label></div>
       <label>Budget range <span className="optional">optional</span><select name="budget" value={fields.budget} onChange={e => update('budget', e.target.value)} disabled={state === 'sending'}><option value="">Select a range</option>{budgetOptions.map(budget => <option key={budget} value={budget}>{budget}</option>)}</select></label>

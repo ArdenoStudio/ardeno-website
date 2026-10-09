@@ -74,7 +74,7 @@ export const buildStructuredData = (route: SeoRouteKey) => {
     });
   }
 
-  const pageType = route === 'contact' ? 'ContactPage' : seo.type === "collection" ? "CollectionPage" : route === "faq" ? "FAQPage" : "WebPage";
+  const pageType = seo.type === "collection" ? "CollectionPage" : route === "faq" ? "FAQPage" : "WebPage";
   const pageName = seo.title.split("|")[0].trim();
   const graph: Record<string, unknown>[] = [
     {

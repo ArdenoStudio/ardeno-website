@@ -2,8 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as Accordion from '@radix-ui/react-accordion';
 import { ArrowRight, ArrowUpRight, Check, Plus } from 'lucide-react';
 import { SiteHeader, SectionLabel, BuiltCard, builtPlatforms, Contact, Footer } from './Site';
-import { prepareContactDraft } from './ContactForm';
-import { requestPageNavigation } from './pageNavigation';
+import { openContactSheet } from './ContactSheet';
 import { applySeoToDocument } from '../../seo';
 import { trackUtmParams } from '../UI/trackUtm';
 import { PixelCanvas } from './PixelCanvas';
@@ -388,10 +387,7 @@ export default function FoundersPage() {
     }
   }, []);
 
-  const openContact = (email?: unknown, message?: unknown) => {
-    prepareContactDraft(typeof email === 'string' ? email : undefined, typeof message === 'string' ? message : undefined);
-    requestPageNavigation('/contact');
-  };
+  const openContact = (email?: unknown, message?: unknown) => openContactSheet(typeof email === 'string' ? email : undefined, typeof message === 'string' ? message : undefined);
 
   return (
     <div className="ardeno-site">

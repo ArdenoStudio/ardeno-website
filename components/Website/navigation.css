@@ -59,10 +59,10 @@
 .site-nav-bottom a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:40px}
 /* The pages that are not homepage sections, a smaller list under the big links. */
 .site-nav-more{display:flex;flex-direction:column}
-.site-nav-more>a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;border-bottom:1px solid var(--line);font-size:19px}
+.site-nav-more>:is(a,button){display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:52px;padding:0;border:0;border-bottom:1px solid var(--line);background:none;color:inherit;font:inherit;font-size:19px;text-align:left;cursor:pointer}
 .site-nav-more>a[aria-current]{color:var(--muted)}
 .site-nav-more svg{color:var(--muted);flex:none;transition:transform 160ms ease-out}
-.site-nav-more>a:is(:hover,:focus-visible) svg{transform:translate(3px,-3px)}
+.site-nav-more>:is(a,button):is(:hover,:focus-visible) svg{transform:translate(3px,-3px)}
 /* The contact band's reply promise and the live time in Colombo. */
 .site-nav-status{display:flex;align-items:center;flex-wrap:wrap;gap:6px 9px;margin:22px 0 0;font-size:11px;color:var(--muted)}
 .site-nav-status .status-dot{background:var(--accent)}
@@ -80,7 +80,7 @@
 @media(max-width:360px){.site-header{padding-left:18px;padding-right:14px}.site-header .site-wordmark{font-size:29px}.site-header .header-actions{gap:2px}.site-header .header-contact{padding:12px;font-size:11px}.site-nav-panel{padding-left:20px;padding-right:16px}.site-nav-top{gap:8px}.site-nav-top .site-wordmark{font-size:29px}.site-nav-top .header-actions{gap:2px}.site-nav-top .header-contact{padding:12px;font-size:11px}.site-nav-links>a{font-size:34px;min-height:82px}.site-nav-links{margin-top:40px}}
 @media(max-width:310px){.site-header .site-wordmark,.site-nav-top .site-wordmark{font-size:25px}}
 /* Shorter phones (an iPhone SE is 667px tall): tighter rows so the whole menu, socials included, fits without scrolling. */
-@media(max-height:760px){.site-nav-links{margin-top:20px;margin-bottom:16px}.site-nav-links>a{min-height:64px;padding:12px 0;font-size:32px}.site-nav-more>a{min-height:44px;font-size:17px}.site-nav-status{margin-top:16px}.site-nav-bottom{padding-top:12px}}
+@media(max-height:760px){.site-nav-links{margin-top:20px;margin-bottom:16px}.site-nav-links>a{min-height:64px;padding:12px 0;font-size:32px}.site-nav-more>:is(a,button){min-height:44px;font-size:17px}.site-nav-status{margin-top:16px}.site-nav-bottom{padding-top:12px}}
 @media(max-height:600px){.site-nav-links{margin-top:24px;margin-bottom:20px}.site-nav-links>a{min-height:65px;padding:12px 0;font-size:30px}}
 @media(prefers-reduced-motion:reduce){.site-nav-panel,.site-nav-panel *{animation:none!important;transition:none!important}}
 @media(max-width:760px){.site-header-space{height:calc(82px + env(safe-area-inset-top))}.site-header.is-compact{padding-top:env(safe-area-inset-top)}}

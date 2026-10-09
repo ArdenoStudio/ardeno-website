@@ -61,6 +61,13 @@
   to = "/index.ts"
   status = 200
 
+# The contact page became the Let’s talk sheet; /?contact opens it on the homepage.
+[[redirects]]
+  from = "/contact"
+  to = "/?contact"
+  status = 301
+  force = true
+
 # SPA fallback — must be last
 [[redirects]]
   from = "/*"

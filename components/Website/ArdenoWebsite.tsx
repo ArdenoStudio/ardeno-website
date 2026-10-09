@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { Site } from './Site';
-import { ContactPage } from './ContactPage';
-import { prepareContactDraft } from './ContactForm';
-import { requestPageNavigation } from './pageNavigation';
+import { openContactSheet } from './ContactSheet';
 import { trackUtmParams } from '../UI/trackUtm';
 import { applySeoToDocument, type SeoRouteKey } from '../../seo';
 import { findProject } from '../../data/portfolio';
@@ -23,11 +21,8 @@ export default function ArdenoWebsite({ pathname = window.location.pathname }: {
   const isProjectDetail = path.startsWith('/projects/');
   const project = isProjectDetail ? findProject(path.slice('/projects/'.length)) : undefined;
   // Most callers pass this straight to onClick, so only strings count as an email or a message starter to prefill.
-  const openContact = (email?: unknown, message?: unknown) => {
-    prepareContactDraft(typeof email === 'string' ? email : undefined, typeof message === 'string' ? message : undefined);
-    if (path === '/contact') document.querySelector<HTMLInputElement>('#enquiry input[name="name"]')?.focus();
-    else requestPageNavigation('/contact');
-  };
+  // Every contact button pulls down the Let's talk sheet from the header (there is no contact page).
+  const openContact = (email?: unknown, message?: unknown) => openContactSheet(typeof email === 'string' ? email : undefined, typeof message === 'string' ? message : undefined);
 
   useEffect(() => {
     trackUtmParams();
@@ -42,7 +37,7 @@ export default function ArdenoWebsite({ pathname = window.location.pathname }: {
   }, []);
 
   useEffect(() => {
-    applySeoToDocument((path === '/contact' ? 'contact' : isProjects || isProjectDetail ? project ? `project-${project.id}` : 'projects' : 'home') as SeoRouteKey);
+    applySeoToDocument((isProjects || isProjectDetail ? project ? `project-${project.id}` : 'projects' : 'home') as SeoRouteKey);
     if (isProjectDetail && !project) {
       document.title = 'Project not found | Ardeno Studio';
       document.querySelector('meta[name="robots"]')?.setAttribute('content', 'noindex, follow');
@@ -50,6 +45,6 @@ export default function ArdenoWebsite({ pathname = window.location.pathname }: {
   }, [path]);
 
   return <div className="ardeno-site"><div key={path}>
-    {path === '/contact' ? <ContactPage onContact={openContact} /> : isProjects ? <ProjectsIndex onContact={openContact} /> : isProjectDetail ? project ? <ProjectDetail project={project} onContact={openContact} /> : <ProjectNotFound onContact={openContact} /> : <Site onContact={openContact} />}
+    {isProjects ? <ProjectsIndex onContact={openContact} /> : isProjectDetail ? project ? <ProjectDetail project={project} onContact={openContact} /> : <ProjectNotFound onContact={openContact} /> : <Site onContact={openContact} />}
   </div></div>;
 }
