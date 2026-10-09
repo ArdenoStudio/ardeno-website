@@ -23,7 +23,9 @@ export function prepareContactDraft(email?: string, message?: string) {
   window.dispatchEvent(new Event('ardeno:contact-prefill'));
 }
 
-export function ContactForm() {
+// onDone: where the sheet shows the form, the success message's button closes the sheet instead of going to the homepage.
+// onSent: told when an enquiry has gone through, so the sheet can play its "sent" close.
+export function ContactForm({ onDone, onSent }: { onDone?: () => void; onSent?: () => void } = {}) {
   const [fields, setFields] = useState(visitDraft);
   useEffect(() => { visitDraft = fields; }, [fields]);
   const [state, setState] = useState<State>('idle');
@@ -59,13 +61,13 @@ export function ContactForm() {
       const utm = getStoredUtm();
       const response = await fetch('/api/send-email', { method: 'POST', signal: controller.signal, headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ ...fields, name: fields.name.trim(), email: fields.email.trim(), message: fields.message.trim(), company: fields.company.trim() || '-', phone: fields.phone?.trim() || undefined, turnstileToken: token, utm_source: utm.utm_source || 'direct', utm_medium: utm.utm_medium || 'none', utm_campaign: utm.utm_campaign || 'none', page_path: window.location.pathname, page_url: window.location.href, referrer: document.referrer || 'direct', submitted_at: new Date().toISOString() }) });
       if (!response.ok) throw new Error('Delivery unavailable');
-      setState('success'); setFields(initial); messageStarter = ''; setToken('');
+      setState('success'); setFields(initial); messageStarter = ''; setToken(''); onSent?.();
     } catch { setState('error'); setToken(''); setError('We couldn’t send your enquiry. Please try again, or email us directly below.'); }
     finally { window.clearTimeout(timer); }
   }
 
 
-  return <div className="contact-dialog-form">{state === 'success' ? <div className="contact-success" role="status"><span><Check size={30} /></span><h3>Your enquiry is with us.</h3><p>We’ll get back to you at the email address you provided.</p><a className="site-button" href="/">Back to exploring <ArrowUpRight size={17} /></a></div> : <form onSubmit={submit}>
+  return <div className="contact-dialog-form">{state === 'success' ? <div className="contact-success" role="status"><span><Check size={30} /></span><h3>Your enquiry is with us.</h3><p>We’ll get back to you at the email address you provided.</p>{onDone ? <button type="button" className="site-button" onClick={onDone}>Back to exploring <ArrowUpRight size={17} /></button> : <a className="site-button" href="/">Back to exploring <ArrowUpRight size={17} /></a>}</div> : <form onSubmit={submit}>
       <div className="form-row"><label>Your name <span>*</span><input name="name" value={fields.name} onChange={e => update('name', e.target.value)} autoComplete="name" placeholder="Alex, for example" required minLength={2} maxLength={80} disabled={state === 'sending'} /></label><label>Email address <span>*</span><input name="email" value={fields.email} onChange={e => update('email', e.target.value)} type="email" autoComplete="email" placeholder="you@company.com" required maxLength={254} disabled={state === 'sending'} /></label></div>
       <div className="form-row"><label>Company <span className="optional">optional</span><input name="company" value={fields.company} onChange={e => update('company', e.target.value)} autoComplete="organization" placeholder="Your company or brand" maxLength={120} disabled={state === 'sending'} /></label><label>Phone or WhatsApp <span className="optional">optional</span><input name="phone" type="tel" value={fields.phone} onChange={e => update('phone', e.target.value)} autoComplete="tel" placeholder="e.g. +94 77 123 4567" maxLength={80} disabled={state === 'sending'} /></label></div>
       <label>Budget range <span className="optional">optional</span><select name="budget" value={fields.budget} onChange={e => update('budget', e.target.value)} disabled={state === 'sending'}><option value="">Select a range</option>{budgetOptions.map(budget => <option key={budget} value={budget}>{budget}</option>)}</select></label>

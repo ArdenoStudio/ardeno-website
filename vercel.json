@@ -6,6 +6,11 @@
       "permanent": true
     },
     {
+      "source": "/contact",
+      "destination": "/?contact",
+      "permanent": true
+    },
+    {
       "source": "/founders.html",
       "destination": "/founders",
       "permanent": true
@@ -149,10 +154,6 @@
     }
   ],
   "rewrites": [
-    {
-      "source": "/contact",
-      "destination": "/contact/index.html"
-    },
     {
       "source": "/services/booking-systems",
       "destination": "/services/booking-systems/index.html"

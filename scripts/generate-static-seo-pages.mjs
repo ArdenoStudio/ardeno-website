@@ -43,7 +43,7 @@ const STATIC_ROUTE_CONTENT = {
       body: [
         "The people on the call are the people doing the work. Design and engineering develop together, with the founders carrying a project from first sketch to launch and staying available for support afterwards.",
         "The studio's story began in Colombo in 2026. Its body of work includes client websites for Wax In The City, Serendib Trading, and Ceylon Hygiene Solutions, alongside digital platforms for vehicle data, booking, stock alerts, and civic intelligence.",
-        "Explore the founders' GitHub and LinkedIn profiles on this page, browse the project archive, or use the contact page to start a conversation about your website, brand, or digital product.",
+        "Explore the founders' GitHub and LinkedIn profiles on this page, browse the project archive, or use Let’s talk to start a conversation about your website, brand, or digital product.",
       ],
     },
   ],
@@ -299,18 +299,6 @@ const renderProjectStaticContent = (project) => {
 };
 
 const renderStaticContent = (key) => {
-  if (key === 'contact') {
-    return `<section data-static-content style="margin-top:40px;max-width:820px;font-size:14px;line-height:1.7">
-      <h2>It starts with hello.</h2>
-      <p>A new idea, a fresh start, or something you are still figuring out. Ardeno Studio welcomes enquiries about websites, brand identity, booking and order systems, redesigns, and digital products. A rough sketch is enough to start a conversation; the founders will work out the details with you.</p>
-      <h2>Tell us what you have in mind</h2>
-      <p>The enquiry form asks for your name, email address and a short project description. Company, phone or WhatsApp number, and budget range are optional. Budget choices include under LKR 50,000, LKR 50,000–150,000, LKR 150,000–500,000, LKR 500,000–1,000,000, LKR 1,000,000+, and “Let’s discuss”. If the scope is still taking shape, choose “Let’s discuss” or leave the budget blank.</p>
-      <h2>Speak directly with the founders</h2>
-      <p>Ardeno is an independent studio based in Colombo, Sri Lanka, working with clients locally and globally. We reply within 24 hours. You can send a brief through the form, email us directly, or start a WhatsApp conversation. We use enquiry details only to respond to your project.</p>
-      <p><a href="mailto:ardenostudio@gmail.com">Email ardenostudio@gmail.com</a> · <a href="https://wa.me/94758504424">Contact Ardeno on WhatsApp</a></p>
-      <p><a href="/projects">Explore the work</a> · <a href="/docs">Read about our process</a></p>
-    </section>`;
-  }
   const project = projectsByRoute.get(key);
   if (key === "projects" || project) {
     return `<section data-static-content style="margin-top:40px;max-width:900px;color:#d6d6d6;font-size:14px;line-height:1.7">
@@ -390,7 +378,7 @@ const buildStructuredData = (key, route) => {
     });
   }
 
-  const pageType = key === 'contact' ? 'ContactPage' : route.type === "collection" ? "CollectionPage" : key === "faq" ? "FAQPage" : "WebPage";
+  const pageType = route.type === "collection" ? "CollectionPage" : key === "faq" ? "FAQPage" : "WebPage";
   const pageName = route.title.split("|")[0].trim();
   const graph = [
     {

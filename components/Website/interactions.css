@@ -94,7 +94,6 @@
   .faq-trigger[data-state=closed]:hover svg{transform:scale(1.25)}
   .faq-trigger:is(:hover,:focus-visible) .faq-question{transform:translateX(8px)}
   .founder-grid>a:is(:hover,:focus-visible){transform:translateX(6px)}
-  .founder-grid>a:is(:hover,:focus-visible) .founder-initial{background:var(--accent)}
 }
 
 @media(prefers-reduced-motion:reduce){

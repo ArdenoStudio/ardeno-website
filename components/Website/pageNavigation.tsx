@@ -8,8 +8,8 @@ type PageLocation = { pathname: string; search: string; hash: string; key: strin
 type Destination = { url: URL; key: string; pop: boolean; label: string };
 const routeKey = () => `ardeno-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 const readLocation = (): PageLocation => ({ pathname: window.location.pathname, search: window.location.search, hash: window.location.hash, key: window.history.state?.ardenoKey ?? routeKey() });
-const isPage = (path: string) => path === '/' || path === '/contact' || path === '/founders' || path === '/projects' || path.startsWith('/projects/') || path === '/docs' || path.startsWith('/docs/');
-const destinationLabel = (path: string) => path === '/contact' ? 'Contact' : path === '/founders' ? 'Founders' : path.startsWith('/projects/') ? findProject(path.split('/')[2])?.title ?? 'Projects' : path === '/projects' ? 'All projects' : path.startsWith('/docs') ? 'Studio docs' : 'Home';
+const isPage = (path: string) => path === '/' || path === '/founders' || path === '/projects' || path.startsWith('/projects/') || path === '/docs' || path.startsWith('/docs/');
+const destinationLabel = (path: string) => path === '/founders' ? 'Founders' : path.startsWith('/projects/') ? findProject(path.split('/')[2])?.title ?? 'Projects' : path === '/projects' ? 'All projects' : path.startsWith('/docs') ? 'Studio docs' : 'Home';
 export const requestPageNavigation = (href: string) => window.dispatchEvent(new CustomEvent('ardeno:navigate', { detail: { href } }));
 // Use Motion's physical spring as the timing curve for the browser's incoming snapshot.
 const [settleDuration, ...settleCurve] = spring({ stiffness: 340, damping: 32, mass: 0.8, keyframes: [0, 1], restDelta: 0.003, restSpeed: 0.03 }).toString().split(' ');
@@ -69,6 +69,12 @@ export function usePageNavigation(enabled = true) {
       if (!pop && url.hash === current.current.hash && stateKey === current.current.key) return;
       const key = pop ? stateKey ?? routeKey() : stateKey && stateKey !== current.current.key ? stateKey : routeKey();
       window.history.replaceState({ ...window.history.state, ardenoKey: key }, '', window.location.href);
+      // The Let's talk sheet opens on #lets-talk (ContactSheet.tsx). Opening or closing it is not a navigation: note the entry but
+      // leave the page alone, so the whole page does not re-render (that stalled the sheet's opening) and scroll is not restored.
+      if (url.hash === '#lets-talk' || (current.current.hash === '#lets-talk' && !url.hash)) {
+        current.current = { pathname: url.pathname, search: url.search, hash: url.hash, key };
+        return;
+      }
       if (pop) {
         transitionVersion.current++;
         nativeTransition.current?.skipTransition();
@@ -174,9 +180,33 @@ export function usePageNavigation(enabled = true) {
       if (!anchor || anchor.hasAttribute('download') || (anchor.target && anchor.target !== '_self')) return;
       const url = new URL(anchor.href, window.location.href);
       if (url.origin !== window.location.origin || !isPage(url.pathname.replace(/\/+$/, '') || '/')) return;
-      if (url.pathname === current.current.pathname && url.search === current.current.search) return;
+      if (url.pathname === current.current.pathname && url.search === current.current.search) {
+        if (url.hash) glideToSection(event, url.hash);
+        return;
+      }
       event.preventDefault();
       navigate(url);
+    };
+    // A section link on the same page (the header's Work., Services., Studio., Back to top) glides there. Chrome jumps straight to
+    // a #fragment even with scroll-behavior: smooth. The address bar and history change as a native fragment link's would (captureClick
+    // then syncs the location), focus moves to the section like the hero's "Explore our work", and reduced motion jumps. The scroll
+    // waits a frame so the mobile menu, which closes on the same click, has let go of the page first.
+    const glideToSection = (event: MouseEvent, hash: string) => {
+      let target: HTMLElement | null = null;
+      try { target = document.getElementById(decodeURIComponent(hash.slice(1))); } catch { return; }
+      if (!target) return;
+      event.preventDefault();
+      if (hash !== window.location.hash) window.history.pushState(null, '', hash);
+      const section = target;
+      window.requestAnimationFrame(() => {
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        section.scrollIntoView({ behavior: reduced ? 'instant' : 'smooth', block: 'start' });
+        if (!section.hasAttribute('tabindex')) {
+          section.setAttribute('tabindex', '-1');
+          section.addEventListener('blur', () => section.removeAttribute('tabindex'), { once: true });
+        }
+        section.focus({ preventScroll: true });
+      });
     };
     const pop = () => {
       const url = new URL(window.location.href);
