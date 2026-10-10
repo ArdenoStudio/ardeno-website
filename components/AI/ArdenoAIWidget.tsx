@@ -127,13 +127,9 @@ const STYLES = `
     pointer-events: none;
   }
 
-  @keyframes awPulseRing {
-    0% { transform: scale(1); opacity: .42; }
     100% { transform: scale(1.95); opacity: 0; }
   }
 
-  @keyframes awGlow {
-    0%, 100% { box-shadow: 0 0 0 rgba(${RED_RGB}, 0); }
     50% { box-shadow: 0 0 28px rgba(${RED_RGB}, .18); }
   }
 
@@ -142,13 +138,9 @@ const STYLES = `
     50% { transform: translateY(-2px); }
   }
 
-  @keyframes awFabHalo {
-    0%, 100% { opacity: .38; transform: scale(1); }
     50% { opacity: .68; transform: scale(1.06); }
   }
 
-  @keyframes awRotateSlow {
-    to { transform: rotate(360deg); }
   }
 
   .aw-backdrop {
@@ -165,7 +157,7 @@ const STYLES = `
     right: 24px;
     bottom: 24px;
     z-index: 9999;
-    transition: bottom 0.4s cubic-bezier(0.16,1,0.3,1);
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
     animation: awFabFloat 2.8s ease-in-out infinite;
   }
 
@@ -189,7 +181,7 @@ const STYLES = `
       0 0 22px rgba(229,9,20,.12);
     cursor: pointer;
     overflow: hidden;
-    transition: all 180ms ease;
+    transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease, border-color 180ms ease;
   }
 
   .aw-fab:hover {
@@ -1157,41 +1149,6 @@ const ArdenoAIWidget: React.FC = () => {
                     overflow: "hidden",
                 }}
             >
-                <span
-                    style={{
-                        position: "absolute",
-                        inset: -18,
-                        borderRadius: 999,
-                        background: `radial-gradient(circle, rgba(${RED_RGB}, .26) 0%, rgba(${RED_RGB}, .1) 36%, transparent 70%)`,
-                        animation: "awFabHalo 2.8s ease-in-out infinite",
-                        pointerEvents: "none",
-                    }}
-                />
-
-                <span
-                    style={{
-                        position: "absolute",
-                        inset: 8,
-                        borderRadius: 16,
-                        border: `1px solid rgba(${RED_RGB}, .22)`,
-                        animation: "awPulseRing 2.8s ease-out infinite",
-                        pointerEvents: "none",
-                    }}
-                />
-
-                <span
-                    style={{
-                        position: "absolute",
-                        width: 120,
-                        height: 120,
-                        borderRadius: "50%",
-                        background:
-                            "conic-gradient(from 0deg, rgba(229,9,20,0) 0deg, rgba(229,9,20,.22) 100deg, rgba(229,9,20,0) 220deg, rgba(229,9,20,.16) 320deg, rgba(229,9,20,0) 360deg)",
-                        animation: "awRotateSlow 8s linear infinite",
-                        pointerEvents: "none",
-                    }}
-                />
-
                 <div
                     style={{
                         width: 44,
@@ -1202,7 +1159,6 @@ const ArdenoAIWidget: React.FC = () => {
                         background: "linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.015))",
                         border: "1px solid rgba(255,255,255,.07)",
                         boxShadow: "inset 0 1px 0 rgba(255,255,255,.06), 0 0 22px rgba(229,9,20,.16)",
-                        animation: "awGlow 2.8s ease-in-out infinite",
                         position: "relative",
                         zIndex: 1,
                     }}

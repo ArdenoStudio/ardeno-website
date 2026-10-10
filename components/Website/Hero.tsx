@@ -146,14 +146,29 @@ export function Hero({ onContact }: { onContact: () => void }) {
             </div>
           </div>
           <ul className="editorial-fan" aria-label="Platforms and sites we have built">
-            {FAN_PROJECTS.map((project) => (
+            {FAN_PROJECTS.map((project, index) => {
+              // Above-the-fold hero cards: WebP with a JPG fallback. The first
+              // card is the LCP image — eager + high fetch priority.
+              const webp = project.image.replace(/\.jpe?g$/i, '.webp');
+              const webpSmall = project.image.replace(/\.jpe?g$/i, '-640.webp');
+              const eager = index === 0;
+              return (
               <li key={project.id}>
                 <a className="editorial-card-link" href={`/projects/${project.id}`} aria-label={`${project.title}, ${project.category}`}>
-                  <span className="editorial-card"><img src={project.image} alt="" width={1280} height={800} loading="lazy" decoding="async" /></span>
+                  <span className="editorial-card">
+                    <picture>
+                      <source type="image/webp" srcSet={`${webpSmall} 640w, ${webp} 1280w`} sizes="(max-width: 700px) 640px, 1280px" />
+                      <img src={project.image} alt="" width={1280} height={800}
+                        loading={eager ? 'eager' : 'lazy'}
+                        fetchPriority={eager ? 'high' : undefined}
+                        decoding="async" />
+                    </picture>
+                  </span>
                   <span className="editorial-card-label">{FAN_LABELS[project.id] ?? project.title}<ArrowUpRight size={12} aria-hidden="true" /></span>
                 </a>
               </li>
-            ))}
+              );
+            })}
           </ul>
         </div>
       </div>

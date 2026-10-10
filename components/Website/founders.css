@@ -18,7 +18,7 @@
   .f-section .f-rise {
     opacity: 0;
     translate: 0 26px;
-    transition: opacity 700ms ease, translate 900ms var(--spring-soft);
+    transition: opacity 500ms ease, translate 550ms var(--spring-soft);
   }
   .f-section[data-in] .f-rise {
     opacity: 1;
@@ -65,7 +65,7 @@
   border-radius: 14px;
   isolation: isolate;
   transform: rotate(var(--tilt));
-  transition: transform 520ms var(--spring-pull);
+  transition: transform 220ms var(--spring-pull);
   box-shadow: 0 22px 44px -22px rgba(32, 33, 31, .35), 0 3px 8px rgba(32, 33, 31, .08);
 }
 .founder-card-visual .pixel-canvas { border-radius: inherit; }
@@ -130,7 +130,7 @@
   margin-left: auto;
   flex: none;
   align-self: center;
-  transition: transform 520ms var(--spring-pull);
+  transition: transform 220ms var(--spring-pull);
 }
 .founder-card:is(:hover, :focus-visible) .founder-card-caption svg {
   transform: translate(3px, -3px);

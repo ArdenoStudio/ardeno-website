@@ -16,13 +16,13 @@
 .editorial-message h1>span{display:block}
 .editorial-description{margin:26px 0 20px;color:var(--muted);font-size:clamp(15px,1.2vw,19px);line-height:1.5}
 .editorial-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px 40px}
-.editorial-cta{--fx:50%;--fy:50%;--fd:560px;position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;justify-content:space-between;gap:36px;min-width:220px;min-height:60px;padding:18px 32px;border:0;border-radius:999px;background:var(--accent);color:#151613;font-family:var(--font-ui);font-size:16px;font-weight:400;line-height:1.4;transition:transform 520ms var(--spring-pull)}
-.cta-fill{position:absolute;z-index:-1;left:var(--fx);top:var(--fy);width:var(--fd);height:var(--fd);margin:calc(var(--fd)/-2) 0 0 calc(var(--fd)/-2);border-radius:50%;background:var(--ink);transform:scale(0);transition:transform 640ms cubic-bezier(.22,.9,.3,1);pointer-events:none}
+.editorial-cta{--fx:50%;--fy:50%;--fd:560px;position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;justify-content:space-between;gap:36px;min-width:220px;min-height:60px;padding:18px 32px;border:0;border-radius:999px;background:var(--accent);color:#151613;font-family:var(--font-ui);font-size:16px;font-weight:400;line-height:1.4;transition:transform 220ms var(--spring-pull)}
+.cta-fill{position:absolute;z-index:-1;left:var(--fx);top:var(--fy);width:var(--fd);height:var(--fd);margin:calc(var(--fd)/-2) 0 0 calc(var(--fd)/-2);border-radius:50%;background:var(--ink);transform:scale(0);transition:transform 360ms cubic-bezier(.22,.9,.3,1);pointer-events:none}
 .cta-label{position:relative;display:block;overflow:hidden;height:1.45em;line-height:1.45}
-.cta-label>span{display:block;transition:transform 520ms var(--spring-pull)}
+.cta-label>span{display:block;transition:transform 220ms var(--spring-pull)}
 .cta-label>span+span{position:absolute;top:100%;left:0;white-space:nowrap;color:var(--paper)}
 .cta-arrow{position:relative;display:block;flex:none;width:18px;height:18px;overflow:hidden}
-.cta-arrow>svg{position:absolute;inset:0;transition:transform 560ms var(--spring-pull)}
+.cta-arrow>svg{position:absolute;inset:0;transition:transform 220ms var(--spring-pull)}
 .cta-arrow>svg+svg{color:var(--paper);transform:translate(-130%,130%)}
 .editorial-cta:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 .editorial-cta:focus-visible .cta-fill{transform:scale(1)}
@@ -39,9 +39,9 @@
 .editorial-cta:active{transform:scale(.955);transition-duration:140ms;transition-timing-function:cubic-bezier(.3,.7,.3,1)}
 .editorial-work-link{display:inline-flex;align-items:center;gap:22px;min-height:48px;font-size:15px;line-height:1.5}
 .link-label{position:relative}
-.link-label::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1.5px;background:currentColor;transform:scaleX(0);transform-origin:right center;transition:transform 560ms var(--spring-soft)}
+.link-label::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1.5px;background:currentColor;transform:scaleX(0);transform-origin:right center;transition:transform 320ms var(--spring-soft)}
 .link-arrow{display:block;flex:none;width:18px;height:18px;animation:arrow-nudge 2.4s ease-in-out 1.4s infinite}
-.link-arrow>svg{display:block;transition:transform 560ms var(--spring-pull)}
+.link-arrow>svg{display:block;transition:transform 220ms var(--spring-pull)}
 .link-arrow.is-falling{animation:arrow-fall 950ms both}
 .editorial-work-link:focus-visible .link-label::after{transform:scaleX(1);transform-origin:left center}
 .editorial-work-link:focus-visible .link-arrow:not(.is-falling){animation-play-state:paused}
@@ -56,14 +56,16 @@
 /* The fan of project cards: --cw is a card's width in headline sizes, --step how far each card sits from the one behind it (in card
    widths). It is sized to clear the end of the headline's last line and rise into the lower half of the dotted "chapter.". */
 .editorial-fan{--cw:calc(var(--h)*5.2);--step:.36;position:absolute;right:calc(var(--cw)*.05);bottom:calc(var(--h)*.15);width:calc(var(--cw)*(1 + 2*var(--step)));height:calc(var(--cw)*.82);margin:0;padding:0;list-style:none}
-.editorial-fan>li{position:absolute;bottom:0;width:var(--cw);--x:0;--y:0;--r:0deg;--s:1;transform:translate(calc(var(--cw)*var(--x)),calc(var(--cw)*var(--y))) rotate(var(--r)) scale(var(--s));transform-origin:50% 100%;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.editorial-fan>li{position:absolute;bottom:0;width:var(--cw);--x:0;--y:0;--r:0deg;--s:1;transform:translate(calc(var(--cw)*var(--x)),calc(var(--cw)*var(--y))) rotate(var(--r)) scale(var(--s));transform-origin:50% 100%;transition:transform 320ms cubic-bezier(.2,.8,.2,1)}
 .editorial-fan>li:nth-child(1){left:0;z-index:1;--y:-.05;--r:-5deg}
 .editorial-fan>li:nth-child(2){left:calc(var(--cw)*var(--step));z-index:2;--y:-.01;--r:.5deg}
 .editorial-fan>li:nth-child(3){left:calc(var(--cw)*var(--step)*2);z-index:3;--y:-.04;--r:5deg}
 .editorial-fan:is(:hover,:focus-within)>li:nth-child(1){--x:-.07;--r:-8deg}
 .editorial-fan:is(:hover,:focus-within)>li:nth-child(3){--x:.06;--r:8deg}
 .editorial-fan>li:nth-child(n):is(:hover,:focus-within){z-index:4;--y:-.1;--r:0deg;--s:1.04}
-.editorial-card{position:relative;display:block;aspect-ratio:16/10;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 22px 44px -22px rgba(32,33,31,.45),0 3px 8px rgba(32,33,31,.1);outline:1px solid rgba(32,33,31,.1);outline-offset:-1px}
+.editorial-card{position:relative;display:block;aspect-ratio:16/10;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 22px 44px -22px rgba(32,33,31,.45),0 3px 8px rgba(32,33,31,.1);outline:1px solid rgba(32,33,31,.1);outline-offset:-1px;transition:transform 220ms var(--spring-pull)}
+/* Press feedback on the hero fan cards, matching .project-visual:active. */
+.editorial-card-link:active .editorial-card{transform:scale(.98);transition-duration:140ms}
 .editorial-card-link{display:block;color:var(--ink);text-decoration:none}
 .editorial-card-link:focus-visible{outline:none}
 .editorial-card-link:focus-visible .editorial-card{outline:2px solid var(--accent);outline-offset:3px}

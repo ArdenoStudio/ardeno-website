@@ -87,6 +87,11 @@
   .contact-sheet .form-row{grid-template-columns:1fr}
   .contact-sheet .contact-dialog-form :is(input,textarea,select){font-size:16px}
 }
+/* iOS Safari zooms on focus for <16px inputs and doesn't zoom back out —
+   tablets (421–767px) with coarse pointers need the 16px floor too. */
+@media(pointer:coarse){
+  .contact-sheet .contact-dialog-form :is(input,textarea,select){font-size:16px}
+}
 @media(prefers-reduced-motion:reduce){
   .contact-sheet *{animation:none!important;transition:none!important}
 }

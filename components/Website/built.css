@@ -19,16 +19,16 @@
 .built-card:nth-child(n+7){border-top:1px solid var(--line)}
 .pixel-canvas{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
 .pixel-canvas canvas{display:block;image-rendering:pixelated}
-.built-name{position:relative;z-index:1;font-family:var(--font-display);font-size:clamp(18px,1.7vw,26px);line-height:1.1;transition:transform 560ms var(--spring-pull),color 300ms ease}
+.built-name{position:relative;z-index:1;font-family:var(--font-display);font-size:clamp(18px,1.7vw,26px);line-height:1.1;transition:transform 220ms var(--spring-pull),color 300ms ease}
 /* A platform's own logo: grey and a little faded at rest, in its real colours on hover (the way the pasted component treats logos). */
-.built-logo{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;padding-bottom:3px;font-family:var(--font-display);font-size:clamp(17px,1.5vw,22px);line-height:1;color:var(--ink);filter:grayscale(1);opacity:.68;transition:transform 560ms var(--spring-pull),filter 300ms ease,opacity 300ms ease}
+.built-logo{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;padding-bottom:3px;font-family:var(--font-display);font-size:clamp(17px,1.5vw,22px);line-height:1;color:var(--ink);filter:grayscale(1);opacity:.68;transition:transform 220ms var(--spring-pull),filter 300ms ease,opacity 300ms ease}
 .built-logo img{display:block;max-width:100%;height:auto}
 /* A mark beside a name, sized and spaced as Dinaya's own login page does it: mark 1.35em square, 0.38em gap, mark 0.05em low, name on a one-em line. */
 .built-logo.has-text{gap:.38em}
 .built-logo.has-text img{width:1.35em;height:1.35em;flex:none;transform:translateY(.05em)}
 .built-logo.has-text span{line-height:1}
 .built-kind{position:relative;z-index:1;font-size:11px;line-height:1.4;color:var(--muted)}
-.built-arrow{position:absolute;z-index:1;top:14px;right:14px;opacity:.45;transition:transform 520ms var(--spring-pull),opacity 300ms ease,color 300ms ease}
+.built-arrow{position:absolute;z-index:1;top:14px;right:14px;opacity:.45;transition:transform 220ms var(--spring-pull),opacity 300ms ease,color 300ms ease}
 .ardeno-site .built-card:focus-visible{outline-offset:-6px}
 .built-card:focus-visible{z-index:2;background:#fff;box-shadow:0 8px 24px -8px color-mix(in srgb,var(--accent) 28%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--accent) 42%,transparent)}
 .built-card:focus-visible .built-name{transform:scale(1.06);color:var(--ink)}

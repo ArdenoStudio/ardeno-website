@@ -12,25 +12,25 @@
 .ar-footer-cta input{flex:1;min-width:0;min-height:44px;border:0;background:transparent;color:var(--paper-text);font:inherit;font-size:18px}
 .ar-footer-cta input:focus,.ar-footer-cta input:focus-visible{outline:none}
 .ar-footer-cta input::placeholder{color:#8d8e86}
-.ar-footer-cta form button{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;color:#b4b5ad;transition:transform 560ms var(--spring-pull),background-color 300ms ease,color 300ms ease}
+.ar-footer-cta form button{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;color:#b4b5ad;transition:transform 220ms var(--spring-pull),background-color 300ms ease,color 300ms ease}
 .ar-footer-cta form button:active{transform:scale(.92);transition-duration:140ms}
 .ar-footer-contact{display:flex;flex-wrap:wrap;align-items:center;gap:4px 20px;margin-top:12px}
 .ar-footer-mail{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:13px;color:#b4b5ad}
 
 /* Copy button: a small outlined pill. The icon and label roll over to "Copied" (or "Copy failed") on a spring. */
-.ar-copy{--s:0;position:relative;display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:0 14px 0 12px;border:1px solid rgba(244,244,242,.28);border-radius:999px;font-size:12px;color:#d8d9d4;transition:transform 560ms var(--spring-pull),background-color 300ms ease,border-color 300ms ease,color 300ms ease}
+.ar-copy{--s:0;position:relative;display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:0 14px 0 12px;border:1px solid rgba(244,244,242,.28);border-radius:999px;font-size:12px;color:#d8d9d4;transition:transform 220ms var(--spring-pull),background-color 300ms ease,border-color 300ms ease,color 300ms ease}
 .ar-copy::after{content:"";position:absolute;inset:-6px}
 .ar-copy:active{transform:scale(.94);transition-duration:140ms}
-.ar-copy[data-state=copied]{--s:1;border-color:var(--accent,#ff3301);background:var(--accent,#ff3301);color:#151613;animation:ar-copy-pop 640ms var(--spring-snap)}
+.ar-copy[data-state=copied]{--s:1;border-color:var(--accent,#ff3301);background:var(--accent,#ff3301);color:#151613;animation:ar-copy-pop 400ms var(--spring-snap)}
 .ar-copy[data-state=failed]{--s:2;border-color:#d8d9d4}
 .ar-copy-icon{position:relative;display:block;width:15px;height:15px;overflow:hidden}
-.ar-copy-icon svg{position:absolute;inset:0;transform:translateY(calc((var(--n,0) - var(--s)) * 120%));transition:transform 520ms var(--spring-pull)}
+.ar-copy-icon svg{position:absolute;inset:0;transform:translateY(calc((var(--n,0) - var(--s)) * 120%));transition:transform 220ms var(--spring-pull)}
 .ar-copy-icon svg:first-child{--n:0}
 .ar-copy-icon svg:last-child{--n:1}
 .ar-copy[data-state=failed] .ar-copy-icon svg:first-child{transform:none}
 .ar-copy[data-state=failed] .ar-copy-icon svg:last-child{transform:translateY(120%)}
 .ar-copy-label{display:grid;overflow:hidden;height:1.4em;line-height:1.4;text-align:center}
-.ar-copy-label>span{grid-area:1/1;transform:translateY(calc((var(--n,0) - var(--s)) * 100%));transition:transform 520ms var(--spring-pull)}
+.ar-copy-label>span{grid-area:1/1;transform:translateY(calc((var(--n,0) - var(--s)) * 100%));transition:transform 220ms var(--spring-pull)}
 @keyframes ar-copy-pop{from{transform:scale(.9)}to{transform:scale(1)}}
 
 .ar-footer-social{display:flex;align-items:center;gap:48px;margin-top:clamp(64px,9vw,128px)}
@@ -40,8 +40,8 @@
 
 .ar-footer-mark{margin-top:clamp(48px,6vw,88px)}
 .ar-footer-mark svg{display:block;width:100%;height:auto;overflow:hidden}
-.ar-footer-a{fill:var(--accent,#ff3301);opacity:0;transition:opacity 700ms ease 200ms}
-.ar-glyph{transform:translateY(150px);transition:transform 900ms var(--spring-pull) calc(300ms + var(--i) * 70ms)}
+.ar-footer-a{fill:var(--accent,#ff3301);opacity:0;transition:opacity 500ms ease 200ms}
+.ar-glyph{transform:translateY(150px);transition:transform 600ms var(--spring-pull) calc(300ms + var(--i) * 70ms)}
 .ar-glyph path{fill:var(--paper-text)}
 
 .ar-footer-meta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 32px;margin-top:16px;font-size:12px;color:#b4b5ad}
@@ -52,11 +52,11 @@
 .ar-clock-colon{animation:ar-colon 1s steps(1,end) infinite}
 @keyframes ar-colon{0%{opacity:1}50%{opacity:.25}}
 
-.ar-footer-mail svg,.ar-footer-social a svg,.ar-footer-meta a svg{flex:none;transition:transform 520ms var(--spring-pull)}
+.ar-footer-mail svg,.ar-footer-social a svg,.ar-footer-meta a svg{flex:none;transition:transform 220ms var(--spring-pull)}
 
 /* Entrance: elements marked .ar-r rise and fade in, staggered by --d (ms). */
 .ar-r{opacity:0;transform:translateY(24px)}
-.ar-footer[data-in] .ar-r{opacity:1;transform:none;transition:opacity 700ms ease calc(var(--d,0) * 1ms),transform 900ms var(--spring-soft) calc(var(--d,0) * 1ms)}
+.ar-footer[data-in] .ar-r{opacity:1;transform:none;transition:opacity 500ms ease calc(var(--d,0) * 1ms),transform 550ms var(--spring-soft) calc(var(--d,0) * 1ms)}
 .ar-footer[data-in] .ar-footer-a{opacity:1}
 .ar-footer[data-in] .ar-glyph{transform:none}
 

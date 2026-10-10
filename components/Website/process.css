@@ -15,7 +15,7 @@
 .step-top::before{content:'';position:absolute;left:0;right:0;top:-1px;height:2px;background:var(--accent);transform:scaleX(var(--f,0));transform-origin:left center;transition:transform 180ms linear}
 .step-top::after{content:'';position:absolute;top:-1px;left:calc(var(--f,0) * 100%);width:8px;height:8px;margin:-3px 0 0 -4px;border-radius:50%;background:var(--accent);opacity:0;scale:.4;transition:left 180ms linear,opacity 200ms ease,scale 420ms var(--spring-pull)}
 .process-step[data-step=active] .step-top::after{opacity:1;scale:1}
-.step-top svg{transition:color 300ms ease,translate 560ms var(--spring-pull)}
+.step-top svg{transition:color 300ms ease,translate 220ms var(--spring-pull)}
 .process-step[data-step=done] .step-top svg{color:var(--accent);translate:4px 0}
 .process-step[data-step=done] .step-top .lucide-check{translate:0 0}
 

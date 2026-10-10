@@ -13,22 +13,22 @@
   --font-ui: "Cal Sans", sans-serif;
 }
 
-/* ── Custom scrollbar ───────────────────────────────────── */
+/* ── Custom scrollbar (light Signal theme) ──────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: #f4f4f2;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: #c9cac4;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #E50914;
+  background: #ff3301;
 }
 
 /* ── Grain overlay ──────────────────────────────────────── */
@@ -50,26 +50,9 @@
 }
 
 /* ── Body base ──────────────────────────────────────────── */
-body { background-color: var(--ardeno-paper); color: var(--ardeno-ink); }
+body { background-color: #f4f4f2; color: var(--ardeno-ink); }
 
 /* ── Text glow utility ──────────────────────────────────── */
-.text-glow {
-  text-shadow: 0 0 30px rgba(229, 9, 20, 0.3);
-}
-
-/* ── Ardeno logo wordmark font ──────────────────────────── */
-.font-bricolage-condensed {
-  font-family: var(--font-brand);
-  font-variation-settings: "wdth" 75, "wght" 650;
-}
-
-/* ── Hero mesh background ───────────────────────────────── */
-.hero-mesh {
-  background:
-    radial-gradient(ellipse 80% 60% at 85% 20%, rgba(229, 9, 20, 0.09) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(229, 9, 20, 0.04) 0%, transparent 50%),
-    var(--ardeno-ink);
-}
 
 /* ── Project marquee ────────────────────────────────────── */
 @keyframes marquee-scroll {
