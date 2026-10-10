@@ -46,7 +46,16 @@ const getAllowedOrigins = (env: PagesEnv) => {
 export const isAllowedOrigin = (request: Request, env: PagesEnv) => {
   const origin = request.headers.get('origin');
   if (!origin) return true;
-  return getAllowedOrigins(env).has(origin);
+  if (getAllowedOrigins(env).has(origin)) return true;
+  // The studio's own PR-preview hosts — lets the form/AI widget be tested
+  // end-to-end on preview deploys without weakening production.
+  try {
+    const host = new URL(origin).hostname;
+    if (host.endsWith('.ardeno-studio.pages.dev')) return true;
+  } catch {
+    return false;
+  }
+  return false;
 };
 
 export const getClientIp = (request: Request) => {
