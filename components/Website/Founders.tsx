@@ -6,6 +6,7 @@ import { openContactSheet } from './ContactSheet';
 import { applySeoToDocument } from '../../seo';
 import { trackUtmParams } from '../UI/trackUtm';
 import { PixelCanvas } from './PixelCanvas';
+import { HalftonePortrait } from './HalftonePortrait';
 import { burstSparks } from './clickSpark';
 import { useSiteInteractions, useReveal } from './interactions';
 import { placeFill, useDotGlow } from './Hero';
@@ -16,6 +17,7 @@ import './interactions.css';
 import './brand.css';
 import './footer.css';
 import './contact.css';
+import './contactArt.css';
 import './built.css';
 import './founders.css';
 
@@ -30,6 +32,7 @@ type Founder = {
   tint: string;
   pixels: string[];
   sticker: string;
+  photo?: string; // portrait for the halftone, e.g. '/images/founders/suven-seoras.webp'; without one the initials are drawn
   bio: string[];
   owns: string[];
   tags: string[];
@@ -285,8 +288,7 @@ function FounderChapter({ founder, flipped }: { founder: Founder; flipped: boole
     <article id={founder.id} className={`founder-chapter f-rise${flipped ? ' is-flipped' : ''}`}>
       <div className="founder-portrait-col">
         <div className="founder-portrait" style={{ background: founder.tint }}>
-          <PixelCanvas colors={founder.pixels} />
-          <span className="founder-monogram" aria-hidden="true">{founder.initials}</span>
+          <HalftonePortrait photo={founder.photo} initials={founder.initials} />
         </div>
       </div>
       <div className="founder-copy">

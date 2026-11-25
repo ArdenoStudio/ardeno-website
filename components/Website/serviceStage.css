@@ -1,0 +1,88 @@
+/* What we do (ServiceStage.tsx): the thinking and the making either side of a divider. The making covers the thinking and is clipped at --x,
+   so both sides' frames and words sit in exactly the same place. Spring easings come from navigation.css. */
+.stage{position:relative;isolation:isolate;overflow:hidden;height:clamp(600px,54vw,860px);border-radius:clamp(18px,1.8vw,32px);container-type:size;cursor:ew-resize;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.stage-side{position:absolute;inset:0;overflow:hidden}
+.stage-thinking{background:#f4f4f2 radial-gradient(circle,rgba(32,33,31,.2) 1.15px,transparent 1.4px) 0 0/18px 18px;color:var(--ink)}
+.stage-making{clip-path:inset(0 0 0 var(--x));color:#f4f4f2;transition:background-color 500ms ease}
+.stage-word{position:absolute;top:3.4cqw;margin:0;font-family:var(--font-display);font-size:clamp(46px,5.6cqw,96px);line-height:1;letter-spacing:-.025em}
+.stage-word br{display:none}
+.stage-thinking .stage-word{left:3.6cqw}
+.stage-making .stage-word{right:3.6cqw;text-align:right}
+.stage-frame{position:absolute;left:50%;bottom:0;width:min(72cqw,calc((100cqh - 11cqw)*1.6));aspect-ratio:1.6;overflow:hidden;border-radius:1.2cqw 1.2cqw 0 0;transform:translateX(-50%);opacity:0;visibility:hidden;transition:opacity 300ms ease,visibility 0s linear 300ms}
+.stage-frame[data-active]{opacity:1;visibility:visible;transition:opacity 300ms ease}
+.stage-frame>img{display:block;width:100%;height:100%;object-fit:cover}
+.stage-thinking .stage-frame{background:#fbfbf9;box-shadow:0 0 0 1px rgba(32,33,31,.22)}
+.stage-making .stage-frame{background:#fff;box-shadow:0 2.4cqw 5cqw -1cqw rgba(0,0,0,.5)}
+.stage-note{position:absolute;bottom:2cqw;z-index:1;display:inline-flex;align-items:center;gap:8px;padding:10px 15px;border-radius:999px;background:#fff;color:var(--ink);font-size:13px;line-height:1.2;white-space:nowrap;box-shadow:0 1px 2px rgba(32,33,31,.1),0 8px 20px -10px rgba(32,33,31,.4)}
+.stage-thinking .stage-note{left:2cqw}
+.stage-making .stage-note{right:2cqw}
+a.stage-note svg{transition:transform 520ms var(--spring-pull)}
+a.stage-note:is(:hover,:focus-visible) svg{transform:translate(2px,-2px)}
+
+.stage-divider{position:absolute;top:0;bottom:0;left:var(--x);z-index:2;width:2px;margin-left:-1px;background:var(--accent);outline:none}
+.stage-divider::after{content:"";position:absolute;inset:0 -22px}
+.stage-divider>span{position:absolute;left:50%;top:52%;display:grid;place-items:center;width:64px;height:64px;border:3px solid #f4f4f2;border-radius:50%;background:var(--accent);color:var(--deep-ink,#151613);transform:translate(-50%,-50%);box-shadow:0 6px 20px -4px rgba(0,0,0,.38);transition:transform 520ms var(--spring-pull)}
+.stage[data-dragging] .stage-divider>span{transform:translate(-50%,-50%) scale(.88)}
+.stage-divider:focus-visible>span{outline:3px solid var(--ink);outline-offset:3px}
+@media(hover:hover){.stage:hover .stage-divider>span{transform:translate(-50%,-50%) scale(1.08)}.stage[data-dragging] .stage-divider>span{transform:translate(-50%,-50%) scale(.88)}}
+
+/* The AI scene: the beam diagram as the plan, an example conversation as the result. */
+.stage-flow{display:grid;align-content:center;height:100%;padding:0 12%;pointer-events:none}
+.stage-chat{display:flex;flex-direction:column;gap:1.2cqw;height:100%;padding:2.2cqw 15cqw 2.6cqw;background:#f4f4f2;color:#20211f;font-family:'Inter Variable',sans-serif;font-size:max(1.3cqw,11px);line-height:1.5}
+.stage-chat-top{display:flex;align-items:center;gap:10px;padding-bottom:1cqw;border-bottom:1px solid #d8d9d4}
+.stage-chat-top img{width:2cqw;min-width:18px;height:auto}
+.stage-chat-top span{font-family:var(--font-display);font-size:1.15em}
+.stage-chat-top small{margin-left:auto;font-size:.82em;color:#62635f}
+.stage-chat p{max-width:72%;margin:0;padding:.85cqw 1.2cqw;border-radius:1.3cqw 1.3cqw 1.3cqw .3cqw;background:#fff}
+.stage-chat p.is-visitor{align-self:flex-end;border-radius:1.3cqw 1.3cqw .3cqw 1.3cqw;background:#ff3301;color:#151613}
+.stage-chat-input{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding:.8cqw 1.2cqw;border:1px solid #d8d9d4;border-radius:999px;background:#fff;color:#62635f}
+
+.stage-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:28px}
+.stage-tab{position:relative;display:flex;align-items:baseline;gap:12px;min-height:44px;padding:18px 0 10px;text-align:left;color:#6d6e69;transition:color 300ms ease}
+.stage-tab::before,.stage-tab::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;border-radius:2px;background:rgba(32,33,31,.16)}
+.stage-tab::after{background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 700ms var(--spring-soft)}
+.stage-tab[aria-selected=true]{color:var(--ink)}
+.stage-tab[aria-selected=true]::after{transform:none}
+.stage-tab-number{font-size:12px}
+.stage-tab-name{font-family:var(--font-display);font-size:clamp(18px,1.6vw,26px);line-height:1.2}
+@media(hover:hover){.stage-tab:hover{color:var(--ink)}}
+
+.stage-details{display:grid;margin-top:22px}
+.stage-detail{grid-area:1/1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr) minmax(0,.8fr);gap:32px 5%;align-items:start;opacity:0;visibility:hidden;transform:translateY(10px);transition:opacity 220ms ease,visibility 0s linear 220ms,transform 0s linear 220ms}
+.stage-detail[data-active]{opacity:1;visibility:visible;transform:none;transition:opacity 420ms ease 80ms,transform 700ms var(--spring-soft) 80ms}
+.stage-detail h3{margin:0;font-family:var(--font-display);font-size:clamp(26px,2.3vw,38px);line-height:1.15;text-wrap:balance}
+.stage-detail-copy p{margin:0 0 12px;font-size:14px;line-height:1.75;color:var(--muted)}
+.stage-detail .service-tags{margin:0 0 14px}
+.stage-detail .text-button{min-height:44px}
+
+@media(max-width:1100px){
+  .stage{height:clamp(480px,66vw,700px)}
+  .stage-detail{grid-template-columns:1fr 1.4fr}
+  .stage-detail-side{grid-column:2}
+}
+@media(max-width:800px){
+  .stage-tabs{grid-template-columns:1fr 1fr;gap:6px 18px}
+  .stage-detail{grid-template-columns:1fr;gap:14px}
+  .stage-detail-side{grid-column:auto}
+}
+/* Phones: the words stack so each fits its half, and the frame is wider than the stage so the halves stay readable. */
+@media(max-width:640px){
+  .stage{height:500px;margin-inline:-2vw}
+  .stage-word{top:22px;font-size:37px;line-height:.98}
+  .stage-word br{display:inline}
+  .stage-thinking .stage-word{left:18px}
+  .stage-making .stage-word{right:18px}
+  .stage-frame{width:128cqw;bottom:56px;border-radius:12px}
+  .stage-note{bottom:14px;padding:8px 12px;font-size:11px}
+  .stage-thinking .stage-note{left:12px}
+  .stage-making .stage-note{right:12px}
+  .stage-divider>span{width:52px;height:52px}
+  .stage-chat{height:100%;padding:12px 20cqw;gap:7px;font-size:9.5px;line-height:1.4}
+  .stage-chat p{padding:6px 9px;border-radius:9px 9px 9px 3px}
+  .stage-chat p.is-visitor{border-radius:9px 9px 3px 9px}
+  .stage-chat-input{padding:6px 10px}
+  .stage-flow{height:100%;padding:0 20cqw;transform:scale(.8)}
+  .stage-tab{gap:8px;padding-top:14px}
+  .stage-tab-name{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){.stage-making,.stage-frame,.stage-frame[data-active],.stage-divider>span,.stage-tab,.stage-tab::after,.stage-detail,.stage-detail[data-active],a.stage-note svg{transition:none}}

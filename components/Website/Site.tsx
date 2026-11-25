@@ -12,7 +12,9 @@ import { StickerPlayground } from './StickerPlayground';
 import { cn, navigation } from './utils';
 import { featuredProjects, portfolio } from '../../data/portfolio';
 import { ProjectCard } from './ProjectCard';
-import { ServiceVisual } from './ServiceVisual';
+import { BrandBoard, CHS_BOARD } from './BrandBoard';
+import { ServiceStage, type Service } from './ServiceStage';
+import { DotMorph } from './DotMorph';
 import { useProcessFill } from './processFill';
 import { fireConfetti } from './confetti';
 import { BuiltMarquee, usePhoneStrip } from './BuiltMarquee';
@@ -141,12 +143,13 @@ function Work() {
   return <section id="work" className="site-section work-section">
     <SectionLabel number="01">Selected work</SectionLabel>
     <div className="section-heading"><h2>Independent ideas.<br /><span>Made real.</span></h2><div className="heading-aside"><p>A few of our favourites.<br />Products and websites, made with care.</p><a className="work-all-link" href="/projects"><span className="ul">All projects</span><sup>{String(portfolio.length).padStart(2, '0')}</sup><ArrowUpRight size={18} aria-hidden="true" /></a></div></div>
+    <BrandBoard board={CHS_BOARD} />
     <div className="project-grid">{featuredProjects.map(project => <ProjectCard key={project.id} project={project} />)}</div>
     <div className="work-outro"><p>There’s more where these came from.</p><a href="/projects"><span className="ul">Explore all {portfolio.length} projects</span><ArrowUpRight size={18} aria-hidden="true" /></a></div>
   </section>;
 }
 
-const services = [
+const services: Service[] = [
   { title: 'Websites with identity.', short: 'Web design & development', description: 'A thoughtful first impression, and everything that comes after it. Custom websites that feel like your brand and make the next step clear.', tags: ['Strategy', 'UI / UX', 'Development', 'SEO'], detail: 'From structure and copy direction to responsive design, development, and launch. Every build is shaped around your business, your visitors, and what you need the website to do.', path: '/services/business-websites' },
   { title: 'A fresh start, done right.', short: 'Website redesign', description: 'Your business has moved forward. Your website should too. We rethink the experience, sharpen the story, and rebuild what’s holding you back.', tags: ['Site audit', 'Design refresh', 'Performance'], detail: 'We review your current site, identify friction, and agree on a focused redesign scope. Existing content and working features are considered before anything is replaced.', path: '/services/website-redesign' },
   { title: 'Less admin. More business.', short: 'Booking & order systems', description: 'Practical products that take care of the everyday. Booking flows, order systems, and tools that make your team’s work easier.', tags: ['Product design', 'Workflows', 'Integrations'], detail: 'Booking, ordering, and internal workflows designed around how your team actually operates. We scope roles, notifications, and integrations with you before the build.', path: '/services/booking-systems' },
@@ -155,8 +158,8 @@ const services = [
 
 function Services({ onContact }: { onContact: () => void }) {
   return <section id="services" className="site-section services-section">
-    <SectionLabel number="02">What we do</SectionLabel><div className="section-heading"><h2><>The thinking.<br />The making.</></h2><p className="section-intro">Strategy, design, and development.<br />One small team, from first idea to final detail.</p></div>
-    <Accordion.Root type="single" collapsible className="service-list">{services.map((service, i) => <Accordion.Item key={service.short} value={service.short} className="service-item"><Accordion.Header><Accordion.Trigger className="service-trigger"><span className="service-number tabular-nums">0{i + 1}</span><span className="service-heading"><span className="service-short">{service.short}</span><span className="service-title">{service.title}</span></span><span className="service-description">{service.description}</span><span className="service-plus"><Plus size={23} /></span></Accordion.Trigger></Accordion.Header><Accordion.Content className="service-content"><div className="service-body"><div className="service-copy"><p>{service.detail}</p><div className="service-tags">{service.tags.map(tag => <span key={tag}>{tag}</span>)}</div><button onClick={onContact}><span className="ul">Discuss this service</span><ArrowUpRight size={17} /></button></div><ServiceVisual service={service.short} /></div></Accordion.Content></Accordion.Item>)}</Accordion.Root>
+    <SectionLabel number="02">What we do</SectionLabel><h2 className="sr-only">The thinking. The making.</h2>
+    <ServiceStage services={services} onContact={onContact} />
   </section>;
 }
 
@@ -258,9 +261,11 @@ const quickStarts = [
 export function Contact({ onContact }: { onContact: (email?: string, message?: string) => void }) {
   const sectionRef = useRef<HTMLElement>(null);
   const ringRef = useRef<HTMLSpanElement>(null);
+  const [shape, setShape] = useState(-1); // what the dots draw: the quick start being pointed at, or the A
   useReveal(sectionRef);
   useMagnet(sectionRef, ringRef);
   return <section id="contact" ref={sectionRef} className="site-section contact-section">
+    <DotMorph shape={shape} />
     <div className="contact-top cr" style={delay(0)}>
       <div className="contact-kicker"><span className="status-dot" /> Your next chapter starts here.</div>
       <div className="contact-status"><span className="status-dot" aria-hidden="true" /><span>{REPLY_PROMISE}</span><span aria-hidden="true">·</span><ColomboClock /></div>
@@ -275,8 +280,8 @@ export function Contact({ onContact }: { onContact: (email?: string, message?: s
     <div className="contact-bottom cr" style={delay(520)}>
       <div className="contact-ask">
         <p className="contact-intro">Tell us what you have in mind.<br />We’ll figure out the next step together.</p>
-        <div className="contact-start" role="group" aria-label="What can we help with?">
-          {quickStarts.map(([label, starter]) => <button key={label} type="button" className="contact-chip" data-sparks="--accent-ink --paper" onClick={() => onContact(undefined, starter)}>{label}</button>)}
+        <div className="contact-start" role="group" aria-label="What can we help with?" onPointerLeave={() => setShape(-1)}>
+          {quickStarts.map(([label, starter], i) => <button key={label} type="button" className="contact-chip" onPointerEnter={event => { if (event.pointerType === 'mouse') setShape(i); }} onFocus={() => setShape(i)} onBlur={() => setShape(-1)} data-sparks="--accent-ink --paper" onClick={() => onContact(undefined, starter)}>{label}</button>)}
         </div>
       </div>
       <div className="contact-mail">
@@ -359,61 +364,49 @@ function CopyEmail({ sparks = ['--accent', '--paper'] }: { sparks?: string[] }) 
   </>;
 }
 
-const footerLinks = [['Projects', '/projects'], ['Services', '/#services'], ['Studio', '/#about'], ['Contact', CONTACT_HASH]];
-const footerSocials = [
-  ['Instagram', 'https://www.instagram.com/ardenostudio/'],
-  ['LinkedIn', 'https://www.linkedin.com/company/ardentstudiolk'],
-  ['WhatsApp', 'https://wa.me/94758504424'],
+// The footer's link columns. Every link goes somewhere that works today.
+type FooterLink = [label: string, href: string, external?: boolean];
+const footerColumns: [heading: string, links: FooterLink[]][] = [
+  ['Explore', [['Home', '/'], ['Projects', '/projects'], ['Services', '/#services'], ['Studio', '/#about']]],
+  ['Studio', [['Founders', '/founders'], ['Questions', '/#questions'], ['Contact', CONTACT_HASH]]],
+  ['Follow', [['Instagram', 'https://www.instagram.com/ardenostudio/', true], ['LinkedIn', 'https://www.linkedin.com/company/ardentstudiolk', true], ['WhatsApp', 'https://wa.me/94758504424', true]]],
+  ['Details', [['Studio docs', '/docs'], ['Back to top', '#top']]],
 ];
 const delay = (ms: number) => ({ '--d': ms }) as React.CSSProperties;
 
-// Big links, a conversation form, a social row and the reversed lockup (A in Signal, letters in paper) across the full width,
-// as the brand guidelines ask for on ink. Everything rises in once when the footer scrolls into view; styles are in footer.css.
-export function Footer({ onContact }: { onContact: (email?: string) => void }) {
+// One Signal panel (after the Ovela Studio footer the user picked on Pinterest): the studio on the left, four columns of links, and the
+// lockup across the full width, fading down into the orange. Straight after the contact band the two join into one panel. Small text is
+// Deep ink, as the brand guide asks for on orange. Everything rises in once when the footer scrolls into view; styles are in footer.css.
+export function Footer(_props: { onContact?: (email?: string) => void }) {
   const footerRef = useRef<HTMLElement>(null);
-  useReveal(footerRef);
-  const submit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const email = new FormData(event.currentTarget).get('email');
-    onContact(typeof email === 'string' ? email.trim() : undefined);
-    event.currentTarget.reset();
-  };
-  return <footer ref={footerRef} className="site-footer ar-footer">
-    <div className="ar-footer-top">
-      <nav className="ar-footer-nav ar-r" style={delay(0)} aria-label="Footer navigation">{footerLinks.map(([label, href]) => <a key={label} className="nav-roll-link ar-footer-link" href={href}><RollText text={label} /></a>)}</nav>
-      <div className="ar-footer-cta ar-r" style={delay(120)}>
-        <p>Prefer to write?<br />Start with your email.</p>
-        <form onSubmit={submit}>
-          <label className="sr-only" htmlFor="footer-email">Your email address</label>
-          <input id="footer-email" name="email" type="email" required placeholder="Your email address" autoComplete="email" maxLength={254} />
-          <button type="submit" aria-label="Start a conversation"><ArrowRight size={22} aria-hidden="true" /></button>
-        </form>
-        <div className="ar-footer-contact">
-          <a className="ar-footer-mail" href={`mailto:${STUDIO_EMAIL}`}><span className="ul">{STUDIO_EMAIL}</span><ArrowUpRight size={14} aria-hidden="true" /></a>
-          <CopyEmail />
+  useReveal(footerRef, 0.1);
+  return <footer ref={footerRef} className="ar-footer">
+    <div className="ar-footer-panel">
+      <div className="ar-footer-top">
+        <div className="ar-footer-studio ar-r" style={delay(0)}>
+          <p className="ar-footer-name">Ardeno Studio</p>
+          <p>© {new Date().getFullYear()} Ardeno Studio.<br />Independent by choice.<br />Made in Colombo, built for everywhere.</p>
+          <div className="ar-footer-contact">
+            <a className="ar-footer-mail" href={`mailto:${STUDIO_EMAIL}`}><span className="ul">{STUDIO_EMAIL}</span><ArrowUpRight size={14} aria-hidden="true" /></a>
+            <CopyEmail sparks={['--accent-ink', '--paper']} />
+          </div>
+          <ColomboClock />
         </div>
+        <nav className="ar-footer-nav" aria-label="Footer navigation">
+          {footerColumns.map(([heading, links], i) => <div key={heading} className="ar-footer-col ar-r" style={delay(90 + i * 70)}>
+            <p className="ar-footer-heading" id={`footer-${heading.toLowerCase()}`}>{heading}</p>
+            <ul aria-labelledby={`footer-${heading.toLowerCase()}`}>{links.map(([label, href, external]) => <li key={label}><a href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}><span className="ul">{label}</span>{external && <ArrowUpRight size={13} aria-hidden="true" />}</a></li>)}</ul>
+          </div>)}
+        </nav>
       </div>
-    </div>
-    <div className="ar-footer-social ar-r" style={delay(240)}>
-      <span className="ar-footer-rule" aria-hidden="true" />
-      <nav aria-label="Social and resources">
-        {footerSocials.map(([label, href]) => <a key={label} href={href} target="_blank" rel="noopener noreferrer"><span className="ul">{label}</span><ArrowUpRight size={15} aria-hidden="true" /></a>)}
-        <a href="/docs"><span className="ul">Studio docs</span><ArrowUpRight size={15} aria-hidden="true" /></a>
-      </nav>
-    </div>
-    <div className="ar-footer-mark">
-      {/* The master has 8 units of padding on each side; crop it so the artwork lines up with the page edges. */}
-      <svg viewBox={`8 -26 ${LOCKUP.width - 16} ${LOCKUP.height + 26}`} role="img" aria-label="ardeno">
-        <title>ardeno</title>
-        <path className="ar-footer-a" d={LOCKUP.mark.d} transform={LOCKUP.mark.transform} />
-        {LOCKUP.glyphs.map((glyph, index) => <g key={index} className="ar-glyph" style={{ '--i': index } as React.CSSProperties}><path d={glyph.d} transform={glyph.transform} /></g>)}
-      </svg>
-    </div>
-    <div className="ar-footer-meta ar-r" style={delay(520)}>
-      <span>© {new Date().getFullYear()} Ardeno Studio</span>
-      <ColomboClock />
-      <span>Independent by choice. Made in Colombo. Built for everywhere.</span>
-      <a href="#top"><span className="ul">Back to top</span><ArrowUpRight size={14} aria-hidden="true" /></a>
+      <div className="ar-footer-mark">
+        {/* The master has 8 units of padding on each side; crop it so the artwork lines up with the page edges. */}
+        <svg viewBox={`8 -26 ${LOCKUP.width - 16} ${LOCKUP.height + 26}`} role="img" aria-label="ardeno">
+          <title>ardeno</title>
+          <path className="ar-footer-a" d={LOCKUP.mark.d} transform={LOCKUP.mark.transform} />
+          {LOCKUP.glyphs.map((glyph, index) => <g key={index} className="ar-glyph" style={{ '--i': index } as React.CSSProperties}><path d={glyph.d} transform={glyph.transform} /></g>)}
+        </svg>
+      </div>
     </div>
   </footer>;
 }

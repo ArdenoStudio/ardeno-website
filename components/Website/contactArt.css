@@ -1,0 +1,14 @@
+/* The contact band's dot picture (DotMorph.tsx) and the band's join with the footer into one Signal panel. The words and the email keep to
+   the left, the dots to the right, so no text sits on them. Imported after contact.css and footer.css. */
+.contact-section{--panel-m:clamp(8px,.8vw,14px);--panel-r:clamp(18px,1.8vw,32px);position:relative;isolation:isolate;overflow:hidden;width:auto;margin-inline:var(--panel-m);padding-inline:calc(max(4.5vw,(100vw - 1638px)/2) - var(--panel-m));border-radius:var(--panel-r) var(--panel-r) 0 0}
+.contact-dots{position:absolute;z-index:-1;top:0;bottom:0;right:0;width:min(48%,calc(100% - 850px));pointer-events:none}
+.contact-dots canvas{display:block;width:100%;height:100%}
+.contact-top{justify-content:flex-start}
+.contact-bottom{display:grid;justify-content:start;gap:26px}
+.contact-ask{flex:none}
+main:has(>.contact-section:last-child)+.ar-footer>.ar-footer-panel{border-radius:0 0 var(--panel-r) var(--panel-r);border-top:1px solid rgba(21,22,19,.18)}
+/* Below that the dots get room of their own under the text. */
+@media(max-width:1250px){.contact-section{padding-bottom:470px}.contact-dots{top:auto;left:0;width:100%;height:440px}}
+@media(max-width:1100px){.contact-section{padding-inline:calc(4vw - var(--panel-m) + 8px)}}
+@media(max-width:640px){.contact-section{padding-inline:calc(6vw - var(--panel-m))}}
+@media(max-width:580px){.contact-section{padding-bottom:350px}.contact-dots{height:330px}}
