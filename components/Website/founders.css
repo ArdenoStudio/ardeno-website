@@ -192,8 +192,12 @@
   isolation: isolate;
   box-shadow: 0 22px 44px -22px rgba(32, 33, 31, .3), 0 3px 8px rgba(32, 33, 31, .08);
 }
-.founder-portrait .founder-monogram {
-  font-size: clamp(96px, 10vw, 150px);
+.founder-halftone {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 .founder-eyebrow {
   display: flex;

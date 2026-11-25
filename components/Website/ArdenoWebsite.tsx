@@ -12,9 +12,12 @@ import './interactions.css';
 import './brand.css';
 import './footer.css';
 import './contact.css';
+import './contactArt.css';
 import './built.css';
 import './projects.css';
+import './brandBoard.css';
 import './serviceVisual.css';
+import './serviceStage.css';
 import './process.css';
 import './builtMarquee.css';
 
